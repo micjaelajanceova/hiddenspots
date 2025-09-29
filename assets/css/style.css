@@ -1,0 +1,40 @@
+/* RESET */
+*, *::before, *::after { box-sizing:border-box; }
+body { margin:0; font-family:'Inter',sans-serif; background:#f7f7fb; color:#222; }
+
+/* GRID LAYOUT */
+.grid-container { display:grid; grid-template-columns:280px 1fr 80px; gap:20px; padding:24px; }
+@media(max-width:980px){ .grid-container { grid-template-columns:1fr; } }
+
+/* CARDS */
+.card { background:white; border-radius:16px; padding:16px; box-shadow:0 8px 20px rgba(0,0,0,0.06); }
+.section-title { font-weight:700; display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+
+/* SMALL LIST */
+.small-list { display:flex; flex-direction:column; gap:10px; }
+.small-item { display:flex; gap:10px; align-items:center; transition: transform 0.2s; }
+.small-item:hover { transform: translateX(4px); cursor:pointer; }
+.thumb-small { width:60px; height:60px; object-fit:cover; border-radius:12px; background:#eee; }
+
+/* GALLERY */
+.masonry { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px; }
+.spot-card { border-radius:16px; overflow:hidden; background:white; box-shadow:0 6px 15px rgba(0,0,0,0.03); transition: transform 0.2s; }
+.spot-card:hover { transform:translateY(-5px); }
+.spot-photo { height:160px; object-fit:cover; width:100%; }
+.spot-meta { padding:10px; display:flex; justify-content:space-between; font-size:13px; color:#6b6b7a; }
+.spot-title { font-weight:600; font-size:15px; margin-bottom:4px; }
+.spot-desc { font-size:13px; color:#555; }
+
+/* UPLOAD BUTTON */
+.upload-button { display:flex; align-items:center; justify-content:center; width:80px; height:80px; border:2px dashed #5c9b8a; border-radius:16px; font-size:48px; font-weight:700; color:#5c9b8a; cursor:pointer; transition:all 0.2s; }
+.upload-button:hover { background:#5c9b8a; color:white; }
+
+/* MODAL */
+.modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:1000; }
+.modal.active { display:flex; }
+.modal-content { background:white; border-radius:16px; padding:20px; max-width:480px; width:90%; }
+.modal-actions { display:flex; gap:10px; margin-top:12px; }
+.btn.cancel { background:#ccc;color:#222; }
+
+/* FOOTER */
+footer { text-align:center; font-size:13px; color:#7a7a8f; padding:18px 0; }
