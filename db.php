@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$db   = 'hidden_spots';
+$db   = 'hiddenspots';
 $user = 'root';
 $pass = ''; // alebo tvoje heslo
 $charset = 'utf8mb4';
