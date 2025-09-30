@@ -8,44 +8,41 @@ include 'admin.php';
 $spotObj = new Spot($pdo);
 $newest = $spotObj->getNewest(20);
 ?>
+ <div class="flex justify-between mb-6">
+    <h2 class="text-3xl font-bold">DISCOVER WHAT OTHERS OVERLOOK.</h2>
+    <p class="text-gray-500 font-semibold">SHARE YOUR SECRET SPOTS WITH THE WORLD.</p>
+  </div>
 
-<main class="flex-1 p-6 overflow-auto">
-    <div class="columns-1 sm:columns-2 md:columns-3 gap-4">
-        <?php foreach($newest as $spot): ?>
-            <div class="break-inside-avoid mb-4 bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden">
-                <a href="spot.php?id=<?= $spot['id'] ?>">
-                    <img src="<?= $spot['file_path'] ?>" alt="<?= $spot['name'] ?>" class="w-full object-cover">
-                    <div class="p-3">
-                        <h3 class="font-semibold text-lg"><?= $spot['name'] ?></h3>
-                        <p class="text-gray-600 text-sm"><?= $spot['description'] ?></p>
-                        <div class="flex justify-between items-center text-gray-400 text-xs mt-2">
-                            <span><?= $spot['city'] ?> • <?= date("d M", strtotime($spot['created_at'])) ?></span>
-                            <span>❤ <?= $spot['likes'] ?> • 💬 <?= $spot['comments_count'] ?></span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        <?php endforeach; ?>
-    </div>
-</main>
+  <!-- Newest pictures -->
+  <h3 class="text-xl font-bold mb-4">Newest spots</h3>
+  <div class="grid grid-cols-3 gap-4 mb-10">
+    <?php
+    require 'classes/Image.php';
+    $imgModel = new ImageModel();
+    $newest = $imgModel->getRecent(6);
+    foreach($newest as $img): ?>
+      <div>
+        <img src="uploads/<?=htmlspecialchars($img['filename'])?>" 
+             class="w-full rounded-lg shadow"/>
+        <p><?=htmlspecialchars($img['title'])?></p>
+      </div>
+    <?php endforeach; ?>
+  </div>
 
-<!-- Upload Modal -->
-<div id="uploadModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-    <div class="bg-white rounded-lg p-6 w-96">
-        <h2 class="text-lg font-bold mb-4">Upload a new spot</h2>
-        <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data" class="flex flex-col gap-3">
-            <input type="file" name="photo" required>
-            <input type="text" name="name" placeholder="Name" required class="p-2 border rounded">
-            <input type="text" name="city" placeholder="City" required class="p-2 border rounded">
-            <input type="text" name="address" placeholder="Address" required class="p-2 border rounded">
-            <textarea name="description" placeholder="Short tip / description" class="p-2 border rounded"></textarea>
-            <div class="flex gap-2 justify-end">
-                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Upload</button>
-                <button type="button" id="closeModal" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Cancel</button>
-            </div>
-        </form>
-    </div>
-</div>
+  <!-- Sticky / trending -->
+  <h3 class="text-xl font-bold mb-4">Trending spots</h3>
+  <div class="grid grid-cols-3 gap-4">
+    <?php
+    $trending = $imgModel->getSticky(6);
+    foreach($trending as $img): ?>
+      <div>
+        <img src="uploads/<?=htmlspecialchars($img['filename'])?>" 
+             class="w-full rounded-lg shadow"/>
+        <p><?=htmlspecialchars($img['title'])?></p>
+      </div>
+    <?php endforeach; ?>
+  </div>
+
 
 <script>
 const uploadBtn = document.getElementById('uploadBtn');
