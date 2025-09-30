@@ -12,7 +12,7 @@ $newest = $spotObj->getNewest(20);
 
 ?>
 
-<main class="flex-1 bg-white min-h-screen">
+<main class="flex-1 bg-white min-h-screen overflow-y-auto">   
   <!-- full width container -->
   <div class="w-full px-4 sm:px-6 lg:px-8">
 

@@ -11,8 +11,8 @@ $user_id = $_SESSION['user_id'] ?? 1;
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <div class="flex h-screen bg-gray-50">
-<!-- Sidebar -->
-  <aside class="w-64 bg-white flex flex-col justify-between border-r p-4">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white flex flex-col justify-between border-r p-4 sticky top-0">
     <div>
       <h1 class="text-2xl font-bold mb-6">HiddenSpots</h1>
       <nav class="flex flex-col gap-4">
