@@ -1,6 +1,7 @@
 DROP DATABASE IF EXISTS hiddenspots;
 CREATE DATABASE hiddenspots;
 USE hiddenspots;
+SET default_storage_engine=INNODB;
 
 -- USERS
 CREATE TABLE users (
