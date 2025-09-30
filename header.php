@@ -16,10 +16,10 @@ $user_id = $_SESSION['user_id'] ?? 1;
     <div>
       <h1 class="text-2xl font-bold mb-6">HiddenSpots</h1>
       <nav class="flex flex-col gap-4">
-        <a href="#" class="hover:text-blue-500">Feed</a>
-        <a href="#" class="hover:text-blue-500">Favourites</a>
-        <a href="#" class="hover:text-blue-500">Trending</a>
-        <a href="#" class="hover:text-blue-500">About HS</a>
+        <a href="index.php" class="hover:text-blue-500">Feed</a>
+        <a href="favourites.php" class="hover:text-blue-500">Favourites</a>
+        <a href="trending.php" class="hover:text-blue-500">Trending</a>
+        <a href="about.php" class="hover:text-blue-500">About HS</a>
       </nav>
     </div>
     <button class="mt-6 w-full py-2 bg-black text-white rounded-lg flex items-center justify-center gap-2">
