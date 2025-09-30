@@ -76,7 +76,7 @@ $newest = $spotObj->getNewest(20);
         <?php else: ?>
           <!-- placeholder boxes when no sticky -->
           <?php for($i=0;$i<4;$i++): ?>
-            <div class="rounded-lg overflow-hidden bg-gray-100 h-40"></div>
+            <div class=" overflow-hidden bg-gray-100 h-40"></div>
           <?php endfor; ?>
         <?php endif; ?>
       </div>
@@ -84,13 +84,13 @@ $newest = $spotObj->getNewest(20);
 
     <!-- ABOUT -->
     <section class="mt-12">
-      <div class="bg-gray-100 rounded-lg p-8 flex items-center gap-8">
+      <div class="bg-gray-100 p-8 flex items-center gap-8">
         <div class="flex-1">
           <h3 class="text-2xl font-bold">ABOUT HIDDEN SPOTS</h3>
           <p class="text-sm text-gray-600 mt-2">A photo-sharing app for secret city places — discover, save and share hidden gems in your town.</p>
           <a href="about.php" class="inline-block mt-4 bg-black text-white px-5 py-2 rounded-full">Learn more →</a>
         </div>
-        <div class="w-1/3 bg-gray-200 h-36 rounded-lg flex items-center justify-center text-gray-500">Visual / promo</div>
+        <div class="w-1/3 bg-gray-200 h-36 flex items-center justify-center text-gray-500">Visual / promo</div>
       </div>
     </section>
 
@@ -98,7 +98,7 @@ $newest = $spotObj->getNewest(20);
     <section class="mt-12">
       <div class="flex items-center justify-between">
         <div>
-          <h2 class="text-2xl font-bold">FEED</h2>
+          <h2 class="text-2xl font-bold">HOT NEW PICTURES</h2>
           <p class="text-sm text-gray-500 mt-1">Discover new pictures every day.</p>
         </div>
         <a href="newest.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">See more →</a>
@@ -125,7 +125,7 @@ $newest = $spotObj->getNewest(20);
         <?php else: ?>
           <!-- placeholders -->
           <?php for($i=0;$i<6;$i++): ?>
-            <div class="break-inside-avoid rounded-lg overflow-hidden bg-gray-100 h-48"></div>
+            <div class="break-inside-avoid overflow-hidden bg-gray-100 h-48"></div>
           <?php endfor; ?>
         <?php endif; ?>
       </div>
@@ -152,16 +152,16 @@ $newest = $spotObj->getNewest(20);
             </div>
           <?php endforeach; ?>
         <?php else: ?>
-          <div class="bg-gray-100 rounded-lg h-28"></div>
-          <div class="bg-gray-100 rounded-lg h-28"></div>
-          <div class="bg-gray-100 rounded-lg h-28"></div>
+          <div class="bg-gray-100  h-28"></div>
+          <div class="bg-gray-100  h-28"></div>
+          <div class="bg-gray-100  h-28"></div>
         <?php endif; ?>
       </div>
     </section>
 
     <!-- UPLOAD CTA (big) -->
     <section class="mt-12 mb-20">
-      <div class="bg-gray-100 rounded-lg p-8 flex items-center justify-between">
+      <div class="bg-gray-100 p-8 flex items-center justify-between">
         <div>
           <h3 class="text-2xl font-bold">UPLOAD A NEW PICTURE</h3>
           <p class="text-sm text-gray-600 mt-2">Share a secret spot with us.</p>
