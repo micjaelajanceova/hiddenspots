@@ -7,8 +7,8 @@
         <!-- Section 1 -->
         <div class="grid md:grid-cols-12 gap-12 items-center">
             <div class="md:col-span-4">
-                <h1 class="text-5xl font-bold mb-4">Welcome to HiddenSpots</h1>
-                <h2 class="text-3xl font-bold mb-4">About HiddenSpots</h2>
+                <h1 class="h1 font-bold mb-4">Welcome to HiddenSpots</h1>
+                <h2 class="font-bold mb-4">About HiddenSpots</h2>
                 <p class="text-lg text-gray-600">
                     Discover secret places and share them with the world. HiddenSpots is a platform 
                     where explorers like you reveal unique locations that others might overlook.
