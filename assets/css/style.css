@@ -53,7 +53,7 @@ button {
   border-radius: 8px !important;
   cursor: pointer !important;
   background: rgb(128, 179, 226) !important;
-  color: #fff !important;
+  color: #ffffff !important;
   transition: opacity 0.3s ease !important;
 }
 
@@ -70,7 +70,7 @@ button:hover {
   border-radius: 8px !important;
   cursor: pointer !important;
   background: rgb(128, 179, 226) !important;
-  color: #fff !important;
+  color: #ffffff !important;
   transition: opacity 0.3s ease !important;
 }
 

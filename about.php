@@ -22,7 +22,7 @@
         <!-- Section 2 (reversed) -->
         <div class="grid md:grid-cols-12 gap-12 items-center mb-24">
             <div class="md:col-span-8 order-2 md:order-1">
-                <img src="assets/img/hiddenspot2.jpg" alt="Community" class="shadow-lg w-full h-95 object-cover">
+                <img src="assets/img/hiddenspot7.jpg" alt="Community" class="shadow-lg w-full h-95 object-cover">
             </div>
             <div class="md:col-span-4 order-1 md:order-2">
                 <h1 class="mb-3">EXPLORE</h1>
@@ -43,7 +43,7 @@
 <div class="grid md:grid-cols-3 gap-8">
     <!-- Karta 1 -->
     <a href="feed.php" class="group relative block overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-        <img src="assets/img/hiddenspot1.jpg" alt="Upload" class="h-80 w-full object-cover">
+        <img src="assets/img/hiddenspot2.jpg" alt="Upload" class="h-80 w-full object-cover">
         <!-- Gradient overlay iba pri hover -->
         <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         <!-- H3 hore -->
@@ -58,7 +58,7 @@
 
     <!-- Karta 2 -->
     <a href="upload.php" class="group relative block overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-        <img src="assets/img/hiddenspot2.jpg" alt="Explore" class="h-80 w-full object-cover">
+        <img src="assets/img/hiddenspot4.jpg" alt="Explore" class="h-80 w-full object-cover">
         <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         <h3 class="absolute top-4 left-4 text-white font-bold text-xl drop-shadow-lg z-10">
             Explore & Discover
@@ -70,7 +70,7 @@
 
     <!-- Karta 3 -->
     <a href="favourites.php" class="group relative block overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-        <img src="assets/img/hiddenspot1.jpg" alt="Community" class="h-80 w-full object-cover">
+        <img src="assets/img/hiddenspot5.jpg" alt="Community" class="h-80 w-full object-cover">
         <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         <h3 class="absolute top-4 left-4 text-white font-bold text-xl drop-shadow-lg z-10">
             Join the Community

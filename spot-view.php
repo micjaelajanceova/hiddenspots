@@ -58,11 +58,21 @@ $comments = $spotObj->getComments($spot_id);
 
   <!-- KOMENTARE -->
   <section class="mt-8 w-full">
-    <form action="add_comment.php" method="post" class="flex gap-2 mb-4">
-      <input type="hidden" name="spot_id" value="<?=$spot_id?>">
-      <input type="text" name="text" placeholder="Write your comment" class="flex-1 p-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-400" required>
-      <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-green-600 transition">Post</button>
-    </form>
+<form action="add_comment.php" method="post" class="flex flex-col gap-2 mb-4">
+  <input type="hidden" name="spot_id" value="<?=$spot_id?>">
+  
+  <input type="text" name="user_name" placeholder="Your name" 
+         class="p-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-400" required>
+  
+  <textarea name="text" placeholder="Write your comment" 
+            class="p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400" required></textarea>
+  
+  <button type="submit" 
+          class="bg-green-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-green-600 transition">
+    Post
+  </button>
+</form>
+
 
     <div class="flex flex-col gap-4">
       <?php if(!empty($comments)): ?>

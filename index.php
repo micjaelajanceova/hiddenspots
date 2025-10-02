@@ -47,7 +47,7 @@ try {
       </div>
     </div>
   <?php else: ?>
-    <a href="login.php" class="bg-black text-white px-4 py-2 rounded-full">Login / Sign Up</a>
+    <a href="login.php" class="bg-black text-white px-4 py-2 rounded-full button">Login / Sign Up</a>
   <?php endif; ?>
 </div>
 
