@@ -41,9 +41,9 @@ try {
         </svg>
       </button>
       <div id="profileMenu" class="absolute right-0 mt-2 w-40 bg-white border rounded shadow hidden">
-        <a href="profile.php" class="block px-4 py-2 hover:bg-gray-100">My Profile</a>
-        <a href="upload.php" class="block px-4 py-2 hover:bg-gray-100">Upload</a>
-        <a href="logout.php" class="block px-4 py-2 hover:bg-gray-100">Logout</a>
+        <a href="profile.php" class="block px-4 py-2 hover:bg-gray-700">My Profile</a>
+        <a href="upload.php" class="block px-4 py-2 hover:bg-gray-700">Upload</a>
+        <a href="logout.php" class="block px-4 py-2 hover:bg-gray-700">Logout</a>
       </div>
     </div>
   <?php else: ?>
@@ -105,9 +105,9 @@ try {
     <!-- Text content -->
     <div class="relative p-8 flex flex-col items-start max-w-xl">
       <h2 class="text-3xl">ABOUT HIDDEN SPOTS</h2>
-      <h4 class="text-sm text-gray-200 mt-2">
+      <p class="mt-2">
         A photo-sharing app for secret city places. Discover, save and share hidden gems in your town.
-      </h4>
+      </p>
       <a href="about.php" 
          class="inline-block mt-4 bg-black text-white px-5 py-2 rounded-full font-medium shadow">
          Learn more →
@@ -132,7 +132,7 @@ try {
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     <?php if(!empty($newest)): ?>
       <?php foreach($newest as $n): ?>
-        <article class="rounded-lg overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full">
+        <article class=" overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full">
           <a href="spot-view.php?id=<?=htmlspecialchars($n['id'])?>" class="flex flex-col h-full">
             <div class="w-full h-96 bg-gray-200 overflow-hidden">
               <img src="<?=htmlspecialchars($n['file_path'])?>" alt="<?=htmlspecialchars($n['name'])?>" class="w-full h-full object-cover">
@@ -168,7 +168,7 @@ try {
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
     <?php if(!empty($latestComments)): ?>
       <?php foreach($latestComments as $c): ?>
-        <div class="bg-white shadow rounded-lg p-4">
+        <div class="bg-white shadow p-4">
           <div class="flex items-center gap-3">
             <!-- Použijeme ternárny operátor pre default avatar -->
             <?php 
@@ -195,7 +195,7 @@ try {
 
   <!-- UPLOAD CTA -->
 <section class="mt-12 mb-20">
-  <div class="bg-gray-900 p-10 flex flex-col items-center text-center rounded-lg">
+  <div class="bg-gray-800 p-10 flex flex-col items-center text-center">
     <h2 class="text-3xl font-bold text-white">UPLOAD A NEW PICTURE</h2>
     <h4 class="text-sm text-gray-300 mt-2">Share a secret spot with us.</h4>
     <button id="uploadBtn2" class="mt-6 bg-white text-black px-8 py-3 rounded-full text-lg shadow hover:bg-gray-200 transition">

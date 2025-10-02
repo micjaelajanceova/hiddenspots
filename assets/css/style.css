@@ -3,7 +3,7 @@ h1 {
   font-weight: 700 !important;
   text-transform: uppercase !important;
   line-height: 1 !important;
-  background: linear-gradient(90deg, #6a0dad, #3b1e8a, #1abc9c) !important;
+  background: rgb(128, 179, 226) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
@@ -11,8 +11,8 @@ h1 {
 }
 
 h2 {
-  font-size: 1.7rem !important;
-  font-weight: 600 !important;
+  font-size: 1.5rem !important;
+  font-weight: 400 !important;
   text-transform: uppercase !important;
   line-height: 1.1 !important;
 }
@@ -52,7 +52,7 @@ button {
   border: none !important;
   border-radius: 8px !important;
   cursor: pointer !important;
-  background: black !important;
+  background: rgb(128, 179, 226) !important;
   color: #fff !important;
   transition: opacity 0.3s ease !important;
 }
@@ -61,5 +61,25 @@ button:hover {
   opacity: 0.85 !important;
 }
 
+.button {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  padding: 0.55rem 1rem !important;
+  border: none !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  background: rgb(128, 179, 226) !important;
+  color: #fff !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.button:hover {
+  opacity: 0.85 !important;
+}
+
+.logo {
+  color: rgb(128, 179, 226) !important;
+}
 
 
