@@ -11,10 +11,43 @@ h1 {
 }
 
 h2 {
-  font-size: 2rem !important;
+  font-size: 1.7rem !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
   line-height: 1.1 !important;
+}
+
+h3 {
+  font-size: 1.4rem !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+  text-transform: uppercase !important;
+  color: #ffffff !important;
+
+  /* Maximálne výrazný a jemný halo tieň */
+  text-shadow:
+    0 0 8px rgba(0,0,0,0.8),
+    0 0 16px rgba(0,0,0,0.75),
+    0 0 24px rgba(0,0,0,0.7),
+    0 0 32px rgba(0,0,0,0.65),
+    0 0 48px rgba(0,0,0,0.6),
+    0 0 64px rgba(0,0,0,0.55),
+    0 0 80px rgba(0,0,0,0.5),
+    0 0 96px rgba(0,0,0,0.45),
+    0 0 112px rgba(0,0,0,0.4);
+}
+
+h4 {
+  font-size: 1.125rem !important;
+  font-weight: 500 !important;
+  line-height: 1.3 !important;
+  color: #ffffff !important;
+}
+
+p {
+  font-size: 1.125rem !important;
+  line-height: 1.6 !important;
+  color: #5f5d5d !important;
 }
 
 button {
