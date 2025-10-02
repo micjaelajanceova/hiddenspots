@@ -77,37 +77,45 @@ try {
       </div>
     </div>
 
-    <!-- TRENDING (Sticky) -->
-    <section class="mt-8">
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="text-2xl font-bold tracking-tight">TRENDING</h2>
-          <p class="text-sm text-gray-500 mt-1">Explore what most people miss.</p>
-        </div>
-        <a href="trending.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">See more →</a>
-      </div>
+   <!-- TRENDING (Sticky) -->
+<section class="mt-12">
+  <div class="flex items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-bold tracking-tight">TRENDING</h2>
+      <p class="text-sm text-gray-500 mt-1">Explore what most people miss.</p>
+    </div>
+    <a href="trending.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">See more →</a>
+  </div>
 
-      <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
-        
-        <?php if(!empty($sticky)): ?>
-          <?php foreach($sticky as $s): ?>
-            <a href="spot.php?id=<?=htmlspecialchars($s['id'])?>" class="group block rounded-lg overflow-hidden shadow hover:shadow-lg">
-              <div class="w-full h-40 bg-gray-200">
-                <img src="<?=htmlspecialchars($s['file_path'])?>" alt="<?=htmlspecialchars($s['name'])?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+  <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <?php if(!empty($sticky)): ?>
+      <?php foreach($sticky as $s): ?>
+        <article class="overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full">
+          <a href="spot.php?id=<?=htmlspecialchars($s['id'])?>" class="flex flex-col h-full">
+            <div class="w-full h-96 bg-gray-200 overflow-hidden">
+              <img src="<?=htmlspecialchars($s['file_path'])?>" alt="<?=htmlspecialchars($s['name'])?>" class="w-full h-full object-cover">
+            </div>
+            <div class="p-3 flex flex-col justify-between flex-1">
+              <div>
+                <h2 class="font-semibold"><?=htmlspecialchars($s['name'])?></h2>
+                <p class="text-sm text-gray-600 mt-1"><?=htmlspecialchars(mb_strimwidth($s['description'] ?? '',0,120,'...'))?></p>
               </div>
-              <div class="px-3 py-2">
-                <div class="font-semibold text-sm"><?=htmlspecialchars($s['name'])?></div>
-                <div class="text-xs text-gray-400"><?=htmlspecialchars($s['city'])?> • <?=date("d M", strtotime($s['created_at']))?></div>
+              <div class="flex items-center justify-between mt-3 text-xs text-gray-400">
+                <span><?=htmlspecialchars($s['city'])?> • <?=date("d M", strtotime($s['created_at'] ?? date("Y-m-d"))) ?></span>
+                <span>Likes: <?=intval($s['likes'])?> • Comments: <?=intval($s['comments_count'])?></span>
               </div>
-            </a>
-          <?php endforeach; ?>
-        <?php else: ?>
-          <?php for($i=0;$i<4;$i++): ?>
-            <div class="overflow-hidden bg-gray-100 h-40"></div>
-          <?php endfor; ?>
-        <?php endif; ?>
-      </div>
-    </section>
+            </div>
+          </a>
+        </article>
+      <?php endforeach; ?>
+    <?php else: ?>
+      <?php for($i=0;$i<6;$i++): ?>
+        <div class="overflow-hidden bg-gray-100 h-96 rounded-lg"></div>
+      <?php endfor; ?>
+    <?php endif; ?>
+  </div>
+</section>
+
 
     <!-- ABOUT -->
     <section class="mt-12">
@@ -121,68 +129,79 @@ try {
       </div>
     </section>
 
-    <!-- FEED (Newest preview) -->
-    <section class="mt-12">
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="text-2xl font-bold">HOT NEW PICTURES</h2>
-          <p class="text-sm text-gray-500 mt-1">Discover new pictures every day.</p>
-        </div>
-        <a href="newest.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">See more →</a>
-      </div>
+   <!-- FEED (Newest preview) -->
+<section class="mt-12">
+  <div class="flex items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-bold">HOT NEW PICTURES</h2>
+      <p class="text-sm text-gray-500 mt-1">Discover new pictures every day.</p>
+    </div>
+    <a href="newest.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">See more →</a>
+  </div>
 
-      <div class="mt-6 columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-        <?php if(!empty($newest)): ?>
-          <?php foreach($newest as $n): ?>
-            <article class="break-inside-avoid rounded-lg overflow-hidden bg-white shadow hover:shadow-lg">
-              <a href="spot.php?id=<?=htmlspecialchars($n['id'])?>">
-                <img src="<?=htmlspecialchars($n['file_path'])?>" alt="<?=htmlspecialchars($n['name'])?>" class="w-full object-cover">
-                <div class="p-3">
-                  <h3 class="font-semibold"><?=htmlspecialchars($n['name'])?></h3>
-                  <p class="text-sm text-gray-600 mt-1"><?=htmlspecialchars(mb_strimwidth($n['description'],0,120,'...'))?></p>
-                  <div class="flex items-center justify-between mt-3 text-xs text-gray-400">
-                    <span><?=htmlspecialchars($n['city'])?> • <?=date("d M", strtotime($n['created_at']))?></span>
-                    <span>❤️ <?=intval($n['likes'])?> • 💬 <?=intval($n['comments_count'])?></span>
-                  </div>
-                </div>
-              </a>
-            </article>
-          <?php endforeach; ?>
-        <?php else: ?>
-          <?php for($i=0;$i<6;$i++): ?>
-            <div class="break-inside-avoid overflow-hidden bg-gray-100 h-48"></div>
-          <?php endfor; ?>
-        <?php endif; ?>
-      </div>
-    </section>
-
-    <!-- LATEST COMMENTS -->
-    <section class="mt-12">
-      <h2 class="text-2xl font-bold">LATEST COMMENTS</h2>
-      <p class="text-sm text-gray-500 mt-1">See who else loves these hidden places.</p>
-
-      <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <?php if(!empty($latestComments)): ?>
-          <?php foreach($latestComments as $c): ?>
-            <div class="bg-white shadow rounded-lg p-4">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gray-200 rounded-full"></div>
-                <div>
-                  <div class="font-medium"><?=htmlspecialchars($c['user_name'])?></div>
-                  <div class="text-xs text-gray-400"><?=date("d M Y", strtotime($c['created_at']))?></div>
-                </div>
-              </div>
-              <p class="text-sm text-gray-600 mt-3"><?=htmlspecialchars(mb_strimwidth($c['text'],0,140,'...'))?></p>
-              <a href="spot.php?id=<?=htmlspecialchars($c['spot_id'])?>" class="inline-block mt-3 bg-black text-white px-3 py-2 rounded-full text-sm">See post →</a>
+  <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <?php if(!empty($newest)): ?>
+      <?php foreach($newest as $n): ?>
+        <article class="rounded-lg overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full">
+          <a href="spot.php?id=<?=htmlspecialchars($n['id'])?>" class="flex flex-col h-full">
+            <div class="w-full h-96 bg-gray-200 overflow-hidden">
+              <img src="<?=htmlspecialchars($n['file_path'])?>" alt="<?=htmlspecialchars($n['name'])?>" class="w-full h-full object-cover">
             </div>
-          <?php endforeach; ?>
-        <?php else: ?>
-          <div class="bg-gray-100  h-28"></div>
-          <div class="bg-gray-100  h-28"></div>
-          <div class="bg-gray-100  h-28"></div>
-        <?php endif; ?>
-      </div>
-    </section>
+            <div class="p-3 flex flex-col justify-between flex-1">
+              <div>
+                <h2 class="font-semibold"><?=htmlspecialchars($n['name'])?></h2>
+                <p class="text-sm text-gray-600 mt-1"><?=htmlspecialchars(mb_strimwidth($n['description'] ?? '',0,120,'...'))?></p>
+              </div>
+              <div class="flex items-center justify-between mt-3 text-xs text-gray-400">
+                <span><?=htmlspecialchars($n['city'])?> • <?=date("d M", strtotime($n['created_at']))?></span>
+                <span>Likes: <?=intval($n['likes'])?> • Comments: <?=intval($n['comments_count'])?></span>
+              </div>
+            </div>
+          </a>
+        </article>
+      <?php endforeach; ?>
+    <?php else: ?>
+      <?php for($i=0;$i<6;$i++): ?>
+        <div class="overflow-hidden bg-gray-100 h-96 rounded-lg"></div>
+      <?php endfor; ?>
+    <?php endif; ?>
+  </div>
+</section>
+
+
+
+   <!-- LATEST COMMENTS -->
+<section class="mt-12">
+  <h2 class="text-2xl font-bold">LATEST COMMENTS</h2>
+  <p class="text-sm text-gray-500 mt-1">See who else loves these hidden places.</p>
+
+  <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
+    <?php if(!empty($latestComments)): ?>
+      <?php foreach($latestComments as $c): ?>
+        <div class="bg-white shadow rounded-lg p-4">
+          <div class="flex items-center gap-3">
+            <!-- Použijeme ternárny operátor pre default avatar -->
+            <?php 
+              $avatar = !empty($c['profile_pic']) ? htmlspecialchars($c['profile_pic']) : 'assets/images/default-avatar.png';
+            ?>
+            <img src="<?=$avatar?>" alt="Avatar" class="w-10 h-10 rounded-full object-cover">
+            <div>
+              <div class="font-medium"><?=htmlspecialchars($c['user_name'])?></div>
+              <div class="text-xs text-gray-400"><?=date("d M Y", strtotime($c['created_at']))?></div>
+            </div>
+          </div>
+          <p class="text-sm text-gray-600 mt-3"><?=htmlspecialchars(mb_strimwidth($c['text'],0,140,'...'))?></p>
+          <a href="spot.php?id=<?=htmlspecialchars($c['spot_id'])?>" class="inline-block mt-3 bg-black text-white px-3 py-2 rounded-full text-sm">See post →</a>
+        </div>
+      <?php endforeach; ?>
+    <?php else: ?>
+      <div class="bg-gray-100 h-28"></div>
+      <div class="bg-gray-100 h-28"></div>
+      <div class="bg-gray-100 h-28"></div>
+    <?php endif; ?>
+  </div>
+</section>
+
 
     <!-- UPLOAD CTA -->
     <section class="mt-12 mb-20">
