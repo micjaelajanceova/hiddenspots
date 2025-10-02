@@ -14,9 +14,9 @@ $user_id = $_SESSION['user_id'] ?? 1;
 
 </head>
 <body>
-<div class="flex h-screen bg-gray-50">
+<div class="flex h-screen bg-grey-900">
   <!-- Sidebar -->
-<aside class="w-64 bg-white flex flex-col justify-between border-r p-4 sticky top-0">
+<aside class="w-64  flex flex-col justify-between border-r p-4 sticky top-0 bg-gray-50">
   <div>
     <!-- Logo + klikateľný nadpis -->
     <div class="flex items-center gap-2 mb-6">

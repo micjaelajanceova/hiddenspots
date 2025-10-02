@@ -1,6 +1,6 @@
 <?php include 'header.php'; ?>
 
-<div class="flex h-screen bg-gray-50">
+<div class="flex h-screen bg-gray-white">
     <!-- Hlavný obsah -->
     <main class="flex-1 overflow-y-auto px-6 py-12 space-y-20">
 
