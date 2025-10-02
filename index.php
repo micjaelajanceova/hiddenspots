@@ -68,7 +68,7 @@ try {
         <article class="overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full">
           <a href="spot-view.php?id=<?=htmlspecialchars($s['id'])?>" class="flex flex-col h-full">
             <div class="w-full h-96 bg-gray-200 overflow-hidden">
-              <img src="<?=htmlspecialchars($s['file_path'])?>" alt="<?=htmlspecialchars($s['name'])?>" class="w-full h-full object-cover">
+              <img src="<?=htmlspecialchars($s['file_path'])?>" alt="<?=htmlspecialchars($s['name'])?>" class="w-full h-full object-cover transform transition duration-300 hover:scale-105">
             </div>
             <div class="p-3 flex flex-col justify-between flex-1">
               <div>
@@ -123,7 +123,7 @@ try {
 <section class="mt-12 pb-20">
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-2xl font-bold">HOT NEW PICTURES</h1>
+      <h1 class="text-2xl font-bold mb-3">HOT NEW PICTURES</h1>
       <h2 class="mt-1">Discover new pictures every day.</h2>
     </div>
     <a href="newest.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">See more →</a>
@@ -132,10 +132,10 @@ try {
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     <?php if(!empty($newest)): ?>
       <?php foreach($newest as $n): ?>
-        <article class=" overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full">
+        <article class=" overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full ">
           <a href="spot-view.php?id=<?=htmlspecialchars($n['id'])?>" class="flex flex-col h-full">
-            <div class="w-full h-96 bg-gray-200 overflow-hidden">
-              <img src="<?=htmlspecialchars($n['file_path'])?>" alt="<?=htmlspecialchars($n['name'])?>" class="w-full h-full object-cover">
+            <div class="w-full h-96 bg-gray-200 overflow-hidden ">
+              <img src="<?=htmlspecialchars($n['file_path'])?>" alt="<?=htmlspecialchars($n['name'])?>" class="w-full h-full object-cover transform transition duration-300 hover:scale-105">
             </div>
             <div class="p-3 flex flex-col justify-between flex-1">
               <div>
@@ -168,7 +168,7 @@ try {
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
     <?php if(!empty($latestComments)): ?>
       <?php foreach($latestComments as $c): ?>
-        <div class="bg-white shadow p-4" style="box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 -5px 10px rgba(0,0,0,0.05);">
+        <div class="bg-white shadow p-4" style="box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 -5px 10px rgba(0,0,0,0.05); ">
           <div class="flex items-center gap-3">
             <!-- Použijeme ternárny operátor pre default avatar -->
             <?php 
@@ -181,7 +181,7 @@ try {
             </div>
           </div>
           <p class="text-sm text-gray-600 mt-3"><?=htmlspecialchars(mb_strimwidth($c['text'],0,140,'...'))?></p>
-          <a href="spot.php?id=<?=htmlspecialchars($c['spot_id'])?>" class="inline-block mt-3 bg-black text-white px-3 py-2 rounded-full text-sm">See post →</a>
+          <a href="spot-view.php?id=<?=htmlspecialchars($c['spot_id'])?>" class="inline-block mt-3 bg-black text-white px-3 py-2 rounded-full text-sm">See post →</a>
         </div>
       <?php endforeach; ?>
     <?php else: ?>
@@ -194,7 +194,7 @@ try {
 
 
   <!-- UPLOAD CTA -->
-<section class="mt-12 mb-20">
+<section class="mt-12 mb-20 lg:mb-5">
   <div class="bg-gray-800 p-10 flex flex-col items-center text-center">
     <h2 class="text-3xl font-bold text-white">UPLOAD A NEW PICTURE</h2>
     <h4 class="text-sm text-gray-300 mt-2">Share a secret spot with us.</h4>

@@ -20,20 +20,25 @@ $user_id = $_SESSION['user_id'] ?? 1;
   <!-- HORNY BLOK: Logo + Menu links -->
   <div class="flex flex-col gap-8">
     <!-- Logo -->
-    <a href="index.php" class="text-5xl font-extrabold text-white hover:text-blue-500 logo">HIDDEN SPOTS</a>
+<a href="index.php" class="logo text-white hover:text-blue-500">
+  <span class="text-5xl font-extrabold">H</span><span class="text-5xl font-semibold">IDDEN </span><span class="text-5xl font-extrabold">S</span><span class="text-5xl font-semibold">POTS</span>
+</a>
+
+
+
 
     <!-- Menu links s ikonami -->
     <nav class="flex flex-col pt-5 gap-6 text-white">
-      <a href="feed.php" class="flex items-center gap-2 font-semibold hover:text-blue-500">
+      <a href="feed.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
         <i class="ph-house text-lg"></i> FEED
       </a>
-      <a href="favourites.php" class="flex items-center gap-2 font-semibold hover:text-blue-500">
+      <a href="favourites.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
         <i class="ph-heart text-lg"></i> FAVOURITES
       </a>
-      <a href="trending.php" class="flex items-center gap-2 font-semibold hover:text-blue-500">
+      <a href="trending.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
         <i class="ph-trend-up text-lg"></i> TRENDING
       </a>
-      <a href="about.php" class="flex items-center gap-2 font-semibold hover:text-blue-500">
+      <a href="about.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
         <i class="ph-info text-lg"></i> ABOUT HS
       </a>
     </nav>

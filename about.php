@@ -42,8 +42,8 @@
             </h2>
 <div class="grid md:grid-cols-3 gap-8">
     <!-- Karta 1 -->
-    <a href="feed.php" class="group relative block overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-        <img src="assets/img/hiddenspot2.jpg" alt="Upload" class="h-80 w-full object-cover">
+    <a href="feed.php" class="group relative block overflow-hidden hover:shadow-2xl">
+        <img src="assets/img/hiddenspot2.jpg" alt="Upload" class="h-80 w-full object-cover transform transition-transform duration-300 group-hover:scale-105">
         <!-- Gradient overlay iba pri hover -->
         <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         <!-- H3 hore -->
@@ -57,8 +57,8 @@
     </a>
 
     <!-- Karta 2 -->
-    <a href="upload.php" class="group relative block overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-        <img src="assets/img/hiddenspot4.jpg" alt="Explore" class="h-80 w-full object-cover">
+    <a href="upload.php" class="group relative block overflow-hidden hover:shadow-2xl">
+        <img src="assets/img/hiddenspot4.jpg" alt="Explore" class="h-80 w-full object-cover transform transition-transform duration-300 group-hover:scale-105">
         <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         <h3 class="absolute top-4 left-4 text-white font-bold text-xl drop-shadow-lg z-10">
             Explore & Discover
@@ -69,8 +69,8 @@
     </a>
 
     <!-- Karta 3 -->
-    <a href="favourites.php" class="group relative block overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-        <img src="assets/img/hiddenspot5.jpg" alt="Community" class="h-80 w-full object-cover">
+    <a href="favourites.php" class="group relative block overflow-hidden hover:shadow-2xl">
+        <img src="assets/img/hiddenspot5.jpg" alt="Community" class="h-80 w-full object-cover transform transition-transform duration-300 group-hover:scale-105">
         <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         <h3 class="absolute top-4 left-4 text-white font-bold text-xl drop-shadow-lg z-10">
             Join the Community
