@@ -6,14 +6,28 @@ include 'user.php';
 include 'admin.php';
 
 $spotObj = new Spot($pdo);
+
+// HOT NEW PICTURES (Newest)
 $newest = $spotObj->getNewest(20);
 
+// TRENDING (Sticky) - from view_hot_pictures
+try {
+    $stmt = $pdo->query("SELECT * FROM view_hot_pictures");
+    $sticky = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $sticky = [];
+}
 
-
+// LATEST COMMENTS - from view_latest_comments
+try {
+    $stmt = $pdo->query("SELECT * FROM view_latest_comments");
+    $latestComments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $latestComments = [];
+}
 ?>
 
 <main class="flex-1 bg-white min-h-screen overflow-y-auto">   
-  <!-- full width container -->
   <div class="w-full px-4 sm:px-6 lg:px-8">
 
     <!-- SEARCH -->
@@ -24,19 +38,32 @@ $newest = $spotObj->getNewest(20);
         <button type="submit" class="bg-black text-white px-4 py-3 rounded-r-lg font-semibold hover:opacity-95">
           Search
         </button>
-        <button id="uploadBtn" type="button" class="ml-4 bg-black text-white px-4 py-2 rounded-full">+ Upload</button>
+
+        <?php if(isset($_SESSION['user_id'])): ?>
+          <div class="ml-4 relative">
+            <button id="profileBtn" class="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">
+              <?=htmlspecialchars($_SESSION['user_name'])?>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div id="profileMenu" class="absolute right-0 mt-2 w-40 bg-white border rounded shadow hidden">
+              <a href="profile.php" class="block px-4 py-2 hover:bg-gray-100">My Profile</a>
+              <a href="upload.php" class="block px-4 py-2 hover:bg-gray-100">Upload</a>
+              <a href="logout.php" class="block px-4 py-2 hover:bg-gray-100">Logout</a>
+            </div>
+          </div>
+        <?php else: ?>
+          <a href="login.php" class="ml-4 bg-black text-white px-4 py-2 rounded-full">Login / Sign Up</a>
+        <?php endif; ?>
       </form>
     </div>
 
     <!-- FILTER hamburger (Pinterest-like) -->
     <div class="mt-4">
       <button id="filterBtn" class="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-gray-100 hover:bg-gray-200">
-        <!-- hamburger icon -->
         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 7h16M4 12h16M4 17h16" stroke-width="2" stroke-linecap="round"/></svg>
         <span class="font-medium">Filters</span>
       </button>
 
-      <!-- dropdown panel (hidden by default) -->
       <div id="filterMenu" class="mt-3 hidden bg-white border rounded shadow p-4 w-[360px]">
         <div class="grid grid-cols-2 gap-3">
           <button class="py-2 px-3 rounded bg-gray-100">All</button>
@@ -57,10 +84,11 @@ $newest = $spotObj->getNewest(20);
           <h2 class="text-2xl font-bold tracking-tight">TRENDING</h2>
           <p class="text-sm text-gray-500 mt-1">Explore what most people miss.</p>
         </div>
-        <a href="hot.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">See more →</a>
+        <a href="trending.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">See more →</a>
       </div>
 
       <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
+        
         <?php if(!empty($sticky)): ?>
           <?php foreach($sticky as $s): ?>
             <a href="spot.php?id=<?=htmlspecialchars($s['id'])?>" class="group block rounded-lg overflow-hidden shadow hover:shadow-lg">
@@ -74,9 +102,8 @@ $newest = $spotObj->getNewest(20);
             </a>
           <?php endforeach; ?>
         <?php else: ?>
-          <!-- placeholder boxes when no sticky -->
           <?php for($i=0;$i<4;$i++): ?>
-            <div class=" overflow-hidden bg-gray-100 h-40"></div>
+            <div class="overflow-hidden bg-gray-100 h-40"></div>
           <?php endfor; ?>
         <?php endif; ?>
       </div>
@@ -104,7 +131,6 @@ $newest = $spotObj->getNewest(20);
         <a href="newest.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">See more →</a>
       </div>
 
-      <!-- Masonry-style using CSS columns -->
       <div class="mt-6 columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
         <?php if(!empty($newest)): ?>
           <?php foreach($newest as $n): ?>
@@ -123,7 +149,6 @@ $newest = $spotObj->getNewest(20);
             </article>
           <?php endforeach; ?>
         <?php else: ?>
-          <!-- placeholders -->
           <?php for($i=0;$i<6;$i++): ?>
             <div class="break-inside-avoid overflow-hidden bg-gray-100 h-48"></div>
           <?php endfor; ?>
@@ -159,7 +184,7 @@ $newest = $spotObj->getNewest(20);
       </div>
     </section>
 
-    <!-- UPLOAD CTA (big) -->
+    <!-- UPLOAD CTA -->
     <section class="mt-12 mb-20">
       <div class="bg-gray-100 p-8 flex items-center justify-between">
         <div>
@@ -175,7 +200,7 @@ $newest = $spotObj->getNewest(20);
   </div>
 </main>
 
-<!-- Upload Modal (shared) -->
+<!-- Upload Modal -->
 <div id="uploadModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
   <div class="bg-white rounded-lg p-6 w-full max-w-lg mx-4">
     <h2 class="text-xl font-bold mb-3">Upload a new spot</h2>
@@ -199,18 +224,13 @@ document.getElementById('filterBtn')?.addEventListener('click', () => {
   document.getElementById('filterMenu')?.classList.toggle('hidden');
 });
 
-// upload modal toggles (two upload triggers)
-const uploadBtn = document.getElementById('uploadBtn');
+// upload modal toggles
 const uploadBtn2 = document.getElementById('uploadBtn2');
 const uploadModal = document.getElementById('uploadModal');
 const cancelUpload = document.getElementById('cancelUpload');
 
-[uploadBtn, uploadBtn2].forEach(b => {
-  if(b) b.addEventListener('click', () => uploadModal.classList.remove('hidden'));
-});
+if(uploadBtn2) uploadBtn2.addEventListener('click', () => uploadModal.classList.remove('hidden'));
 if(cancelUpload) cancelUpload.addEventListener('click', () => uploadModal.classList.add('hidden'));
-
-// close modal by clicking outside
 uploadModal?.addEventListener('click', (e) => {
   if(e.target === uploadModal) uploadModal.classList.add('hidden');
 });
