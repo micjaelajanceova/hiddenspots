@@ -1,11 +1,11 @@
 <?php include 'header.php'; ?>
 
-<div class="flex h-screen bg-gray-white">
     <!-- Hlavný obsah -->
-    <main class="flex-1 overflow-y-auto px-6 py-12 space-y-20">
-
+    <main class="flex-1 bg-white min-h-screen overflow-y-auto">
+    <div class="py-10 lg:py-20">
+      <div class="w-full px-4 sm:px-6 lg:px-8">
         <!-- Section 1 -->
-        <div class="grid md:grid-cols-12 gap-12 items-center">
+        <div class="grid md:grid-cols-12 gap-12 items-center mb-24">
             <div class="md:col-span-4">
                 <h1 class="mb-3">About HS</h1>
                 <h2 class="mb-6">community for explorers</h2>
@@ -20,7 +20,7 @@
         </div>
 
         <!-- Section 2 (reversed) -->
-        <div class="grid md:grid-cols-12 gap-12 items-center pt-12">
+        <div class="grid md:grid-cols-12 gap-12 items-center mb-24">
             <div class="md:col-span-8 order-2 md:order-1">
                 <img src="assets/img/hiddenspot2.jpg" alt="Community" class="shadow-lg w-full h-95 object-cover">
             </div>

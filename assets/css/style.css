@@ -1,5 +1,5 @@
 h1 {
-  font-size: 3rem !important;
+  font-size: 2.5rem !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
   line-height: 1 !important;
@@ -24,17 +24,11 @@ h3 {
   text-transform: uppercase !important;
   color: #ffffff !important;
 
-  /* Maximálne výrazný a jemný halo tieň */
+  /* Menej vrstiev, stále plynulý halo */
   text-shadow:
-    0 0 8px rgba(0,0,0,0.8),
-    0 0 16px rgba(0,0,0,0.75),
-    0 0 24px rgba(0,0,0,0.7),
-    0 0 32px rgba(0,0,0,0.65),
-    0 0 48px rgba(0,0,0,0.6),
-    0 0 64px rgba(0,0,0,0.55),
-    0 0 80px rgba(0,0,0,0.5),
-    0 0 96px rgba(0,0,0,0.45),
-    0 0 112px rgba(0,0,0,0.4);
+    0 0 12px rgba(0,0,0,0.7),
+    0 0 24px rgba(0,0,0,0.5),
+    0 0 36px rgba(0,0,0,0.3);
 }
 
 h4 {
