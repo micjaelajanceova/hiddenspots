@@ -96,7 +96,7 @@ try {
   <div class="relative overflow-hidden shadow-md h-96">
     <!-- Background image -->
     <div class="absolute inset-0">
-      <img src="assets/images/about-frontpicture.jpg" 
+      <img src="assets/images/about-front-picture.jpg" 
            alt="Hidden spot background" 
            class="w-full h-full object-cover">
 
@@ -104,7 +104,7 @@ try {
 
     <!-- Text content -->
     <div class="relative p-8 flex flex-col items-start max-w-xl">
-      <h2 class="text-3xl">ABOUT HIDDEN SPOTS</h2>
+      <h1 class="text-3xl">ABOUT HIDDEN SPOTS</h1>
       <p class="mt-2">
         A photo-sharing app for secret city places. Discover, save and share hidden gems in your town.
       </p>
@@ -168,7 +168,7 @@ try {
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
     <?php if(!empty($latestComments)): ?>
       <?php foreach($latestComments as $c): ?>
-        <div class="bg-white shadow p-4">
+        <div class="bg-white shadow p-4" style="box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 -5px 10px rgba(0,0,0,0.05);">
           <div class="flex items-center gap-3">
             <!-- Použijeme ternárny operátor pre default avatar -->
             <?php 
