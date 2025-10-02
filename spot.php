@@ -17,4 +17,28 @@ class Spot {
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getById($id){
+        $stmt = $this->pdo->prepare("
+            SELECT h.*, 
+            (SELECT COUNT(*) FROM likes l WHERE l.spot_id = h.id) AS likes
+            FROM hidden_spots h
+            WHERE h.id = ?
+        ");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getComments($spot_id){
+        $stmt = $this->pdo->prepare("
+            SELECT c.*, u.name AS user_name
+            FROM comments c
+            LEFT JOIN users u ON c.user_id = u.id
+            WHERE c.spot_id = ?
+            ORDER BY c.created_at DESC
+        ");
+        $stmt->execute([$spot_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
+?>

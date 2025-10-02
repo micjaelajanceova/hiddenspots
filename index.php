@@ -91,7 +91,7 @@ try {
     <?php if(!empty($sticky)): ?>
       <?php foreach($sticky as $s): ?>
         <article class="overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full">
-          <a href="spot.php?id=<?=htmlspecialchars($s['id'])?>" class="flex flex-col h-full">
+          <a href="spot-view.php?id=<?=htmlspecialchars($s['id'])?>" class="flex flex-col h-full">
             <div class="w-full h-96 bg-gray-200 overflow-hidden">
               <img src="<?=htmlspecialchars($s['file_path'])?>" alt="<?=htmlspecialchars($s['name'])?>" class="w-full h-full object-cover">
             </div>
@@ -143,7 +143,7 @@ try {
     <?php if(!empty($newest)): ?>
       <?php foreach($newest as $n): ?>
         <article class="rounded-lg overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full">
-          <a href="spot.php?id=<?=htmlspecialchars($n['id'])?>" class="flex flex-col h-full">
+          <a href="spot-view.php?id=<?=htmlspecialchars($n['id'])?>" class="flex flex-col h-full">
             <div class="w-full h-96 bg-gray-200 overflow-hidden">
               <img src="<?=htmlspecialchars($n['file_path'])?>" alt="<?=htmlspecialchars($n['name'])?>" class="w-full h-full object-cover">
             </div>

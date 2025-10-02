@@ -14,9 +14,12 @@ $user_id = $_SESSION['user_id'] ?? 1;
 <body class="flex flex-col md:flex-row min-h-screen">
 
   <!-- Desktop sidebar -->
-  <aside class="hidden md:flex flex-col justify-between md:w-64 bg-gray-50 border-r sticky top-0 h-screen p-4">
+<aside class="hidden md:flex flex-col md:w-64 bg-gray-50 border-r sticky top-0 h-screen p-4">
+  
+  <!-- HORNY BLOK: Logo + Menu links -->
+  <div class="flex flex-col gap-8">
     <!-- Logo -->
-    <a href="index.php" class="text-3xl font-extrabold text-black hover:text-blue-500 mb-8">HS</a>
+    <a href="index.php" class="text-3xl font-extrabold text-black hover:text-blue-500">HS</a>
 
     <!-- Menu links -->
     <nav class="flex flex-col gap-4">
@@ -25,12 +28,17 @@ $user_id = $_SESSION['user_id'] ?? 1;
       <a href="trending.php" class="hover:text-blue-500">Trending</a>
       <a href="about.php" class="hover:text-blue-500">About HS</a>
     </nav>
+  </div>
 
-    <!-- Upload button -->
-    <button class="mt-6 w-full py-2 bg-black text-white rounded-lg flex items-center justify-center gap-2">
+  <!-- SPODNY BLOK: Upload button -->
+  <div class="mt-auto">
+    <button class="w-full py-2 bg-black text-white rounded-lg flex items-center justify-center gap-2">
       <span>+</span> Upload
     </button>
-  </aside>
+  </div>
+
+</aside>
+
 
   <!-- Mobile top logo -->
   <div class="md:hidden sticky top-0 z-50 bg-gray-50 border-b p-4 flex justify-center">
