@@ -14,7 +14,7 @@ $user_id = $_SESSION['user_id'] ?? 1;
 <body class="flex flex-col md:flex-row min-h-screen">
 
   <!-- Desktop sidebar -->
-<aside class="hidden md:flex flex-col md:w-64 bg-gray-50 border-r sticky top-0 h-screen p-4">
+<aside class="hidden md:flex flex-col md:w-64 bg-blue-200 border-r sticky top-0 h-screen p-4">
   
   <!-- HORNY BLOK: Logo + Menu links -->
   <div class="flex flex-col gap-8">
@@ -22,7 +22,7 @@ $user_id = $_SESSION['user_id'] ?? 1;
     <a href="index.php" class="text-3xl font-extrabold text-black hover:text-blue-500">HS</a>
 
     <!-- Menu links -->
-    <nav class="flex flex-col gap-4">
+    <nav class="flex flex-col gap-4 ">
       <a href="feed.php" class="hover:text-blue-500">Feed</a>
       <a href="favourites.php" class="hover:text-blue-500">Favourites</a>
       <a href="trending.php" class="hover:text-blue-500">Trending</a>

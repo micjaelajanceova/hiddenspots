@@ -52,7 +52,7 @@ button {
   border: none !important;
   border-radius: 8px !important;
   cursor: pointer !important;
-  background: linear-gradient(90deg, #6a0dad, #3b1e8a, #1abc9c) !important;
+  background: black !important;
   color: #fff !important;
   transition: opacity 0.3s ease !important;
 }
