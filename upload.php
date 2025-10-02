@@ -3,7 +3,7 @@ session_start();
 include 'db.php'; // PDO connection
 
 if(!isset($_SESSION['user_id'])){
-    die("Musíš byť prihlásený!");
+    die("You need to be logged in :)");
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
