@@ -46,9 +46,9 @@ $user_id = $_SESSION['user_id'] ?? 1;
 
   <!-- SPODNY BLOK: Upload button -->
   <div class="mt-auto">
-    <button class="w-full py-2 bg-black text-white rounded-lg flex items-center justify-center gap-2">
+    <a href="upload.php" class="w-full py-2 bg-black text-white rounded-lg flex items-center justify-center gap-2">
       <span>+</span> Upload
-    </button>
+</a>
   </div>
 
 </aside>
