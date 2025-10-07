@@ -1,9 +1,10 @@
 <?php
 session_start();
-include 'db.php'; // PDO connection
+require_once 'db.php';
 
 if(!isset($_SESSION['user_id'])){
-    die("You need to be logged in :)");
+    header("Location: login.php?redirect=upload.php");
+    exit();
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -13,17 +14,23 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $description = $_POST['description'];
     $user_id = $_SESSION['user_id'];
 
-    // kontrola súboru
     if(isset($_FILES['photo']) && $_FILES['photo']['error'] == 0){
         $uploadDir = 'uploads/';
         $filename = uniqid() . '_' . basename($_FILES['photo']['name']);
         $targetFile = $uploadDir . $filename;
 
+        $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+        $allowedTypes = ['jpg','jpeg','png','gif'];
+
+        if(!in_array($fileType, $allowedTypes)){
+            echo "Nepovolený typ súboru!";
+            exit();
+        }
+
         if(move_uploaded_file($_FILES['photo']['tmp_name'], $targetFile)){
-            // vložiť do databázy
             $stmt = $pdo->prepare("INSERT INTO hidden_spots 
-                (user_id, name, description, city, address, type, file_path) 
-                VALUES (:user_id, :name, :description, :city, :address, :type, :file_path)");
+                (user_id, name, description, city, address, type, file_path, created_at) 
+                VALUES (:user_id, :name, :description, :city, :address, :type, :file_path, NOW())");
 
             $stmt->execute([
                 ':user_id' => $user_id,
@@ -31,11 +38,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 ':description' => $description,
                 ':city' => $city,
                 ':address' => $address,
-                ':type' => 'Nature', // alebo môžeš pridať select pre typ
+                ':type' => 'Nature',
                 ':file_path' => $targetFile
             ]);
 
-            echo "Fotka bola úspešne nahraná!";
+            header("Location: frontpage.php?upload=success");
+            exit();
         } else {
             echo "Chyba pri nahrávaní súboru.";
         }

@@ -15,12 +15,12 @@ $user_id = $_SESSION['user_id'] ?? 1;
 
   <!-- Desktop sidebar -->
 <!-- Desktop sidebar -->
-<aside class="hidden md:flex flex-col md:w-64 bg-gray-800 border-r sticky top-0 h-screen p-4 shadow-lg shadow-black/30 z-10">
+<aside class="hidden md:flex flex-col md:w-64 bg-gray-100 border-r sticky top-0 h-screen p-4 shadow-lg shadow-gray-300 z-10">
 
   <!-- HORNY BLOK: Logo + Menu links -->
   <div class="flex flex-col gap-8">
     <!-- Logo -->
-<a href="index.php" class="logo text-white hover:text-blue-500">
+<a href="index.php" class="logo text-black hover:text-blue-500">
   <span class="text-5xl font-extrabold">H</span><span class="text-5xl font-semibold">IDDEN </span><span class="text-5xl font-extrabold">S</span><span class="text-5xl font-semibold">POTS</span>
 </a>
 
@@ -28,7 +28,7 @@ $user_id = $_SESSION['user_id'] ?? 1;
 
 
     <!-- Menu links s ikonami -->
-    <nav class="flex flex-col pt-5 gap-6 text-white">
+    <nav class="flex flex-col pt-5 gap-6 text-black">
       <a href="feed.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
         <i class="ph-house text-lg"></i> FEED
       </a>
@@ -56,14 +56,14 @@ $user_id = $_SESSION['user_id'] ?? 1;
 
 
   <!-- Mobile top logo -->
-  <div class="md:hidden sticky top-0 z-50 bg-gray-50 border-b p-4 flex justify-center">
+  <div class="md:hidden sticky top-0 border-b p-3 flex justify-center bg-gray-100 z-50">
     <a href="index.php" class="text-3xl font-extrabold text-black hover:text-blue-500">HS</a>
   </div>
 <!-- Phosphor Icons CDN -->
 <script src="https://unpkg.com/phosphor-icons"></script>
 
 <!-- Mobile bottom menu -->
-<nav class="fixed bottom-0 left-0 right-0 bg-white flex justify-around items-center p-3 md:hidden border-t shadow-md z-50">
+<nav class="fixed bottom-0 left-0 right-0 bg-white flex justify-around items-center p-2 md:hidden border-t shadow-md z-50">
 
   <!-- Home -->
   <a href="feed.php" class="text-gray-600 hover:text-blue-500">

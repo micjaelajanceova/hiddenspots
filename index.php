@@ -5,6 +5,13 @@ include 'spot.php';
 include 'user.php';
 include 'admin.php';
 
+
+require_once 'db.php';
+require_once 'SessionHandle.php';
+
+// session_start() je už v header.php
+$session = new SessionHandle();
+
 $spotObj = new Spot($pdo);
 
 // HOT NEW PICTURES (Newest)
@@ -96,7 +103,7 @@ try {
   <div class="relative overflow-hidden shadow-md h-96">
     <!-- Background image -->
     <div class="absolute inset-0">
-      <img src="assets/images/about-front-picture.jpg" 
+      <img src="assets/img/hiddenspot9.jpg" 
            alt="Hidden spot background" 
            class="w-full h-full object-cover">
 
