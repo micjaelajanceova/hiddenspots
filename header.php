@@ -46,7 +46,7 @@ $user_rank = $_SESSION['user_rank'] ?? 'user'; // assume normal user by default
         <i class="ph-info text-lg"></i> ABOUT HS
       </a>
 
-      <?php if($user_rank === 'admin'): ?>
+      <?php if(isset($_SESSION['user_email']) && $_SESSION['user_email'] === 'janceova.mi@gmail.com'): ?>
     <a href="admin.php" class="flex items-center gap-4 font-semibold hover:text-red-500">
       <i class="ph-shield-star text-lg"></i> ADMIN PANEL
     </a>
