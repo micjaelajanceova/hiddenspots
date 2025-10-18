@@ -1,6 +1,10 @@
 <?php
-session_start();
-$user_id = $_SESSION['user_id'] ?? 1;
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
+
+$user_id = $_SESSION['user_id'] ?? null;  // null if not logged in
+$user_rank = $_SESSION['user_rank'] ?? 'user'; // assume normal user by default
 ?>
 <!doctype html>
 <html lang="en">
@@ -41,6 +45,13 @@ $user_id = $_SESSION['user_id'] ?? 1;
       <a href="about.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
         <i class="ph-info text-lg"></i> ABOUT HS
       </a>
+
+      <?php if($user_rank === 'admin'): ?>
+    <a href="admin.php" class="flex items-center gap-4 font-semibold hover:text-red-500">
+      <i class="ph-shield-star text-lg"></i> ADMIN PANEL
+    </a>
+  <?php endif; ?>
+
     </nav>
   </div>
 
