@@ -3,7 +3,7 @@ include 'db.php';
 include 'header.php';
 include 'spot.php';
 include 'user.php';
-include 'admin.php';
+
 
 
 require_once 'db.php';
