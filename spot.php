@@ -31,7 +31,7 @@ class Spot {
 
     public function getComments($spot_id){
         $stmt = $this->pdo->prepare("
-            SELECT c.*, u.name AS user_name
+            SELECT c.*, u.name AS user_name, c.user_id
             FROM comments c
             LEFT JOIN users u ON c.user_id = u.id
             WHERE c.spot_id = ?
