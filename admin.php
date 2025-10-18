@@ -4,16 +4,15 @@ include 'header.php';
 include 'spot.php';
 include 'user.php';
 
-
-if (!isset($_SESSION['user_rank']) || $_SESSION['user_rank'] !== 'admin') {
+if (!isset($_SESSION['user_id']) || $_SESSION['user_name'] !== 'janceova.mi@gmail.com') {
     header("Location: index.php");
     exit();
 }
 
-
 $stmt = $pdo->query("SELECT id, name, city, address, file_path, created_at FROM hidden_spots ORDER BY created_at DESC");
 $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 
 
 <!DOCTYPE html>
