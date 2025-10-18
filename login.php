@@ -13,6 +13,7 @@ if (isset($_POST['action'])) {
         if ($user && password_verify($_POST['password'], $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['name'];
+            $_SESSION['user_email'] = $user['email'];
 
             // Admin check
             if ($user['email'] === 'janceova.mi@gmail.com') {
