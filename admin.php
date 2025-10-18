@@ -1,14 +1,8 @@
 <?php
 include 'db.php';
-include 'header.php';
 
-// Redirect non-admin users
-if (!isset($_SESSION['user_id']) || $_SESSION['user_rank'] !== 'admin') {
-    header("Location: index.php");
-    exit();
-}
 
-// Fetch all spots
+
 $stmt = $pdo->query("SELECT id, name, city, address, file_path, created_at FROM hidden_spots ORDER BY created_at DESC");
 $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -62,5 +56,6 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </tbody>
         </table>
     </div>
+
 </body>
 </html>
