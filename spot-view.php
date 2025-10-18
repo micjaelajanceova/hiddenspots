@@ -16,6 +16,8 @@ $comments = $spotObj->getComments($spot_id);
 
 // Handle Save to Favorites, Comments, Edit, Delete
 $favorite_msg = '';
+$edit_id = $_POST['edit_id'] ?? null;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Save to favorites
@@ -30,6 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'spot_id' => $spot_id
         ]);
         $favorite_msg = "Added to favorites!";
+        header("Location: spot-view.php?id=$spot_id#comments");
+        exit();
     }
 
     // Add new comment
@@ -44,6 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'spot_id' => $spot_id,
             'text' => $_POST['text']
         ]);
+        header("Location: spot-view.php?id=$spot_id#comments");
+        exit();
     }
 
     // Edit comment
@@ -54,6 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'id' => $_POST['edit_comment_id'],
             'user_id' => $_SESSION['user_id']
         ]);
+        header("Location: spot-view.php?id=$spot_id#comment-" . $_POST['edit_comment_id']);
+        exit();
     }
 
     // Delete comment
@@ -63,15 +71,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'id' => $_POST['delete_comment_id'],
             'user_id' => $_SESSION['user_id']
         ]);
+        header("Location: spot-view.php?id=$spot_id#comments");
+        exit();
     }
-
-    // Refresh comments after any action
-    $comments = $spotObj->getComments($spot_id);
 }
 
-// Track which comment is being edited inline
-$edit_id = $_POST['edit_id'] ?? null;
-
+// Refresh comments
+$comments = $spotObj->getComments($spot_id);
 ?>
 
 <main class="flex-1 bg-white min-h-screen py-4 md:py-20 max-w-7xl mx-auto flex flex-col gap-8">
@@ -123,7 +129,7 @@ $edit_id = $_POST['edit_id'] ?? null;
   </div>
 
   <!-- Comments Section -->
-  <section class="mt-8 w-full">
+  <section id="comments" class="mt-8 w-full">
 
     <!-- New comment -->
     <?php if(isset($_SESSION['user_id'])): ?>
@@ -143,7 +149,7 @@ $edit_id = $_POST['edit_id'] ?? null;
     <div class="flex flex-col gap-4">
       <?php if(!empty($comments)): ?>
         <?php foreach($comments as $c): ?>
-          <div class="flex gap-3 items-start bg-gray-100 p-3 rounded-xl">
+          <div id="comment-<?=$c['id']?>" class="flex gap-3 items-start bg-gray-100 p-3 rounded-xl">
             <div class="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-semibold">
               <?=strtoupper(substr($c['user_name'],0,1))?>
             </div>
