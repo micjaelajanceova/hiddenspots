@@ -16,7 +16,8 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     birthDate DATE,
     `rank` VARCHAR(50),
-    badges VARCHAR(255)
+    badges VARCHAR(255),
+    blocked TINYINT(1) DEFAULT 0
 );
 
 -- HIDDEN SPOTS
