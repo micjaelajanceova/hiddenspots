@@ -37,7 +37,7 @@ try {
 <main class="flex-1 bg-white min-h-screen overflow-y-auto">   
   <div class="w-full px-4 sm:px-6 lg:px-8">
 
-   <!-- LOGIN / SIGNUP  -->
+<!-- LOGIN / SIGNUP -->
 <div class="mt-6 flex justify-end">
   <?php if(isset($_SESSION['user_id'])): ?>
     <div class="relative">
@@ -47,16 +47,20 @@ try {
           <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
-      <div id="profileMenu" class="absolute right-0 mt-2 w-40 bg-white border rounded shadow hidden">
-        <a href="profile.php" class="block px-4 py-2 hover:bg-gray-700">My Profile</a>
-        <a href="upload.php" class="block px-4 py-2 hover:bg-gray-700">Upload</a>
-        <a href="logout.php" class="block px-4 py-2 hover:bg-gray-700">Logout</a>
+      
+      <!-- Dropdown menu -->
+      <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white border rounded-2xl shadow-lg hidden overflow-hidden z-50">
+        <a href="profile.php" class="block px-4 py-2 text-sm hover:bg-gray-100">My Profile</a>
+        <a href="upload.php" class="block px-4 py-2 text-sm hover:bg-gray-100">Upload</a>
+        <div class="border-t my-1"></div>
+        <a href="logout.php" class="block px-4 py-2 text-sm text-red-600 font-semibold hover:bg-red-50">Logout</a>
       </div>
     </div>
   <?php else: ?>
     <a href="login.php" class="bg-black text-white px-4 py-2 rounded-full button">Login / Sign Up</a>
   <?php endif; ?>
 </div>
+
 
 
    <!-- TRENDING (Sticky) -->
@@ -249,6 +253,27 @@ if(cancelUpload) cancelUpload.addEventListener('click', () => uploadModal.classL
 uploadModal?.addEventListener('click', (e) => {
   if(e.target === uploadModal) uploadModal.classList.add('hidden');
 });
+
+
+// ✅ PROFILE MENU TOGGLE (doplnené)
+const profileBtn = document.getElementById('profileBtn');
+const profileMenu = document.getElementById('profileMenu');
+
+if (profileBtn && profileMenu) {
+  // klik na meno používateľa → otvorí menu
+  profileBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    profileMenu.classList.toggle('hidden');
+  });
+
+  // klik mimo menu → zatvorí menu
+  document.addEventListener('click', (e) => {
+    if (!profileMenu.contains(e.target) && !profileBtn.contains(e.target)) {
+      profileMenu.classList.add('hidden');
+    }
+  });
+}
 </script>
+
 
 <?php include 'footer.php'; ?>
