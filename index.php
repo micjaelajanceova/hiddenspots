@@ -171,7 +171,7 @@ try {
 
 
 
-   <!-- LATEST COMMENTS -->
+  <!-- LATEST COMMENTS -->
 <section class="mt-12 pb-20">
   <h1 class="mb-3">LATEST COMMENTS</h1>
   <h2 class="mt-1">See who else loves these hidden places.</h2>
@@ -179,13 +179,12 @@ try {
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
     <?php if(!empty($latestComments)): ?>
       <?php foreach($latestComments as $c): ?>
-        <div class="bg-white shadow p-4" style="box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 -5px 10px rgba(0,0,0,0.05); ">
+        <div class="bg-white shadow p-4" style="box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 -5px 10px rgba(0,0,0,0.05);">
           <div class="flex items-center gap-3">
-            <!-- Použijeme ternárny operátor pre default avatar -->
-            <?php 
-              $avatar = !empty($c['profile_pic']) ? htmlspecialchars($c['profile_pic']) : 'assets/images/default-avatar.png';
-            ?>
-            <img src="<?=$avatar?>" alt="Avatar" class="w-10 h-10 rounded-full object-cover">
+            <!-- Prvé písmeno mena namiesto avataru -->
+            <div class="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-semibold text-lg">
+              <?=strtoupper(substr($c['user_name'],0,1))?>
+            </div>
             <div>
               <div class="font-medium"><?=htmlspecialchars($c['user_name'])?></div>
               <div class="text-xs text-gray-400"><?=date("d M Y", strtotime($c['created_at']))?></div>
@@ -202,6 +201,7 @@ try {
     <?php endif; ?>
   </div>
 </section>
+
 
 
   <!-- UPLOAD CTA -->
