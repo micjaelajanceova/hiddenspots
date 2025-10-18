@@ -155,7 +155,7 @@ INSERT INTO users (name, email, password, birthDate, `rank`, badges) VALUES
 
 -- Hidden spots
 INSERT INTO hidden_spots (user_id, name, description, city, address, type, file_path) VALUES
-(1, 'Hidden Garden', 'A secret little garden in the city.', 'Copenhagen', 'Some Street 1', 'Nature', 'assets/images/garden.jpg'),
+(1, 'Hidden Garden', 'A secret little garden in the city.', 'Copenhagen', 'Some Street 1', 'Nature', 'assets/images/hiddenspot1.jpeg'),
 (2, 'Rooftop View', 'Amazing view from a rooftop.', 'Copenhagen', 'Roof Street 2', 'Urban', 'assets/images/rooftop.jpg'),
 (1, 'Cozy Café', 'Small and cozy café.', 'Copenhagen', 'Cafe Street 3', 'Cafés', 'assets/images/cafe.jpg');
 

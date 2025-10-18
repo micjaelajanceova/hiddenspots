@@ -59,10 +59,10 @@ if (isset($_POST['action'])) {
 <title>Login / Register - Hidden Spots</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen flex items-center justify-center bg-cover bg-center relative" style="background-image: url('assets/img/login-bg.jpg');">
+<body class="min-h-screen flex items-center justify-center bg-cover bg-center relative" style="background-image: url('assets/img/hiddenspot1.jpeg');">
 
 <!-- Back button on top-left -->
-<a href="index.php" class="absolute top-5 left-5 px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-gray-800">← Back</a>
+<button onclick="history.back()" class="absolute top-5 left-5 px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-gray-800">← Back</button>
 
 <div class="bg-white bg-opacity-90 p-10 rounded-xl shadow-xl max-w-md w-full">
     <h2 class="text-2xl font-bold mb-6 text-center">Welcome to HiddenSpots</h2>
