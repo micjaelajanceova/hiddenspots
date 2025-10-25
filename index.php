@@ -75,7 +75,7 @@ try {
 
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     <?php if(!empty($sticky)): ?>
-      <?php foreach($sticky as $s): ?>
+      <?php foreach(array_slice($sticky, 0, 3) as $s): ?>
         <article class="overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full">
           <a href="spot-view.php?id=<?=htmlspecialchars($s['id'])?>" class="flex flex-col h-full">
             <div class="w-full h-96 bg-gray-200 overflow-hidden">
@@ -95,7 +95,7 @@ try {
         </article>
       <?php endforeach; ?>
     <?php else: ?>
-      <?php for($i=0;$i<6;$i++): ?>
+      <?php for($i=0;$i<3;$i++): ?>
         <div class="overflow-hidden bg-gray-100 h-96 rounded-lg"></div>
       <?php endfor; ?>
     <?php endif; ?>
@@ -142,7 +142,7 @@ try {
 
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     <?php if(!empty($newest)): ?>
-      <?php foreach($newest as $n): ?>
+      <?php foreach(array_slice($newest, 0, 3) as $n): ?>
         <article class=" overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full ">
           <a href="spot-view.php?id=<?=htmlspecialchars($n['id'])?>" class="flex flex-col h-full">
             <div class="w-full h-96 bg-gray-200 overflow-hidden ">
@@ -162,7 +162,7 @@ try {
         </article>
       <?php endforeach; ?>
     <?php else: ?>
-      <?php for($i=0;$i<6;$i++): ?>
+      <?php for($i=0;$i<3;$i++): ?>
         <div class="overflow-hidden bg-gray-100 h-96 rounded-lg"></div>
       <?php endfor; ?>
     <?php endif; ?>
@@ -178,7 +178,7 @@ try {
 
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
     <?php if(!empty($latestComments)): ?>
-      <?php foreach($latestComments as $c): ?>
+      <?php foreach(array_slice($latestComments, 0, 3) as $c): ?>
         <div class="bg-white shadow p-4" style="box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 -5px 10px rgba(0,0,0,0.05);">
           <div class="flex items-center gap-3">
             <!-- Prvé písmeno mena namiesto avataru -->
@@ -209,9 +209,9 @@ try {
   <div class="bg-gray-800 p-10 flex flex-col items-center text-center">
     <h2 class="text-3xl font-bold text-white">UPLOAD A NEW PICTURE</h2>
     <h4 class="text-sm text-gray-300 mt-2">Share a secret spot with us.</h4>
-    <button id="uploadBtn2" class="mt-6 bg-white text-black px-8 py-3 rounded-full text-lg shadow hover:bg-gray-200 transition">
+    <a href="upload.php" id="uploadBtn2" class="mt-6 bg-white text-black px-8 py-3 rounded-full text-lg shadow hover:bg-gray-200 transition">
       + Upload
-    </button>
+    </a>
   </div>
 </section>
 
@@ -219,61 +219,6 @@ try {
   </div>
 </main>
 
-<!-- Upload Modal -->
-<div id="uploadModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
-  <div class="bg-white rounded-lg p-6 w-full max-w-lg mx-4">
-    <h2 class="text-xl font-bold mb-3">Upload a new spot</h2>
-    <form action="upload.php" method="post" enctype="multipart/form-data" class="space-y-3">
-      <input type="file" name="photo" accept="image/*" required class="block w-full" />
-      <input type="text" name="name" placeholder="Name" required class="w-full border rounded p-2" />
-      <input type="text" name="city" placeholder="City" required class="w-full border rounded p-2" />
-      <input type="text" name="address" placeholder="Address" class="w-full border rounded p-2" />
-      <textarea name="description" placeholder="Short description / tip" class="w-full border rounded p-2"></textarea>
-      <div class="flex justify-end gap-2">
-        <button type="button" id="cancelUpload" class="px-4 py-2 rounded border">Cancel</button>
-        <button type="submit" class="px-4 py-2 rounded bg-black text-white">Upload</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<script>
-// toggle filter menu
-document.getElementById('filterBtn')?.addEventListener('click', () => {
-  document.getElementById('filterMenu')?.classList.toggle('hidden');
-});
-
-// upload modal toggles
-const uploadBtn2 = document.getElementById('uploadBtn2');
-const uploadModal = document.getElementById('uploadModal');
-const cancelUpload = document.getElementById('cancelUpload');
-
-if(uploadBtn2) uploadBtn2.addEventListener('click', () => uploadModal.classList.remove('hidden'));
-if(cancelUpload) cancelUpload.addEventListener('click', () => uploadModal.classList.add('hidden'));
-uploadModal?.addEventListener('click', (e) => {
-  if(e.target === uploadModal) uploadModal.classList.add('hidden');
-});
-
-
-// ✅ PROFILE MENU TOGGLE (doplnené)
-const profileBtn = document.getElementById('profileBtn');
-const profileMenu = document.getElementById('profileMenu');
-
-if (profileBtn && profileMenu) {
-  // klik na meno používateľa → otvorí menu
-  profileBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    profileMenu.classList.toggle('hidden');
-  });
-
-  // klik mimo menu → zatvorí menu
-  document.addEventListener('click', (e) => {
-    if (!profileMenu.contains(e.target) && !profileBtn.contains(e.target)) {
-      profileMenu.classList.add('hidden');
-    }
-  });
-}
-</script>
 
 
 <?php include 'footer.php'; ?>
