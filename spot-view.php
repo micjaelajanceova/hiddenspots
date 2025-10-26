@@ -3,6 +3,7 @@ include 'db.php';
 include 'Spot.php';
 include 'header.php'; // session already started
 
+
 $spot_id = $_GET['id'] ?? null;
 if (!$spot_id) die("No ID provided.");
 
@@ -52,28 +53,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    // Edit comment
-    if (isset($_POST['edit_comment_id']) && isset($_POST['edit_text'])) {
+   // Edit comment
+if(isset($_POST['edit_comment_id']) && isset($_POST['edit_text'])) {
+    if($isAdmin) {
+        $stmt = $pdo->prepare("UPDATE comments SET text = :text WHERE id = :id");
+        $stmt->execute([
+            'text' => $_POST['edit_text'],
+            'id' => $_POST['edit_comment_id']
+        ]);
+    } else {
         $stmt = $pdo->prepare("UPDATE comments SET text = :text WHERE id = :id AND user_id = :user_id");
         $stmt->execute([
             'text' => $_POST['edit_text'],
             'id' => $_POST['edit_comment_id'],
             'user_id' => $_SESSION['user_id']
         ]);
-        header("Location: spot-view.php?id=$spot_id#comment-" . $_POST['edit_comment_id']);
-        exit();
     }
+    header("Location: spot-view.php?id=$spot_id#comment-" . $_POST['edit_comment_id']);
+    exit();
+}
 
-    // Delete comment
-    if (isset($_POST['delete_comment_id'])) {
+// Delete comment
+if (isset($_POST['delete_comment_id'])) {
+    if($isAdmin) {
+        $stmt = $pdo->prepare("DELETE FROM comments WHERE id = :id");
+        $stmt->execute([
+            'id' => $_POST['delete_comment_id']
+        ]);
+    } else {
         $stmt = $pdo->prepare("DELETE FROM comments WHERE id = :id AND user_id = :user_id");
         $stmt->execute([
             'id' => $_POST['delete_comment_id'],
             'user_id' => $_SESSION['user_id']
         ]);
-        header("Location: spot-view.php?id=$spot_id#comments");
-        exit();
     }
+    header("Location: spot-view.php?id=$spot_id#comments");
+    exit();
+}
+
 }
 
 // Refresh comments
@@ -169,7 +186,11 @@ $comments = $spotObj->getComments($spot_id);
               <!-- Comment footer -->
               <div class="flex justify-between mt-2 text-xs text-gray-500">
                 <span><?=date("d M Y", strtotime($c['created_at']))?></span>
-                <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $c['user_id']): ?>
+                <?php 
+                    $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
+                    if(isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $c['user_id'] || $isAdmin)):
+                ?>
+
                   <div class="flex gap-2">
                     <!-- Edit -->
                     <form method="post" style="display:inline;">

@@ -218,6 +218,26 @@ try {
 
   </div>
 </main>
+<script>
+// PROFILE MENU TOGGLE
+const profileBtn = document.getElementById('profileBtn');
+const profileMenu = document.getElementById('profileMenu');
+
+if (profileBtn && profileMenu) {
+    // klik na meno používateľa → otvorí menu
+    profileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        profileMenu.classList.toggle('hidden');
+    });
+
+    // klik mimo menu → zatvorí menu
+    document.addEventListener('click', (e) => {
+        if (!profileMenu.contains(e.target) && !profileBtn.contains(e.target)) {
+            profileMenu.classList.add('hidden');
+        }
+    });
+}
+</script>
 
 
 

@@ -24,14 +24,16 @@ if (isset($_POST['action'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['user_email'] = $user['email'];
+            $_SESSION['role'] = $user['role'];
 
             // Admin check
-            if ($user['email'] === 'janceova.mi@gmail.com') {
-                header("Location: admin.php");
-            } else {
-                header("Location: index.php");
-            }
-            exit();
+if ($user['role'] === 'admin') {
+    header("Location: admin.php");
+} else {
+    header("Location: index.php");
+}
+exit();
+
         } else {
             $msg = "Incorrect email or password.";
         }
@@ -47,8 +49,9 @@ if (isset($_POST['action'])) {
                 $msg = "Email already exists.";
             } else {
                 $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                $stmt = $pdo->prepare("INSERT INTO users (name, email, password, `rank`, badges) 
-                                       VALUES (:name, :email, :password, 'user', 'newbie')");
+                $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, badges) 
+                       VALUES (:name, :email, :password, 'user', 'newbie')");
+
                 $stmt->execute([
                     'name' => $_POST['name'],
                     'email' => $_POST['email'],

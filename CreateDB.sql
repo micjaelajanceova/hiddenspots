@@ -15,9 +15,9 @@ CREATE TABLE users (
     email VARCHAR(150) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     birthDate DATE,
-    `rank` VARCHAR(50),
     badges VARCHAR(255),
-    blocked TINYINT(1) DEFAULT 0
+    blocked TINYINT(1) DEFAULT 0,
+    role ENUM('user','admin') DEFAULT 'user'
 );
 
 -- HIDDEN SPOTS
@@ -149,10 +149,11 @@ DELIMITER ;
 -- ======================================
 
 -- Users
-INSERT INTO users (name, email, password, birthDate, `rank`, badges) VALUES
-('Alice', 'alice@example.com', 'password', '1995-01-01', 'user', 'newbie'),
-('Bob', 'bob@example.com', 'password', '1990-05-12', 'user', 'explorer'),
-('Charlie', 'charlie@example.com', 'password', '1988-09-23', 'admin', 'veteran');
+INSERT INTO users (name, email, password, birthDate, badges, role) VALUES
+('Alice', 'alice@example.com', 'password', '1995-01-01', 'newbie', 'user'),
+('Bob', 'bob@example.com', 'password', '1990-05-12', 'explorer', 'user'),
+('Charlie', 'charlie@example.com', 'password', '1988-09-23', 'veteran', 'admin');
+
 
 -- Hidden spots
 INSERT INTO hidden_spots (user_id, name, description, city, address, type, file_path) VALUES

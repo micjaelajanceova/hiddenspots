@@ -5,9 +5,9 @@ include 'spot.php';
 include 'user.php';
 
 // Only admin can access
-if (!isset($_SESSION['user_id']) || $_SESSION['user_email'] !== 'janceova.mi@gmail.com') {
-    header("Location: index.php");
-    exit();
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+  header("Location: index.php");
+  exit();
 }
 
 // Fetch data
@@ -19,7 +19,9 @@ $comments = $pdo->query("
     JOIN hidden_spots hs ON c.spot_id = hs.id 
     ORDER BY c.created_at DESC
 ")->fetchAll(PDO::FETCH_ASSOC);
-$users = $pdo->query("SELECT id, name, email, `rank`, blocked FROM users ORDER BY id ASC")->fetchAll(PDO::FETCH_ASSOC);
+$users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY id ASC")->fetchAll(PDO::FETCH_ASSOC);
+
+
 ?>
 
 <main class="flex-1 bg-white min-h-screen overflow-y-auto">
@@ -122,7 +124,7 @@ $users = $pdo->query("SELECT id, name, email, `rank`, blocked FROM users ORDER B
               <th class="p-3 border-b">ID</th>
               <th class="p-3 border-b">Name</th>
               <th class="p-3 border-b">Email</th>
-              <th class="p-3 border-b">Rank</th>
+              <th class="p-3 border-b">Role</th>
               <th class="p-3 border-b">Blocked</th>
               <th class="p-3 border-b">Actions</th>
             </tr>
@@ -133,7 +135,7 @@ $users = $pdo->query("SELECT id, name, email, `rank`, blocked FROM users ORDER B
                 <td class="p-3"><?= $u['id'] ?></td>
                 <td class="p-3"><?= htmlspecialchars($u['name']) ?></td>
                 <td class="p-3"><?= htmlspecialchars($u['email']) ?></td>
-                <td class="p-3"><?= htmlspecialchars($u['rank']) ?></td>
+                <td class="p-3"><?= htmlspecialchars($u['role']) ?></td>
                 <td class="p-3"><?= $u['blocked'] ? 'Yes' : 'No' ?></td>
                 <td class="p-3">
                   <form action="toggle_block.php" method="POST">

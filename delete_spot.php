@@ -1,18 +1,41 @@
 <?php
+require_once 'db.php';
 session_start();
-include 'db.php';
 
-if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
-    die("Access denied.");
+// Kontrola prihlásenia
+if (!isset($_SESSION['user_id'])) {
+    die("Musíš byť prihlásený");
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
-    $id = $_POST['id'];
-
-    $stmt = $pdo->prepare("DELETE FROM hidden_spots WHERE id = ?");
-    $stmt->execute([$id]);
-
-    header("Location: admin.php");
-    exit;
+// Získaj id spotu
+if (!isset($_POST['id'])) {
+    die("Nešpecifikovaný spot");
 }
-?>
+$spot_id = $_POST['id'];
+
+// Načítaj spot z DB
+$stmt = $pdo->prepare("SELECT * FROM hidden_spots WHERE id = ?");
+$stmt->execute([$spot_id]);
+$spot = $stmt->fetch();
+
+if (!$spot) {
+    die("Spot neexistuje");
+}
+
+// Kontrola oprávnení
+if ($_SESSION['role'] === 'admin') {
+    // admin môže všetko → pokračujeme
+} elseif ($_SESSION['role'] === 'user') {
+    if ($spot['user_id'] != $_SESSION['user_id']) {
+        die("Nemáš oprávnenie vymazať tento spot");
+    }
+} else {
+    die("Neznáma rola");
+}
+
+// Vymazanie spotu
+$stmt = $pdo->prepare("DELETE FROM hidden_spots WHERE id = ?");
+$stmt->execute([$spot_id]);
+
+header("Location: admin.php"); // alebo index.php podľa toho, kam chceš vrátiť používateľa
+exit();
