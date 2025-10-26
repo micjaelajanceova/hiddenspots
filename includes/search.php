@@ -1,11 +1,11 @@
 <?php 
-include 'db.php'; 
+include 'includes/db.php'; 
 $city = $_GET['city'] ?? '';
 $stmt = $pdo->prepare("SELECT * FROM HiddenSpots WHERE city LIKE ?");
 $stmt->execute(["%$city%"]);
 $results = $stmt->fetchAll();
 ?>
-<?php include 'header.php'; ?>
+<?php include 'includes/header.php'; ?>
 
 <section class="card">
   <h2>Search results for "<?= htmlspecialchars($city) ?>"</h2>
@@ -22,4 +22,4 @@ $results = $stmt->fetchAll();
   </div>
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

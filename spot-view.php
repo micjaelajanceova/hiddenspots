@@ -1,7 +1,7 @@
 <?php
-include 'db.php';
-include 'Spot.php';
-include 'header.php'; // session already started
+include 'includes/db.php';
+include 'classes/Spot.php';
+include 'includes/header.php'; // session already started
 
 
 $spot_id = $_GET['id'] ?? null;
@@ -217,4 +217,4 @@ $comments = $spotObj->getComments($spot_id);
   </section>
 </main>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

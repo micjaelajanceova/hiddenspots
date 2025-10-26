@@ -1,4 +1,4 @@
-<?php include 'header.php'; ?>
+<?php include 'includes/header.php'; ?>
 
     <!-- Hlavný obsah -->
     <main class="flex-1 bg-white min-h-screen overflow-y-auto">
@@ -88,4 +88,4 @@
 
 
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

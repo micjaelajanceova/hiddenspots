@@ -1,6 +1,6 @@
 <?php
-include 'db.php';
-include 'header.php'; // session already started
+include 'includes/db.php';
+include 'includes/header.php'; // session already started
 
 // Redirect if not logged in
 if (!isset($_SESSION['user_id'])) {
@@ -47,4 +47,4 @@ $favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php endif; ?>
 </main>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

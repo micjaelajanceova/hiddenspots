@@ -1,5 +1,5 @@
 <?php
-require_once "db.php";
+require_once __DIR__ . '/../includes/db.php';
 session_start();
 
 $msg = '';
@@ -151,6 +151,19 @@ showLogin?.addEventListener('click', () => {
     registerForm.classList.add('hidden');
     loginForm.classList.remove('hidden');
 });
+
+// Show form based on URL parameter
+const params = new URLSearchParams(window.location.search);
+const action = params.get('action');
+
+if (action === 'register') {
+    loginForm.classList.add('hidden');
+    registerForm.classList.remove('hidden');
+} else {
+    // default to login form
+    loginForm.classList.remove('hidden');
+    registerForm.classList.add('hidden');
+}
 
 // Background slideshow
 const slides = document.querySelectorAll('.bg-slide');

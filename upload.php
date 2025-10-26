@@ -1,6 +1,6 @@
 <?php
 // upload.php
-require_once 'db.php';
+require_once 'includes/db.php';
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 $error = null;
@@ -159,4 +159,4 @@ document.querySelector('input[name="photo"]').addEventListener('change', functio
 });
 </script>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

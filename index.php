@@ -1,14 +1,12 @@
 <?php
-include 'db.php';
-include 'header.php';
-include 'spot.php';
-include 'user.php';
+include 'includes/db.php';
+include 'includes/header.php';
+include 'classes/spot.php';
 
 
 
-require_once 'db.php';
-require_once 'SessionHandle.php';
-
+require_once 'includes/db.php';
+require_once 'classes/SessionHandle.php';
 // session_start() je už v header.php
 $session = new SessionHandle();
 
@@ -38,16 +36,14 @@ try {
   <div class="w-full px-4 sm:px-6 lg:px-8">
 
 <!-- LOGIN / SIGNUP -->
-<div class="mt-6 flex justify-end">
+<div class="mt-6 flex justify-end gap-2">
   <?php if(isset($_SESSION['user_id'])): ?>
     <div class="relative">
-      <button id="profileBtn" class="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">
-        <?=htmlspecialchars($_SESSION['user_name'])?>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+      <!-- Avatar s prvým písmenom mena (rovnaký štýl ako pri komentároch) -->
+      <button id="profileBtn" class="flex items-center justify-center w-10 h-10 bg-black text-white rounded-full font-semibold text-lg">
+        <?=strtoupper(substr($_SESSION['user_name'], 0, 1))?>
       </button>
-      
+
       <!-- Dropdown menu -->
       <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white border rounded-2xl shadow-lg hidden overflow-hidden z-50">
         <a href="profile.php" class="block px-4 py-2 text-sm hover:bg-gray-100">My Profile</a>
@@ -57,9 +53,13 @@ try {
       </div>
     </div>
   <?php else: ?>
-    <a href="login.php" class="bg-black text-white px-4 py-2 rounded-full button">Login / Sign Up</a>
+    <!-- Tlačidlá pre neprihláseného používateľa -->
+    <a href="auth/login.php?action=login" class="bg-black text-white px-4 py-2 rounded-full">Login</a>
+    <a href="auth/login.php?action=register" class="bg-gray-200 text-black px-4 py-2 rounded-full">Register</a>
   <?php endif; ?>
 </div>
+
+
 
 
 
@@ -241,4 +241,4 @@ if (profileBtn && profileMenu) {
 
 
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

@@ -1,8 +1,7 @@
 <?php
-include 'db.php';
-include 'header.php';
-include 'spot.php';
-include 'user.php';
+include 'includes/db.php';
+include 'includes/header.php';
+include 'classes/spot.php';
 
 // Only admin can access
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
@@ -162,4 +161,4 @@ function showTab(tabId){
 }
 </script>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>
