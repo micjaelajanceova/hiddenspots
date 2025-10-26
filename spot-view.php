@@ -217,4 +217,5 @@ $comments = $spotObj->getComments($spot_id);
   </section>
 </main>
 
+
 <?php include 'includes/footer.php'; ?>

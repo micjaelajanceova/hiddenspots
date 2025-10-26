@@ -3,7 +3,7 @@
   <div class="w-full px-4 sm:px-6 lg:px-8">
 <!-- SEARCH -->
 <div class="mt-6">
-      <form action="includes/search.php" method="get" class="flex gap-3 items-center">
+      <form action="search.php" method="get" class="flex gap-3 items-center">
         <input name="query" type="search" placeholder="Search city — e.g. Copenhagen"
                class="flex-1 px-4 py-3 rounded-l-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400" />
         <button type="submit" class="bg-black text-white px-4 py-3 rounded-r-lg font-semibold hover:opacity-95">

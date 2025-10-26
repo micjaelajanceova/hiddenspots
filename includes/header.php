@@ -17,7 +17,6 @@ $user_rank = $_SESSION['user_rank'] ?? 'user'; // assume normal user by default
 </head>
 <body class="flex flex-col md:flex-row min-h-screen">
 
-  <!-- Desktop sidebar -->
 <!-- Desktop sidebar -->
 <aside class="hidden md:flex flex-col md:w-64 bg-gray-100 border-r sticky top-0 h-screen p-4 shadow-lg shadow-gray-300 z-10">
 
@@ -25,7 +24,7 @@ $user_rank = $_SESSION['user_rank'] ?? 'user'; // assume normal user by default
   <div class="flex flex-col gap-8">
     <!-- Logo -->
 <a href="index.php" class="logo text-black hover:text-blue-500">
-  <span class="text-5xl font-extrabold">H</span><span class="text-5xl font-semibold">IDDEN </span><span class="text-5xl font-extrabold">S</span><span class="text-5xl font-semibold">POTS</span>
+  <span class="text-5xl font-extrabold text-black">H</span><span class="text-5xl font-semibold text-black">IDDEN </span><span class="text-5xl font-extrabold text-black">S</span><span class="text-5xl font-semibold text-black">POTS</span>
 </a>
 
 
