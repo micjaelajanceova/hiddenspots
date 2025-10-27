@@ -44,7 +44,7 @@ p {
   color: #5f5d5d !important;
 }
 
-button {
+/* button {
   font-size: 1rem !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
@@ -76,7 +76,7 @@ button:hover {
 
 .button:hover {
   opacity: 0.85 !important;
-}
+} */
 
 .logo {
   color: rgb(128, 179, 226) !important;

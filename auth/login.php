@@ -28,9 +28,9 @@ if (isset($_POST['action'])) {
 
             // Admin check
 if ($user['role'] === 'admin') {
-    header("Location: admin.php");
+    header("Location: ../admin.php");
 } else {
-    header("Location: index.php");
+    header("Location: ../index.php");
 }
 exit();
 
