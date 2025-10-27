@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-include 'header.php';
+include 'includes/header.php';
 ?>
 
 <main class="flex-1 bg-white p-8 min-h-screen">
