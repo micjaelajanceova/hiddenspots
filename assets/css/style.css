@@ -44,7 +44,7 @@ p {
   color: #5f5d5d !important;
 }
 
-/* button {
+button {
   font-size: 1rem !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
@@ -52,7 +52,7 @@ p {
   border: none !important;
   border-radius: 8px !important;
   cursor: pointer !important;
-  background: rgb(128, 179, 226) !important;
+  background: rgb(5, 5, 5) !important;
   color: #ffffff !important;
   transition: opacity 0.3s ease !important;
 }
@@ -69,17 +69,23 @@ button:hover {
   border: none !important;
   border-radius: 8px !important;
   cursor: pointer !important;
-  background: rgb(128, 179, 226) !important;
+  background: rgb(32, 34, 37) !important;
   color: #ffffff !important;
   transition: opacity 0.3s ease !important;
 }
 
 .button:hover {
   opacity: 0.85 !important;
-} */
-
-.logo {
-  color: rgb(128, 179, 226) !important;
 }
 
+.logo {
+  color: rgb(126, 126, 126) !important;
+}
 
+#favCheck {
+    transition: opacity 0.3s ease;
+}
+
+#favCheck.show {
+    opacity: 1;
+}

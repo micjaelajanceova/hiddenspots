@@ -67,18 +67,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $comments = $spotObj->getComments($spot_id);
 
 // Check if user liked/favorited
-$user_id = $_SESSION['user_id'] ?? null;
+$user_id = $_SESSION['user_id'] ?? 0;
 $liked = false;
 $favorited = false;
 
 if ($user_id) {
-    $liked = $pdo->prepare("SELECT 1 FROM likes WHERE user_id=? AND spot_id=?");
-    $liked->execute([$user_id,$spot_id]);
-    $liked = $liked->fetch() ? true : false;
+    // Like
+    $stmt = $pdo->prepare("SELECT 1 FROM likes WHERE user_id=? AND spot_id=?");
+    $stmt->execute([$user_id, $spot_id]);
+    $liked = $stmt->fetch() ? true : false;
 
-    $fav = $pdo->prepare("SELECT 1 FROM favorites WHERE user_id=? AND spot_id=?");
-    $fav->execute([$user_id,$spot_id]);
-    $favorited = $fav->fetch() ? true : false;
+    // Favorite
+    $stmt = $pdo->prepare("SELECT 1 FROM favorites WHERE user_id=? AND spot_id=?");
+    $stmt->execute([$user_id, $spot_id]);
+    $favorited = $stmt->fetch() ? true : false;
 }
 ?>
 
@@ -102,7 +104,7 @@ if ($user_id) {
       <div class="flex items-center gap-4 text-gray-600">
     <!-- Like (heart) -->
     <button id="likeBtn" class="relative w-30 h-30 flex items-center justify-center">
-        <svg id="likeIcon" class="w-6 h-6 text-gray-400 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
+        <svg id="likeIcon" class="w-6 h-6 text-gray-400 transition-colors duration-300 <?= $liked ? 'text-red-600' : 'text-gray-400' ?>" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
         </svg>
     </button>
@@ -116,11 +118,19 @@ if ($user_id) {
         </button>
 
         <!-- Favorite Icon -->
-      <button id="favBtn" class="<?= $favorited ? 'text-yellow-500' : '' ?>">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-          </svg>
-      </button>
+<!-- Favorite (bookmark/star) -->
+<button id="favBtn" class="relative w-10 h-10 flex items-center justify-center">
+
+<svg id="favIcon" class="w-30 h-30 <?= $favorited ? 'text-yellow-500' : 'text-gray-400' ?>" fill="currentColor" viewBox="0 0 40 40">
+    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+</svg>
+    <!-- Animation checkmark -->
+    <span id="favCheck" class="absolute inset-0 flex items-center justify-center opacity-0 pointer-events-none">
+        <svg class="w-6 h-6 text-green-500 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+        </svg>
+    </span>
+</button>
       </div>
 
       <div class="mt-6 text-gray-700 text-sm">
@@ -197,25 +207,35 @@ if ($user_id) {
 </main>
 
 <script>
-// AJAX Like
-document.getElementById('likeBtn')?.addEventListener('click', ()=>{
+// LIKE button
+const likeBtn = document.getElementById('likeBtn');
+const likeIcon = document.getElementById('likeIcon');
+
+likeBtn?.addEventListener('click', ()=>{
     const spotId = <?= $spot_id ?>;
-    <?php if(!$user_id): ?> alert('Log in to like!'); return; <?php endif; ?>
     fetch('actions/like.php', {
         method:'POST',
         headers:{'Content-Type':'application/x-www-form-urlencoded'},
         body:'spot_id='+spotId
     }).then(r=>r.text()).then(res=>{
-        if(res==='liked') document.getElementById('likeIcon').classList.add('text-red-600');
-        if(res==='unliked') document.getElementById('likeIcon').classList.remove('text-red-600');
-        fetch('actions/like.php?count='+spotId)
-          .then(r=>r.text())
-          .then(count=>document.getElementById('likeCount').innerText=count);
+        if(res==='not_logged_in') return alert('You must be logged in to like!');
+        if(res==='liked') {
+            likeIcon.classList.remove('text-gray-400');
+            likeIcon.classList.add('text-red-600');
+        }
+        if(res==='unliked') {
+            likeIcon.classList.remove('text-red-600');
+            likeIcon.classList.add('text-gray-400');
+        }
     });
 });
 
-// AJAX Favorite
-document.getElementById('favBtn')?.addEventListener('click', ()=>{
+// FAVORITE button
+const favBtn = document.getElementById('favBtn');
+const favCheck = document.getElementById('favCheck');
+const favIcon = document.getElementById('favIcon');
+
+favBtn?.addEventListener('click', ()=>{
     const spotId = <?= $spot_id ?>;
     fetch('actions/favourite.php', {
         method:'POST',
@@ -223,9 +243,16 @@ document.getElementById('favBtn')?.addEventListener('click', ()=>{
         body:'spot_id='+spotId
     }).then(r=>r.text()).then(res=>{
         if(res==='not_logged_in') return alert('You must be logged in to favorite!');
-        const btn = document.getElementById('favBtn');
-        if(res==='added') btn.classList.add('text-yellow-500');
-        if(res==='removed') btn.classList.remove('text-yellow-500');
+        if(res==='added') {
+            favIcon.classList.remove('text-gray-400');
+            favIcon.classList.add('text-yellow-500');
+            favCheck.classList.add('show');
+            setTimeout(()=>favCheck.classList.remove('show'), 800);
+        }
+        if(res==='removed') {
+            favIcon.classList.remove('text-yellow-500');
+            favIcon.classList.add('text-gray-400');
+        }
     });
 });
 </script>
