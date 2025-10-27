@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/db.php';
+require_once __DIR__ . '/../includes/db.php';
 session_start();
 
 // Kontrola prihlásenia
@@ -37,5 +37,5 @@ if ($_SESSION['role'] === 'admin') {
 $stmt = $pdo->prepare("DELETE FROM hidden_spots WHERE id = ?");
 $stmt->execute([$spot_id]);
 
-header("Location: admin.php"); // alebo index.php podľa toho, kam chceš vrátiť používateľa
+header("Location: ../admin.php"); // presmerovanie späť do admin.php
 exit();

@@ -203,21 +203,30 @@ try {
 </section>
 
 
-
-  <!-- UPLOAD CTA -->
+<!-- UPLOAD CTA -->
 <section class="mt-12 mb-20 lg:mb-5">
   <div class="bg-gray-800 p-10 flex flex-col items-center text-center">
     <h2 class="text-3xl font-bold text-white">UPLOAD A NEW PICTURE</h2>
     <h4 class="text-sm text-gray-300 mt-2">Share a secret spot with us.</h4>
-    <a href="upload.php" id="uploadBtn2" class="mt-6 bg-white text-black px-8 py-3 rounded-full text-lg shadow hover:bg-gray-200 transition">
+    <button 
+      id="openUploadModal" 
+      class="mt-6 bg-white text-black px-8 py-3 rounded-full text-lg shadow hover:bg-gray-200 transition"
+      onclick="document.getElementById('uploadModal').classList.remove('hidden')"
+    >
       + Upload
-    </a>
+    </button>
   </div>
 </section>
 
 
+
+
+
   </div>
 </main>
+
+
+
 <script>
 // PROFILE MENU TOGGLE
 const profileBtn = document.getElementById('profileBtn');
@@ -237,6 +246,13 @@ if (profileBtn && profileMenu) {
         }
     });
 }
+
+
+
+
+
+
+
 </script>
 
 

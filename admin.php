@@ -65,7 +65,7 @@ $users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY 
                 </td>
                 <td class="p-3"><?= $s['created_at'] ?></td>
                 <td class="p-3">
-                  <form action="delete_spot.php" method="POST" onsubmit="return confirm('Delete this spot?');">
+                  <form action="actions/delete_spot.php" method="POST" onsubmit="return confirm('Delete this spot?');">
                     <input type="hidden" name="id" value="<?= $s['id'] ?>">
                     <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
                   </form>
