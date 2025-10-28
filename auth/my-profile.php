@@ -48,20 +48,23 @@ $mySpots = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <div class="border-t border-gray-300 mb-8"></div>
 
   <!-- USER'S PHOTO FEED -->
-  <?php if (!empty($mySpots)): ?>
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-      <?php foreach ($mySpots as $spot): ?>
-        <a href="../spot-view.php?id=<?= htmlspecialchars($spot['id']) ?>" class="block group relative overflow-hidden">
-          <img src="<?= htmlspecialchars($spot['file_path']) ?>" alt="<?= htmlspecialchars($spot['name']) ?>" class="w-full h-48 object-cover rounded-lg transition-transform duration-300 group-hover:scale-105">
-          <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-sm font-semibold">
+<!-- USER'S PHOTO FEED -->
+    <?php if (!empty($spots)): ?>
+    <div class="w-full columns-2 sm:columns-3 lg:columns-4 gap-4 space-y-4">
+        <?php foreach ($spots as $spot): ?>
+        <a href="../spot-view.php?id=<?= htmlspecialchars($spot['id']) ?>" class="block break-inside-avoid overflow-hidden group relative">
+            <img src="../<?= htmlspecialchars($spot['file_path']) ?>" 
+                alt="<?= htmlspecialchars($spot['name']) ?>" 
+                class="w-full object-cover transition-transform duration-300 group-hover:scale-105">
+            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-sm font-semibold">
             <?= htmlspecialchars($spot['name']) ?>
-          </div>
+            </div>
         </a>
-      <?php endforeach; ?>
+        <?php endforeach; ?>
     </div>
-  <?php else: ?>
-    <p class="text-center text-gray-500 mt-10">You haven't uploaded any spots yet.</p>
-  <?php endif; ?>
+    <?php else: ?>
+    <p class="text-center text-gray-500 mt-10">This user hasn't uploaded any spots yet.</p>
+    <?php endif; ?>
 
   <!-- BACK TO HOME LINK -->
   <div class="text-center mt-12">
