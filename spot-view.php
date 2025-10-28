@@ -6,9 +6,16 @@ include 'classes/Spot.php';
 $spot_id = $_GET['id'] ?? null;
 if (!$spot_id) die("No ID provided.");
 
+// Fetch spot
 $spotObj = new Spot($pdo);
 $spot = $spotObj->getById($spot_id);
 if (!$spot) die("Spot not found.");
+
+// Fetch spot owner's info
+$stmt = $pdo->prepare("SELECT name, profile_photo FROM users WHERE id=?");
+$stmt->execute([$spot['user_id']]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+$user_name = $user['name'] ?? 'Unknown';
 
 // Fetch comments
 $comments = $spotObj->getComments($spot_id);
@@ -140,9 +147,9 @@ if ($user_id) {
 
       <div class="mt-6 text-sm">
     <p class="mb-2">
-      <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>" class="font-semibold text-blue-600 hover:underline">
-        @<?=htmlspecialchars($spot['user_name'])?>
-      </a>
+    <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>" class="font-semibold text-blue-600 hover:underline">
+        @<?=htmlspecialchars($user_name)?>
+    </a>
     </p>
   <?=htmlspecialchars($spot['description'])?>
 </div>

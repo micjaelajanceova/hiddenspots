@@ -12,6 +12,7 @@ USE hiddenspots;
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
+    profile_photo VARCHAR(255) DEFAULT NULL, 
     email VARCHAR(150) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     birthDate DATE,
