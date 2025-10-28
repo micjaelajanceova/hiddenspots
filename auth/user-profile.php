@@ -33,9 +33,8 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <div class="border-t border-gray-300 mb-8"></div>
 
 <!-- USER'S PHOTO FEED -->
-<!-- USER'S PHOTO FEED -->
 <?php if (!empty($spots)): ?>
-  <div class="columns-2 sm:columns-3 md:columns-4 gap-4 space-y-4">
+  <div class="w-full columns-2 sm:columns-3 lg:columns-4 gap-4 space-y-4">
     <?php foreach ($spots as $spot): ?>
       <a href="../spot-view.php?id=<?= htmlspecialchars($spot['id']) ?>" class="block break-inside-avoid overflow-hidden group relative">
         <img src="../<?= htmlspecialchars($spot['file_path']) ?>" 
@@ -50,6 +49,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <?php else: ?>
   <p class="text-center text-gray-500 mt-10">This user hasn't uploaded any spots yet.</p>
 <?php endif; ?>
+
 
 
   <!-- BACK TO HOME LINK -->
