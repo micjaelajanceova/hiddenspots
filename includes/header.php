@@ -25,7 +25,7 @@ $user_rank = $_SESSION['user_rank'] ?? 'user'; // assume normal user by default
   <!-- HORNY BLOK: Logo + Menu links -->
   <div class="flex flex-col gap-8">
     <!-- Logo -->
-<a href="index.php" class="logo text-black hover:text-blue-500">
+<a href="/hiddenspots/index.php" class="logo text-black hover:text-blue-500">
   <span class="text-3xl font-extrabold text-black">HiddenSpots</span>
 </a>
 
@@ -34,16 +34,16 @@ $user_rank = $_SESSION['user_rank'] ?? 'user'; // assume normal user by default
 
     <!-- Menu links s ikonami -->
     <nav class="flex flex-col pt-5 gap-6 text-black">
-      <a href="feed.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+      <a href="/hiddenspots/feed.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
         <i class="ph-house text-lg"></i> Feed
       </a>
-      <a href="favourites.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+      <a href="/hiddenspots/favourites.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
         <i class="ph-heart text-lg"></i> Favourites
       </a>
-      <a href="trending.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+      <a href="/hiddenspots/trending.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
         <i class="ph-trend-up text-lg"></i> Trending
       </a>
-      <a href="about.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+      <a href="/hiddenspots/about.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
         <i class="ph-info text-lg"></i> About HS
       </a>
 

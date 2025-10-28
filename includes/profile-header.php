@@ -3,15 +3,31 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+// Get user info
+$user_name = $_SESSION['user_name'] ?? 'User';
+$user_photo = $_SESSION['profile_photo'] ?? null;
+
+// Generate proper URL for the photo
+$photo_url = null;
+if (!empty($user_photo)) {
+    // Absolute path from web root
+    $photo_url = '/hiddenspots/' . $user_photo;
+}
 ?>
 
 <?php if(isset($_SESSION['user_id'])): ?>
   <!-- STICKY PROFILE (only when logged in) -->
   <div class="fixed top-0 right-0 z-50 px-4 py-3 flex justify-end items-center w-full md:w-auto">
     <div class="relative">
-      <button id="profileBtn" class="flex items-center justify-center w-10 h-10 bg-black text-white rounded-full font-semibold text-lg">
-        <?= strtoupper(substr($_SESSION['user_name'], 0, 1)) ?>
+      <button id="profileBtn" class="flex items-center justify-center w-10 h-10 bg-black text-white rounded-full font-semibold text-lg overflow-hidden">
+        <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . '/hiddenspots/' . $user_photo)): ?>
+          <img src="<?= htmlspecialchars($photo_url) ?>" alt="Profile" class="w-full h-full object-cover rounded-full">
+        <?php else: ?>
+          <?= strtoupper(substr($user_name, 0, 1)) ?>
+        <?php endif; ?>
       </button>
+      
       <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white border rounded-2xl shadow-lg hidden overflow-hidden z-50">
         <a href="auth/my-profile.php" class="block px-4 py-2 text-sm hover:bg-gray-100">My Profile</a>
         <a href="upload.php" class="block px-4 py-2 text-sm hover:bg-gray-100">Upload</a>
