@@ -65,7 +65,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- ALL SPOTS PHOTO FEED -->
     <?php if (!empty($spots)): ?>
-      <div class="columns-2 sm:columns-3 md:columns-4 gap-4 space-y-4">
+      <div class="columns-2 sm:columns-3 lg:columns-4 gap-4 space-y-4">
         <?php foreach ($spots as $spot): ?>
           <a href="spot-view.php?id=<?= htmlspecialchars($spot['id']) ?>" class="block break-inside-avoid overflow-hidden group relative">
             <img src="<?= htmlspecialchars($spot['file_path']) ?>" 

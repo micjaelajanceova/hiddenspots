@@ -107,11 +107,11 @@ if ($user_id) {
   </div>
 
   <!-- Image + Actions -->
-  <div class="flex flex-col md:flex-row gap-6 bg-white p-4 rounded-xl shadow">
+  <div class="flex flex-col md:flex-row gap-6 bg-white p-4 shadow">
     <div class="flex-1">
       <img src="<?=htmlspecialchars($spot['file_path'])?>" 
            alt="<?=htmlspecialchars($spot['name'])?>" 
-           class="w-full h-[400px] md:h-[500px] object-cover rounded">
+           class="w-full h-[400px] md:h-[600px] object-cover">
     </div>
 
     <div class="w-full md:w-72 flex flex-col gap-4">
