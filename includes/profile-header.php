@@ -4,15 +4,14 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Get user info
-$user_name = $_SESSION['user_name'] ?? 'User';
-$user_photo = $_SESSION['profile_photo'] ?? null;
+// Use $profile_user if set, otherwise fallback to logged-in user
+$name = $profile_user['name'] ?? ($_SESSION['user_name'] ?? 'User');
+$photo = $profile_user['profile_photo'] ?? ($_SESSION['profile_photo'] ?? null);
 
 // Generate proper URL for the photo
 $photo_url = null;
-if (!empty($user_photo)) {
-    // Absolute path from web root
-    $photo_url = '/hiddenspots/' . $user_photo;
+if (!empty($photo)) {
+    $photo_url = '/hiddenspots/' . $photo;
 }
 ?>
 
@@ -21,10 +20,10 @@ if (!empty($user_photo)) {
   <div class="fixed top-0 right-0 z-50 px-4 py-3 flex justify-end items-center w-full md:w-auto">
     <div class="relative">
       <button id="profileBtn" class="flex items-center justify-center w-10 h-10 bg-black text-white rounded-full font-semibold text-lg overflow-hidden">
-        <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . '/hiddenspots/' . $user_photo)): ?>
+        <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . '/hiddenspots/' . $photo)): ?>
           <img src="<?= htmlspecialchars($photo_url) ?>" alt="Profile" class="w-full h-full object-cover rounded-full">
         <?php else: ?>
-          <?= strtoupper(substr($user_name, 0, 1)) ?>
+          <?= strtoupper(substr($name, 0, 1)) ?>
         <?php endif; ?>
       </button>
       

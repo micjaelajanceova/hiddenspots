@@ -3,16 +3,23 @@ include '../includes/db.php';
 include '../includes/header.php';
 include '../classes/Spot.php';
 
-$user_id = $_GET['user_id'] ?? null;
+// Získame user_id z GET alebo použijeme prihláseného používateľa
+$user_id = $_GET['user_id'] ?? $_SESSION['user_id'];
 if (!$user_id) die("No user ID provided.");
 
-// Fetch user info
-$stmt = $pdo->prepare("SELECT id, name FROM users WHERE id=?");
+// Načítanie info o používateľovi vrátane profilovej fotky
+$stmt = $pdo->prepare("SELECT id, name, profile_photo FROM users WHERE id=?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$user) die("User not found.");
 
-// Fetch spots posted by this user
+// Absolútna URL fotky, ak existuje
+$photo_url = null;
+if (!empty($user['profile_photo'])) {
+    $photo_url = '/hiddenspots/' . $user['profile_photo'];
+}
+
+// Načítanie spotov používateľa
 $spotObj = new Spot($pdo);
 $stmt = $pdo->prepare("SELECT * FROM hidden_spots WHERE user_id=? ORDER BY created_at DESC");
 $stmt->execute([$user_id]);
@@ -23,8 +30,12 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   <!-- PROFILE HEADER -->
   <div class="flex items-center justify-center mb-6 flex-col gap-3">
-    <div class="w-16 h-16 bg-black text-white flex items-center justify-center rounded-full text-2xl font-semibold">
-      <?= strtoupper(substr($user['name'], 0, 1)) ?>
+    <div class="w-16 h-16 bg-black text-white flex items-center justify-center rounded-full text-2xl font-semibold overflow-hidden">
+      <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . '/hiddenspots/' . $user['profile_photo'])): ?>
+        <img src="<?= htmlspecialchars($photo_url) ?>" alt="Profile" class="w-full h-full object-cover rounded-full">
+      <?php else: ?>
+        <?= strtoupper(substr($user['name'], 0, 1)) ?>
+      <?php endif; ?>
     </div>
     <h1 class="text-2xl font-bold"><?= htmlspecialchars($user['name']) ?></h1>
   </div>

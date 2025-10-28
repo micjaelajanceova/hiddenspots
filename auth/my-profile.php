@@ -10,7 +10,12 @@ if(!isset($_SESSION['user_id'])){
 }
 
 $user_id = $_SESSION['user_id'];
-$user_name = $_SESSION['user_name'] ?? 'User';
+// Fetch user info (for profile header)
+$stmt = $pdo->prepare("SELECT name, profile_photo FROM users WHERE id=?");
+$stmt->execute([$user_id]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+$user_name = $user['name'] ?? 'User';
+$user_photo = $user['profile_photo'] ?? null;
 
 // načítanie profilovej fotky z DB
 $stmt = $pdo->prepare("SELECT profile_photo FROM users WHERE id=?");
