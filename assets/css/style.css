@@ -1,7 +1,7 @@
 h1 {
   font-size: 2.5rem !important;
   font-weight: 700 !important;
-  text-transform: uppercase !important;
+  text-transform: lowercase !important;
   line-height: 1 !important;
   background: rgb(128, 179, 226) !important;
   -webkit-background-clip: text !important;
@@ -13,7 +13,6 @@ h1 {
 h2 {
   font-size: 1.5rem !important;
   font-weight: 400 !important;
-  text-transform: uppercase !important;
   line-height: 1.1 !important;
 }
 
@@ -52,7 +51,7 @@ button {
   border: none !important;
   border-radius: 8px !important;
   cursor: pointer !important;
-  background: rgb(5, 5, 5) !important;
+  background: rgb(5, 5, 5);
   color: #ffffff !important;
   transition: opacity 0.3s ease !important;
 }
@@ -69,17 +68,13 @@ button:hover {
   border: none !important;
   border-radius: 8px !important;
   cursor: pointer !important;
-  background: rgb(32, 34, 37) !important;
+  background: rgb(32, 34, 37) ;
   color: #ffffff !important;
   transition: opacity 0.3s ease !important;
 }
 
 .button:hover {
   opacity: 0.85 !important;
-}
-
-.logo {
-  color: rgb(126, 126, 126) !important;
 }
 
 #favCheck {

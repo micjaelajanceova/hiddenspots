@@ -36,28 +36,8 @@ try {
   <div class="w-full px-4 sm:px-6 lg:px-8">
 
 <!-- LOGIN / SIGNUP -->
-<div class="mt-6 flex justify-end gap-2">
-  <?php if(isset($_SESSION['user_id'])): ?>
-    <div class="relative">
-      <!-- Avatar s prvým písmenom mena (rovnaký štýl ako pri komentároch) -->
-      <button id="profileBtn" class="flex items-center justify-center w-10 h-10 bg-black text-white rounded-full font-semibold text-lg">
-        <?=strtoupper(substr($_SESSION['user_name'], 0, 1))?>
-      </button>
+<?php include 'includes/profile-header.php'; ?>
 
-      <!-- Dropdown menu -->
-      <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white border rounded-2xl shadow-lg hidden overflow-hidden z-50">
-        <a href="profile.php" class="block px-4 py-2 text-sm hover:bg-gray-100">My Profile</a>
-        <a href="upload.php" class="block px-4 py-2 text-sm hover:bg-gray-100">Upload</a>
-        <div class="border-t my-1"></div>
-        <a href="auth/logout.php" class="block px-4 py-2 text-sm text-red-600 font-semibold hover:bg-red-50">Logout</a>
-      </div>
-    </div>
-  <?php else: ?>
-    <!-- Tlačidlá pre neprihláseného používateľa -->
-    <a href="auth/login.php?action=login" class="bg-black text-white px-4 py-2 rounded-full">Login</a>
-    <a href="auth/login.php?action=register" class="bg-gray-200 text-black px-4 py-2 rounded-full">Register</a>
-  <?php endif; ?>
-</div>
 
 
 
@@ -67,7 +47,7 @@ try {
 <section class="mt-12 pb-20">
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="mb-3">TRENDING</h1>
+      <h1 class="mb-3">Trending</h1>
       <h2 class="mt-1">Explore what most people miss.</h2>
     </div>
     <a href="trending.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">See more →</a>
@@ -205,7 +185,7 @@ try {
 
 <!-- UPLOAD CTA -->
 <section class="mt-12 mb-20 lg:mb-5">
-  <div class="bg-gray-800 p-10 flex flex-col items-center text-center">
+  <div class="bg-black p-10 flex flex-col items-center text-center">
     <h2 class="text-3xl font-bold text-white">UPLOAD A NEW PICTURE</h2>
     <h4 class="text-sm text-gray-300 mt-2">Share a secret spot with us.</h4>
     <button 

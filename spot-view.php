@@ -1,7 +1,7 @@
 <?php
 include 'includes/db.php';
+include 'includes/header.php';
 include 'classes/Spot.php';
-include 'includes/header.php'; // session already started
 
 $spot_id = $_GET['id'] ?? null;
 if (!$spot_id) die("No ID provided.");
@@ -84,7 +84,12 @@ if ($user_id) {
 }
 ?>
 
-<main class="flex-1 bg-gray-50 min-h-screen py-8 md:py-12 px-4 md:px-8 max-w-7xl mx-auto flex flex-col gap-8">
+
+
+<main class="flex-1 bg-gray-50 min-h-screen pt-8 pb-8 md:pb-12 px-4 md:px-8 max-w-7xl mx-auto flex flex-col gap-8">
+
+<!-- LOGIN / SIGNUP -->
+<?php include 'includes/profile-header.php'; ?>
 
   <!-- Spot title -->
   <div class="flex flex-col gap-2">
@@ -133,9 +138,14 @@ if ($user_id) {
 </button>
       </div>
 
-      <div class="mt-6 text-gray-700 text-sm">
-        <?=htmlspecialchars($spot['description'])?>
-      </div>
+      <div class="mt-6 text-sm">
+    <p class="mb-2">
+      <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>" class="font-semibold text-blue-600 hover:underline">
+        @<?=htmlspecialchars($spot['user_name'])?>
+      </a>
+    </p>
+  <?=htmlspecialchars($spot['description'])?>
+</div>
     </div>
   </div>
 

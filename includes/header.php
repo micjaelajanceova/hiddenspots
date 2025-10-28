@@ -14,6 +14,7 @@ $user_rank = $_SESSION['user_rank'] ?? 'user'; // assume normal user by default
     <title>HiddenSpots — discover your city's secret places</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="style.css?v=<?php echo time(); ?>">
 </head>
 <body class="flex flex-col md:flex-row min-h-screen">
 
@@ -25,7 +26,7 @@ $user_rank = $_SESSION['user_rank'] ?? 'user'; // assume normal user by default
   <div class="flex flex-col gap-8">
     <!-- Logo -->
 <a href="index.php" class="logo text-black hover:text-blue-500">
-  <span class="text-5xl font-extrabold text-black">H</span><span class="text-5xl font-semibold text-black">IDDEN </span><span class="text-5xl font-extrabold text-black">S</span><span class="text-5xl font-semibold text-black">POTS</span>
+  <span class="text-3xl font-extrabold text-black">HiddenSpots</span>
 </a>
 
 
@@ -34,21 +35,21 @@ $user_rank = $_SESSION['user_rank'] ?? 'user'; // assume normal user by default
     <!-- Menu links s ikonami -->
     <nav class="flex flex-col pt-5 gap-6 text-black">
       <a href="feed.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
-        <i class="ph-house text-lg"></i> FEED
+        <i class="ph-house text-lg"></i> Feed
       </a>
       <a href="favourites.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
-        <i class="ph-heart text-lg"></i> FAVOURITES
+        <i class="ph-heart text-lg"></i> Favourites
       </a>
       <a href="trending.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
-        <i class="ph-trend-up text-lg"></i> TRENDING
+        <i class="ph-trend-up text-lg"></i> Trending
       </a>
       <a href="about.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
-        <i class="ph-info text-lg"></i> ABOUT HS
+        <i class="ph-info text-lg"></i> About HS
       </a>
 
       <?php if(isset($_SESSION['user_email']) && $_SESSION['user_email'] === 'janceova.mi@gmail.com'): ?>
     <a href="admin.php" class="flex items-center gap-4 font-semibold hover:text-red-500">
-      <i class="ph-shield-star text-lg"></i> ADMIN PANEL
+      <i class="ph-shield-star text-lg"></i> Admin Panel
     </a>
   <?php endif; ?>
 
