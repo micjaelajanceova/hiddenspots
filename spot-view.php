@@ -1,6 +1,5 @@
 <?php
 include 'includes/db.php';
-include 'includes/header.php';
 include 'classes/Spot.php';
 
 $spot_id = $_GET['id'] ?? null;
@@ -69,6 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 }
+
+
+include 'includes/header.php';
 
 // Refresh comments
 $comments = $spotObj->getComments($spot_id);
