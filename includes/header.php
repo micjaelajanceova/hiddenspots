@@ -1,11 +1,14 @@
 <?php
 if (session_status() == PHP_SESSION_NONE) {
-  session_start();
+    session_start();
 }
 
-$user_id = $_SESSION['user_id'] ?? null;  // null if not logged in
-$user_rank = $_SESSION['user_rank'] ?? 'user'; // assume normal user by default
+$user_id = $_SESSION['user_id'] ?? null;
+$user_role = $_SESSION['role'] ?? 'user';
 ?>
+
+
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -32,6 +35,8 @@ $user_rank = $_SESSION['user_rank'] ?? 'user'; // assume normal user by default
 
 
 
+
+
     <!-- Menu links s ikonami -->
     <nav class="flex flex-col pt-5 gap-6 text-black">
       <a href="/hiddenspots/feed.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
@@ -47,11 +52,11 @@ $user_rank = $_SESSION['user_rank'] ?? 'user'; // assume normal user by default
         <i class="ph-info text-lg"></i> About HS
       </a>
 
-      <?php if(isset($_SESSION['user_email']) && $_SESSION['user_email'] === 'janceova.mi@gmail.com'): ?>
+      <?php if (isset($_SESSION['user_id']) && $user_role === 'admin'): ?>
     <a href="admin.php" class="flex items-center gap-4 font-semibold hover:text-red-500">
       <i class="ph-shield-star text-lg"></i> Admin Panel
     </a>
-  <?php endif; ?>
+<?php endif; ?>
 
     </nav>
   </div>
@@ -69,7 +74,9 @@ $user_rank = $_SESSION['user_rank'] ?? 'user'; // assume normal user by default
 
 <!-- Upload Modal -->
 <div id="uploadModal" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
-  <div id="uploadContainer" class="bg-white rounded-2xl shadow-lg w-full max-w-3xl h-[80vh] flex flex-col overflow-hidden relative animate-[fadeIn_0.3s_ease]">
+<div id="uploadContainer" 
+     class="bg-white rounded-2xl shadow-lg w-full h-full md:max-w-3xl md:h-[80vh] flex flex-col overflow-hidden relative animate-[fadeIn_0.3s_ease]">
+
    
     <!-- Header -->
     <div class="flex justify-between items-center p-4 border-b border-gray-200">
