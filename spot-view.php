@@ -108,43 +108,56 @@ if ($user_id) {
 
   <!-- Image + Actions -->
   <div class="flex flex-col md:flex-row gap-6 bg-white p-4 shadow">
-    <div class="flex-1">
-      <img src="<?=htmlspecialchars($spot['file_path'])?>" 
-           alt="<?=htmlspecialchars($spot['name'])?>" 
-           class="w-full h-[400px] md:h-[600px] object-cover">
-    </div>
+<div class="relative flex-1 group overflow-hidden rounded-xl">
+  <img src="<?= htmlspecialchars($spot['file_path']) ?>" 
+       alt="<?= htmlspecialchars($spot['name']) ?>" 
+       class="w-full h-[400px] md:h-[600px] object-cover transition duration-500" 
+       id="spotImage">
+
+  <!-- Toast directly over the image -->
+  <div id="favToast" 
+       class="absolute inset-0 flex items-center justify-center text-white text-sm font-medium
+              bg-black bg-opacity-0 opacity-0 transition-all duration-500 pointer-events-none">
+    <span class="bg-black bg-opacity-50 px-4 py-2 rounded-full">Saved to favourites</span>
+  </div>
+</div>
 
     <div class="w-full md:w-72 flex flex-col gap-4">
       <div class="flex items-center gap-4 text-gray-600">
-    <!-- Like (heart) -->
-    <button id="likeBtn" class="relative w-30 h-30 flex items-center justify-center">
-        <svg id="likeIcon" class="w-6 h-6 text-gray-400 transition-colors duration-300 <?= $liked ? 'text-red-600' : 'text-gray-400' ?>" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-        </svg>
+    <!-- LIKE button -->
+    <button id="likeBtn" class="relative w-30 h-30 flex items-center justify-center group">
+      <svg id="likeIcon" 
+          class="w-6 h-6 transition-colors duration-300 
+          <?= $liked ? 'text-red-600' : 'text-gray-400 ' ?>" 
+          fill="currentColor" 
+          viewBox="0 0 24 24">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 
+                  4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 
+                  14.76 3 16.5 3 19.58 3 22 5.42 22 8.5
+                  c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
     </button>
 
         <!-- Comment Icon -->
-        <button onclick="document.getElementById('comments').scrollIntoView({behavior:'smooth'})" class="flex items-center gap-1">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7l-4 4V10a2 2 0 0 1 2-2h2"/>
-          </svg>
-          <?=count($comments)?>
-        </button>
-
-        <!-- Favorite Icon -->
-<!-- Favorite (bookmark/star) -->
-<button id="favBtn" class="relative w-10 h-10 flex items-center justify-center">
-
-<svg id="favIcon" class="w-30 h-30 <?= $favorited ? 'text-yellow-500' : 'text-gray-400' ?>" fill="currentColor" viewBox="0 0 40 40">
-    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-</svg>
-    <!-- Animation checkmark -->
-    <span id="favCheck" class="absolute inset-0 flex items-center justify-center opacity-0 pointer-events-none">
-        <svg class="w-6 h-6 text-green-500 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+    <button onclick="document.getElementById('comments').scrollIntoView({behavior:'smooth'})" 
+            class="flex items-center gap-1 text-gray-400 hover:text-gray-700 transition-colors">
+        <svg class="w-6 h-6 text-gray-400 hover:text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"/>
         </svg>
-    </span>
+        <span class="text-gray-400 font-extralarge"><?= count($comments) ?></span>
+    </button>
+
+
+
+
+<!-- FAVORITE / BOOKMARK ICON -->
+<button id="favBtn" class="relative w-15 h-15 flex items-center justify-center">
+  <svg id="favIcon" class="w-6 h-6 <?= $favorited ? 'text-yellow-500' : 'text-gray-400' ?> " fill="currentColor" viewBox="0 0 24 24">
+    <path d="M6 4c-1.1 0-2 .9-2 2v16l8-5.33L20 22V6c0-1.1-.9-2-2-2H6z"/>
+  </svg>
 </button>
+
+
       </div>
 
       <div class="mt-6 text-sm">
@@ -226,54 +239,57 @@ if ($user_id) {
 </main>
 
 <script>
-// LIKE button
-const likeBtn = document.getElementById('likeBtn');
-const likeIcon = document.getElementById('likeIcon');
-
-likeBtn?.addEventListener('click', ()=>{
-    const spotId = <?= $spot_id ?>;
-    fetch('actions/like.php', {
-        method:'POST',
-        headers:{'Content-Type':'application/x-www-form-urlencoded'},
-        body:'spot_id='+spotId
-    }).then(r=>r.text()).then(res=>{
-        if(res==='not_logged_in') return alert('You must be logged in to like!');
-        if(res==='liked') {
-            likeIcon.classList.remove('text-gray-400');
-            likeIcon.classList.add('text-red-600');
-        }
-        if(res==='unliked') {
-            likeIcon.classList.remove('text-red-600');
-            likeIcon.classList.add('text-gray-400');
-        }
-    });
-});
-
-// FAVORITE button
 const favBtn = document.getElementById('favBtn');
-const favCheck = document.getElementById('favCheck');
 const favIcon = document.getElementById('favIcon');
+const favToast = document.getElementById('favToast');
+const spotImage = document.getElementById('spotImage');
 
-favBtn?.addEventListener('click', ()=>{
-    const spotId = <?= $spot_id ?>;
-    fetch('actions/favourite.php', {
-        method:'POST',
-        headers:{'Content-Type':'application/x-www-form-urlencoded'},
-        body:'spot_id='+spotId
-    }).then(r=>r.text()).then(res=>{
-        if(res==='not_logged_in') return alert('You must be logged in to favorite!');
-        if(res==='added') {
-            favIcon.classList.remove('text-gray-400');
-            favIcon.classList.add('text-yellow-500');
-            favCheck.classList.add('show');
-            setTimeout(()=>favCheck.classList.remove('show'), 800);
-        }
-        if(res==='removed') {
-            favIcon.classList.remove('text-yellow-500');
-            favIcon.classList.add('text-gray-400');
-        }
-    });
+favBtn.addEventListener('click', () => {
+  const spotId = <?= $spot_id ?>;
+  fetch('actions/favourite.php', {
+    method: 'POST',
+    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+    body: 'spot_id=' + spotId
+  })
+  .then(r => r.text())
+  .then(res => {
+    if (res === 'not_logged_in') return alert('You must be logged in to favorite!');
+
+    if (res === 'added') {
+      favIcon.classList.remove('text-gray-400');
+      favIcon.classList.add('text-yellow-500');
+      showFavToast("Saved to favourites");
+    }
+
+    if (res === 'removed') {
+      favIcon.classList.remove('text-yellow-500');
+      favIcon.classList.add('text-gray-400');
+      showFavToast("Removed from favourites");
+    }
+  });
 });
+
+function showFavToast(message) {
+  favToast.querySelector('span').textContent = message;
+
+  // brief dark fade over the image
+  favToast.classList.remove('opacity-0');
+  favToast.classList.add('opacity-100');
+  favToast.classList.add('bg-opacity-20'); // subtle darkening
+
+  setTimeout(() => {
+    favToast.classList.remove('bg-opacity-20');
+    favToast.classList.add('bg-opacity-0');
+  }, 500); // dark fade lasts only 0.5s
+
+  setTimeout(() => {
+    favToast.classList.remove('opacity-100');
+    favToast.classList.add('opacity-0');
+  }, 3000); // text fades out after 3s
+}
+
+
+
 </script>
 
 <?php include 'includes/footer.php'; ?>
