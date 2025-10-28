@@ -1,12 +1,24 @@
-<?php include 'includes/header.php'; ?>
+<?php
+include 'includes/db.php';
+include 'includes/header.php';
+include 'classes/Spot.php';
+
+// Fetch all spots with user info
+$spotObj = new Spot($pdo);
+$stmt = $pdo->prepare("SELECT hs.*, u.name AS user_name FROM hidden_spots hs JOIN users u ON hs.user_id = u.id ORDER BY created_at DESC");
+$stmt->execute();
+$spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
 <main class="flex-1 bg-white min-h-screen overflow-y-auto">   
   <div class="w-full px-4 sm:px-6 lg:px-8">
-<!-- SEARCH -->
-<div class="mt-6">
+
+    <!-- SEARCH -->
+    <div class="mt-6">
       <form action="search.php" method="get" class="flex gap-3 items-center">
         <input name="query" type="search" placeholder="Search city — e.g. Copenhagen"
-               class="flex-1 px-4 py-3 rounded-l-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400" />
-        <button type="submit" class="bg-black text-white px-4 py-3 rounded-r-lg font-semibold hover:opacity-95">
+               class="flex-1 px-4 py-3 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400" />
+        <button type="submit" class="bg-black text-white px-4 py-3 font-semibold hover:opacity-95">
           Search
         </button>
 
@@ -47,8 +59,49 @@
         <div class="mt-3 text-sm text-gray-500">Click a filter to reload the feed (connect to PHP or AJAX).</div>
       </div>
     </div>
-    </div>
-     </main>
 
+    <!-- DIVIDER -->
+    <div class="border-t border-gray-300 my-6"></div>
+
+    <!-- ALL SPOTS PHOTO FEED -->
+    <?php if (!empty($spots)): ?>
+      <div class="columns-2 sm:columns-3 md:columns-4 gap-4 space-y-4">
+        <?php foreach ($spots as $spot): ?>
+          <a href="spot-view.php?id=<?= htmlspecialchars($spot['id']) ?>" class="block break-inside-avoid overflow-hidden group relative">
+            <img src="<?= htmlspecialchars($spot['file_path']) ?>" 
+                 alt="<?= htmlspecialchars($spot['name']) ?>" 
+                 class="w-full object-cover transition-transform duration-300 group-hover:scale-105">
+            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-sm font-semibold">
+              <?= htmlspecialchars($spot['name']) ?>
+            </div>
+            <div class="absolute bottom-1 left-1 text-white text-xs bg-black/50 px-1">
+              @<?= htmlspecialchars($spot['user_name']) ?>
+            </div>
+          </a>
+        <?php endforeach; ?>
+      </div>
+    <?php else: ?>
+      <p class="text-center text-gray-500 mt-10">No spots uploaded yet.</p>
+    <?php endif; ?>
+
+  </div>
+</main>
+
+<script>
+// PROFILE MENU TOGGLE
+const profileBtn = document.getElementById('profileBtn');
+const profileMenu = document.getElementById('profileMenu');
+if(profileBtn && profileMenu){
+  profileBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    profileMenu.classList.toggle('hidden');
+  });
+  document.addEventListener('click', e => {
+    if(!profileMenu.contains(e.target) && !profileBtn.contains(e.target)){
+      profileMenu.classList.add('hidden');
+    }
+  });
+});
+</script>
 
 <?php include 'includes/footer.php'; ?>

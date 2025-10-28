@@ -40,9 +40,6 @@ try {
 
 
 
-
-
-
    <!-- TRENDING (Sticky) -->
 <section class="mt-12 pb-20">
   <div class="flex items-center justify-between">
