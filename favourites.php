@@ -1,12 +1,15 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: auth/login.php");
+    exit();
+}
+
 include 'includes/db.php';
 include 'includes/header.php';
 include 'includes/profile-header.php';
 
-if (!isset($_SESSION['user_id'])){
-    header("Location: auth/login.php");
-    exit();
-}
 
 $user_id = $_SESSION['user_id'];
 

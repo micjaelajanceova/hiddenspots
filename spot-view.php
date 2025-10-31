@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'includes/db.php';
 include 'classes/Spot.php';
 
@@ -124,19 +125,24 @@ if ($user_id) {
 
     <div class="w-full md:w-72 flex flex-col gap-4">
       <div class="flex items-center gap-4 text-gray-600">
-    <!-- LIKE button -->
-    <button id="likeBtn" class="relative w-30 h-30 flex items-center justify-center group">
-      <svg id="likeIcon" 
-          class="w-6 h-6 transition-colors duration-300 
-          <?= $liked ? 'text-red-600' : 'text-gray-400 ' ?>" 
-          fill="currentColor" 
-          viewBox="0 0 24 24">
-          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 
-                  4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 
-                  14.76 3 16.5 3 19.58 3 22 5.42 22 8.5
-                  c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-      </svg>
-    </button>
+<!-- LIKE button -->
+<button id="likeBtn" class="relative flex items-center gap-1 group">
+  <svg id="likeIcon" 
+       class="w-6 h-6 transition-colors duration-300 <?= $liked ? 'text-red-600' : 'text-gray-400' ?>" 
+       fill="currentColor" viewBox="0 0 24 24">
+    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
+             2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 
+             14.76 3 16.5 3 19.58 3 22 5.42 22 8.5
+             c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+  </svg>
+  <span id="likeCount" class="text-sm text-gray-600 ml-1">
+    <?php
+      $stmt = $pdo->prepare("SELECT COUNT(*) FROM likes WHERE spot_id=?");
+      $stmt->execute([$spot_id]);
+      echo $stmt->fetchColumn();
+    ?>
+  </span>
+</button>
 
         <!-- Comment Icon -->
     <button onclick="document.getElementById('comments').scrollIntoView({behavior:'smooth'})" 
@@ -288,6 +294,40 @@ function showFavToast(message) {
   }, 3000); // text fades out after 3s
 }
 
+const likeBtn = document.getElementById('likeBtn');
+const likeIcon = document.getElementById('likeIcon');
+const likeCount = document.getElementById('likeCount');
+
+likeBtn.addEventListener('click', () => {
+  const spotId = <?= $spot_id ?>;
+  fetch('actions/like.php', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: 'spot_id=' + spotId
+  })
+  .then(res => res.text())
+  .then(data => {
+    if (data === 'not_logged_in') {
+      alert('You must be logged in to like!');
+      return;
+    }
+
+    if (data === 'liked') {
+      likeIcon.classList.remove('text-gray-400');
+      likeIcon.classList.add('text-red-600');
+    } else if (data === 'unliked') {
+      likeIcon.classList.remove('text-red-600');
+      likeIcon.classList.add('text-gray-400');
+    }
+
+    // Refresh like count
+    fetch('actions/like.php?count=' + spotId)
+      .then(r => r.text())
+      .then(count => {
+        likeCount.textContent = count;
+      });
+  });
+});
 
 
 </script>
