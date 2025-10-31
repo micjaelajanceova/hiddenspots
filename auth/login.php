@@ -93,7 +93,7 @@ exit();
 <!-- Background slideshow -->
 <div id="bgSlideshow" class="absolute inset-0 z-0">
   <?php foreach($bgImages as $img): ?>
-    <div class="bg-slide" style="background-image: url('<?= htmlspecialchars($img) ?>');"></div>
+    <div class="bg-slide" style="background-image: url('../<?= htmlspecialchars($img) ?>');"></div>
   <?php endforeach; ?>
 </div>
 
