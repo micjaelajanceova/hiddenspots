@@ -84,7 +84,7 @@ try {
   <div class="relative overflow-hidden shadow-md h-96">
     <!-- Background image -->
     <div class="absolute inset-0">
-      <img src="assets/img/hiddenspot9.jpg" 
+      <img src="assets/img/hiddenspot7.jpg" 
            alt="Hidden spot background" 
            class="w-full h-full object-cover">
 
@@ -92,8 +92,8 @@ try {
 
     <!-- Text content -->
     <div class="relative p-8 flex flex-col items-start max-w-xl">
-      <h1 class="text-3xl">ABOUT HIDDEN SPOTS</h1>
-      <p class="mt-2">
+      <h1 class="text-3xl">About HiddenSpot</h1>
+      <p class="mt-2 text-white">
         A photo-sharing app for secret city places. Discover, save and share hidden gems in your town.
       </p>
       <a href="about.php" 
@@ -111,7 +111,7 @@ try {
 <section class="mt-12 pb-20">
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-2xl font-bold mb-3">HOT NEW PICTURES</h1>
+      <h1 class="text-2xl font-bold mb-3">Hot new pictures</h1>
       <h2 class="mt-1">Discover new pictures every day.</h2>
     </div>
     <a href="newest.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">See more →</a>
@@ -150,7 +150,7 @@ try {
 
   <!-- LATEST COMMENTS -->
 <section class="mt-12 pb-20">
-  <h1 class="mb-3">LATEST COMMENTS</h1>
+  <h1 class="mb-3">Latest comments</h1>
   <h2 class="mt-1">See who else loves these hidden places.</h2>
 
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
