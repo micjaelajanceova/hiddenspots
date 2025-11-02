@@ -74,10 +74,9 @@ $user_role = $_SESSION['role'] ?? 'user';
 
 <!-- Upload Modal -->
 <div id="uploadModal" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
-<div id="uploadContainer" 
-     class="bg-white rounded-2xl shadow-lg w-full h-full md:max-w-3xl md:h-[80vh] flex flex-col overflow-hidden relative animate-[fadeIn_0.3s_ease]">
+  <div id="uploadContainer" 
+       class="bg-white rounded-2xl shadow-lg w-full h-full md:max-w-3xl md:h-[80vh] flex flex-col overflow-hidden relative animate-[fadeIn_0.3s_ease]">
 
-   
     <!-- Header -->
     <div class="flex justify-between items-center p-4 border-b border-gray-200">
       <div class="text-center py-3 font-semibold text-lg">Create new post</div>
@@ -119,8 +118,15 @@ $user_role = $_SESSION['role'] ?? 'user';
           <input type="hidden" name="photoData" id="photoData">
           <input type="text" name="name" placeholder="Name" required class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-400 outline-none" />
           <input type="text" name="city" placeholder="City" required class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-400 outline-none" />
-          <input type="text" name="address" placeholder="Address" class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-400 outline-none" />
-          
+          <input type="text" name="address" placeholder="Address (optional)" class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-400 outline-none" />
+
+          <!-- Hidden lat/lng -->
+          <input type="hidden" name="latitude" id="latitude">
+          <input type="hidden" name="longitude" id="longitude">
+
+          <!-- MAP -->
+          <div id="uploadMap" class="w-full h-56 rounded-lg shadow-md border border-gray-200 my-2"></div>
+
           <select name="category" required class="w-full border rounded p-2 bg-white focus:ring-2 focus:ring-blue-400 outline-none">
             <option value="">Select a category</option>
             <option>Nature</option>
@@ -131,9 +137,9 @@ $user_role = $_SESSION['role'] ?? 'user';
             <option>Restaurant</option>
             <option>Other</option>
           </select>
-          
+
           <textarea name="description" rows="3" placeholder="Description or tip" class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-400 outline-none"></textarea>
-          
+
           <div class="flex justify-end gap-3">
             <button type="button" id="backBtn" class="text-gray-600 hover:underline">Back</button>
             <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition">Share</button>
@@ -144,9 +150,6 @@ $user_role = $_SESSION['role'] ?? 'user';
 
   </div>
 </div>
-
-
-
 
 </aside>
 
@@ -194,66 +197,155 @@ $user_role = $_SESSION['role'] ?? 'user';
 </nav>
 
 
+<!-- Leaflet Map Scripts -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 <script>
-  const uploadModal = document.getElementById('uploadModal');
-  const closeBtn = document.getElementById('closeUploadModal');
+const uploadModal = document.getElementById('uploadModal');
+const closeBtn = document.getElementById('closeUploadModal');
 
-  // Vyber všetky tlačidlá, ktoré otvárajú popup
-  const openBtns = document.querySelectorAll(
-    'a[onclick*="uploadModal"], button.ph-plus, button[onclick*="uploadModal"]'
-  );
+// Vyber všetky tlačidlá, ktoré otvárajú modal
+const openBtns = document.querySelectorAll(
+  'a[onclick*="uploadModal"], button.ph-plus, button[onclick*="uploadModal"]'
+);
 
-  openBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      uploadModal.classList.remove('hidden');
+// -------------------------------
+// INITIALIZÁCIA MAPY PRI NAČÍTANÍ
+// -------------------------------
+let uploadMap, uploadMarker;
+document.addEventListener('DOMContentLoaded', () => {
+    const mapEl = document.getElementById('uploadMap');
+    if (!mapEl) return;
 
-      // reset krokov pri otvorení
-      document.getElementById('stepSelect').classList.remove('hidden');
-      document.getElementById('stepPreview').classList.add('hidden');
-      document.getElementById('stepForm').classList.add('hidden');
-      document.getElementById('photoInput').value = '';
-      document.getElementById('previewImage').src = '';
-      document.getElementById('finalImage').src = '';
-      document.getElementById('photoData').value = '';
+    // inicializácia mapy len raz
+    uploadMap = L.map(mapEl).setView([55.6761, 12.5683], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(uploadMap);
+
+    // klik na mapu → pridanie markeru
+    uploadMap.on('click', function(e) {
+        const { lat, lng } = e.latlng;
+        if (uploadMarker) uploadMap.removeLayer(uploadMarker);
+        uploadMarker = L.marker([lat, lng]).addTo(uploadMap)
+            .bindPopup('Selected location').openPopup();
+        document.querySelector('input[name="latitude"]').value = lat;
+        document.querySelector('input[name="longitude"]').value = lng;
     });
-  });
+});
 
-  closeBtn.addEventListener('click', () => {
+// -------------------------------
+// OTVORENIE / ZATVORENIE MODALU
+// -------------------------------
+openBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        uploadModal.classList.remove('hidden');
+
+        // reset krokov
+        document.getElementById('stepSelect').classList.remove('hidden');
+        document.getElementById('stepPreview').classList.add('hidden');
+        document.getElementById('stepForm').classList.add('hidden');
+        document.getElementById('photoInput').value = '';
+        document.getElementById('previewImage').src = '';
+        document.getElementById('finalImage').src = '';
+        document.getElementById('photoData').value = '';
+
+        // po otvorení modalu → refresh layout mapy
+        setTimeout(() => {
+            if (uploadMap) uploadMap.invalidateSize();
+        }, 100);
+    });
+});
+
+closeBtn.addEventListener('click', () => {
     uploadModal.classList.add('hidden');
-  });
+});
 
-  // Base64 + prechod medzi krokmi
-  const photoInput = document.getElementById('photoInput');
-  const previewImage = document.getElementById('previewImage');
-  const finalImage = document.getElementById('finalImage');
-  const photoDataInput = document.getElementById('photoData');
+// -------------------------------
+// BASE64 FOTO + PRECHOD MEDZI KROKMI
+// -------------------------------
+const photoInput = document.getElementById('photoInput');
+const previewImage = document.getElementById('previewImage');
+const finalImage = document.getElementById('finalImage');
+const photoDataInput = document.getElementById('photoData');
 
-  photoInput.addEventListener('change', function(e) {
+photoInput.addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        previewImage.src = event.target.result;
-        finalImage.src = event.target.result;
-        photoDataInput.value = event.target.result;
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            previewImage.src = event.target.result;
+            finalImage.src = event.target.result;
+            photoDataInput.value = event.target.result;
 
-        // prechod do kroku 2
-        document.getElementById('stepSelect').classList.add('hidden');
-        document.getElementById('stepPreview').classList.remove('hidden');
-      };
-      reader.readAsDataURL(file);
+            // prechod do kroku 2
+            document.getElementById('stepSelect').classList.add('hidden');
+            document.getElementById('stepPreview').classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
     }
-  });
+});
 
-  document.getElementById('nextBtn').addEventListener('click', () => {
+document.getElementById('nextBtn').addEventListener('click', () => {
     document.getElementById('stepPreview').classList.add('hidden');
     document.getElementById('stepForm').classList.remove('hidden');
-  });
 
-  document.getElementById('backBtn').addEventListener('click', () => {
+    // po zobrazení formu → refresh mapy
+    setTimeout(() => {
+        if (uploadMap) uploadMap.invalidateSize();
+    }, 100);
+});
+
+document.getElementById('backBtn').addEventListener('click', () => {
     document.getElementById('stepForm').classList.add('hidden');
     document.getElementById('stepPreview').classList.remove('hidden');
-  });
+});
+
+// -------------------------------
+// ADRESA → MAP MARKER
+// -------------------------------
+const addressInput = document.querySelector('input[name="address"]');
+if(addressInput){
+    addressInput.addEventListener('change', function () {
+        const address = addressInput.value.trim();
+        if (!address || !uploadMap) return;
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.length > 0) {
+                    const { lat, lon } = data[0];
+                    uploadMap.setView([lat, lon], 14);
+                    if (uploadMarker) uploadMap.removeLayer(uploadMarker);
+                    uploadMarker = L.marker([lat, lon]).addTo(uploadMap)
+                        .bindPopup('Selected location').openPopup();
+                    document.querySelector('input[name="latitude"]').value = lat;
+                    document.querySelector('input[name="longitude"]').value = lon;
+                } else {
+                    alert('Address not found. You can click on the map to set location.');
+                }
+            })
+            .catch(err => console.error('Error fetching address:', err));
+    });
+
+// -------------------------------
+    const uploadForm = document.getElementById('uploadForm');
+
+uploadForm.addEventListener('submit', (e) => {
+    const lat = document.getElementById('latitude').value.trim();
+    const lng = document.getElementById('longitude').value.trim();
+
+    if (!lat || !lng) {
+        e.preventDefault(); // zastaví submit
+        alert('Please select a location either by entering an address or clicking on the map.');
+        return false;
+    }
+});
+
+}
 </script>
+
+
 

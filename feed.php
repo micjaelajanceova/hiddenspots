@@ -4,6 +4,7 @@ include 'includes/header.php';
 include 'classes/Spot.php';
 
 include 'includes/search.php';
+include 'includes/map.php';
 
 $city = $_GET['query'] ?? '';
 $filter_type = $_GET['type'] ?? '';
@@ -35,6 +36,9 @@ $sql .= " ORDER BY hs.created_at DESC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+
 ?>
 
 
@@ -47,15 +51,15 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <?php include 'includes/profile-header.php'; ?>
 
   <!-- STICKY SEARCH LIŠTA -->
-  <div class="sticky z-50 flex items-center gap-2 mb-6">
+  <div class="z-50 flex items-center gap-2 mb-6">
     <form action="feed.php" method="get" class="flex gap-2 items-center w-auto">
       <input 
         name="query" 
         type="search" 
         placeholder="Search city — e.g. Copenhagen"
-        value="<?= htmlspecialchars($city) ?>"
+        value=""
         class="w-64 px-3 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-400 text-sm"
-        required
+   
       />
       <button type="submit" class="bg-black text-white px-3 py-1 rounded text-sm hover:opacity-95">
         Search
@@ -82,6 +86,13 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
   </div>
 </div>
 
+<!-- SHOW MAP BUTTON -->
+<button id="showMap" class="ml-2 px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-sm">
+    Show Map
+</button>
+
+<!-- Zmeň div mapy -->
+<div id="feedMap" style="display:none; height:500px; margin-top:16px;"></div>
 
 
     <!-- ALL SPOTS PHOTO FEED -->
@@ -109,37 +120,79 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
   </div>
 </main>
 
+
 <script>
-  // FILTER DROPDOWN TOGGLE
-const filterBtn = document.getElementById('filterBtn');
-const filterDropdown = document.getElementById('filterDropdown');
 
-if(filterBtn && filterDropdown){
-  filterBtn.addEventListener('click', e => {
-    e.stopPropagation();
-    filterDropdown.classList.toggle('hidden');
-  });
+// FILTER DROPDOWN TOGGLE
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('filterBtn');
+  const dropdown = document.getElementById('filterDropdown');
 
-  document.addEventListener('click', e => {
-    if(!filterDropdown.contains(e.target) && !filterBtn.contains(e.target)){
-      filterDropdown.classList.add('hidden');
-    }
-  });
-}
-// PROFILE MENU TOGGLE
-const profileBtn = document.getElementById('profileBtn');
-const profileMenu = document.getElementById('profileMenu');
-if(profileBtn && profileMenu){
-  profileBtn.addEventListener('click', e => {
-    e.stopPropagation();
-    profileMenu.classList.toggle('hidden');
-  });
-  document.addEventListener('click', e => {
-    if(!profileMenu.contains(e.target) && !profileBtn.contains(e.target)){
-      profileMenu.classList.add('hidden');
-    }
-  });
+  if(btn && dropdown){
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropdown.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', () => {
+      dropdown.classList.add('hidden');
+    });
+  }
 });
+
+// MAP TOGGLE
+const mapBtn = document.getElementById('showMap');
+const mapDiv = document.getElementById('feedMap');
+let feedMap; // globálna mapa
+
+mapBtn.addEventListener('click', () => {
+    mapDiv.style.display = mapDiv.style.display === 'none' ? 'block' : 'none';
+
+    if (mapDiv.style.display === 'block') {
+        setTimeout(() => {
+            if (!feedMap) initFeedMap(); 
+            else feedMap.invalidateSize();
+        }, 100);
+    }
+});
+
+function initFeedMap() {
+    const spots = <?= json_encode($spots) ?>;
+
+    // centrum mapy
+    let mapCenter = [55.6761, 12.5683]; // default Kodaň
+    const firstSpot = spots.find(s => s.latitude && s.longitude);
+    if(firstSpot) mapCenter = [parseFloat(firstSpot.latitude), parseFloat(firstSpot.longitude)];
+
+    feedMap = L.map('feedMap').setView(mapCenter, 12);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(feedMap);
+
+    // pridanie markerov
+    spots.forEach(spot => {
+        const lat = parseFloat(spot.latitude);
+        const lng = parseFloat(spot.longitude);
+        if(!isNaN(lat) && !isNaN(lng)) {
+            const marker = L.marker([lat, lng]).addTo(feedMap);
+            const popupContent = `
+                <div style="text-align:center; max-width:200px;">
+                    <img src="${spot.file_path}" alt="${spot.name}" style="width:100%; height:auto; border-radius:6px; margin-bottom:5px;" />
+                    <b><a href="spot-view.php?id=${spot.id}" target="_blank" style="color:#1d4ed8; text-decoration:none;">
+                        ${spot.name}
+                    </a></b><br>
+                    ${spot.address}<br>
+                    <small>@${spot.user_name}</small>
+                </div>`;
+            marker.bindPopup(popupContent);
+        }
+    });
+}
+
+
 </script>
+
 
 <?php include 'includes/footer.php'; ?>
