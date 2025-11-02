@@ -51,7 +51,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <?php include 'includes/profile-header.php'; ?>
 
   <!-- STICKY SEARCH LIŠTA -->
-  <div class="z-50 flex items-center gap-2 mb-6">
+  <div class="sticky z-50 flex items-center gap-2 mb-6">
     <form action="feed.php" method="get" class="flex gap-2 items-center w-auto">
       <input 
         name="query" 
@@ -84,12 +84,13 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <?php endforeach; ?>
     </div>
   </div>
-</div>
-
-<!-- SHOW MAP BUTTON -->
+  <!-- SHOW MAP BUTTON -->
 <button id="showMap" class="ml-2 px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-sm">
     Show Map
 </button>
+
+</div>
+
 
 <!-- Zmeň div mapy -->
 <div id="feedMap" style="display:none; height:500px; margin-top:16px;"></div>
