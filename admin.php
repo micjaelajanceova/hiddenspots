@@ -2,11 +2,56 @@
 include 'includes/db.php';
 include 'includes/header.php';
 include 'classes/spot.php';
+include 'includes/profile-header.php';
 
 // Only admin can access
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
   header("Location: index.php");
   exit();
+}
+
+// ===== DELETE SPOT =====
+if (isset($_POST['delete_spot'])) {
+  $id = intval($_POST['id']);
+  $stmt = $pdo->prepare("DELETE FROM hidden_spots WHERE id = ?");
+  $stmt->execute([$id]);
+  echo "<script>alert('Spot deleted successfully'); window.location='admin.php';</script>";
+  exit();
+}
+
+// ===== DELETE COMMENT =====
+if (isset($_POST['delete_comment'])) {
+  $id = intval($_POST['id']);
+  $stmt = $pdo->prepare("DELETE FROM comments WHERE id = ?");
+  $stmt->execute([$id]);
+  echo "<script>alert('Comment deleted successfully'); window.location='admin.php';</script>";
+  exit();
+}
+
+// ===== EDIT COMMENT =====
+if (isset($_POST['edit_comment'])) {
+  $id = intval($_POST['id']);
+  $text = trim($_POST['text']);
+  $stmt = $pdo->prepare("UPDATE comments SET text = ? WHERE id = ?");
+  $stmt->execute([$text, $id]);
+  echo "<script>alert('Comment updated successfully'); window.location='admin.php';</script>";
+  exit();
+}
+
+// ===== TOGGLE BLOCK USER =====
+if (isset($_POST['toggle_block'])) {
+  $id = intval($_POST['id']);
+  // Zisti aktuálny stav používateľa
+  $stmt = $pdo->prepare("SELECT blocked FROM users WHERE id = ?");
+  $stmt->execute([$id]);
+  $user = $stmt->fetch(PDO::FETCH_ASSOC);
+  if ($user) {
+      $newStatus = $user['blocked'] ? 0 : 1;
+      $stmt = $pdo->prepare("UPDATE users SET blocked = ? WHERE id = ?");
+      $stmt->execute([$newStatus, $id]);
+      echo "<script>alert('User ".($newStatus ? 'blocked' : 'unblocked')." successfully'); window.location='admin.php';</script>";
+      exit();
+  }
 }
 
 // Fetch data
@@ -19,8 +64,6 @@ $comments = $pdo->query("
     ORDER BY c.created_at DESC
 ")->fetchAll(PDO::FETCH_ASSOC);
 $users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY id ASC")->fetchAll(PDO::FETCH_ASSOC);
-
-
 ?>
 
 <main class="flex-1 bg-white min-h-screen overflow-y-auto">
@@ -65,9 +108,9 @@ $users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY 
                 </td>
                 <td class="p-3"><?= $s['created_at'] ?></td>
                 <td class="p-3">
-                  <form action="actions/delete_spot.php" method="POST" onsubmit="return confirm('Delete this spot?');">
+                  <form method="POST" onsubmit="return confirm('Delete this spot?');">
                     <input type="hidden" name="id" value="<?= $s['id'] ?>">
-                    <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+                    <button type="submit" name="delete_spot" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
                   </form>
                 </td>
               </tr>
@@ -94,18 +137,22 @@ $users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY 
           </thead>
           <tbody>
             <?php foreach ($comments as $c): ?>
-              <tr class="border-b hover:bg-gray-100">
+              <tr class="border-b hover:bg-gray-100 align-top">
                 <td class="p-3"><?= $c['id'] ?></td>
                 <td class="p-3"><?= htmlspecialchars($c['user_name']) ?></td>
                 <td class="p-3"><?= htmlspecialchars($c['spot_name']) ?></td>
-                <td class="p-3"><?= htmlspecialchars($c['text']) ?></td>
-                <td class="p-3"><?= $c['created_at'] ?></td>
                 <td class="p-3">
-                  <form action="delete_comment.php" method="POST" onsubmit="return confirm('Delete this comment?');">
+                  <form method="POST" class="flex flex-col gap-2">
+                    <textarea name="text" class="border border-gray-300 rounded p-2 w-full" rows="2"><?= htmlspecialchars($c['text']) ?></textarea>
                     <input type="hidden" name="id" value="<?= $c['id'] ?>">
-                    <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+                    <div class="flex gap-2">
+                      <button type="submit" name="edit_comment" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Save</button>
+                      <button type="submit" name="delete_comment" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600" onclick="return confirm('Delete this comment?');">Delete</button>
+                    </div>
                   </form>
                 </td>
+                <td class="p-3"><?= $c['created_at'] ?></td>
+                <td class="p-3"></td>
               </tr>
             <?php endforeach; ?>
           </tbody>
@@ -125,7 +172,6 @@ $users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY 
               <th class="p-3 border-b">Email</th>
               <th class="p-3 border-b">Role</th>
               <th class="p-3 border-b">Blocked</th>
-              <th class="p-3 border-b">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -135,15 +181,16 @@ $users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY 
                 <td class="p-3"><?= htmlspecialchars($u['name']) ?></td>
                 <td class="p-3"><?= htmlspecialchars($u['email']) ?></td>
                 <td class="p-3"><?= htmlspecialchars($u['role']) ?></td>
-                <td class="p-3"><?= $u['blocked'] ? 'Yes' : 'No' ?></td>
                 <td class="p-3">
-                  <form action="toggle_block.php" method="POST">
-                    <input type="hidden" name="id" value="<?= $u['id'] ?>">
-                    <button type="submit" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
-                      <?= $u['blocked'] ? 'Unblock' : 'Block' ?>
-                    </button>
-                  </form>
-                </td>
+  <form method="POST" style="display:inline-block;">
+    <input type="hidden" name="id" value="<?= $u['id'] ?>">
+    <button type="submit" name="toggle_block" 
+        class="<?= $u['blocked'] ? 'bg-green-500' : 'bg-red-500' ?> text-white px-3 py-1 rounded hover:opacity-80">
+      <?= $u['blocked'] ? 'Unblock' : 'Block' ?>
+    </button>
+  </form>
+</td>
+
               </tr>
             <?php endforeach; ?>
           </tbody>

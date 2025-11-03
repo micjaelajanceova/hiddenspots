@@ -20,24 +20,29 @@ if (isset($_POST['action'])) {
         $stmt->execute(['email' => $_POST['email']]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && password_verify($_POST['password'], $user['password'])) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['user_name'] = $user['name'];
-            $_SESSION['user_email'] = $user['email'];
-            $_SESSION['role'] = $user['role'];
+        if ($user) {
+            if ($user['blocked']) {
+                $msg = "Your account has been blocked. Please contact the administrator.";
+            } elseif (password_verify($_POST['password'], $user['password'])) {
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['user_name'] = $user['name'];
+                $_SESSION['user_email'] = $user['email'];
+                $_SESSION['role'] = $user['role'];
 
-            // Admin check
-if ($user['role'] === 'admin') {
-    header("Location: ../admin.php");
-} else {
-    header("Location: ../index.php");
-}
-exit();
-
+                if ($user['role'] === 'admin') {
+                    header("Location: ../admin.php");
+                    exit();
+                } else {
+                    header("Location: ../index.php");
+                    exit();
+                }
+            } else {
+                $msg = "Incorrect email or password.";
+            }
         } else {
             $msg = "Incorrect email or password.";
         }
-    }
+    } 
 
     if ($_POST['action'] === 'register') {
         if ($_POST['password'] !== ($_POST['password_confirm'] ?? '')) {
@@ -62,6 +67,8 @@ exit();
         }
     }
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

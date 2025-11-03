@@ -51,24 +51,24 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <?php include 'includes/profile-header.php'; ?>
 
   <!-- STICKY SEARCH LIŠTA -->
-  <div class="sticky z-50 flex items-center gap-2 mb-6">
+  <div class=" flex items-center gap-2 mb-6">
     <form action="feed.php" method="get" class="flex gap-2 items-center w-auto">
       <input 
         name="query" 
         type="search" 
         placeholder="Search city — e.g. Copenhagen"
-        value=""
+        value="<?= htmlspecialchars($city) ?>"
         class="w-64 px-3 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-400 text-sm"
    
       />
-      <button type="submit" class="bg-black text-white px-3 py-1 rounded text-sm hover:opacity-95">
+      <button type="submit" class="bg-gray-200 text-black px-3 py-1 rounded text-sm hover:opacity-95">
         Search
       </button>
     </form>
 
     <!-- FILTER DROPDOWN -->
   <div class="relative ml-2">
-    <button id="filterBtn" class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gray-100 hover:bg-gray-200 text-sm">
+    <button id="filterBtn" class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gray-200 hover:bg-gray-300 text-sm">
       <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
         <path d="M4 7h16M4 12h16M4 17h16" stroke-width="2" stroke-linecap="round"/>
       </svg>
@@ -85,7 +85,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
   </div>
   <!-- SHOW MAP BUTTON -->
-<button id="showMap" class="ml-2 px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-sm">
+<button id="showMap" class="ml-2 px-3 py-1 bg-black text-white rounded text-sm">
     Show Map
 </button>
 
@@ -174,20 +174,23 @@ function initFeedMap() {
 
     // pridanie markerov
     spots.forEach(spot => {
-        const lat = parseFloat(spot.latitude);
-        const lng = parseFloat(spot.longitude);
-        if(!isNaN(lat) && !isNaN(lng)) {
-            const marker = L.marker([lat, lng]).addTo(feedMap);
-            const popupContent = `
-                <div style="text-align:center; max-width:200px;">
-                    <img src="${spot.file_path}" alt="${spot.name}" style="width:100%; height:auto; border-radius:6px; margin-bottom:5px;" />
-                    <b><a href="spot-view.php?id=${spot.id}" target="_blank" style="color:#1d4ed8; text-decoration:none;">
-                        ${spot.name}
-                    </a></b><br>
-                    ${spot.address}<br>
-                    <small>@${spot.user_name}</small>
-                </div>`;
-            marker.bindPopup(popupContent);
+    const lat = parseFloat(spot.latitude);
+    const lng = parseFloat(spot.longitude);
+    if(!isNaN(lat) && !isNaN(lng)) {
+        const marker = L.marker([lat, lng]).addTo(feedMap);
+        const popupContent = `
+            <div style="text-align:center; max-width:200px;">
+                <img src="${spot.file_path}" 
+                     alt="${spot.name}" 
+                     style="width:100%; height:120px; object-fit:cover; border-radius:6px; margin-bottom:5px;" />
+                <b><a href="spot-view.php?id=${spot.id}" target="_blank" 
+                      style="color:#1d4ed8; text-decoration:none;">
+                    ${spot.name}
+                </a></b><br>
+                ${spot.address}<br>
+                <small>@${spot.user_name}</small>
+            </div>`;
+        marker.bindPopup(popupContent);
         }
     });
 }

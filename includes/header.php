@@ -1,6 +1,23 @@
 <?php
+require_once __DIR__ . '/db.php'; // ← pridaj toto
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
+}
+
+// zvyšok tvojho kódu...
+
+
+if (isset($_SESSION['user_id'])) {
+  $stmt = $pdo->prepare("SELECT blocked FROM users WHERE id = ?");
+  $stmt->execute([$_SESSION['user_id']]);
+  $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  if ($user && $user['blocked']) {
+      session_unset();
+      session_destroy();
+      header("Location: auth/login.php?error=blocked");
+      exit();
+  }
 }
 
 $user_id = $_SESSION['user_id'] ?? null;
@@ -73,7 +90,7 @@ $user_role = $_SESSION['role'] ?? 'user';
   </div>
 
 <!-- Upload Modal -->
-<div id="uploadModal" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden z-50">
+<div id="uploadModal" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden" style="z-index:9999;">
   <div id="uploadContainer" 
        class="bg-white rounded-2xl shadow-lg w-full h-full md:max-w-3xl md:h-[80vh] flex flex-col overflow-hidden relative animate-[fadeIn_0.3s_ease]">
 
@@ -210,9 +227,9 @@ const openBtns = document.querySelectorAll(
   'a[onclick*="uploadModal"], button.ph-plus, button[onclick*="uploadModal"]'
 );
 
-// -------------------------------
+
 // INITIALIZÁCIA MAPY PRI NAČÍTANÍ
-// -------------------------------
+
 let uploadMap, uploadMarker;
 document.addEventListener('DOMContentLoaded', () => {
     const mapEl = document.getElementById('uploadMap');
@@ -304,47 +321,88 @@ document.getElementById('backBtn').addEventListener('click', () => {
     document.getElementById('stepPreview').classList.remove('hidden');
 });
 
+
 // -------------------------------
-// ADRESA → MAP MARKER
+// CITY → MOVE MAP (bez markeru)
+// -------------------------------
+const cityInput = document.querySelector('input[name="city"]');
+if (cityInput) {
+  cityInput.addEventListener('change', async function () {
+    const city = cityInput.value.trim();
+    if (!city || !uploadMap) return;
+
+    try {
+      const response = await fetch(
+        `https://geocode.maps.co/search?q=${encodeURIComponent(city)}`
+      );
+
+      const data = await response.json();
+      if (data && data.length > 0) {
+        const { lat, lon } = data[0];
+        uploadMap.setView([lat, lon], 13);
+      } else {
+        alert('City not found. Please check the spelling.');
+      }
+    } catch (err) {
+      console.error('Error fetching city:', err);
+      alert('Could not load map location. Try again.');
+    }
+  });
+}
+
+// -------------------------------
+// ADDRESS → MAP MARKER + súradnice
 // -------------------------------
 const addressInput = document.querySelector('input[name="address"]');
-if(addressInput){
-    addressInput.addEventListener('change', function () {
-        const address = addressInput.value.trim();
-        if (!address || !uploadMap) return;
-        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data && data.length > 0) {
-                    const { lat, lon } = data[0];
-                    uploadMap.setView([lat, lon], 14);
-                    if (uploadMarker) uploadMap.removeLayer(uploadMarker);
-                    uploadMarker = L.marker([lat, lon]).addTo(uploadMap)
-                        .bindPopup('Selected location').openPopup();
-                    document.querySelector('input[name="latitude"]').value = lat;
-                    document.querySelector('input[name="longitude"]').value = lon;
-                } else {
-                    alert('Address not found. You can click on the map to set location.');
-                }
-            })
-            .catch(err => console.error('Error fetching address:', err));
-    });
+if (addressInput) {
+  addressInput.addEventListener('change', async function () {
+    const address = addressInput.value.trim();
+    if (!address || !uploadMap) return;
+
+    try {
+      const response = await fetch(
+        `https://geocode.maps.co/search?q=${encodeURIComponent(address)}`
+      );
+      const data = await response.json();
+
+      if (data && data.length > 0) {
+        const { lat, lon } = data[0];
+        uploadMap.setView([lat, lon], 14);
+
+        if (uploadMarker) uploadMap.removeLayer(uploadMarker);
+        uploadMarker = L.marker([lat, lon]).addTo(uploadMap)
+          .bindPopup('Selected location').openPopup();
+
+        document.querySelector('input[name="latitude"]').value = lat;
+        document.querySelector('input[name="longitude"]').value = lon;
+      } else {
+        alert('Address not found. You can click on the map to set location.');
+      }
+    } catch (err) {
+      console.error('Error fetching address:', err);
+      alert('Could not load address location. Try again.');
+    }
+  });
+}
 
 // -------------------------------
-    const uploadForm = document.getElementById('uploadForm');
-
+// FORM VALIDATION FIX
+// -------------------------------
+const uploadForm = document.getElementById('uploadForm');
 uploadForm.addEventListener('submit', (e) => {
-    const lat = document.getElementById('latitude').value.trim();
-    const lng = document.getElementById('longitude').value.trim();
+  const lat = document.getElementById('latitude').value.trim();
+  const lng = document.getElementById('longitude').value.trim();
+  const address = document.querySelector('input[name="address"]').value.trim();
 
-    if (!lat || !lng) {
-        e.preventDefault(); // zastaví submit
-        alert('Please select a location either by entering an address or clicking on the map.');
-        return false;
-    }
+  // Ak nie sú súradnice a nebola zadaná adresa
+  if ((!lat || !lng) && !address) {
+    e.preventDefault();
+    alert('Please select a location either by entering an address or clicking on the map.');
+    return false;
+  }
 });
 
-}
+
 </script>
 
 
