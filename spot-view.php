@@ -183,9 +183,9 @@ if ($user_id) {
     <?php if(isset($_SESSION['user_id'])): ?>
       <form method="post" class="flex flex-col gap-2 mb-4">
         <textarea name="text" placeholder="Write your comment" 
-                  class="p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400" required></textarea>
+                  class="p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200" required></textarea>
         <button type="submit" name="comment" 
-                class="bg-green-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-green-600 transition">
+                class="bg-black text-white px-4 py-2 rounded-full font-semibold hover:bg-gray-200 hover:text-black transition">
           Post
         </button>
       </form>

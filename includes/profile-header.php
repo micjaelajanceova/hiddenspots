@@ -29,7 +29,7 @@ if (!empty($photo)) {
       
       <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white border rounded-2xl shadow-lg hidden overflow-hidden z-50">
         <a href="auth/my-profile.php" class="block px-4 py-2 text-sm hover:bg-gray-100">My Profile</a>
-        <a href="upload.php" class="block px-4 py-2 text-sm hover:bg-gray-100">Upload</a>
+        <a href="/hiddenspots/upload.php" class="block px-4 py-2 text-sm hover:bg-gray-100">Upload</a>
         <div class="border-t my-1"></div>
         <a href="auth/logout.php" class="block px-4 py-2 text-sm text-red-600 font-semibold hover:bg-red-50">Logout</a>
       </div>
