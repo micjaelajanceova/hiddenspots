@@ -63,149 +63,172 @@ $comments = $pdo->query("
     JOIN hidden_spots hs ON c.spot_id = hs.id 
     ORDER BY c.created_at DESC
 ")->fetchAll(PDO::FETCH_ASSOC);
-$users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY id ASC")->fetchAll(PDO::FETCH_ASSOC);
+$users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<main class="flex-1 bg-white min-h-screen overflow-y-auto">
-  <div class="w-full px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto py-8">
+<main class="flex-1 min-h-screen overflow-y-auto">
+<div class="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-8">
 
-    <h1 class="text-4xl font-bold mb-8 text-center">Admin Panel</h1>
+  <!-- Admin header -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
+    <!-- Title -->
+    <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">Admin Panel</h1>
 
     <!-- Tabs -->
-    <div class="flex justify-center mb-6 gap-4 flex-wrap">
-      <button onclick="showTab('spots')" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Spots</button>
-      <button onclick="showTab('comments')" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Comments</button>
-      <button onclick="showTab('users')" class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600">Users</button>
+    <div class="flex gap-3 flex-wrap mt-4 md:mt-0">
+      <button id="tab-spots" onclick="showTab('spots')" class="tab-btn px-5 py-2 rounded-full font-medium shadow">Spots</button>
+      <button id="tab-comments" onclick="showTab('comments')" class="tab-btn px-5 py-2 rounded-full font-medium shadow">Comments</button>
+      <button id="tab-users" onclick="showTab('users')" class="tab-btn px-5 py-2 rounded-full font-medium shadow">Users</button>
     </div>
+  </div>
 
-    <!-- SPOTS -->
-    <div id="spots" class="tab-content">
-      <h2 class="text-2xl font-bold mb-4">Hidden Spots</h2>
-      <div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
-        <table class="min-w-full table-auto border-collapse">
-          <thead>
-            <tr class="bg-gray-200 text-left">
-              <th class="p-3 border-b">ID</th>
-              <th class="p-3 border-b">Name</th>
-              <th class="p-3 border-b">City</th>
-              <th class="p-3 border-b">Address</th>
-              <th class="p-3 border-b">Photo</th>
-              <th class="p-3 border-b">Created</th>
-              <th class="p-3 border-b">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($spots as $s): ?>
-              <tr class="border-b hover:bg-gray-100">
-                <td class="p-3"><?= $s['id'] ?></td>
-                <td class="p-3"><?= htmlspecialchars($s['name']) ?></td>
-                <td class="p-3"><?= htmlspecialchars($s['city']) ?></td>
-                <td class="p-3"><?= htmlspecialchars($s['address']) ?></td>
-                <td class="p-3">
-                  <?php if (!empty($s['file_path'])): ?>
-                    <img src="<?= htmlspecialchars($s['file_path']) ?>" class="w-16 h-16 object-cover rounded">
-                  <?php endif; ?>
-                </td>
-                <td class="p-3"><?= $s['created_at'] ?></td>
-                <td class="p-3">
-                  <form method="POST" onsubmit="return confirm('Delete this spot?');">
-                    <input type="hidden" name="id" value="<?= $s['id'] ?>">
-                    <button type="submit" name="delete_spot" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
-                  </form>
-                </td>
-              </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <!-- Divider -->
+  <div class="border-t border-gray-300 mb-6"></div>
 
-    <!-- COMMENTS -->
-    <div id="comments" class="tab-content hidden mt-6">
-      <h2 class="text-2xl font-bold mb-4">Comments</h2>
-      <div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
-        <table class="min-w-full table-auto border-collapse">
-          <thead>
-            <tr class="bg-gray-200 text-left">
-              <th class="p-3 border-b">ID</th>
-              <th class="p-3 border-b">User</th>
-              <th class="p-3 border-b">Spot</th>
-              <th class="p-3 border-b">Text</th>
-              <th class="p-3 border-b">Created</th>
-              <th class="p-3 border-b">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($comments as $c): ?>
-              <tr class="border-b hover:bg-gray-100 align-top">
-                <td class="p-3"><?= $c['id'] ?></td>
-                <td class="p-3"><?= htmlspecialchars($c['user_name']) ?></td>
-                <td class="p-3"><?= htmlspecialchars($c['spot_name']) ?></td>
-                <td class="p-3">
-                  <form method="POST" class="flex flex-col gap-2">
-                    <textarea name="text" class="border border-gray-300 rounded p-2 w-full" rows="2"><?= htmlspecialchars($c['text']) ?></textarea>
-                    <input type="hidden" name="id" value="<?= $c['id'] ?>">
-                    <div class="flex gap-2">
-                      <button type="submit" name="edit_comment" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Save</button>
-                      <button type="submit" name="delete_comment" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600" onclick="return confirm('Delete this comment?');">Delete</button>
-                    </div>
-                  </form>
-                </td>
-                <td class="p-3"><?= $c['created_at'] ?></td>
-                <td class="p-3"></td>
-              </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
 
-    <!-- USERS -->
-    <div id="users" class="tab-content hidden mt-6">
-      <h2 class="text-2xl font-bold mb-4">Users</h2>
-      <div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
-        <table class="min-w-full table-auto border-collapse">
-          <thead>
-            <tr class="bg-gray-200 text-left">
-              <th class="p-3 border-b">ID</th>
-              <th class="p-3 border-b">Name</th>
-              <th class="p-3 border-b">Email</th>
-              <th class="p-3 border-b">Role</th>
-              <th class="p-3 border-b">Blocked</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($users as $u): ?>
-              <tr class="border-b hover:bg-gray-100">
-                <td class="p-3"><?= $u['id'] ?></td>
-                <td class="p-3"><?= htmlspecialchars($u['name']) ?></td>
-                <td class="p-3"><?= htmlspecialchars($u['email']) ?></td>
-                <td class="p-3"><?= htmlspecialchars($u['role']) ?></td>
-                <td class="p-3">
-  <form method="POST" style="display:inline-block;">
-    <input type="hidden" name="id" value="<?= $u['id'] ?>">
-    <button type="submit" name="toggle_block" 
-        class="<?= $u['blocked'] ? 'bg-green-500' : 'bg-red-500' ?> text-white px-3 py-1 rounded hover:opacity-80">
-      <?= $u['blocked'] ? 'Unblock' : 'Block' ?>
-    </button>
-  </form>
-</td>
 
-              </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <!-- SPOTS -->
+<div id="spots" class="tab-content">
+  <div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
+    <table class="min-w-full border-collapse w-full table-auto">
+      <thead>
+        <tr class="bg-gray-200 text-left">
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">ID</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Name</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">City</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Address</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Photo</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Created</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($spots as $s): ?>
+          <tr class="border-b hover:bg-gray-100 align-top">
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $s['id'] ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($s['name']) ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($s['city']) ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($s['address']) ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base">
+              <?php if (!empty($s['file_path'])): ?>
+                <img src="<?= htmlspecialchars($s['file_path']) ?>" class="w-12 sm:w-16 h-12 sm:h-16 object-cover rounded">
+              <?php endif; ?>
+            </td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $s['created_at'] ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base">
+              <form method="POST" onsubmit="return confirm('Delete this spot?');">
+                <input type="hidden" name="id" value="<?= $s['id'] ?>">
+                <button type="submit" name="delete_spot" class="bg-red-500 text-white px-2 sm:px-3 py-1 rounded hover:bg-red-600 text-xs sm:text-sm">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- COMMENTS -->
+<div id="comments" class="tab-content hidden mt-6">
+  <div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
+    <table class="min-w-full border-collapse w-full table-auto">
+      <thead>
+        <tr class="bg-gray-200 text-left">
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">ID</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">User</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Spot</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Text</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Created</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($comments as $c): ?>
+          <tr class="border-b hover:bg-gray-100 align-top">
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $c['id'] ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($c['user_name']) ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($c['spot_name']) ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base">
+              <form method="POST" class="flex flex-col gap-2">
+                <textarea name="text" class="border border-gray-300 rounded p-2 w-full text-xs sm:text-sm" rows="2"><?= htmlspecialchars($c['text']) ?></textarea>
+                <input type="hidden" name="id" value="<?= $c['id'] ?>">
+                <div class="flex gap-2 flex-wrap">
+                  <button type="submit" name="edit_comment" class="bg-blue-500 text-white px-2 sm:px-3 py-1 rounded hover:bg-blue-600 text-xs sm:text-sm">Save</button>
+                  <button type="submit" name="delete_comment" class="bg-red-500 text-white px-2 sm:px-3 py-1 rounded hover:bg-red-600 text-xs sm:text-sm" onclick="return confirm('Delete this comment?');">Delete</button>
+                </div>
+              </form>
+            </td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $c['created_at'] ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"></td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- USERS -->
+<div id="users" class="tab-content hidden mt-6">
+  <div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
+    <table class="min-w-full border-collapse w-full table-auto">
+      <thead>
+        <tr class="bg-gray-200 text-left">
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">ID</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Name</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Email</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Role</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Blocked</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($users as $u): ?>
+          <tr class="border-b hover:bg-gray-100 align-top">
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $u['id'] ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($u['name']) ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($u['email']) ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($u['role']) ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base">
+              <form method="POST" style="display:inline-block;">
+                <input type="hidden" name="id" value="<?= $u['id'] ?>">
+                <button type="submit" name="toggle_block" 
+                    class="<?= $u['blocked'] ? 'bg-red-500' : 'bg-blue-500' ?> text-white px-2 sm:px-3 py-1 rounded hover:opacity-80 text-xs sm:text-sm">
+                  <?= $u['blocked'] ? 'Unblock' : 'Block' ?>
+                </button>
+              </form>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
+</div>
+
 
   </div>
 </main>
 
 <script>
-function showTab(tabId){
+  function showTab(tabId){
+  // skry všetky tab-content
   document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+  // zobraz aktívny
   document.getElementById(tabId).classList.remove('hidden');
+
+  // update aktívneho buttonu
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('bg-black', 'text-white');
+    btn.classList.add('bg-gray-200', 'text-gray-800');
+  });
+
+  const activeBtn = document.getElementById('tab-' + tabId);
+  activeBtn.classList.remove('bg-gray-200', 'text-gray-800');
+  activeBtn.classList.add('bg-black', 'text-white');
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    showTab('spots'); // spots sa zobrazí a button bude čierny
+});
+
 </script>
 
 <?php include 'includes/footer.php'; ?>

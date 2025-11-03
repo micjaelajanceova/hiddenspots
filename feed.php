@@ -183,7 +183,7 @@ function initFeedMap() {
                 <img src="${spot.file_path}" 
                      alt="${spot.name}" 
                      style="width:100%; height:120px; object-fit:cover; border-radius:6px; margin-bottom:5px;" />
-                <b><a href="spot-view.php?id=${spot.id}" target="_blank" 
+                <b><a href="spot-view.php?id=${spot.id}"
                       style="color:#1d4ed8; text-decoration:none;">
                     ${spot.name}
                 </a></b><br>
