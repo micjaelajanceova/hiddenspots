@@ -114,7 +114,7 @@ try {
       <h1 class="text-2xl font-bold mb-3">Hot new pictures</h1>
       <h2 class="mt-1">Discover new pictures every day.</h2>
     </div>
-    <a href="newest.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">See more →</a>
+    <a href="feed.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">See more →</a>
   </div>
 
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
