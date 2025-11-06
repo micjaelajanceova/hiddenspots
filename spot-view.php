@@ -125,36 +125,57 @@ if ($user_id) {
     </div>
   </div>
 
-  <!-- Right Panel: Actions, Author, Description, Comments -->
-  <div class="w-full lg:w-2/5 flex flex-col gap-4 max-h-[600px] overflow-y-auto">
+  <?php
+// Define user photo URL before HTML
+$user_photo_url = !empty($user['profile_photo']) ? '/hiddenspots/' . $user['profile_photo'] : null;
+?>
 
-    
+<!-- Right Panel: Actions, Author, Description, Comments -->
+<div class="w-full lg:w-2/5 flex flex-col gap-4 max-h-[600px] overflow-y-auto relative">
 
-<!-- Author Info -->
-<div class="flex items-center gap-2 mt-2">
-    <?php 
-        $user_photo_url = !empty($user['profile_photo']) ? '/hiddenspots/' . $user['profile_photo'] : null;
-    ?>
-    <?php if($user_photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . '/hiddenspots/' . $user['profile_photo'])): ?>
-        <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
-            <img src="<?= htmlspecialchars($user_photo_url) ?>" alt="<?= htmlspecialchars($user_name) ?>" class="w-10 h-10 rounded-full object-cover">
-        </a>
-    <?php else: ?>
-        <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
-            <div class="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-semibold">
-                <?= strtoupper(substr($user_name,0,1)) ?>
-            </div>
-        </a>
-    <?php endif; ?>
-    <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>" class="font-semibold text-blue-600 hover:underline">
-        @<?=htmlspecialchars($user_name)?>
-    </a>
-</div>
-
-        <!-- Description -->
-    <div class="text-sm text-gray-700">
-      <?= htmlspecialchars($spot['description']) ?>
+    <!-- Three dots menu for spot -->
+    <?php if(isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $spot['user_id'] || $isAdmin)): ?>
+    <div class="absolute top-2 right-2">
+        <button id="spotMenuBtn" class="text-gray-500 hover:text-gray-700 text-xl font-bold">⋯</button>
+        <div id="spotMenu" class="hidden absolute right-0 mt-1 w-32 bg-white border border-gray-300 rounded shadow-md z-50">
+            <form method="post">
+                <input type="hidden" name="edit_id" value="<?= $spot['id'] ?>">
+                <button type="submit" class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">Edit</button>
+            </form>
+            <form method="post" onsubmit="return confirm('Are you sure you want to delete this spot?')">
+                <input type="hidden" name="delete_id" value="<?= $spot['id'] ?>">
+                <button type="submit" class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 text-red-600">Delete</button>
+            </form>
+            <!-- Optional extra action -->
+            <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">Share</button>
+        </div>
     </div>
+    <?php endif; ?>
+
+    <!-- Author Info -->
+    <div class="flex items-center gap-2 mt-2">
+        <?php if($user_photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . '/hiddenspots/' . $user['profile_photo'])): ?>
+            <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
+                <img src="<?= htmlspecialchars($user_photo_url) ?>" alt="<?= htmlspecialchars($user_name) ?>" class="w-10 h-10 rounded-full object-cover">
+            </a>
+        <?php else: ?>
+            <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
+                <div class="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-semibold">
+                    <?= strtoupper(substr($user_name,0,1)) ?>
+                </div>
+            </a>
+        <?php endif; ?>
+        <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>" class="font-semibold text-blue-600 hover:underline">
+            @<?=htmlspecialchars($user_name)?>
+        </a>
+    </div>
+
+    <!-- Description -->
+    <div class="text-sm text-gray-700">
+        <?= htmlspecialchars($spot['description']) ?>
+    </div>
+
+
 
     <!-- Like / Comment / Favorite Buttons -->
     <div class="flex items-center gap-4 text-gray-600">
