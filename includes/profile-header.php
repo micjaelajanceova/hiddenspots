@@ -17,9 +17,11 @@ if (!empty($photo)) {
 
 <?php if(isset($_SESSION['user_id'])): ?>
   <!-- STICKY PROFILE (only when logged in) -->
-  <div class="fixed top-0 right-0 z-50 px-4 py-3 flex justify-end items-center w-full md:w-auto">
+  <div class="fixed top-1 right-0 z-50 px-4 py-3 flex justify-end items-center w-full md:w-auto">
     <div class="relative">
-      <button id="profileBtn" class="flex items-center justify-center w-10 h-10 bg-black text-white rounded-full font-semibold text-lg overflow-hidden">
+      <button id="profileBtn" 
+  class="flex items-center justify-center w-10 h-10 bg-black text-white rounded-full font-semibold text-lg overflow-hidden 
+         hover:ring-2 hover:ring-white hover:scale-105 transition duration-200 ease-in-out cursor-pointer">
         <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . '/hiddenspots/' . $photo)): ?>
           <img src="<?= htmlspecialchars($photo_url) ?>" alt="Profile" class="w-full h-full object-cover rounded-full">
         <?php else: ?>
@@ -38,7 +40,7 @@ if (!empty($photo)) {
 
 <?php else: ?>
   <!-- NON-STICKY LOGIN / REGISTER (for guests) -->
-  <div class="mt-6 flex justify-end gap-2 px-4 sm:px-6 lg:px-8">
+  <div class="absolute top-5 right-5 flex gap-3 z-40">
     <a href="auth/login.php?action=login" class="bg-black text-white px-4 py-2 rounded-full">Login</a>
     <a href="auth/login.php?action=register" class="bg-gray-200 text-black px-4 py-2 rounded-full">Register</a>
   </div>

@@ -3,6 +3,7 @@ require_once __DIR__ . '/../includes/db.php';
 session_start();
 
 $msg = '';
+$success = false;
 
 // Fetch hidden spot images for the background
 $bgImages = [];
@@ -28,6 +29,7 @@ if (isset($_POST['action'])) {
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['user_email'] = $user['email'];
                 $_SESSION['role'] = $user['role'];
+                $_SESSION['profile_photo'] = $user['profile_photo'] ?? null;
 
                 if ($user['role'] === 'admin') {
                     header("Location: ../admin.php");
@@ -45,24 +47,24 @@ if (isset($_POST['action'])) {
     } 
 
     if ($_POST['action'] === 'register') {
-        if ($_POST['password'] !== ($_POST['password_confirm'] ?? '')) {
-            $msg = "Passwords do not match.";
-        } else {
-            $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
-            $stmt->execute(['email' => $_POST['email']]);
-            if ($stmt->fetch()) {
-                $msg = "Email already exists.";
+            if ($_POST['password'] !== ($_POST['password_confirm'] ?? '')) {
+                $msg = "Passwords do not match.";
             } else {
-                $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, badges) 
-                       VALUES (:name, :email, :password, 'user', 'newbie')");
-
-                $stmt->execute([
-                    'name' => $_POST['name'],
-                    'email' => $_POST['email'],
-                    'password' => $passwordHash
-                ]);
-                $msg = "Account created! You can now log in.";
+                $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+                $stmt->execute(['email' => $_POST['email']]);
+                if ($stmt->fetch()) {
+                    $msg = "Email already exists.";
+                } else {
+                    $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                    $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, badges) 
+                        VALUES (:name, :email, :password, 'user', 'newbie')");
+                    $stmt->execute([
+                        'name' => $_POST['name'],
+                        'email' => $_POST['email'],
+                        'password' => $passwordHash
+                    ]);
+                    $msg = "Account created! You can now log in.";
+                    $success = true;
             }
         }
     }
@@ -112,7 +114,11 @@ if (isset($_POST['action'])) {
     <h2 class="text-2xl font-bold mb-6 text-center">Welcome to HiddenSpots</h2>
 
     <?php if ($msg): ?>
-        <p class="text-red-600 font-bold text-center mb-4"><?= htmlspecialchars($msg) ?></p>
+        <?php 
+            $isSuccess = str_contains($msg, 'Account created'); 
+            $msgColor = $isSuccess ? 'text-green-600' : 'text-red-600';
+        ?>
+        <p class="<?= $msgColor ?> font-bold text-center mb-4"><?= htmlspecialchars($msg) ?></p>
     <?php endif; ?>
 
     <!-- LOGIN FORM -->
@@ -149,28 +155,41 @@ const showLogin = document.getElementById('showLogin');
 const loginForm = document.getElementById('loginForm');
 const registerForm = document.getElementById('registerForm');
 
+// Toggle login/register buttons
 showRegister?.addEventListener('click', () => {
     loginForm.classList.add('hidden');
     registerForm.classList.remove('hidden');
 });
-
 showLogin?.addEventListener('click', () => {
     registerForm.classList.add('hidden');
     loginForm.classList.remove('hidden');
 });
 
-// Show form based on URL parameter
-const params = new URLSearchParams(window.location.search);
-const action = params.get('action');
+// PHP values
+const msg = <?= json_encode($msg ?? '') ?>;
+const success = <?= isset($success) && $success ? 'true' : 'false' ?>;
 
-if (action === 'register') {
+// Decide which form to show
+if (success) {
+    loginForm.classList.remove('hidden');
+    registerForm.classList.add('hidden');
+} else if (msg.includes('Email already exists') || msg.includes('Passwords do not match')) {
     loginForm.classList.add('hidden');
     registerForm.classList.remove('hidden');
 } else {
-    // default to login form
-    loginForm.classList.remove('hidden');
-    registerForm.classList.add('hidden');
+    // Optional: default based on URL parameter
+    const params = new URLSearchParams(window.location.search);
+    const action = params.get('action');
+    if (action === 'register') {
+        loginForm.classList.add('hidden');
+        registerForm.classList.remove('hidden');
+    } else {
+        loginForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
+    }
 }
+
+
 
 // Background slideshow
 const slides = document.querySelectorAll('.bg-slide');

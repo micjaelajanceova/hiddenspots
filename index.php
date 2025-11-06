@@ -32,7 +32,7 @@ try {
 }
 ?>
 
-<main class="flex-1 bg-white min-h-screen overflow-y-auto">   
+<main class="flex-1 bg-white min-h-screen overflow-y-auto pt-10">   
   <div class="w-full px-4 sm:px-6 lg:px-8">
 
 <!-- LOGIN / SIGNUP -->

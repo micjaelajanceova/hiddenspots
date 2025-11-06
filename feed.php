@@ -45,7 +45,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 
-<main class="flex-1 bg-white min-h-screen overflow-y-auto pt-8 px-4 sm:px-6 lg:px-8"> 
+<main class="flex-1 bg-white min-h-screen overflow-y-auto pt-6 px-4 sm:px-6 lg:px-8"> 
   <!-- pt-24 pridáva priestor nad feed, aby sticky search neprekryl fotky -->
 
   <?php include 'includes/profile-header.php'; ?>
