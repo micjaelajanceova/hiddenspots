@@ -13,7 +13,7 @@ $filter_type = $_GET['type'] ?? '';
 $types_stmt = $pdo->query("SELECT DISTINCT type FROM hidden_spots WHERE type IS NOT NULL AND type != ''");
 $types = $types_stmt->fetchAll(PDO::FETCH_COLUMN);
 
-// Fetch spots s možným filtrovaním
+// Fetch spots
 $sql = "SELECT hs.*, u.name AS user_name 
         FROM hidden_spots hs 
         JOIN users u ON hs.user_id = u.id 
@@ -68,7 +68,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- FILTER DROPDOWN -->
   <div class="relative ml-2">
-    <button id="filterBtn" class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gray-200 hover:bg-gray-300 text-sm">
+    <button id="filterBtn" class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gray-200 hover:bg-gray-300 text-sm ">
       <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
         <path d="M4 7h16M4 12h16M4 17h16" stroke-width="2" stroke-linecap="round"/>
       </svg>
@@ -86,7 +86,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
   </div>
   <!-- SHOW MAP BUTTON -->
 <button id="showMap" class="ml-2 px-3 py-1 bg-black text-white rounded text-sm">
-    Show Map
+    Map
 </button>
 
 </div>
@@ -128,19 +128,28 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('filterBtn');
   const dropdown = document.getElementById('filterDropdown');
+  const mapBtn = document.getElementById('showMap');
+  const mapDiv = document.getElementById('feedMap');
 
-  if(btn && dropdown){
+  if (btn && dropdown && mapDiv) {
     btn.addEventListener('click', e => {
       e.preventDefault();
       e.stopPropagation();
       dropdown.classList.toggle('hidden');
+
+      // ak sa filter otvorí, zavri mapu (ako keby sa kliklo na show map znova)
+      if (!dropdown.classList.contains('hidden') && mapDiv.style.display === 'block') {
+        mapDiv.style.display = 'none';
+      }
     });
 
+    // keď klikneš mimo filteru, dropdown sa zatvorí
     document.addEventListener('click', () => {
       dropdown.classList.add('hidden');
     });
   }
 });
+
 
 // MAP TOGGLE
 const mapBtn = document.getElementById('showMap');
