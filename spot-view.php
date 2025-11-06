@@ -130,22 +130,26 @@ if ($user_id) {
 
     
 
-    <!-- Author Info -->
-    <div class="flex items-center gap-2 mt-2">
-      <?php 
+<!-- Author Info -->
+<div class="flex items-center gap-2 mt-2">
+    <?php 
         $user_photo_url = !empty($user['profile_photo']) ? '/hiddenspots/' . $user['profile_photo'] : null;
-      ?>
-      <?php if($user_photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . '/hiddenspots/' . $user['profile_photo'])): ?>
-        <img src="<?= htmlspecialchars($user_photo_url) ?>" alt="<?= htmlspecialchars($user_name) ?>" class="w-10 h-10 rounded-full object-cover">
-      <?php else: ?>
-        <div class="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-semibold">
-          <?= strtoupper(substr($user_name,0,1)) ?>
-        </div>
-      <?php endif; ?>
-      <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>" class="font-semibold text-blue-600 hover:underline">
+    ?>
+    <?php if($user_photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . '/hiddenspots/' . $user['profile_photo'])): ?>
+        <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
+            <img src="<?= htmlspecialchars($user_photo_url) ?>" alt="<?= htmlspecialchars($user_name) ?>" class="w-10 h-10 rounded-full object-cover">
+        </a>
+    <?php else: ?>
+        <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
+            <div class="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-semibold">
+                <?= strtoupper(substr($user_name,0,1)) ?>
+            </div>
+        </a>
+    <?php endif; ?>
+    <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>" class="font-semibold text-blue-600 hover:underline">
         @<?=htmlspecialchars($user_name)?>
-      </a>
-    </div>
+    </a>
+</div>
 
         <!-- Description -->
     <div class="text-sm text-gray-700">
@@ -192,62 +196,102 @@ if ($user_id) {
     <!-- Comments Section -->
     <section id="comments" class="flex flex-col gap-4">
       <!-- New Comment -->
-      <?php if(isset($_SESSION['user_id'])): ?>
-        <form method="post" class="flex flex-col gap-2">
-          <textarea name="text" placeholder="Write your comment" class="p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200" required></textarea>
-          <button type="submit" name="comment" class="bg-black text-white px-4 py-2 rounded-full font-semibold hover:bg-gray-200 hover:text-black transition">Post</button>
-        </form>
-      <?php else: ?>
-        <p class="text-gray-500">Log in to comment.</p>
-      <?php endif; ?>
+<?php if(isset($_SESSION['user_id'])): ?>
+<div class="relative">
+    <form method="post">
+        <textarea name="text" placeholder="Write your comment"
+            id="commentText"
+            class="w-full p-3 border border-gray-300 resize-none focus:outline-none focus:ring-2 focus:ring-gray-200 pr-12"></textarea>
+        <button type="submit" name="comment"
+            id="postText"
+            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 font-semibold cursor-not-allowed transition-colors"
+            disabled>
+            Post
+        </button>
+    </form>
+</div>
 
-      <!-- Existing Comments -->
-      <div class="flex flex-col gap-3">
-        <?php foreach($comments as $c): ?>
-          <div id="comment-<?=$c['id']?>" class="flex gap-3 items-start bg-gray-100 p-3 rounded-xl">
-            <div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
-              <?php 
+<script>
+const textarea = document.getElementById('commentText');
+const postButton = document.getElementById('postText');
+
+textarea.addEventListener('input', () => {
+    if(textarea.value.trim().length > 0){
+        postButton.disabled = false;
+        postButton.classList.remove('text-gray-400', 'cursor-not-allowed');
+        postButton.classList.add('text-black', 'cursor-pointer');
+    } else {
+        postButton.disabled = true;
+        postButton.classList.add('text-gray-400', 'cursor-not-allowed');
+        postButton.classList.remove('text-black', 'cursor-pointer');
+    }
+});
+</script>
+<?php endif; ?>
+
+
+
+
+     <!-- Existing Comments -->
+<div class="flex flex-col gap-3">
+<?php foreach($comments as $c): ?>
+    <div id="comment-<?=$c['id']?>" class="flex gap-3 items-start bg-gray-100 p-3">
+        <!-- User avatar -->
+        <div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+            <?php 
                 $photo_url = !empty($c['profile_photo']) ? '/hiddenspots/' . $c['profile_photo'] : null;
-              ?>
-              <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . '/hiddenspots/' . $c['profile_photo'])): ?>
-                <img src="<?= htmlspecialchars($photo_url) ?>" alt="<?= htmlspecialchars($c['user_name']) ?>" class="w-full h-full object-cover rounded-full">
-              <?php else: ?>
-                <div class="w-full h-full bg-gray-400 flex items-center justify-center text-white font-semibold">
-                  <?= strtoupper(substr($c['user_name'],0,1)) ?>
-                </div>
-              <?php endif; ?>
-            </div>
+            ?>
+            <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . '/hiddenspots/' . $c['profile_photo'])): ?>
+                <a href="auth/user-profile.php?user_id=<?= $c['user_id'] ?>">
+                    <img src="<?= htmlspecialchars($photo_url) ?>" alt="<?= htmlspecialchars($c['user_name']) ?>" class="w-full h-full object-cover rounded-full">
+                </a>
+            <?php else: ?>
+                <a href="auth/user-profile.php?user_id=<?= $c['user_id'] ?>">
+                    <div class="w-full h-full bg-gray-400 flex items-center justify-center text-white font-semibold">
+                        <?= strtoupper(substr($c['user_name'],0,1)) ?>
+                    </div>
+                </a>
+            <?php endif; ?>
+        </div>
 
-            <div class="flex-1">
-              <?php if($edit_id == $c['id']): ?>
+        <!-- Comment content -->
+        <div class="flex-1">
+            <!-- User name -->
+            <a href="auth/user-profile.php?user_id=<?= $c['user_id'] ?>" class="font-semibold text-blue-600 hover:underline block mb-1">
+                @<?= htmlspecialchars($c['user_name']) ?>
+            </a>
+
+            <!-- Comment text -->
+            <?php if($edit_id == $c['id']): ?>
                 <form method="post" class="mb-2">
-                  <input type="hidden" name="edit_comment_id" value="<?=$c['id']?>">
-                  <textarea name="edit_text" class="p-3 border border-gray-300 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-green-400"><?=htmlspecialchars($c['text'])?></textarea>
-                  <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded-full mt-2 text-sm">Update</button>
+                    <input type="hidden" name="edit_comment_id" value="<?=$c['id']?>">
+                    <textarea name="edit_text" class="p-3 border border-gray-300 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-green-400 text-sm"><?=htmlspecialchars($c['text'])?></textarea>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded-full mt-2 text-sm">Update</button>
                 </form>
-              <?php else: ?>
-                <p class="text-gray-700"><?=htmlspecialchars($c['text'])?></p>
-              <?php endif; ?>
+            <?php else: ?>
+                <div class="text-gray-700 text-sm break-words"><?=htmlspecialchars($c['text'])?></div>
+            <?php endif; ?>
 
-              <div class="flex justify-between mt-2 text-xs text-gray-500">
+            <div class="flex justify-between mt-2 text-xs text-gray-500">
                 <span><?=date("d M Y", strtotime($c['created_at']))?></span>
                 <?php if(isset($_SESSION['user_id']) && ($_SESSION['user_id']==$c['user_id'] || $isAdmin)): ?>
-                  <div class="flex gap-2">
-                    <form method="post" style="display:inline;">
-                      <input type="hidden" name="edit_id" value="<?=$c['id']?>">
-                      <button type="submit" class="text-blue-600 hover:underline text-sm bg-transparent p-0">Edit</button>
-                    </form>
-                    <form method="post" style="display:inline;" onsubmit="return confirm('Are you sure?')">
-                      <input type="hidden" name="delete_comment_id" value="<?=$c['id']?>">
-                      <button type="submit" class="text-red-600 hover:underline text-sm bg-transparent p-0">Delete</button>
-                    </form>
-                  </div>
+                    <div class="flex gap-2">
+                        <form method="post" style="display:inline;">
+                            <input type="hidden" name="edit_id" value="<?=$c['id']?>">
+                            <button type="submit" class="text-blue-600 hover:underline text-sm bg-transparent p-0">Edit</button>
+                        </form>
+                        <form method="post" style="display:inline;" onsubmit="return confirm('Are you sure?')">
+                            <input type="hidden" name="delete_comment_id" value="<?=$c['id']?>">
+                            <button type="submit" class="text-red-600 hover:underline text-sm bg-transparent p-0">Delete</button>
+                        </form>
+                    </div>
                 <?php endif; ?>
-              </div>
             </div>
-          </div>
-        <?php endforeach; ?>
-      </div>
+        </div>
+    </div>
+<?php endforeach; ?>
+</div>
+
     </section>
 
   </div>
