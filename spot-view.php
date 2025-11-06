@@ -108,7 +108,7 @@ if ($user_id) {
 </div>
 
 <!-- Image + Right Panel -->
-<div class="flex flex-col md:flex-row gap-6 bg-white p-4 shadow">
+<div class="flex flex-col lg:flex-row gap-6 bg-white p-4 shadow">
 
   <!-- Spot Image -->
   <div class="relative flex-1 group overflow-hidden">
@@ -126,7 +126,7 @@ if ($user_id) {
   </div>
 
   <!-- Right Panel: Actions, Author, Description, Comments -->
-  <div class="w-full md:w-2/5 flex flex-col gap-4 max-h-[600px] overflow-y-auto">
+  <div class="w-full lg:w-2/5 flex flex-col gap-4 max-h-[600px] overflow-y-auto">
 
     
 
