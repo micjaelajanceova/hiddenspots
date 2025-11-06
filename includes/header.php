@@ -360,7 +360,7 @@ if (addressInput) {
 
     try {
       const response = await fetch(
-        `https://geocode.maps.co/search?q=${encodeURIComponent(address)}`
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`
       );
       const data = await response.json();
 
