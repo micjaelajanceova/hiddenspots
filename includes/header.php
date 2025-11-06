@@ -88,7 +88,7 @@ $user_role = $_SESSION['role'] ?? 'user';
     <span>+</span> Upload
   </a>
   </div>
-
+  </aside>
 <!-- Upload Modal -->
 <div id="uploadModal" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden" style="z-index:9999;">
   <div id="uploadContainer" 
@@ -168,7 +168,7 @@ $user_role = $_SESSION['role'] ?? 'user';
   </div>
 </div>
 
-</aside>
+
 
 
 
@@ -330,12 +330,10 @@ if (cityInput) {
   cityInput.addEventListener('change', async function () {
     const city = cityInput.value.trim();
     if (!city || !uploadMap) return;
-
     try {
       const response = await fetch(
-        `https://geocode.maps.co/search?q=${encodeURIComponent(city)}`
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}`
       );
-
       const data = await response.json();
       if (data && data.length > 0) {
         const { lat, lon } = data[0];
@@ -349,6 +347,7 @@ if (cityInput) {
     }
   });
 }
+
 
 // -------------------------------
 // ADDRESS → MAP MARKER + súradnice
@@ -401,6 +400,40 @@ uploadForm.addEventListener('submit', (e) => {
     return false;
   }
 });
+
+
+
+
+function hideFeedMap() {
+  const m = document.getElementById('feedMap');
+  const mapBtn = document.getElementById('showMap');
+  if (m) {
+    m.style.display = 'none'; // úplne zatvorí mapu
+  }
+}
+
+function showFeedMap() {
+  const m = document.getElementById('feedMap');
+  const mapBtn = document.getElementById('showMap');
+  if (m) {
+    m.style.display = 'block'; // znovu otvorí mapu
+  }
+}
+
+openBtns.forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    uploadModal.classList.remove('hidden');
+    hideFeedMap(); // zavrie mapu ako pri kliknutí na "Show Map"
+    setTimeout(() => { if (uploadMap) uploadMap.invalidateSize(); }, 200);
+  });
+});
+
+closeBtn.addEventListener('click', () => {
+  uploadModal.classList.add('hidden');
+  showFeedMap(); // znovu otvorí mapu
+});
+
 
 
 </script>
