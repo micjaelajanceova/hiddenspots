@@ -4,7 +4,6 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// zvyšok tvojho kódu...
 
 
 if (isset($_SESSION['user_id'])) {
@@ -38,13 +37,12 @@ $user_role = $_SESSION['role'] ?? 'user';
 </head>
 <body class="flex flex-col md:flex-row min-h-screen">
 
-<!-- Desktop sidebar -->
+
 <aside class="hidden md:flex flex-col md:w-64 bg-gray-100 border-r sticky top-0 h-screen p-4 shadow-lg shadow-gray-300 z-10">
 
 
-  <!-- HORNY BLOK: Logo + Menu links -->
   <div class="flex flex-col gap-8">
-    <!-- Logo -->
+
 <a href="/index.php" class="logo text-black hover:text-blue-500">
   <span class="text-3xl font-extrabold text-black">HiddenSpots</span>
 </a>
@@ -54,7 +52,7 @@ $user_role = $_SESSION['role'] ?? 'user';
 
 
 
-    <!-- Menu links s ikonami -->
+    <!-- Menu links -->
     <nav class="flex flex-col pt-5 gap-6 text-black">
       <a href="/feed.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
         <i class="ph-house text-lg"></i> Feed
@@ -137,7 +135,7 @@ $user_role = $_SESSION['role'] ?? 'user';
           <input type="text" name="city" placeholder="City" required class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-400 outline-none" />
           <input type="text" name="address" placeholder="Address (optional)" class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-400 outline-none" />
 
-          <!-- Hidden lat/lng -->
+          
           <input type="hidden" name="latitude" id="latitude">
           <input type="hidden" name="longitude" id="longitude">
 
@@ -176,7 +174,7 @@ $user_role = $_SESSION['role'] ?? 'user';
   <div class="md:hidden sticky top-0 border-b p-3 flex justify-center bg-gray-100 z-50">
     <a href="/index.php" class="text-3xl font-extrabold text-black hover:text-blue-500">HS</a>
   </div>
-<!-- Phosphor Icons CDN -->
+
 <script src="https://unpkg.com/phosphor-icons"></script>
 
 <!-- Mobile bottom menu -->
@@ -214,7 +212,7 @@ $user_role = $_SESSION['role'] ?? 'user';
 </nav>
 
 
-<!-- Leaflet Map Scripts -->
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
@@ -222,27 +220,27 @@ $user_role = $_SESSION['role'] ?? 'user';
 const uploadModal = document.getElementById('uploadModal');
 const closeBtn = document.getElementById('closeUploadModal');
 
-// Vyber všetky tlačidlá, ktoré otvárajú modal
+
 const openBtns = document.querySelectorAll(
   'a[onclick*="uploadModal"], button.ph-plus, button[onclick*="uploadModal"]'
 );
 
 
-// INITIALIZÁCIA MAPY PRI NAČÍTANÍ
+// MAP INITIALIZATION
 
 let uploadMap, uploadMarker;
 document.addEventListener('DOMContentLoaded', () => {
     const mapEl = document.getElementById('uploadMap');
     if (!mapEl) return;
 
-    // inicializácia mapy len raz
+
     uploadMap = L.map(mapEl).setView([55.6761, 12.5683], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(uploadMap);
 
-    // klik na mapu → pridanie markeru
+   
     uploadMap.on('click', function(e) {
         const { lat, lng } = e.latlng;
         if (uploadMarker) uploadMap.removeLayer(uploadMarker);
@@ -253,15 +251,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// -------------------------------
-// OTVORENIE / ZATVORENIE MODALU
+
 // -------------------------------
 openBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
         e.preventDefault();
         uploadModal.classList.remove('hidden');
 
-        // reset krokov
+        
         document.getElementById('stepSelect').classList.remove('hidden');
         document.getElementById('stepPreview').classList.add('hidden');
         document.getElementById('stepForm').classList.add('hidden');
@@ -270,7 +267,7 @@ openBtns.forEach(btn => {
         document.getElementById('finalImage').src = '';
         document.getElementById('photoData').value = '';
 
-        // po otvorení modalu → refresh layout mapy
+        
         setTimeout(() => {
             if (uploadMap) uploadMap.invalidateSize();
         }, 100);
@@ -281,8 +278,7 @@ closeBtn.addEventListener('click', () => {
     uploadModal.classList.add('hidden');
 });
 
-// -------------------------------
-// BASE64 FOTO + PRECHOD MEDZI KROKMI
+
 // -------------------------------
 const photoInput = document.getElementById('photoInput');
 const previewImage = document.getElementById('previewImage');
@@ -298,7 +294,7 @@ photoInput.addEventListener('change', function(e) {
             finalImage.src = event.target.result;
             photoDataInput.value = event.target.result;
 
-            // prechod do kroku 2
+            
             document.getElementById('stepSelect').classList.add('hidden');
             document.getElementById('stepPreview').classList.remove('hidden');
         };
@@ -310,7 +306,7 @@ document.getElementById('nextBtn').addEventListener('click', () => {
     document.getElementById('stepPreview').classList.add('hidden');
     document.getElementById('stepForm').classList.remove('hidden');
 
-    // po zobrazení formu → refresh mapy
+    
     setTimeout(() => {
         if (uploadMap) uploadMap.invalidateSize();
     }, 100);
@@ -322,9 +318,9 @@ document.getElementById('backBtn').addEventListener('click', () => {
 });
 
 
-// -------------------------------
-// CITY → MOVE MAP (bez markeru)
-// -------------------------------
+
+// CITY - MOVE MAP
+
 const cityInput = document.querySelector('input[name="city"]');
 
 if (cityInput) {
@@ -353,13 +349,13 @@ if (cityInput) {
     } catch (err) {
       console.error('Error fetching city:', err);
     }
-  }, 500)); // 500ms debounce
+  }, 500)); 
 }
 
 
-// -------------------------------
-// ADDRESS → MAP MARKER + súradnice
-// -------------------------------
+
+// ADDRESS - MAP MARKER
+
 const addressInput = document.querySelector('input[name="address"]');
 
 if (addressInput) {
@@ -395,20 +391,20 @@ if (addressInput) {
     } catch (err) {
       console.error('Error fetching address:', err);
     }
-  }, 500)); // debounce 500ms
+  }, 500)); 
 }
 
 
-// -------------------------------
+
 // FORM VALIDATION FIX
-// -------------------------------
+
 const uploadForm = document.getElementById('uploadForm');
 uploadForm.addEventListener('submit', (e) => {
   const lat = document.getElementById('latitude').value.trim();
   const lng = document.getElementById('longitude').value.trim();
   const address = document.querySelector('input[name="address"]').value.trim();
 
-  // Ak nie sú súradnice a nebola zadaná adresa
+  
   if ((!lat || !lng) && !address) {
     e.preventDefault();
     alert('Please select a location either by entering an address or clicking on the map.');
@@ -423,7 +419,7 @@ function hideFeedMap() {
   const m = document.getElementById('feedMap');
   const mapBtn = document.getElementById('showMap');
   if (m) {
-    m.style.display = 'none'; // úplne zatvorí mapu
+    m.style.display = 'none'; 
   }
 }
 
@@ -431,7 +427,7 @@ function showFeedMap() {
   const m = document.getElementById('feedMap');
   const mapBtn = document.getElementById('showMap');
   if (m) {
-    m.style.display = 'block'; // znovu otvorí mapu
+    m.style.display = 'block'; 
   }
 }
 
@@ -439,14 +435,14 @@ openBtns.forEach(btn => {
   btn.addEventListener('click', (e) => {
     e.preventDefault();
     uploadModal.classList.remove('hidden');
-    hideFeedMap(); // zavrie mapu ako pri kliknutí na "Show Map"
+    hideFeedMap(); 
     setTimeout(() => { if (uploadMap) uploadMap.invalidateSize(); }, 200);
   });
 });
 
 closeBtn.addEventListener('click', () => {
   uploadModal.classList.add('hidden');
-  showFeedMap(); // znovu otvorí mapu
+  showFeedMap(); 
 });
 
 

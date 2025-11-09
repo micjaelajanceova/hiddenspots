@@ -9,11 +9,11 @@ require_once __DIR__ . '/includes/map.php';
 $city = $_GET['query'] ?? '';
 $filter_type = $_GET['type'] ?? '';
 
-// Získame všetky unikátne typy pre filter buttony
+
 $types_stmt = $pdo->query("SELECT DISTINCT type FROM hidden_spots WHERE type IS NOT NULL AND type != ''");
 $types = $types_stmt->fetchAll(PDO::FETCH_COLUMN);
 
-// Fetch spots
+
 $sql = "SELECT hs.*, u.name AS user_name 
         FROM hidden_spots hs 
         JOIN users u ON hs.user_id = u.id 
@@ -46,11 +46,11 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 <main class="flex-1 bg-white min-h-screen overflow-y-auto pt-6 px-4 sm:px-6 lg:px-8"> 
-  <!-- pt-24 pridáva priestor nad feed, aby sticky search neprekryl fotky -->
+
 
   <?php include 'includes/profile-header.php'; ?>
 
-  <!-- STICKY SEARCH LIŠTA -->
+  <!-- SEARCH -->
   <div class=" flex items-center gap-2 mb-6">
     <form action="feed.php" method="get" class="flex gap-2 items-center w-auto">
       <input 
@@ -92,13 +92,13 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </div>
 
 
-<!-- Zmeň div mapy -->
 <div id="feedMap" style="display:none; height:500px; margin-top:16px;"></div>
 
 
     <!-- ALL SPOTS PHOTO FEED -->
     <?php if (!empty($spots)): ?>
-      <div class="columns-2 sm:columns-3 lg:columns-4 gap-4 space-y-4 mt-6">
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
+
         <?php foreach ($spots as $spot): ?>
           <a href="spot-view.php?id=<?= htmlspecialchars($spot['id']) ?>" 
              class="block break-inside-avoid overflow-hidden group relative mb-4">
@@ -137,13 +137,13 @@ document.addEventListener('DOMContentLoaded', () => {
       e.stopPropagation();
       dropdown.classList.toggle('hidden');
 
-      // ak sa filter otvorí, zavri mapu (ako keby sa kliklo na show map znova)
+
       if (!dropdown.classList.contains('hidden') && mapDiv.style.display === 'block') {
         mapDiv.style.display = 'none';
       }
     });
 
-    // keď klikneš mimo filteru, dropdown sa zatvorí
+
     document.addEventListener('click', () => {
       dropdown.classList.add('hidden');
     });
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // MAP TOGGLE
 const mapBtn = document.getElementById('showMap');
 const mapDiv = document.getElementById('feedMap');
-let feedMap; // globálna mapa
+let feedMap; 
 
 mapBtn.addEventListener('click', () => {
     mapDiv.style.display = mapDiv.style.display === 'none' ? 'block' : 'none';
@@ -170,8 +170,8 @@ mapBtn.addEventListener('click', () => {
 function initFeedMap() {
     const spots = <?= json_encode($spots) ?>;
 
-    // centrum mapy
-    let mapCenter = [55.6761, 12.5683]; // default Kodaň
+
+    let mapCenter = [55.6761, 12.5683]; // default Copenhagen
     const firstSpot = spots.find(s => s.latitude && s.longitude);
     if(firstSpot) mapCenter = [parseFloat(firstSpot.latitude), parseFloat(firstSpot.longitude)];
 
@@ -181,7 +181,7 @@ function initFeedMap() {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(feedMap);
 
-    // pridanie markerov
+ 
     spots.forEach(spot => {
     const lat = parseFloat(spot.latitude);
     const lng = parseFloat(spot.longitude);

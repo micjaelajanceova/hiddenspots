@@ -5,7 +5,7 @@ session_start();
 $msg = '';
 $success = false;
 
-// Fetch hidden spot images for the background
+
 $bgImages = [];
 try {
     $stmt = $pdo->query("SELECT file_path FROM hidden_spots ORDER BY created_at DESC");
@@ -80,7 +80,7 @@ if (isset($_POST['action'])) {
 <title>Login / Register - Hidden Spots</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-  /* Background slideshow styles */
+
   .bg-slide {
     position: absolute;
     inset: 0;
@@ -177,7 +177,7 @@ if (success) {
     loginForm.classList.add('hidden');
     registerForm.classList.remove('hidden');
 } else {
-    // Optional: default based on URL parameter
+    
     const params = new URLSearchParams(window.location.search);
     const action = params.get('action');
     if (action === 'register') {
@@ -200,7 +200,7 @@ setInterval(() => {
     slides[current].style.opacity = 0;
     current = (current + 1) % slides.length;
     slides[current].style.opacity = 1;
-}, 5000); // 5 seconds per image
+}, 5000); 
 </script>
 
 </body>

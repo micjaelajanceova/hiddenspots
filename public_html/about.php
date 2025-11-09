@@ -1,6 +1,6 @@
 <?php include 'includes/header.php'; ?>
 
-    <!-- Hlavný obsah -->
+    
     <main class="flex-1 bg-white min-h-screen overflow-y-auto">
     <div class="py-10 lg:py-20">
       <div class="w-full px-4 sm:px-6 lg:px-8">
@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <!-- Section 2 (reversed) -->
+        <!-- Section 2  -->
         <div class="grid md:grid-cols-12 gap-12 items-center mb-24">
             <div class="md:col-span-8 order-2 md:order-1">
                 <img src="assets/img/hiddenspot7.jpg" alt="Community" class="shadow-lg w-full h-95 object-cover">
@@ -34,29 +34,29 @@
                 </p>
             </div>
         </div>
-        <!-- Section 3 (headline + 3 columns) -->
+        <!-- Section 3  -->
         <div class="pt-12">
             <h1 class="mb-4">HOW IT WORKS?</h1>
             <h2 class="max-w-2xl mb-12">
                 Discover, save, and share hidden spots
             </h2>
 <div class="grid md:grid-cols-3 gap-8">
-    <!-- Karta 1 -->
+    <!-- Card 1 -->
     <a href="feed.php" class="group relative block overflow-hidden hover:shadow-2xl">
         <img src="assets/img/hiddenspot2.jpg" alt="Upload" class="h-80 w-full object-cover transform transition-transform duration-300 group-hover:scale-105">
-        <!-- Gradient overlay iba pri hover -->
+        
         <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        <!-- H3 hore -->
+
         <h3 class="absolute top-4 left-4 text-white font-bold text-xl drop-shadow-lg z-10">
             Upload Your Spots
         </h3>
-        <!-- H4 dole, zarovnané napravo, viditeľné iba pri hover -->
+
         <h4 class="absolute bottom-4 right-4 text-white text-right opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg z-10 max-w-[90%]">
             Easily share hidden gems with the community.
         </h4>
     </a>
 
-    <!-- Karta 2 -->
+    <!-- Card 2 -->
     <a href="upload.php" class="group relative block overflow-hidden hover:shadow-2xl">
         <img src="assets/img/hiddenspot4.jpg" alt="Explore" class="h-80 w-full object-cover transform transition-transform duration-300 group-hover:scale-105">
         <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -68,7 +68,7 @@
         </h4>
     </a>
 
-    <!-- Karta 3 -->
+    <!-- Card 3 -->
     <a href="favourites.php" class="group relative block overflow-hidden hover:shadow-2xl">
         <img src="assets/img/hiddenspot5.jpg" alt="Community" class="h-80 w-full object-cover transform transition-transform duration-300 group-hover:scale-105">
         <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

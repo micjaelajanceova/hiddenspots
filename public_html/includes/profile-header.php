@@ -1,14 +1,14 @@
 <?php
-// includes/profile-header.php
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Use $profile_user if set, otherwise fallback to logged-in user
+
 $name = $profile_user['name'] ?? ($_SESSION['user_name'] ?? 'User');
 $photo = $profile_user['profile_photo'] ?? ($_SESSION['profile_photo'] ?? null);
 
-// Generate proper URL for the photo
+
 $photo_url = null;
 if (!empty($photo)) {
     $photo_url = '/../' . $photo;
