@@ -123,7 +123,15 @@ if ($user_id) {
 
 <!-- Spot title -->
 <div class="flex flex-col gap-2">
-  <span class="text-gray-500 text-xs uppercase"><?=htmlspecialchars($spot['city'])?></span>
+<span class="text-gray-500 uppercase">
+  <button id="showCityMapBtn" class="hover:underline text-blue-600 bg-transparent border-0 p-0 cursor-pointer">
+    <?= htmlspecialchars($spot['city']) ?>
+  </button>
+</span>
+
+<div id="cityMap" style="display:none; height:400px; margin-top:12px; margin-bottom: 20px"></div>
+
+
   <h1 class="text-3xl font-bold"><?=htmlspecialchars($spot['name'])?></h1>
 </div>
 
@@ -562,6 +570,48 @@ descDiv.addEventListener("input", () => {
     });
   });
 });
+
+
+
+
+
+// ---------------------
+const cityMapBtn = document.getElementById('showCityMapBtn');
+const cityMapDiv = document.getElementById('cityMap');
+let cityMap; // globálna mapa
+
+cityMapBtn.addEventListener('click', () => {
+    cityMapDiv.style.display = cityMapDiv.style.display === 'none' ? 'block' : 'none';
+
+    if (cityMapDiv.style.display === 'block') {
+        setTimeout(() => {
+            if (!cityMap) initCityMap();
+            else cityMap.invalidateSize();
+        }, 100);
+    }
+});
+
+function initCityMap() {
+    const lat = <?= $spot['latitude'] ?? '0' ?>;
+    const lng = <?= $spot['longitude'] ?? '0' ?>;
+
+    if(lat === 0 && lng === 0) {
+        alert('Coordinates not available for this spot.');
+        return;
+    }
+
+    cityMap = L.map('cityMap').setView([lat, lng], 15);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(cityMap);
+
+    L.marker([lat, lng]).addTo(cityMap)
+        .bindPopup(`<b><?= addslashes($spot['name']) ?></b><br><?= addslashes($spot['address'] ?? '') ?>`)
+        .openPopup();
+}
+
+
 </script>
 
 

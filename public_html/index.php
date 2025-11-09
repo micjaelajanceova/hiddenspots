@@ -25,11 +25,12 @@ try {
 
 // LATEST COMMENTS - from view_latest_comments
 try {
-    $stmt = $pdo->query("SELECT * FROM view_latest_comments");
-    $latestComments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  $stmt = $pdo->query("SELECT * FROM view_latest_comments ORDER BY created_at DESC LIMIT 3");
+  $latestComments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    $latestComments = [];
+  $latestComments = [];
 }
+
 ?>
 
 <main class="flex-1 bg-white min-h-screen overflow-y-auto pt-10">   
@@ -148,36 +149,57 @@ try {
 
 
 
-  <!-- LATEST COMMENTS -->
+
+<!-- LATEST COMMENTS -->
 <section class="mt-12 pb-20">
   <h1 class="mb-3">Latest comments</h1>
   <h2 class="mt-1">See who else loves these hidden places.</h2>
 
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
-    <?php if(!empty($latestComments)): ?>
-      <?php foreach(array_slice($latestComments, 0, 3) as $c): ?>
-        <div class="bg-white shadow p-4" style="box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 -5px 10px rgba(0,0,0,0.05);">
-          <div class="flex items-center gap-3">
-            <!-- Prvé písmeno mena namiesto avataru -->
-            <div class="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-semibold text-lg">
-              <?=strtoupper(substr($c['user_name'],0,1))?>
-            </div>
-            <div>
-              <div class="font-medium"><?=htmlspecialchars($c['user_name'])?></div>
-              <div class="text-xs text-gray-400"><?=date("d M Y", strtotime($c['created_at']))?></div>
-            </div>
+    <?php
+    $stmt = $pdo->query("
+        SELECT c.*, u.name AS user_name, u.profile_photo
+        FROM comments c
+        JOIN users u ON c.user_id = u.id
+        ORDER BY c.created_at DESC
+        LIMIT 3
+    ");
+    $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($comments as $c):
+        $photo_url = !empty($c['profile_photo']) ? '/hiddenspots/' . $c['profile_photo'] : null;
+    ?>
+      <div class="bg-white shadow p-4" style="box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 -5px 10px rgba(0,0,0,0.05);">
+        <div class="flex items-center gap-3">
+          <?php if($photo_url): ?>
+            <a href="auth/user-profile.php?user_id=<?= $c['user_id'] ?>">
+              <img src="<?= htmlspecialchars($photo_url) ?>" 
+                   alt="<?= htmlspecialchars($c['user_name']) ?>" 
+                   class="w-10 h-10 rounded-full object-cover">
+            </a>
+          <?php else: ?>
+            <a href="auth/user-profile.php?user_id=<?= $c['user_id'] ?>">
+              <div class="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white font-semibold text-lg">
+                <?= strtoupper(substr($c['user_name'],0,1)) ?>
+              </div>
+            </a>
+          <?php endif; ?>
+          <div>
+            <div class="font-medium"><?= htmlspecialchars($c['user_name']) ?></div>
+            <div class="text-xs text-gray-400"><?= date("d M Y", strtotime($c['created_at'])) ?></div>
           </div>
-          <p class="text-sm text-gray-600 mt-3"><?=htmlspecialchars(mb_strimwidth($c['text'],0,140,'...'))?></p>
-          <a href="spot-view.php?id=<?=htmlspecialchars($c['spot_id'])?>" class="inline-block mt-3 bg-black text-white px-3 py-2 rounded-full text-sm">See post →</a>
         </div>
-      <?php endforeach; ?>
-    <?php else: ?>
-      <div class="bg-gray-100 h-28"></div>
-      <div class="bg-gray-100 h-28"></div>
-      <div class="bg-gray-100 h-28"></div>
-    <?php endif; ?>
+        <p class="text-sm text-gray-600 mt-3"><?= htmlspecialchars(mb_strimwidth($c['text'],0,140,'...')) ?></p>
+        <a href="spot-view.php?id=<?= htmlspecialchars($c['spot_id']) ?>" class="inline-block mt-3 bg-black text-white px-3 py-2 rounded-full text-sm">See post →</a>
+      </div>
+    <?php endforeach; ?>
   </div>
 </section>
+
+
+
+
+
 
 
 <!-- UPLOAD CTA -->

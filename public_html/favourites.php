@@ -41,7 +41,7 @@ $photo_url = $user_photo ? '/hiddenspots/' . $user_photo : null;
         <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . $photo_url)): ?>
           <img src="<?= htmlspecialchars($photo_url) ?>" alt="Profile" class="w-16 h-16 rounded-full object-cover border-2 border-green-500">
         <?php else: ?>
-          <div class="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center text-xl font-bold text-white">
+          <div class="w-16 h-16 rounded-full bg-black flex items-center justify-center text-xl font-bold text-white">
             <?= strtoupper(substr($_SESSION['user_name'] ?? 'U', 0, 1)) ?>
           </div>
         <?php endif; ?>

@@ -326,26 +326,34 @@ document.getElementById('backBtn').addEventListener('click', () => {
 // CITY → MOVE MAP (bez markeru)
 // -------------------------------
 const cityInput = document.querySelector('input[name="city"]');
+
 if (cityInput) {
-  cityInput.addEventListener('change', async function () {
+  function debounce(fn, delay) {
+    let timeout;
+    return function (...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => fn.apply(this, args), delay);
+    };
+  }
+
+  cityInput.addEventListener('input', debounce(async function () {
     const city = cityInput.value.trim();
     if (!city || !uploadMap) return;
+
     try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}`
-      );
+      const response = await fetch(`geocode.php?q=${encodeURIComponent(city)}`);
       const data = await response.json();
+
       if (data && data.length > 0) {
         const { lat, lon } = data[0];
         uploadMap.setView([lat, lon], 13);
       } else {
-        alert('City not found. Please check the spelling.');
+        console.warn('City not found');
       }
     } catch (err) {
       console.error('Error fetching city:', err);
-      alert('Could not load map location. Try again.');
     }
-  });
+  }, 500)); // 500ms debounce
 }
 
 
@@ -353,15 +361,22 @@ if (cityInput) {
 // ADDRESS → MAP MARKER + súradnice
 // -------------------------------
 const addressInput = document.querySelector('input[name="address"]');
+
 if (addressInput) {
-  addressInput.addEventListener('change', async function () {
+  function debounce(fn, delay) {
+    let timeout;
+    return function (...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => fn.apply(this, args), delay);
+    };
+  }
+
+  addressInput.addEventListener('input', debounce(async function () {
     const address = addressInput.value.trim();
     if (!address || !uploadMap) return;
 
     try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`
-      );
+      const response = await fetch(`geocode.php?q=${encodeURIComponent(address)}`);
       const data = await response.json();
 
       if (data && data.length > 0) {
@@ -375,14 +390,14 @@ if (addressInput) {
         document.querySelector('input[name="latitude"]').value = lat;
         document.querySelector('input[name="longitude"]').value = lon;
       } else {
-        alert('Address not found. You can click on the map to set location.');
+        console.warn('Address not found. You can click on the map to set location.');
       }
     } catch (err) {
       console.error('Error fetching address:', err);
-      alert('Could not load address location. Try again.');
     }
-  });
+  }, 500)); // debounce 500ms
 }
+
 
 // -------------------------------
 // FORM VALIDATION FIX
@@ -434,6 +449,32 @@ closeBtn.addEventListener('click', () => {
   showFeedMap(); // znovu otvorí mapu
 });
 
+
+
+
+
+function debounce(fn, delay) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn.apply(this, args), delay);
+  };
+}
+
+cityInput.addEventListener('input', debounce(async function () {
+    const city = cityInput.value.trim();
+    if (!city || !uploadMap) return;
+    try {
+        const res = await fetch(`geocode.php?q=${encodeURIComponent(city)}`);
+        const data = await res.json();
+        if (data.length) {
+            const { lat, lon } = data[0];
+            uploadMap.setView([lat, lon], 13);
+        }
+    } catch (err) {
+        console.error(err);
+    }
+}, 500));
 
 
 </script>
