@@ -97,58 +97,30 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- ALL SPOTS PHOTO FEED -->
     <?php if (!empty($spots)): ?>
-<div class="grid grid-flow-row-dense gap-4 mt-6" id="masonry-grid">
-    <?php foreach ($spots as $spot): ?>
-      <a href="spot-view.php?id=<?= htmlspecialchars($spot['id']) ?>" 
-         class="group relative overflow-hidden">
-        <img src="<?= htmlspecialchars($spot['file_path']) ?>" 
-             alt="<?= htmlspecialchars($spot['name']) ?>" 
-             class="w-full object-cover transition-transform duration-300 group-hover:scale-105">
-        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-sm font-semibold">
-          <?= htmlspecialchars($spot['name']) ?>
-        </div>
-        <div class="absolute bottom-1 left-1 text-white text-xs bg-black/50 px-1">
-          @<?= htmlspecialchars($spot['user_name']) ?>
-        </div>
-      </a>
-    <?php endforeach; ?>
-</div>
-<?php else: ?>
-<p class="text-center text-gray-500 mt-10">No spots uploaded yet.</p>
-<?php endif; ?>
+      <div class="columns-2 sm:columns-3 lg:columns-4 gap-4 space-y-4 mt-6">
 
+        <?php foreach ($spots as $spot): ?>
+          <a href="spot-view.php?id=<?= htmlspecialchars($spot['id']) ?>" 
+             class="block break-inside-avoid overflow-hidden group relative mb-4">
+            <img src="<?= htmlspecialchars($spot['file_path']) ?>" 
+                 alt="<?= htmlspecialchars($spot['name']) ?>" 
+                 class="w-full object-cover transition-transform duration-300 group-hover:scale-105">
+            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-sm font-semibold">
+              <?= htmlspecialchars($spot['name']) ?>
+            </div>
+            <div class="absolute bottom-1 left-1 text-white text-xs bg-black/50 px-1">
+              @<?= htmlspecialchars($spot['user_name']) ?>
+            </div>
+          </a>
+        <?php endforeach; ?>
+      </div>
+    <?php else: ?>
+      <p class="text-center text-gray-500 mt-10">No spots uploaded yet.</p>
+    <?php endif; ?>
 
   </div>
 </main>
 
-<style>
-  /* pridaj toto do vlastného CSS súboru alebo <style> */
-#masonry-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* malé obrazovky */
-  grid-auto-rows: 8px; /* malý krok pre presné umiestnenie */
-  grid-gap: 16px;
-}
-
-@media (min-width: 640px) {
-  #masonry-grid {
-    grid-template-columns: repeat(3, 1fr); /* stredné obrazovky */
-  }
-}
-
-@media (min-width: 1024px) {
-  #masonry-grid {
-    grid-template-columns: repeat(4, 1fr); /* veľké obrazovky */
-  }
-}
-
-#masonry-grid a img {
-  width: 100%;
-  display: block;
-  object-fit: cover;
-}
-
-</style>
 
 <script>
 
