@@ -27,10 +27,10 @@ $favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // User info
 $user_photo = $_SESSION['profile_photo'] ?? null;
-$photo_url = $user_photo ? '/hiddenspots/' . $user_photo : null;
+$photo_url = $user_photo ? '/' . $user_photo : null;
 ?>
 
-<main class="flex-1 bg-gray-50 min-h-screen overflow-y-auto">   
+<main class="flex-1 bg-white min-h-screen overflow-y-auto">   
   <div class="w-full px-4 sm:px-6 lg:px-8 py-8">
 
 
@@ -39,7 +39,7 @@ $photo_url = $user_photo ? '/hiddenspots/' . $user_photo : null;
       <!-- Profile photo + Title -->
       <div class="flex items-center gap-4">
         <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . $photo_url)): ?>
-          <img src="<?= htmlspecialchars($photo_url) ?>" alt="Profile" class="w-16 h-16 rounded-full object-cover border-2 border-green-500">
+          <img src="<?= htmlspecialchars($photo_url) ?>" alt="Profile" class="w-16 h-16 rounded-full object-cover border-2 border-black">
         <?php else: ?>
           <div class="w-16 h-16 rounded-full bg-black flex items-center justify-center text-xl font-bold text-white">
             <?= strtoupper(substr($_SESSION['user_name'] ?? 'U', 0, 1)) ?>

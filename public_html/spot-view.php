@@ -112,7 +112,7 @@ if ($user_id) {
     $favorited = $stmt->fetch() ? true : false;
 }
 
-$photo_url = !empty($c['profile_photo']) ? $c['profile_photo'] : null;
+$user_photo = !empty($user['profile_photo']) ? '/' . $user['profile_photo'] : null;
 $photo_path = __DIR__ . '/' . $photo_url; 
 echo "<!-- DEBUG: full path = $photo_path -->";
 ?>
