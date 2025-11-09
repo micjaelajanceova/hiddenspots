@@ -50,5 +50,22 @@ class Spot {
         $stmt->execute([$user_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function updateDescription($spot_id, $new_description) {
+    $stmt = $this->pdo->prepare("UPDATE hidden_spots SET description = ? WHERE id = ?");
+    return $stmt->execute([$new_description, $spot_id]);
+}
+public function deleteSpot($spot_id) {
+    // Optional: delete associated comments and likes
+    $stmt = $this->pdo->prepare("DELETE FROM comments WHERE spot_id = ?");
+    $stmt->execute([$spot_id]);
+
+    $stmt = $this->pdo->prepare("DELETE FROM likes WHERE spot_id = ?");
+    $stmt->execute([$spot_id]);
+
+    // Delete the spot itself
+    $stmt = $this->pdo->prepare("DELETE FROM hidden_spots WHERE id = ?");
+    return $stmt->execute([$spot_id]);
+}
+
 }
 ?>

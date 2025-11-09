@@ -70,6 +70,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+// Edit spot description
+if (isset($_POST['edit_spot_id'], $_POST['edit_description']) && ($isAdmin || $_SESSION['user_id'] == $spot['user_id'])) {
+    $stmt = $pdo->prepare("UPDATE hidden_spots SET description=:desc WHERE id=:id");
+    $stmt->execute([
+        'desc' => $_POST['edit_description'],
+        'id' => $_POST['edit_spot_id']
+    ]);
+    header("Location: spot-view.php?id=" . $_POST['edit_spot_id']);
+    exit();
+}
+
+// Delete spot
+if (isset($_POST['delete_spot_id']) && ($isAdmin || $_SESSION['user_id'] == $spot['user_id'])) {
+    $stmt = $pdo->prepare("DELETE FROM hidden_spots WHERE id=:id");
+    $stmt->execute(['id'=>$_POST['delete_spot_id']]);
+    header("Location: feed.php"); // redirect after deletion
+    exit();
+}
+
+
 
 include 'includes/header.php';
 
@@ -134,23 +154,26 @@ $user_photo_url = !empty($user['profile_photo']) ? '/hiddenspots/' . $user['prof
 <div class="w-full lg:w-2/5 flex flex-col gap-4 max-h-[600px] overflow-y-auto relative">
 
     <!-- Three dots menu for spot -->
-    <?php if(isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $spot['user_id'] || $isAdmin)): ?>
-    <div class="absolute top-2 right-2">
-        <button id="spotMenuBtn" class="text-gray-500 hover:text-gray-700 text-xl font-bold">⋯</button>
-        <div id="spotMenu" class="hidden absolute right-0 mt-1 w-32 bg-white border border-gray-300 rounded shadow-md z-50">
-            <form method="post">
-                <input type="hidden" name="edit_id" value="<?= $spot['id'] ?>">
-                <button type="submit" class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">Edit</button>
-            </form>
-            <form method="post" onsubmit="return confirm('Are you sure you want to delete this spot?')">
-                <input type="hidden" name="delete_id" value="<?= $spot['id'] ?>">
-                <button type="submit" class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 text-red-600">Delete</button>
-            </form>
-            <!-- Optional extra action -->
-            <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">Share</button>
-        </div>
-    </div>
-    <?php endif; ?>
+<?php if(isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $spot['user_id'] || $isAdmin)): ?>
+<div class="absolute top-2 right-2">
+  <button id="spotMenuBtn" class="text-gray-500 hover:text-gray-700 text-xl font-bold">⋯</button>
+  <div id="spotMenu" class="hidden absolute right-0 mt-1 w-36 bg-white border border-gray-300 rounded shadow-md z-50">
+    <!-- Edit Spot Description -->
+    <button id="editDescMenuBtn" type="button" class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">
+      Edit Description
+    </button>
+
+    <!-- Delete Spot -->
+    <form method="post" onsubmit="return confirm('Are you sure you want to delete this spot?')">
+      <input type="hidden" name="delete_spot_id" value="<?= $spot['id'] ?>">
+      <button type="submit" class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 text-red-600">
+        Delete Spot
+      </button>
+    </form>
+  </div>
+</div>
+<?php endif; ?>
+
 
     <!-- Author Info -->
     <div class="flex items-center gap-2 mt-2">
@@ -170,47 +193,80 @@ $user_photo_url = !empty($user['profile_photo']) ? '/hiddenspots/' . $user['prof
         </a>
     </div>
 
-    <!-- Description -->
-    <div class="text-sm text-gray-700">
-        <?= htmlspecialchars($spot['description']) ?>
-    </div>
+<!-- Description -->
+<div class="flex flex-col gap-1">
+  <div id="spotDescription"
+       contenteditable="false"
+       class="text-sm text-gray-700 w-full border border-transparent rounded p-2 transition-all break-words whitespace-pre-wrap max-h-96 overflow-y-auto"
+       data-spot-id="<?= $spot['id'] ?>">
+    <?= htmlspecialchars($spot['description']) ?>
+  </div>
+
+  <!-- Character count (hidden by default) -->
+  <div id="descCharCount" class="text-xs text-gray-500 text-right hidden">
+    0 / 1000 characters
+  </div>
+
+  <!-- Hidden save button -->
+  <button id="saveDescBtn" class="hidden mt-2 
+      bg-blue-600 hover:bg-blue-700 
+      text-white px-4 py-2 
+      rounded-lg shadow-sm 
+      text-sm font-semibold 
+      transition-all duration-200">
+    Save Description
+  </button>
+</div>
 
 
 
-    <!-- Like / Comment / Favorite Buttons -->
-    <div class="flex items-center gap-4 text-gray-600">
-      <!-- Like -->
-      <button id="likeBtn" class="relative flex items-center gap-1 group">
-        <svg id="likeIcon" class="w-6 h-6 transition-colors duration-300 <?= $liked ? 'text-red-600' : 'text-gray-400' ?>" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
-                   2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 
-                   14.76 3 16.5 3 19.58 3 22 5.42 22 8.5
-                   c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-        </svg>
-        <span id="likeCount" class="text-sm text-gray-600 ml-1">
-          <?php
-            $stmt = $pdo->prepare("SELECT COUNT(*) FROM likes WHERE spot_id=?");
-            $stmt->execute([$spot_id]);
-            echo $stmt->fetchColumn();
-          ?>
-        </span>
-      </button>
 
-      <!-- Comment Icon -->
-      <button onclick="document.getElementById('comments').scrollIntoView({behavior:'smooth'})" class="flex items-center gap-1 text-gray-400 hover:text-gray-700 transition-colors">
-        <svg class="w-6 h-6 text-gray-400 hover:text-gray-700" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"/>
-        </svg>
-        <span class="text-gray-400 font-extralarge"><?= count($comments) ?></span>
-      </button>
 
-      <!-- Favorite -->
-      <button id="favBtn" class="relative w-10 h-10 flex items-center justify-center">
-        <svg id="favIcon" class="w-6 h-6 <?= $favorited ? 'text-yellow-500' : 'text-gray-400' ?> " fill="currentColor" viewBox="0 0 24 24">
-          <path d="M6 4c-1.1 0-2 .9-2 2v16l8-5.33L20 22V6c0-1.1-.9-2-2-2H6z"/>
-        </svg>
-      </button>
-    </div>
+
+
+
+  <div class="flex items-center gap-2 text-gray-600">
+
+  <!-- Like -->
+  <button id="likeBtn" class="flex items-center gap-1 px-2 py-2 rounded-lg hover:bg-gray-100 transition-colors">
+    <svg id="likeIcon" class="w-6 h-6 transition-colors <?= $liked ? 'text-red-600' : 'text-gray-400' ?>" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
+               2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 
+               14.76 3 16.5 3 19.58 3 22 5.42 22 8.5
+               c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+    <span id="likeCount" class="text-sm text-gray-600">
+      <?php
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM likes WHERE spot_id=?");
+        $stmt->execute([$spot_id]);
+        echo $stmt->fetchColumn();
+      ?>
+    </span>
+  </button>
+
+  <!-- Comment -->
+  <button onclick="document.getElementById('comments').scrollIntoView({behavior:'smooth'})" 
+          class="flex items-center gap-1 px-2 py-2 rounded-lg hover:bg-gray-100 transition-colors">
+    <svg class="w-6 h-6 text-gray-400 hover:text-gray-700 mt-1" fill="currentColor" viewBox="0 0 23 23">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"/>
+    </svg>
+    <span class="text-sm text-gray-600">
+      <?= count($comments) ?>
+    </span>
+  </button>
+
+  <!-- Favorite -->
+  <button id="favBtn" class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 transition-colors">
+    <svg id="favIcon" class="w-6 h-6 <?= $favorited ? 'text-yellow-500' : 'text-gray-400' ?>" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M6 4c-1.1 0-2 .9-2 2v16l8-5.33L20 22V6c0-1.1-.9-2-2-2H6z"/>
+    </svg>
+  </button>
+
+</div>
+
+
+
+
 
 
 
@@ -222,7 +278,7 @@ $user_photo_url = !empty($user['profile_photo']) ? '/hiddenspots/' . $user['prof
     <form method="post">
         <textarea name="text" placeholder="Write your comment"
             id="commentText"
-            class="w-full p-3 border border-gray-300 resize-none focus:outline-none focus:ring-2 focus:ring-gray-200 pr-12"></textarea>
+            class="w-full p-3 border border-gray-300 resize-none rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200 pr-12"></textarea>
         <button type="submit" name="comment"
             id="postText"
             class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 font-semibold cursor-not-allowed transition-colors"
@@ -256,7 +312,7 @@ textarea.addEventListener('input', () => {
      <!-- Existing Comments -->
 <div class="flex flex-col gap-3">
 <?php foreach($comments as $c): ?>
-    <div id="comment-<?=$c['id']?>" class="flex gap-3 items-start bg-gray-100 p-3">
+    <div id="comment-<?=$c['id']?>" class="flex gap-3 items-start bg-gray-100 p-3 rounded-lg">
         <!-- User avatar -->
         <div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
             <?php 
@@ -319,13 +375,25 @@ textarea.addEventListener('input', () => {
 </div>
 </main>
 
-
 <script>
 const favBtn = document.getElementById('favBtn');
 const favIcon = document.getElementById('favIcon');
 const favToast = document.getElementById('favToast');
-const spotImage = document.getElementById('spotImage');
 
+const likeBtn = document.getElementById('likeBtn');
+const likeIcon = document.getElementById('likeIcon');
+const likeCount = document.getElementById('likeCount');
+
+const descDiv = document.getElementById("spotDescription");
+const saveBtn = document.getElementById("saveDescBtn");
+const editMenuBtn = document.getElementById("editDescMenuBtn");
+const charCountDiv = document.getElementById("descCharCount");
+
+const MAX_CHARS = 1000;
+
+// ---------------------
+// FAVORITE BUTTON
+// ---------------------
 favBtn.addEventListener('click', () => {
   const spotId = <?= $spot_id ?>;
   fetch('actions/favourite.php', {
@@ -336,13 +404,11 @@ favBtn.addEventListener('click', () => {
   .then(r => r.text())
   .then(res => {
     if (res === 'not_logged_in') return alert('You must be logged in to favorite!');
-
     if (res === 'added') {
       favIcon.classList.remove('text-gray-400');
       favIcon.classList.add('text-yellow-500');
       showFavToast("Saved to favourites");
     }
-
     if (res === 'removed') {
       favIcon.classList.remove('text-yellow-500');
       favIcon.classList.add('text-gray-400');
@@ -353,27 +419,22 @@ favBtn.addEventListener('click', () => {
 
 function showFavToast(message) {
   favToast.querySelector('span').textContent = message;
-
-  // brief dark fade over the image
   favToast.classList.remove('opacity-0');
   favToast.classList.add('opacity-100');
-  favToast.classList.add('bg-opacity-20'); // subtle darkening
-
+  favToast.classList.add('bg-opacity-20');
   setTimeout(() => {
     favToast.classList.remove('bg-opacity-20');
     favToast.classList.add('bg-opacity-0');
-  }, 500); // dark fade lasts only 0.5s
-
+  }, 500);
   setTimeout(() => {
     favToast.classList.remove('opacity-100');
     favToast.classList.add('opacity-0');
-  }, 3000); // text fades out after 3s
+  }, 3000);
 }
 
-const likeBtn = document.getElementById('likeBtn');
-const likeIcon = document.getElementById('likeIcon');
-const likeCount = document.getElementById('likeCount');
-
+// ---------------------
+// LIKE BUTTON
+// ---------------------
 likeBtn.addEventListener('click', () => {
   const spotId = <?= $spot_id ?>;
   fetch('actions/like.php', {
@@ -383,11 +444,7 @@ likeBtn.addEventListener('click', () => {
   })
   .then(res => res.text())
   .then(data => {
-    if (data === 'not_logged_in') {
-      alert('You must be logged in to like!');
-      return;
-    }
-
+    if (data === 'not_logged_in') return alert('You must be logged in to like!');
     if (data === 'liked') {
       likeIcon.classList.remove('text-gray-400');
       likeIcon.classList.add('text-red-600');
@@ -396,16 +453,117 @@ likeBtn.addEventListener('click', () => {
       likeIcon.classList.add('text-gray-400');
     }
 
-    // Refresh like count
     fetch('actions/like.php?count=' + spotId)
       .then(r => r.text())
-      .then(count => {
-        likeCount.textContent = count;
-      });
+      .then(count => { likeCount.textContent = count; });
   });
 });
 
+// ---------------------
+// SPOT DESCRIPTION EDITING
+// ---------------------
+document.addEventListener("DOMContentLoaded", () => {
+  if (!editMenuBtn || !descDiv || !saveBtn) return;
 
+  const menu = document.getElementById("spotMenu");
+
+  // Toggle menu
+  const menuBtn = document.getElementById("spotMenuBtn");
+  if (menuBtn && menu) {
+    menuBtn.addEventListener("click", e => {
+      e.stopPropagation();
+      menu.classList.toggle("hidden");
+    });
+    document.addEventListener("click", () => menu.classList.add("hidden"));
+  }
+
+  function placeCaretAtEnd(el) {
+    el.focus();
+    if (typeof window.getSelection !== "undefined"
+        && typeof document.createRange !== "undefined") {
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      range.collapse(false);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  }
+
+  function updateCharCount() {
+    const chars = descDiv.innerText.trim().length;
+    charCountDiv.textContent = `${chars} / ${MAX_CHARS} characters`;
+  }
+
+  // Start editing
+  editMenuBtn.addEventListener("click", () => {
+    menu.classList.add("hidden");
+    descDiv.contentEditable = "true";
+    descDiv.classList.add("bg-gray-100");
+    saveBtn.classList.remove("hidden");
+    charCountDiv.classList.remove("hidden");
+    updateCharCount();
+  });
+
+ descDiv.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault(); // prevent default div insertion
+    document.execCommand("insertHTML", false, "<br>"); // insert single line break
+  }
+});
+
+descDiv.addEventListener("input", () => {
+  let html = descDiv.innerHTML;
+
+  // Collapse multiple <br> or empty divs into one
+  html = html.replace(/(<br>|\n|\<div\>)+/g, "<br>");
+
+  // Remove leading <br>
+  html = html.replace(/^<br>/, "");
+
+  // Remove trailing <br>
+  html = html.replace(/<br>$/, "");
+
+  // Limit to MAX_CHARS (based on textContent)
+  const text = descDiv.textContent;
+  if (text.length > MAX_CHARS) {
+    descDiv.textContent = text.slice(0, MAX_CHARS);
+    placeCaretAtEnd(descDiv);
+  } else {
+    descDiv.innerHTML = html;
+    placeCaretAtEnd(descDiv);
+  }
+
+  updateCharCount();
+});
+
+
+  // Save description
+  saveBtn.addEventListener("click", () => {
+    let newDesc = descDiv.innerText.trim();
+    const spotId = descDiv.dataset.spotId;
+
+    fetch("", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `edit_spot_id=${encodeURIComponent(spotId)}&edit_description=${encodeURIComponent(newDesc)}`
+    })
+    .then(() => {
+      descDiv.contentEditable = "false";
+      descDiv.classList.remove("bg-gray-100");
+      saveBtn.classList.add("hidden");
+      charCountDiv.classList.add("hidden");
+
+      const toast = document.createElement("div");
+      toast.textContent = "Description updated successfully ✅";
+      toast.className = "fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow";
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2500);
+    });
+  });
+});
 </script>
+
+
 
 <?php include 'includes/footer.php'; ?>
