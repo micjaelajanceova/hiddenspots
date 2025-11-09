@@ -166,15 +166,13 @@ try {
     $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($comments as $c):
-        $photo_url = !empty($c['profile_photo']) ? '/hiddenspots/' . $c['profile_photo'] : null;
+        $photo_url = !empty($c['profile_photo']) ? htmlspecialchars($c['profile_photo']) : null;
     ?>
       <div class="bg-white shadow p-4" style="box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 -5px 10px rgba(0,0,0,0.05);">
         <div class="flex items-center gap-3">
           <?php if($photo_url): ?>
             <a href="auth/user-profile.php?user_id=<?= $c['user_id'] ?>">
-              <img src="<?= htmlspecialchars($photo_url) ?>" 
-                   alt="<?= htmlspecialchars($c['user_name']) ?>" 
-                   class="w-10 h-10 rounded-full object-cover">
+              <img src="<?= $photo_url ?>" alt="<?= htmlspecialchars($c['user_name']) ?>" class="w-10 h-10 rounded-full object-cover">
             </a>
           <?php else: ?>
             <a href="auth/user-profile.php?user_id=<?= $c['user_id'] ?>">

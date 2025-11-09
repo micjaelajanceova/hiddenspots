@@ -8,11 +8,14 @@ if (session_status() === PHP_SESSION_NONE) {
 $name = $profile_user['name'] ?? ($_SESSION['user_name'] ?? 'User');
 $photo = $profile_user['profile_photo'] ?? ($_SESSION['profile_photo'] ?? null);
 
-
 $photo_url = null;
 if (!empty($photo)) {
-    $photo_url = '/../' . $photo;
+    $photo_url = $photo;
 }
+
+
+echo "<!-- DEBUG: full path = " . __DIR__ . '/../' . $photo_url . " -->";
+
 ?>
 
 <?php if(isset($_SESSION['user_id'])): ?>
@@ -22,7 +25,7 @@ if (!empty($photo)) {
       <button id="profileBtn" 
   class="flex items-center justify-center w-10 h-10 bg-black text-white rounded-full font-semibold text-lg overflow-hidden 
          hover:ring-2 hover:ring-white hover:scale-105 transition duration-200 ease-in-out cursor-pointer">
-        <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . __DIR__ . '/../' . $photo)): ?>
+        <?php if($photo_url && file_exists(__DIR__ .'/../' . $photo_url)): ?>
           <img src="<?= htmlspecialchars($photo_url) ?>" alt="Profile" class="w-full h-full object-cover rounded-full">
         <?php else: ?>
           <?= strtoupper(substr($name, 0, 1)) ?>

@@ -155,7 +155,7 @@ if ($user_id) {
 
   <?php
 
-$user_photo_url = !empty($user['profile_photo']) ? '/public_html/' . $user['profile_photo'] : null;
+$user_photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 ?>
 
 
@@ -185,7 +185,7 @@ $user_photo_url = !empty($user['profile_photo']) ? '/public_html/' . $user['prof
 
     <!-- Author Info -->
     <div class="flex items-center gap-2 mt-2">
-        <?php if($user_photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . __DIR__ .  '/' . $user['profile_photo'])): ?>
+        <?php if($user_photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . $user['profile_photo'])): ?>
             <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
                 <img src="<?= htmlspecialchars($user_photo_url) ?>" alt="<?= htmlspecialchars($user_name) ?>" class="w-10 h-10 rounded-full object-cover">
             </a>
@@ -324,9 +324,9 @@ textarea.addEventListener('input', () => {
         <!-- User photo -->
         <div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
             <?php 
-                $photo_url = !empty($c['profile_photo']) ? '/hiddenspots/' . $c['profile_photo'] : null;
+                $photo_url = !empty($c['profile_photo']) ? $c['profile_photo'] : null;
             ?>
-            <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . '/hiddenspots/' . $c['profile_photo'])): ?>
+            <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . $c['profile_photo'])): ?>
                 <a href="auth/user-profile.php?user_id=<?= $c['user_id'] ?>">
                     <img src="<?= htmlspecialchars($photo_url) ?>" alt="<?= htmlspecialchars($c['user_name']) ?>" class="w-full h-full object-cover rounded-full">
                 </a>
