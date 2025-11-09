@@ -97,7 +97,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- ALL SPOTS PHOTO FEED -->
     <?php if (!empty($spots)): ?>
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
+      <div class="columns-2 sm:columns-3 lg:columns-4 gap-4 space-y-4 mt-6">
 
         <?php foreach ($spots as $spot): ?>
           <a href="spot-view.php?id=<?= htmlspecialchars($spot['id']) ?>" 

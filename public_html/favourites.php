@@ -64,7 +64,7 @@ $photo_url = $user_photo ? '/hiddenspots/' . $user_photo : null;
 
     <!-- Favorites grid -->
 <?php if (!empty($favorites)): ?>
-  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
+  <div class="columns-2 sm:columns-3 lg:columns-4 gap-4 space-y-4 mt-6">
     <?php foreach ($favorites as $spot): ?>
       <a href="spot-view.php?id=<?= htmlspecialchars($spot['id']) ?>" 
          class="block break-inside-avoid overflow-hidden group relative">
