@@ -90,7 +90,6 @@ if (isset($_POST['delete_spot_id']) && ($isAdmin || $_SESSION['user_id'] == $spo
 }
 
 
-
 require_once __DIR__ . '/includes/header.php';
 
 // Refresh comments
@@ -112,6 +111,10 @@ if ($user_id) {
     $stmt->execute([$user_id, $spot_id]);
     $favorited = $stmt->fetch() ? true : false;
 }
+
+$photo_url = !empty($c['profile_photo']) ? $c['profile_photo'] : null;
+$photo_path = __DIR__ . '/' . $photo_url; 
+echo "<!-- DEBUG: full path = $photo_path -->";
 ?>
 
 
@@ -184,22 +187,28 @@ $user_photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null
 
 
     <!-- Author Info -->
-    <div class="flex items-center gap-2 mt-2">
-        <?php if($user_photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . $user['profile_photo'])): ?>
-            <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
-                <img src="<?= htmlspecialchars($user_photo_url) ?>" alt="<?= htmlspecialchars($user_name) ?>" class="w-10 h-10 rounded-full object-cover">
-            </a>
-        <?php else: ?>
-            <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
-                <div class="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-semibold">
-                    <?= strtoupper(substr($user_name,0,1)) ?>
-                </div>
-            </a>
-        <?php endif; ?>
-        <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>" class="font-semibold text-blue-600 hover:underline">
-            @<?=htmlspecialchars($user_name)?>
+    <!-- Author Info -->
+<div class="flex items-center gap-2 mt-2">
+    <?php if($user_photo_url): ?>
+        <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
+            <img src="<?= htmlspecialchars($user_photo_url) ?>" 
+                 alt="<?= htmlspecialchars($user_name) ?>" 
+                 class="w-10 h-10 rounded-full object-cover">
         </a>
-    </div>
+    <?php else: ?>
+        <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
+            <div class="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-semibold">
+                <?= strtoupper(substr($user_name,0,1)) ?>
+            </div>
+        </a>
+    <?php endif; ?>
+
+    <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>" 
+       class="font-semibold text-blue-600 hover:underline">
+        @<?=htmlspecialchars($user_name) ?>
+    </a>
+</div>
+
 
 <!-- Description -->
 <div class="flex flex-col gap-1">
@@ -320,25 +329,24 @@ textarea.addEventListener('input', () => {
      <!-- Existing Comments -->
 <div class="flex flex-col gap-3">
 <?php foreach($comments as $c): ?>
-    <div id="comment-<?=$c['id']?>" class="flex gap-3 items-start bg-gray-100 p-3 rounded-lg">
-        <!-- User photo -->
+    <div id="comment-<?= $c['id'] ?>" class="flex gap-3 items-start bg-gray-100 p-3 rounded-lg">
+        <!-- Comment Author Photo -->
         <div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
-            <?php 
-                $photo_url = !empty($c['profile_photo']) ? $c['profile_photo'] : null;
-            ?>
-            <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . $c['profile_photo'])): ?>
+            <?php $comment_user_photo = !empty($c['profile_photo']) ? $c['profile_photo'] : null; ?>
+            <?php if($comment_user_photo): ?>
                 <a href="auth/user-profile.php?user_id=<?= $c['user_id'] ?>">
-                    <img src="<?= htmlspecialchars($photo_url) ?>" alt="<?= htmlspecialchars($c['user_name']) ?>" class="w-full h-full object-cover rounded-full">
+                    <img src="<?= htmlspecialchars($comment_user_photo) ?>" 
+                         alt="<?= htmlspecialchars($c['user_name']) ?>" 
+                         class="w-full h-full object-cover rounded-full">
                 </a>
             <?php else: ?>
                 <a href="auth/user-profile.php?user_id=<?= $c['user_id'] ?>">
-                    <div class="w-full h-full bg-gray-400 flex items-center justify-center text-white font-semibold">
+                    <div class="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-semibold">
                         <?= strtoupper(substr($c['user_name'],0,1)) ?>
                     </div>
                 </a>
             <?php endif; ?>
         </div>
-
         <!-- Comment content -->
         <div class="flex-1">
             <!-- User name -->
