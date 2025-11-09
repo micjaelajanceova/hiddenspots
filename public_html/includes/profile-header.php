@@ -11,7 +11,7 @@ $photo = $profile_user['profile_photo'] ?? ($_SESSION['profile_photo'] ?? null);
 // Generate proper URL for the photo
 $photo_url = null;
 if (!empty($photo)) {
-    $photo_url = '/hiddenspots/' . $photo;
+    $photo_url = '/../' . $photo;
 }
 ?>
 
@@ -22,7 +22,7 @@ if (!empty($photo)) {
       <button id="profileBtn" 
   class="flex items-center justify-center w-10 h-10 bg-black text-white rounded-full font-semibold text-lg overflow-hidden 
          hover:ring-2 hover:ring-white hover:scale-105 transition duration-200 ease-in-out cursor-pointer">
-        <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . '/hiddenspots/' . $photo)): ?>
+        <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . __DIR__ . '/../' . $photo)): ?>
           <img src="<?= htmlspecialchars($photo_url) ?>" alt="Profile" class="w-full h-full object-cover rounded-full">
         <?php else: ?>
           <?= strtoupper(substr($name, 0, 1)) ?>

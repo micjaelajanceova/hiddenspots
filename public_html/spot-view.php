@@ -185,7 +185,7 @@ $user_photo_url = !empty($user['profile_photo']) ? '/public_html/' . $user['prof
 
     <!-- Author Info -->
     <div class="flex items-center gap-2 mt-2">
-        <?php if($user_photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . '/hiddenspots/' . $user['profile_photo'])): ?>
+        <?php if($user_photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . __DIR__ .  '/' . $user['profile_photo'])): ?>
             <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
                 <img src="<?= htmlspecialchars($user_photo_url) ?>" alt="<?= htmlspecialchars($user_name) ?>" class="w-10 h-10 rounded-full object-cover">
             </a>

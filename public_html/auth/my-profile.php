@@ -33,11 +33,11 @@ $mySpots = $spotObj->getByUser($user_id);
 <div class="flex items-center justify-between mb-6">
   <div class="flex items-center gap-4">
     <div class="w-16 h-16 bg-black text-white flex items-center justify-center rounded-full text-2xl font-semibold">
-      <?php if($user_photo && file_exists(__DIR__ . '/../uploads/profile/' . $user_photo)): ?>
-    <img src="../uploads/profile/<?= htmlspecialchars($user_photo) ?>" alt="Profile" class="w-full h-full object-cover rounded-full">
-      <?php else: ?>
+     <?php if($user_photo && file_exists(__DIR__ . '/../' . $user_photo)): ?>
+    <img src="../<?= htmlspecialchars($user_photo) ?>" alt="Profile" class="w-full h-full object-cover rounded-full">
+    <?php else: ?>
         <?= strtoupper(substr($user_name, 0, 1)) ?>
-      <?php endif; ?>
+    <?php endif; ?>
     </div>
     <h1 class="text-2xl font-bold"><?= htmlspecialchars($user_name) ?></h1>
   </div>
