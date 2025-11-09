@@ -205,6 +205,37 @@ function initFeedMap() {
 }
 
 
+// REARRANGE FEED ITEMS
+
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('feedContainer');
+    const items = Array.from(container.children);
+
+    const columns = getComputedStyle(container).getPropertyValue('column-count');
+    const colCount = parseInt(columns) || 2;
+
+   
+    const cols = Array.from({length: colCount}, () => []);
+
+    items.forEach((item, index) => {
+        cols[index % colCount].push(item);
+    });
+
+  
+    container.innerHTML = '';
+    let maxRows = Math.max(...cols.map(c => c.length));
+
+    for (let row = 0; row < maxRows; row++) {
+        for (let col = 0; col < colCount; col++) {
+            if (cols[col][row]) {
+                container.appendChild(cols[col][row]);
+            }
+        }
+    }
+});
+
+
+
 </script>
 
 
