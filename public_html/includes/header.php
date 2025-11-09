@@ -103,7 +103,7 @@ $user_role = $_SESSION['role'] ?? 'user';
     <!-- STEP 1: Select Photo -->
     <div id="stepSelect" class="flex flex-col items-center justify-center flex-1 text-center p-4">
       <label for="photoInput" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg cursor-pointer transition">
-        Select from your computer
+        Select photo
       </label>
       <input type="file" id="photoInput" name="photo" accept="image/*" class="hidden">
     </div>
