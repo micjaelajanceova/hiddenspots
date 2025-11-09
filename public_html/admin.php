@@ -41,7 +41,7 @@ if (isset($_POST['edit_comment'])) {
 // ===== TOGGLE BLOCK USER =====
 if (isset($_POST['toggle_block'])) {
   $id = intval($_POST['id']);
-  // Zisti aktuálny stav používateľa
+
   $stmt = $pdo->prepare("SELECT blocked FROM users WHERE id = ?");
   $stmt->execute([$id]);
   $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -82,7 +82,6 @@ $users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY 
     </div>
   </div>
 
-  <!-- Divider -->
   <div class="border-t border-gray-300 mb-6"></div>
 
 
@@ -209,12 +208,11 @@ $users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY 
 
 <script>
   function showTab(tabId){
-  // skry všetky tab-content
+
   document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-  // zobraz aktívny
+
   document.getElementById(tabId).classList.remove('hidden');
 
-  // update aktívneho buttonu
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.classList.remove('bg-black', 'text-white');
     btn.classList.add('bg-gray-200', 'text-gray-800');
@@ -226,7 +224,7 @@ $users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY 
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    showTab('spots'); // spots sa zobrazí a button bude čierny
+    showTab('spots');
 });
 
 </script>

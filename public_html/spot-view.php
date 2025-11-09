@@ -145,7 +145,7 @@ if ($user_id) {
          class="w-full h-[400px] md:h-[600px] object-cover transition duration-500" 
          id="spotImage">
 
-    <!-- Toast over image -->
+
     <div id="favToast" 
          class="absolute inset-0 flex items-center justify-center text-white text-sm font-medium
                 bg-black bg-opacity-0 opacity-0 transition-all duration-500 pointer-events-none">
@@ -154,11 +154,11 @@ if ($user_id) {
   </div>
 
   <?php
-// Define user photo URL before HTML
+
 $user_photo_url = !empty($user['profile_photo']) ? '/public_html/' . $user['profile_photo'] : null;
 ?>
 
-<!-- Right Panel: Actions, Author, Description, Comments -->
+
 <div class="w-full lg:w-2/5 flex flex-col gap-4 max-h-[600px] overflow-y-auto relative">
 
     <!-- Three dots menu for spot -->
@@ -210,7 +210,7 @@ $user_photo_url = !empty($user['profile_photo']) ? '/public_html/' . $user['prof
     <?= htmlspecialchars($spot['description']) ?>
   </div>
 
-  <!-- Character count (hidden by default) -->
+  <!-- Character count -->
   <div id="descCharCount" class="text-xs text-gray-500 text-right hidden">
     0 / 1000 characters
   </div>
@@ -280,7 +280,7 @@ $user_photo_url = !empty($user['profile_photo']) ? '/public_html/' . $user['prof
 
     <!-- Comments Section -->
     <section id="comments" class="flex flex-col gap-4">
-      <!-- New Comment -->
+     
 <?php if(isset($_SESSION['user_id'])): ?>
 <div class="relative">
     <form method="post">
@@ -321,7 +321,7 @@ textarea.addEventListener('input', () => {
 <div class="flex flex-col gap-3">
 <?php foreach($comments as $c): ?>
     <div id="comment-<?=$c['id']?>" class="flex gap-3 items-start bg-gray-100 p-3 rounded-lg">
-        <!-- User avatar -->
+        <!-- User photo -->
         <div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
             <?php 
                 $photo_url = !empty($c['profile_photo']) ? '/hiddenspots/' . $c['profile_photo'] : null;
@@ -399,9 +399,9 @@ const charCountDiv = document.getElementById("descCharCount");
 
 const MAX_CHARS = 1000;
 
-// ---------------------
-// FAVORITE BUTTON
-// ---------------------
+
+// FAVOURITE BUTTON
+
 favBtn.addEventListener('click', () => {
   const spotId = <?= $spot_id ?>;
   fetch('actions/favourite.php', {
@@ -440,9 +440,9 @@ function showFavToast(message) {
   }, 3000);
 }
 
-// ---------------------
+
 // LIKE BUTTON
-// ---------------------
+
 likeBtn.addEventListener('click', () => {
   const spotId = <?= $spot_id ?>;
   fetch('actions/like.php', {
@@ -467,9 +467,9 @@ likeBtn.addEventListener('click', () => {
   });
 });
 
-// ---------------------
+
 // SPOT DESCRIPTION EDITING
-// ---------------------
+
 document.addEventListener("DOMContentLoaded", () => {
   if (!editMenuBtn || !descDiv || !saveBtn) return;
 
@@ -503,7 +503,7 @@ document.addEventListener("DOMContentLoaded", () => {
     charCountDiv.textContent = `${chars} / ${MAX_CHARS} characters`;
   }
 
-  // Start editing
+
   editMenuBtn.addEventListener("click", () => {
     menu.classList.add("hidden");
     descDiv.contentEditable = "true";
@@ -515,8 +515,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
  descDiv.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
-    e.preventDefault(); // prevent default div insertion
-    document.execCommand("insertHTML", false, "<br>"); // insert single line break
+    e.preventDefault(); 
+    document.execCommand("insertHTML", false, "<br>"); 
   }
 });
 
@@ -532,7 +532,7 @@ descDiv.addEventListener("input", () => {
   // Remove trailing <br>
   html = html.replace(/<br>$/, "");
 
-  // Limit to MAX_CHARS (based on textContent)
+  // Limit to MAX_CHARS
   const text = descDiv.textContent;
   if (text.length > MAX_CHARS) {
     descDiv.textContent = text.slice(0, MAX_CHARS);
@@ -575,10 +575,10 @@ descDiv.addEventListener("input", () => {
 
 
 
-// ---------------------
+// MAP
 const cityMapBtn = document.getElementById('showCityMapBtn');
 const cityMapDiv = document.getElementById('cityMap');
-let cityMap; // globálna mapa
+let cityMap; 
 
 cityMapBtn.addEventListener('click', () => {
     cityMapDiv.style.display = cityMapDiv.style.display === 'none' ? 'block' : 'none';

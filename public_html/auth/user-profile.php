@@ -5,23 +5,23 @@ include __DIR__ . '/../classes/spot.php';
 
 
 
-// Získame user_id z GET alebo použijeme prihláseného používateľa
+
 $user_id = $_GET['user_id'] ?? $_SESSION['user_id'];
 if (!$user_id) die("No user ID provided.");
 
-// Načítanie info o používateľovi vrátane profilovej fotky
+
 $stmt = $pdo->prepare("SELECT id, name, profile_photo FROM users WHERE id=?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$user) die("User not found.");
 
-// Absolútna URL fotky, ak existuje
+
 $photo_url = null;
 if (!empty($user['profile_photo'])) {
     $photo_url = '/' . $user['profile_photo'];
 }
 
-// Načítanie spotov používateľa
+
 $spotObj = new Spot($pdo);
 $stmt = $pdo->prepare("SELECT * FROM hidden_spots WHERE user_id=? ORDER BY created_at DESC");
 $stmt->execute([$user_id]);
@@ -42,7 +42,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <h1 class="text-2xl font-bold"><?= htmlspecialchars($user['name']) ?></h1>
   </div>
 
-  <!-- DIVIDER LINE LIKE INSTAGRAM -->
+
   <div class="border-t border-gray-300 mb-8"></div>
 
 <!-- USER'S PHOTO FEED -->
@@ -65,7 +65,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 
-  <!-- BACK TO HOME LINK -->
+  
   <div class="text-center mt-12">
     <a href="../index.php" class="text-gray-600 hover:underline">← Back to Home</a>
   </div>

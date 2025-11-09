@@ -1,5 +1,4 @@
 <?php
-// auth/edit-profile.php
 session_start();
 require_once __DIR__ . '/../includes/db.php';
 
@@ -12,7 +11,7 @@ $user_id = $_SESSION['user_id'];
 $msg = '';
 $msg_type = '';
 
-// --- AJAX: Remove profile photo ---
+// --- AJAX Remove profile photo ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove_photo']) && $_POST['remove_photo'] == '1') {
     header('Content-Type: application/json');
 
@@ -33,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove_photo']) && $_
     exit();
 }
 
-// --- AJAX: Upload profile photo ---
+// --- AJAX Upload profile photo ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_photo']) && empty($_POST['update_password']) && !isset($_POST['remove_photo'])) {
     $response = ['success' => false, 'message' => 'Upload failed'];
 
@@ -54,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_photo']) && 
             if (move_uploaded_file($tmp, $dest)) {
                 $relative = 'uploads/profile/' . $filename;
 
-                // Delete old photo
+                
                 $stmt = $pdo->prepare("SELECT profile_photo FROM users WHERE id = ?");
                 $stmt->execute([$user_id]);
                 $old = $stmt->fetchColumn();
@@ -127,7 +126,7 @@ include __DIR__ . '/../includes/header.php';
 <main class="flex flex-col items-center min-h-screen w-screen bg-gray-50 overflow-auto relative">
   <div class="bg-white shadow-xl p-6 w-full max-w-3xl m-4 my-10">
 
-    <!-- Header with Back Button inside container -->
+   
     <div class="flex justify-between items-center mb-12">
       <a href="my-profile.php" class="text-gray-600 hover:underline flex items-center gap-1">
         ← Back
@@ -143,7 +142,7 @@ include __DIR__ . '/../includes/header.php';
 
     <div class="flex flex-col md:flex-row gap-6">
 
-      <!-- LEFT: Photo -->
+      
       <div class="flex-1 flex flex-col items-center">
         <div class="relative w-36 h-36 rounded-full border-4 border-gray-200 shadow-sm flex items-center justify-center bg-gray-200 text-4xl font-bold text-white overflow-hidden">
           <?php if ($user_photo): ?>
@@ -154,7 +153,7 @@ include __DIR__ . '/../includes/header.php';
           <?php endif; ?>
         </div>
 
-        <!-- Buttons side by side -->
+        
         <div class="mt-2 flex gap-2">
           <button id="changePhotoBtn" type="button" class="bg-black text-white text-xs px-3 py-1 rounded-full hover:bg-gray-800 transition">
             Change
@@ -164,12 +163,12 @@ include __DIR__ . '/../includes/header.php';
           </button>
         </div>
 
-        <!-- Status message hidden initially -->
+        
         <p id="uploadStatus" class="text-sm mt-2 hidden"></p>
         <input id="photoInput" type="file" name="profile_photo" accept="image/*" class="absolute w-0 h-0 opacity-0">
       </div>
 
-      <!-- RIGHT: Info + Password -->
+      
       <div class="flex-1">
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700">Name</label>
@@ -249,8 +248,8 @@ if (data.success) {
     photoPreview.src = '../' + data.path;
     uploadStatus.textContent = 'Photo saved!';
     uploadStatus.classList.remove('hidden');
-    uploadStatus.classList.remove('text-red-600'); // remove any previous error
-    uploadStatus.classList.add('text-green-600');   // make it green
+    uploadStatus.classList.remove('text-red-600'); 
+    uploadStatus.classList.add('text-green-600');  
     setTimeout(() => uploadStatus.classList.add('hidden'), 2000);
 } else {
     uploadStatus.textContent = 'Error: ' + (data.message || 'Upload failed');

@@ -10,19 +10,18 @@ if(!isset($_SESSION['user_id'])){
 }
 
 $user_id = $_SESSION['user_id'];
-// Fetch user info (for profile header)
+// Fetch user info 
 $stmt = $pdo->prepare("SELECT name, profile_photo FROM users WHERE id=?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 $user_name = $user['name'] ?? 'User';
 $user_photo = $user['profile_photo'] ?? null;
 
-// načítanie profilovej fotky z DB
+
 $stmt = $pdo->prepare("SELECT profile_photo FROM users WHERE id=?");
 $stmt->execute([$user_id]);
 $user_photo = $stmt->fetchColumn();
 
-// načítanie spotov používateľa cez Spot class
 $spotObj = new Spot($pdo);
 $mySpots = $spotObj->getByUser($user_id);
 ?>

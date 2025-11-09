@@ -1,5 +1,5 @@
 <?php
-// Získanie query z URL
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

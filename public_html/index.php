@@ -7,15 +7,15 @@ include 'classes/spot.php';
 
 require_once 'includes/db.php';
 require_once 'classes/SessionHandle.php';
-// session_start() je už v header.php
+
 $session = new SessionHandle();
 
 $spotObj = new Spot($pdo);
 
-// HOT NEW PICTURES (Newest)
+// HOT NEW PICTURES
 $newest = $spotObj->getNewest(20);
 
-// TRENDING (Sticky) - from view_hot_pictures
+// TRENDING (Sticky)
 try {
     $stmt = $pdo->query("SELECT * FROM view_hot_pictures");
     $sticky = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -23,7 +23,7 @@ try {
     $sticky = [];
 }
 
-// LATEST COMMENTS - from view_latest_comments
+// LATEST COMMENTS
 try {
   $stmt = $pdo->query("SELECT * FROM view_latest_comments ORDER BY created_at DESC LIMIT 3");
   $latestComments = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -83,7 +83,7 @@ try {
 <!-- ABOUT -->
 <section class="mt-12 pb-20">
   <div class="relative overflow-hidden shadow-md h-96">
-    <!-- Background image -->
+
     <div class="absolute inset-0">
       <img src="assets/img/hiddenspot7.jpg" 
            alt="Hidden spot background" 
@@ -91,7 +91,6 @@ try {
 
     </div>
 
-    <!-- Text content -->
     <div class="relative p-8 flex flex-col items-start max-w-xl">
       <h1 class="text-3xl">About HiddenSpot</h1>
       <p class="mt-2 text-white">
@@ -232,24 +231,19 @@ const profileBtn = document.getElementById('profileBtn');
 const profileMenu = document.getElementById('profileMenu');
 
 if (profileBtn && profileMenu) {
-    // klik na meno používateľa → otvorí menu
+
     profileBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         profileMenu.classList.toggle('hidden');
     });
 
-    // klik mimo menu → zatvorí menu
+
     document.addEventListener('click', (e) => {
         if (!profileMenu.contains(e.target) && !profileBtn.contains(e.target)) {
             profileMenu.classList.add('hidden');
         }
     });
 }
-
-
-
-
-
 
 
 </script>
