@@ -1,7 +1,9 @@
 <?php
-include '../includes/db.php';
-include '../includes/header.php';
-include '../classes/Spot.php';
+include __DIR__ . '/../includes/db.php';
+include __DIR__ . '/../includes/header.php';
+include __DIR__ . '/../classes/spot.php';
+
+
 
 // Získame user_id z GET alebo použijeme prihláseného používateľa
 $user_id = $_GET['user_id'] ?? $_SESSION['user_id'];
@@ -16,7 +18,7 @@ if (!$user) die("User not found.");
 // Absolútna URL fotky, ak existuje
 $photo_url = null;
 if (!empty($user['profile_photo'])) {
-    $photo_url = '/hiddenspots/' . $user['profile_photo'];
+    $photo_url = '/' . $user['profile_photo'];
 }
 
 // Načítanie spotov používateľa
@@ -31,7 +33,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <!-- PROFILE HEADER -->
   <div class="flex items-center justify-center mb-6 flex-col gap-3">
     <div class="w-16 h-16 bg-black text-white flex items-center justify-center rounded-full text-2xl font-semibold overflow-hidden">
-      <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . '/hiddenspots/' . $user['profile_photo'])): ?>
+      <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $user['profile_photo'])): ?>
         <img src="<?= htmlspecialchars($photo_url) ?>" alt="Profile" class="w-full h-full object-cover rounded-full">
       <?php else: ?>
         <?= strtoupper(substr($user['name'], 0, 1)) ?>

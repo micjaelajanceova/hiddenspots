@@ -1,7 +1,7 @@
 <?php
 session_start();
-include 'includes/db.php';
-include 'classes/Spot.php';
+require_once __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/classes/spot.php';
 
 $spot_id = $_GET['id'] ?? null;
 if (!$spot_id) die("No ID provided.");
@@ -91,7 +91,7 @@ if (isset($_POST['delete_spot_id']) && ($isAdmin || $_SESSION['user_id'] == $spo
 
 
 
-include 'includes/header.php';
+require_once __DIR__ . '/includes/header.php';
 
 // Refresh comments
 $comments = $spotObj->getComments($spot_id);
@@ -147,7 +147,7 @@ if ($user_id) {
 
   <?php
 // Define user photo URL before HTML
-$user_photo_url = !empty($user['profile_photo']) ? '/hiddenspots/' . $user['profile_photo'] : null;
+$user_photo_url = !empty($user['profile_photo']) ? '/public_html/' . $user['profile_photo'] : null;
 ?>
 
 <!-- Right Panel: Actions, Author, Description, Comments -->
@@ -566,4 +566,4 @@ descDiv.addEventListener("input", () => {
 
 
 
-<?php include 'includes/footer.php'; ?>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>

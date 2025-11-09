@@ -1,8 +1,8 @@
 <?php
-$host = 'localhost';
-$db   = 'hiddenspots';
-$user = 'root';
-$pass = ''; // alebo tvoje heslo
+$host = 'mysql63.unoeuro.com';
+$db   = 'hiddenspots_dk_db';
+$user = 'hiddenspots_dk';
+$pass = 'pAkEef9DnwyG2bagF3th';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

@@ -1,7 +1,7 @@
 <?php
-include __DIR__ . '/../includes/db.php';
-include __DIR__ . '/../includes/header.php';
-include __DIR__ . '/../classes/Spot.php';
+require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../classes/spot.php';
 
 // check if user is logged in
 if(!isset($_SESSION['user_id'])){
@@ -33,8 +33,8 @@ $mySpots = $spotObj->getByUser($user_id);
 <div class="flex items-center justify-between mb-6">
   <div class="flex items-center gap-4">
     <div class="w-16 h-16 bg-black text-white flex items-center justify-center rounded-full text-2xl font-semibold">
-      <?php if($user_photo && file_exists(__DIR__ . '/../' . $user_photo)): ?>
-        <img src="../<?= htmlspecialchars($user_photo) ?>" alt="Profile" class="w-full h-full object-cover rounded-full">
+      <?php if($user_photo && file_exists(__DIR__ . '/../uploads/profile/' . $user_photo)): ?>
+    <img src="../uploads/profile/<?= htmlspecialchars($user_photo) ?>" alt="Profile" class="w-full h-full object-cover rounded-full">
       <?php else: ?>
         <?= strtoupper(substr($user_name, 0, 1)) ?>
       <?php endif; ?>
@@ -72,4 +72,4 @@ $mySpots = $spotObj->getByUser($user_id);
 
 </main>
 
-<?php include __DIR__ . '/../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>

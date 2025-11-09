@@ -1,8 +1,6 @@
 SET default_storage_engine=INNODB;
 
-DROP DATABASE IF EXISTS hiddenspots;
-CREATE DATABASE hiddenspots;
-USE hiddenspots;
+USE hiddenspots_dk_db;
 
 -- ======================================
 -- TABLES
@@ -148,37 +146,3 @@ BEGIN
 END$$
 DELIMITER ;
 
--- ======================================
--- TEST DATA
--- ======================================
-
--- Users
-INSERT INTO users (name, email, password, birthDate, badges, role) VALUES
-('Alice', 'alice@example.com', 'password', '1995-01-01', 'newbie', 'user'),
-('Bob', 'bob@example.com', 'password', '1990-05-12', 'explorer', 'user'),
-('Charlie', 'charlie@example.com', 'password', '1988-09-23', 'veteran', 'admin');
-
-
--- Hidden spots
-INSERT INTO hidden_spots (user_id, name, description, city, address, type, file_path) VALUES
-(1, 'Hidden Garden', 'A secret little garden in the city.', 'Copenhagen', 'Some Street 1', 'Nature', 'assets/img/hiddenspot1.jpeg'),
-(2, 'Rooftop View', 'Amazing view from a rooftop.', 'Copenhagen', 'Roof Street 2', 'Urban', 'assets/img/hiddenspot2.jpeg'),
-(1, 'Cozy Café', 'Small and cozy café.', 'Copenhagen', 'Cafe Street 3', 'Cafés', 'assets/img/hiddenspot3.jpeg');
-
--- Comments
-INSERT INTO comments (user_id, spot_id, text) VALUES
-(2, 1, 'Love this place!'),
-(3, 1, 'Never knew about it, thanks!'),
-(1, 2, 'Amazing view indeed.');
-
--- Likes
-INSERT INTO likes (user_id, spot_id) VALUES
-(2,1),(3,1),(1,2);
-
--- Tags
-INSERT INTO tags (name) VALUES
-('Nature'),('Urban'),('Cafés');
-
--- Spot_tags
-INSERT INTO spot_tags (spot_id, tag_id) VALUES
-(1,1),(2,2),(3,3);

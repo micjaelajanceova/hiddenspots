@@ -1,11 +1,11 @@
 <?php
-include 'includes/db.php';
-include 'includes/header.php';
-include 'classes/Spot.php';
+require_once __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/classes/spot.php';
 
-include 'includes/search.php';
-include 'includes/map.php';
 
+require_once __DIR__ . '/includes/search.php';
+require_once __DIR__ . '/includes/map.php';
 $city = $_GET['query'] ?? '';
 $filter_type = $_GET['type'] ?? '';
 
@@ -208,4 +208,4 @@ function initFeedMap() {
 </script>
 
 
-<?php include 'includes/footer.php'; ?>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>

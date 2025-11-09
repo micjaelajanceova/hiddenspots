@@ -45,7 +45,7 @@ $user_role = $_SESSION['role'] ?? 'user';
   <!-- HORNY BLOK: Logo + Menu links -->
   <div class="flex flex-col gap-8">
     <!-- Logo -->
-<a href="/hiddenspots/index.php" class="logo text-black hover:text-blue-500">
+<a href="/index.php" class="logo text-black hover:text-blue-500">
   <span class="text-3xl font-extrabold text-black">HiddenSpots</span>
 </a>
 
@@ -56,16 +56,16 @@ $user_role = $_SESSION['role'] ?? 'user';
 
     <!-- Menu links s ikonami -->
     <nav class="flex flex-col pt-5 gap-6 text-black">
-      <a href="/hiddenspots/feed.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+      <a href="/feed.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
         <i class="ph-house text-lg"></i> Feed
       </a>
-      <a href="/hiddenspots/favourites.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+      <a href="/favourites.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
         <i class="ph-heart text-lg"></i> Favourites
       </a>
-      <a href="/hiddenspots/trending.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+      <a href="/trending.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
         <i class="ph-trend-up text-lg"></i> Trending
       </a>
-      <a href="/hiddenspots/about.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+      <a href="/about.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
         <i class="ph-info text-lg"></i> About HS
       </a>
 
@@ -174,7 +174,7 @@ $user_role = $_SESSION['role'] ?? 'user';
 
   <!-- Mobile top logo -->
   <div class="md:hidden sticky top-0 border-b p-3 flex justify-center bg-gray-100 z-50">
-    <a href="index.php" class="text-3xl font-extrabold text-black hover:text-blue-500">HS</a>
+    <a href="/index.php" class="text-3xl font-extrabold text-black hover:text-blue-500">HS</a>
   </div>
 <!-- Phosphor Icons CDN -->
 <script src="https://unpkg.com/phosphor-icons"></script>
@@ -183,12 +183,12 @@ $user_role = $_SESSION['role'] ?? 'user';
 <nav class="fixed bottom-0 left-0 right-0 bg-white flex justify-around items-center p-2 md:hidden border-t shadow-md z-50">
 
   <!-- Home -->
-  <a href="feed.php" class="text-gray-600 hover:text-blue-500">
+  <a href="/feed.php" class="text-gray-600 hover:text-blue-500">
     <i class="ph-house text-2xl"></i>
   </a>
 
   <!-- Favourites -->
-  <a href="favourites.php" class="text-gray-600 hover:text-blue-500">
+  <a href="/favourites.php" class="text-gray-600 hover:text-blue-500">
     <i class="ph-heart text-2xl"></i>
   </a>
 
@@ -202,12 +202,12 @@ $user_role = $_SESSION['role'] ?? 'user';
 
 
   <!-- Trending -->
-  <a href="trending.php" class="text-gray-600 hover:text-blue-500">
+  <a href="/trending.php" class="text-gray-600 hover:text-blue-500">
     <i class="ph-trend-up text-2xl"></i>
   </a>
 
   <!-- About -->
-  <a href="about.php" class="text-gray-600 hover:text-blue-500">
+  <a href="/about.php" class="text-gray-600 hover:text-blue-500">
     <i class="ph-info text-2xl"></i>
   </a>
 
