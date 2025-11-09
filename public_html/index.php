@@ -128,7 +128,7 @@ try {
             <div class="p-3 flex flex-col justify-between flex-1">
               <div>
                 <h2 class="font-semibold"><?=htmlspecialchars($n['name'])?></h2>
-                <p class="text-sm text-gray-600 mt-1"><?=htmlspecialchars(mb_strimwidth($n['description'] ?? '',0,120,'...'))?></p>
+                <p class="text-sm text-gray-600 mt-1"><?=htmlspecialchars(mb_strimwidth($n['description'] ?? '',0,70,'...'))?></p>
               </div>
               <div class="flex items-center justify-between mt-3 text-xs text-gray-400">
                 <span><?=htmlspecialchars($n['city'])?> • <?=date("d M", strtotime($n['created_at']))?></span>

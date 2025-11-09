@@ -66,12 +66,3 @@ p {
     opacity: 1;
 }
 
-#feedContainer {
-  column-gap: 1rem; 
-}
-
-#feedContainer a {
-  display: inline-block;
-  width: 100%;
-  margin-bottom: 1rem; 
-}
