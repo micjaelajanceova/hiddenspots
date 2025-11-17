@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 ':longitude' => $longitude
                             ]);
 
-                            header("Location: index.php?upload=success");
+                            header("Location: ../index.php?upload=success");
                             exit();
                         } catch (PDOException $e) {
                             if (file_exists($filePath)) unlink($filePath);
