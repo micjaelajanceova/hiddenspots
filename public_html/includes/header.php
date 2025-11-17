@@ -41,6 +41,7 @@ $user_role = $_SESSION['role'] ?? 'user';
 <aside class="hidden md:flex flex-col md:w-64 bg-gray-100 border-r sticky top-0 h-screen p-4 shadow-lg shadow-gray-300 z-10">
 
 
+
   <div class="flex flex-col gap-8">
 
 <a href="/index.php" class="logo text-black hover:text-blue-500">
@@ -129,7 +130,7 @@ $user_role = $_SESSION['role'] ?? 'user';
       <!-- Form -->
       <div class="w-1/2 p-6 overflow-y-auto">
         <h2 class="text-lg font-semibold mb-4">New Hidden Spot</h2>
-        <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data" class="space-y-4">
+        <form id="uploadForm" action="includes/upload.php" method="post" enctype="multipart/form-data" class="space-y-4">
           <input type="hidden" name="photoData" id="photoData">
           <input type="text" name="name" placeholder="Name" required class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-400 outline-none" />
           <input type="text" name="city" placeholder="City" required class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-400 outline-none" />
@@ -337,7 +338,7 @@ if (cityInput) {
     if (!city || !uploadMap) return;
 
     try {
-      const response = await fetch(`geocode.php?q=${encodeURIComponent(city)}`);
+      const response = await fetch(`includes/geocode.php?q=${encodeURIComponent(city)}`);
       const data = await response.json();
 
       if (data && data.length > 0) {
@@ -471,6 +472,9 @@ cityInput.addEventListener('input', debounce(async function () {
         console.error(err);
     }
 }, 500));
+
+
+
 
 
 </script>

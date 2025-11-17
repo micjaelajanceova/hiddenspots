@@ -168,7 +168,7 @@ try {
     foreach ($comments as $c):
         $photo_url = !empty($c['profile_photo']) ? htmlspecialchars($c['profile_photo']) : null;
     ?>
-      <div class="bg-white shadow p-4" style="box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 -5px 10px rgba(0,0,0,0.05);">
+      <div class="bg-white shadow p-4 flex flex-col justify-between" style="box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 -5px 10px rgba(0,0,0,0.05);">
         <div class="flex items-center gap-3">
           <?php if($photo_url): ?>
             <a href="auth/user-profile.php?user_id=<?= $c['user_id'] ?>">
@@ -186,8 +186,8 @@ try {
             <div class="text-xs text-gray-400"><?= date("d M Y", strtotime($c['created_at'])) ?></div>
           </div>
         </div>
-        <p class="text-sm text-gray-600 mt-3"><?= htmlspecialchars(mb_strimwidth($c['text'],0,140,'...')) ?></p>
-        <a href="spot-view.php?id=<?= htmlspecialchars($c['spot_id']) ?>" class="inline-block mt-3 bg-black text-white px-3 py-2 rounded-full text-sm">See post →</a>
+        <p class="text-sm text-gray-600 mt-3 whitespace-normal break-all"><?= htmlspecialchars(mb_strimwidth($c['text'],0,140,'...')) ?></p>
+        <a href="spot-view.php?id=<?= htmlspecialchars($c['spot_id']) ?>" class=" mt-auto inline-block mt-3 bg-black text-white px-3 py-2 rounded-full text-sm self-start">See post →</a>
       </div>
     <?php endforeach; ?>
   </div>

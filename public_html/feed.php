@@ -104,7 +104,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
              class="block break-inside-avoid overflow-hidden group relative mb-4">
             <img src="<?= htmlspecialchars($spot['file_path']) ?>" 
                  alt="<?= htmlspecialchars($spot['name']) ?>" 
-                 class="w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                 class="w-full object-cover transition-transform duration-300 group-hover:scale-105 max-h-96">
             <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-sm font-semibold">
               <?= htmlspecialchars($spot['name']) ?>
             </div>
