@@ -2,7 +2,7 @@
 session_start();
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/classes/spot.php';
-require_once __DIR__ . '/includes/header.php';
+
 
 $spot_id = $_GET['id'] ?? null;
 if (!$spot_id) die("No ID provided.");
@@ -88,7 +88,7 @@ if (isset($_POST['delete_spot_id']) && ($isAdmin || $_SESSION['user_id'] == $spo
 }
 
 
-
+require_once __DIR__ . '/includes/header.php';
 
 // Refresh comments
 $comments = $spotObj->getComments($spot_id);
