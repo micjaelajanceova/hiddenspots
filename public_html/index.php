@@ -85,21 +85,25 @@ try {
   <div class="relative overflow-hidden shadow-md h-96">
 
     <div class="absolute inset-0">
-      <img src="assets/img/hiddenspot7.jpg" 
+      <img src="assets/img/index1.JPEG" 
            alt="Hidden spot background" 
            class="w-full h-full object-cover">
 
     </div>
 
     <div class="relative p-8 flex flex-col items-start max-w-xl">
-      <h1 class="text-3xl">About HiddenSpot</h1>
-      <p class="mt-2 text-white">
+      <h6 class="text-4xl font-bold text-white">About HiddenSpot</h6>
+      <p3 class="mt-2 text-white">
         A photo-sharing app for secret city places. Discover, save and share hidden gems in your town.
-      </p>
-      <a href="about.php" 
-         class="inline-block mt-4 bg-black text-white px-5 py-2 rounded-full font-medium shadow">
-         Learn more →
-      </a>
+      </p3>
+     <a href="about.php" 
+   class="inline-block mt-4 bg-white text-black px-5 py-2 rounded-full font-medium shadow 
+          transition-transform transition-shadow duration-1000 ease-in-out hover:shadow-xl hover:scale-105">
+   Learn more →
+</a>
+
+
+
     </div>
   </div>
 </section>

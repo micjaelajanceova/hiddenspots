@@ -95,31 +95,61 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <div id="feedMap" style="display:none; height:500px; margin-top:16px;"></div>
 
 
-    <!-- ALL SPOTS PHOTO FEED -->
-    <?php if (!empty($spots)): ?>
-      <div class="columns-2 sm:columns-3 lg:columns-4 gap-4 space-y-4 mt-6">
+   <!-- ALL SPOTS PHOTO FEED -->
+<?php if (!empty($spots)): ?>
+  
+  <!-- Masonry container -->
+  <div id="masonry" class="mt-6">
+    
+    <?php foreach ($spots as $spot): ?>
+      <div class="masonry-item mb-4">
+        <a href="spot-view.php?id=<?= htmlspecialchars($spot['id']) ?>" 
+           class="block overflow-hidden group relative">
+           
+          <img 
+            src="<?= htmlspecialchars($spot['file_path']) ?>" 
+            alt="<?= htmlspecialchars($spot['name']) ?>" 
+            class="w-full h-auto max-h-[600px] block transition-transform duration-300 group-hover:scale-105"
+          >
 
-        <?php foreach ($spots as $spot): ?>
-          <a href="spot-view.php?id=<?= htmlspecialchars($spot['id']) ?>" 
-             class="block break-inside-avoid overflow-hidden group relative mb-4">
-            <img src="<?= htmlspecialchars($spot['file_path']) ?>" 
-                 alt="<?= htmlspecialchars($spot['name']) ?>" 
-                 class="w-full object-cover transition-transform duration-300 group-hover:scale-105 max-h-96">
-            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-sm font-semibold">
-              <?= htmlspecialchars($spot['name']) ?>
-            </div>
-            <div class="absolute bottom-1 left-1 text-white text-xs bg-black/50 px-1">
-              @<?= htmlspecialchars($spot['user_name']) ?>
-            </div>
-          </a>
-        <?php endforeach; ?>
+          <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex 
+                      items-center justify-center text-white text-sm font-semibold">
+            <?= htmlspecialchars($spot['name']) ?>
+          </div>
+
+          <div class="absolute bottom-1 left-1 text-white text-xs bg-black/50 px-1">
+            @<?= htmlspecialchars($spot['user_name']) ?>
+          </div>
+
+        </a>
       </div>
-    <?php else: ?>
-      <p class="text-center text-gray-500 mt-10">No spots uploaded yet.</p>
-    <?php endif; ?>
+    <?php endforeach; ?>
+
+  </div>
+
+<?php else: ?>
+  <p class="text-center text-gray-500 mt-10">No spots uploaded yet.</p>
+<?php endif; ?>
+
 
   </div>
 </main>
+
+<script src="https://cdn.jsdelivr.net/npm/macy@2"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const masonry = Macy({
+    container: '#masonry',
+    columns: 4,
+    margin: 12,
+    breakAt: {
+      640: 2,   // sm
+      1024: 3   // lg
+    }
+  });
+});
+</script>
 
 
 <script>

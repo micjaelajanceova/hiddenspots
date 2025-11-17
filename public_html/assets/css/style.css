@@ -19,7 +19,6 @@ h3 {
   font-size: 1.4rem !important;
   font-weight: 500 !important;
   line-height: 1.2 !important;
-  text-transform: uppercase !important;
   color: #ffffff !important;
 
 
@@ -45,7 +44,6 @@ p {
 .button {
   font-size: 1rem !important;
   font-weight: 600 !important;
-  text-transform: uppercase !important;
   padding: 0.55rem 1rem !important;
   border: none !important;
   cursor: pointer !important;

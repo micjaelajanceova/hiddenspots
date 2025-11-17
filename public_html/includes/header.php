@@ -45,7 +45,7 @@ $user_role = $_SESSION['role'] ?? 'user';
   <div class="flex flex-col gap-8">
 
 <a href="/index.php" class="logo text-black hover:text-blue-500">
-  <span class="text-3xl font-extrabold text-black">HiddenSpots</span>
+  <span class="text-2xl font-extrabold text-black">HiddenSpots</span>
 </a>
 
 
