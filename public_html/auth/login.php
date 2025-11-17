@@ -46,25 +46,94 @@ if (isset($_POST['action'])) {
         }
     } 
 
+
     if ($_POST['action'] === 'register') {
-            if ($_POST['password'] !== ($_POST['password_confirm'] ?? '')) {
+                    // PASSWORD VALIDATION
+            $password = $_POST['password'] ?? '';
+            $passwordConfirm = $_POST['password_confirm'] ?? '';
+
+            // match
+            if ($password !== $passwordConfirm) {
                 $msg = "Passwords do not match.";
-            } else {
-                $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+            }
+            // length
+            elseif (strlen($password) < 6) {
+                $msg = "Password must be at least 6 characters.";
+            }
+            // max length
+            elseif (strlen($password) > 50) {
+                $msg = "Password cannot be longer than 50 characters.";
+            }
+            // must contain letters
+            elseif (!preg_match('/[a-zA-Z]/', $password)) {
+                $msg = "Password must contain at least one letter.";
+            }
+            // must contain numbers
+            elseif (!preg_match('/[0-9]/', $password)) {
+                $msg = "Password must contain at least one number.";
+            }
+            else {
+    
+
+            // --- Username validation (Instagram-like) ---
+            $username = $_POST['name'] ?? '';
+
+            // lowercase only
+            if ($username !== strtolower($username)) {
+                $msg = "Username cannot contain uppercase letters.";
+            }
+            // no spaces
+            elseif (preg_match('/\s/', $username)) {
+                $msg = "Username cannot contain spaces.";
+            }
+            // only allowed characters
+            elseif (!preg_match('/^[a-z0-9._]+$/', $username)) {
+                $msg = "Username can only contain letters, numbers, dots and underscores.";
+            }
+            // cannot start with . or _
+            elseif (preg_match('/^[._]/', $username)) {
+                $msg = "Username cannot start with a dot or underscore.";
+            }
+            // cannot end with . or _
+            elseif (preg_match('/[._]$/', $username)) {
+                $msg = "Username cannot end with a dot or underscore.";
+            }
+            // no consecutive dots
+            elseif (strpos($username, '..') !== false) {
+                $msg = "Username cannot contain consecutive dots.";
+            }
+            // max length
+            elseif (strlen($username) > 20) {
+                $msg = "Username cannot be longer than 20 characters.";
+            }
+
+            // If validation passed, continue
+            if ($msg === '') {
+                // Check email uniqueness
+                $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
                 $stmt->execute(['email' => $_POST['email']]);
                 if ($stmt->fetch()) {
                     $msg = "Email already exists.";
                 } else {
-                    $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                    $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, badges) 
-                        VALUES (:name, :email, :password, 'user', 'newbie')");
-                    $stmt->execute([
-                        'name' => $_POST['name'],
-                        'email' => $_POST['email'],
-                        'password' => $passwordHash
-                    ]);
-                    $msg = "Account created! You can now log in.";
-                    $success = true;
+                    // Check username uniqueness
+                    $stmt = $pdo->prepare("SELECT id FROM users WHERE name = :name");
+                    $stmt->execute(['name' => $username]);
+                    if ($stmt->fetch()) {
+                        $msg = "Username already exists.";
+                    } else {
+                        // Insert user
+                        $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                        $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, badges) 
+                            VALUES (:name, :email, :password, 'user', 'newbie')");
+                        $stmt->execute([
+                            'name' => $username,
+                            'email' => $_POST['email'],
+                            'password' => $passwordHash
+                        ]);
+                        $msg = "Account created! You can now log in.";
+                        $success = true;
+                    }
+                }
             }
         }
     }
@@ -136,7 +205,7 @@ if (isset($_POST['action'])) {
     <!-- REGISTER FORM -->
     <form id="registerForm" class="flex flex-col gap-4 hidden mt-4" method="post">
         <input type="hidden" name="action" value="register">
-        <input type="text" name="name" placeholder="Username" required class="border rounded p-2 w-full">
+        <input type="text" name="name" placeholder="username" required class="border rounded p-2 w-full">
         <input type="email" name="email" placeholder="Email" required class="border rounded p-2 w-full">
         <input type="password" name="password" placeholder="Password" required class="border rounded p-2 w-full">
         <input type="password" name="password_confirm" placeholder="Repeat Password" required class="border rounded p-2 w-full">
@@ -173,7 +242,13 @@ const success = <?= isset($success) && $success ? 'true' : 'false' ?>;
 if (success) {
     loginForm.classList.remove('hidden');
     registerForm.classList.add('hidden');
-} else if (msg.includes('Email already exists') || msg.includes('Passwords do not match')) {
+} else if (
+    msg.includes('Email already exists') ||
+    msg.includes('Passwords do not match') ||
+    msg.includes('Password') ||   
+    msg.includes('Username cannot') ||       
+    msg.includes('Username already exists') 
+) {
     loginForm.classList.add('hidden');
     registerForm.classList.remove('hidden');
 } else {
