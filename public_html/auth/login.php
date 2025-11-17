@@ -72,6 +72,14 @@ if (isset($_POST['action'])) {
             elseif (!preg_match('/[0-9]/', $password)) {
                 $msg = "Password must contain at least one number.";
             }
+             // must contain at least one lowercase letter
+            elseif (!preg_match('/[a-z]/', $password)) {
+                $msg = "Password must contain at least one lowercase letter.";
+            }
+            // must contain at least one uppercase letter
+            elseif (!preg_match('/[A-Z]/', $password)) {
+                $msg = "Password must contain at least one uppercase letter.";
+            }
             else {
     
 
