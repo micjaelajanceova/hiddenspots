@@ -2,6 +2,9 @@
 
     
     <main class="flex-1 bg-white min-h-screen overflow-y-auto">
+    <!-- LOGIN / SIGNUP -->
+    <?php include 'includes/profile-header.php'; ?>
+    
     <div class="py-10 lg:py-20">
       <div class="w-full px-4 sm:px-6 lg:px-8">
         <!-- Section 1 -->
