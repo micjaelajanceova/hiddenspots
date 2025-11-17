@@ -11,14 +11,7 @@ $spotObj = new Spot($pdo);
 $spot = $spotObj->getById($spot_id);
 if (!$spot) die("Spot not found.");
 
-// Fetch spot owner's info
-$user_id = $spot['user_id'];
-$stmt = $pdo->prepare("SELECT name, profile_photo FROM users WHERE id = :id LIMIT 1");
-$stmt->execute(['id' => $user_id]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$user_name = $user['name'] ?? 'Unknown';
-$photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 
 
 // Fetch comments
@@ -115,6 +108,15 @@ if ($user_id) {
     $stmt->execute([$user_id, $spot_id]);
     $favorited = $stmt->fetch() ? true : false;
 }
+
+// Fetch spot owner's info
+$user_id = $spot['user_id'];
+$stmt = $pdo->prepare("SELECT name, profile_photo FROM users WHERE id = :id LIMIT 1");
+$stmt->execute(['id' => $user_id]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$user_name = $user['name'] ?? 'Unknown';
+$photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 
 ?>
 
