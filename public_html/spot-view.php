@@ -12,10 +12,14 @@ $spot = $spotObj->getById($spot_id);
 if (!$spot) die("Spot not found.");
 
 // Fetch spot owner's info
-$stmt = $pdo->prepare("SELECT name, profile_photo FROM users WHERE id=?");
-$stmt->execute([$spot['user_id']]);
+$user_id = $spot['user_id'];
+$stmt = $pdo->prepare("SELECT name, profile_photo FROM users WHERE id = :id LIMIT 1");
+$stmt->execute(['id' => $user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
 $user_name = $user['name'] ?? 'Unknown';
+$photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
+
 
 // Fetch comments
 $comments = $spotObj->getComments($spot_id);
@@ -186,19 +190,20 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 
     <!-- Author Info -->
 <div class="flex items-center gap-2 mt-2">
-    <?php if(!empty($user['profile_photo'])): ?>
-        <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
-            <img src="<?= htmlspecialchars($user['profile_photo']) ?>" 
-                 alt="<?= htmlspecialchars($user_name) ?>" 
-                 class="w-10 h-10 rounded-full object-cover">
-        </a>
-    <?php else: ?>
-        <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
-            <div class="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-semibold">
-                <?= strtoupper(substr($user_name,0,1)) ?>
-            </div>
-        </a>
-    <?php endif; ?>
+    <?php if($photo_url): ?>
+    <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
+        <img src="<?= htmlspecialchars($photo_url) ?>" 
+             alt="<?= htmlspecialchars($user_name) ?>" 
+             class="w-10 h-10 rounded-full object-cover">
+    </a>
+<?php else: ?>
+    <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
+        <div class="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-semibold">
+            <?= strtoupper(substr($user_name,0,1)) ?>
+        </div>
+    </a>
+<?php endif; ?>
+
 
     <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>" 
        class="font-semibold text-blue-600 hover:underline">
