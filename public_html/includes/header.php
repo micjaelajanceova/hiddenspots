@@ -220,97 +220,98 @@ $user_role = $_SESSION['role'] ?? 'user';
 <script>
 const uploadModal = document.getElementById('uploadModal');
 const closeBtn = document.getElementById('closeUploadModal');
-
-
-const openBtns = document.querySelectorAll(
-  'a[onclick*="uploadModal"], button.ph-plus, button[onclick*="uploadModal"]'
-);
-
-
-// MAP INITIALIZATION
+const openBtns = document.querySelectorAll('a[onclick*="uploadModal"], button.ph-plus');
+const uploadForm = document.getElementById('uploadForm');
+const photoInput = document.getElementById('photoInput');
+const previewImage = document.getElementById('previewImage');
+const finalImage = document.getElementById('finalImage');
+const photoDataInput = document.getElementById('photoData');
+const cityInput = document.querySelector('input[name="city"]');
+const addressInput = document.querySelector('input[name="address"]');
 
 let uploadMap, uploadMarker;
+
+// ---------- DEBOUNCE ----------
+function debounce(fn, delay) {
+  let timeout;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn.apply(this, args), delay);
+  };
+}
+
+// ---------- MAP ----------
 document.addEventListener('DOMContentLoaded', () => {
     const mapEl = document.getElementById('uploadMap');
     if (!mapEl) return;
 
-
     uploadMap = L.map(mapEl).setView([55.6761, 12.5683], 13);
-
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(uploadMap);
 
-   
-    uploadMap.on('click', function(e) {
+    uploadMap.on('click', (e) => {
         const { lat, lng } = e.latlng;
         if (uploadMarker) uploadMap.removeLayer(uploadMarker);
         uploadMarker = L.marker([lat, lng]).addTo(uploadMap)
             .bindPopup('Selected location').openPopup();
-        document.querySelector('input[name="latitude"]').value = lat;
-        document.querySelector('input[name="longitude"]').value = lng;
+        document.getElementById('latitude').value = lat;
+        document.getElementById('longitude').value = lng;
     });
 });
 
-
-// -------------------------------
+// ---------- MODAL OPEN/CLOSE ----------
 openBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
         e.preventDefault();
-        uploadModal.classList.remove('hidden');
+        if (!<?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>) {
+            window.location.href = '/auth/login.php';
+            return;
+        }
 
-        
+        uploadModal.classList.remove('hidden');
+        hideFeedMap();
+
+        // reset
         document.getElementById('stepSelect').classList.remove('hidden');
         document.getElementById('stepPreview').classList.add('hidden');
         document.getElementById('stepForm').classList.add('hidden');
-        document.getElementById('photoInput').value = '';
-        document.getElementById('previewImage').src = '';
-        document.getElementById('finalImage').src = '';
-        document.getElementById('photoData').value = '';
+        photoInput.value = '';
+        previewImage.src = '';
+        finalImage.src = '';
+        photoDataInput.value = '';
 
-        
-        setTimeout(() => {
-            if (uploadMap) uploadMap.invalidateSize();
-        }, 100);
+        setTimeout(() => { if (uploadMap) uploadMap.invalidateSize(); }, 200);
     });
 });
 
 closeBtn.addEventListener('click', () => {
     uploadModal.classList.add('hidden');
+    showFeedMap();
 });
 
-
-// -------------------------------
-const photoInput = document.getElementById('photoInput');
-const previewImage = document.getElementById('previewImage');
-const finalImage = document.getElementById('finalImage');
-const photoDataInput = document.getElementById('photoData');
-
-photoInput.addEventListener('change', function(e) {
+// ---------- PHOTO PREVIEW ----------
+photoInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            previewImage.src = event.target.result;
-            finalImage.src = event.target.result;
-            photoDataInput.value = event.target.result;
+    if (!file) return;
 
-            
-            document.getElementById('stepSelect').classList.add('hidden');
-            document.getElementById('stepPreview').classList.remove('hidden');
-        };
-        reader.readAsDataURL(file);
-    }
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        previewImage.src = event.target.result;
+        finalImage.src = event.target.result;
+        photoDataInput.value = event.target.result;
+
+        document.getElementById('stepSelect').classList.add('hidden');
+        document.getElementById('stepPreview').classList.remove('hidden');
+    };
+    reader.readAsDataURL(file);
 });
 
+// ---------- NEXT/BACK ----------
 document.getElementById('nextBtn').addEventListener('click', () => {
     document.getElementById('stepPreview').classList.add('hidden');
     document.getElementById('stepForm').classList.remove('hidden');
-
-    
-    setTimeout(() => {
-        if (uploadMap) uploadMap.invalidateSize();
-    }, 100);
+    setTimeout(() => { if (uploadMap) uploadMap.invalidateSize(); }, 100);
 });
 
 document.getElementById('backBtn').addEventListener('click', () => {
@@ -318,162 +319,71 @@ document.getElementById('backBtn').addEventListener('click', () => {
     document.getElementById('stepPreview').classList.remove('hidden');
 });
 
-
-
-// CITY - MOVE MAP
-
-const cityInput = document.querySelector('input[name="city"]');
-
+// ---------- GEOCODE ----------
 if (cityInput) {
-  function debounce(fn, delay) {
-    let timeout;
-    return function (...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => fn.apply(this, args), delay);
-    };
-  }
-
-  cityInput.addEventListener('input', debounce(async function () {
-    const city = cityInput.value.trim();
-    if (!city || !uploadMap) return;
-
-    try {
-      const response = await fetch(`includes/geocode.php?q=${encodeURIComponent(city)}`);
-      const data = await response.json();
-
-      if (data && data.length > 0) {
-        const { lat, lon } = data[0];
-        uploadMap.setView([lat, lon], 13);
-      } else {
-        console.warn('City not found');
-      }
-    } catch (err) {
-      console.error('Error fetching city:', err);
-    }
-  }, 500)); 
+    cityInput.addEventListener('input', debounce(async () => {
+        const city = cityInput.value.trim();
+        if (!city || !uploadMap) return;
+        try {
+            const res = await fetch(`includes/geocode.php?q=${encodeURIComponent(city)}`);
+            const data = await res.json();
+            if (data.length) {
+                const { lat, lon } = data[0];
+                uploadMap.setView([lat, lon], 13);
+            }
+        } catch(e) { console.error(e); }
+    }, 500));
 }
-
-
-
-// ADDRESS - MAP MARKER
-
-const addressInput = document.querySelector('input[name="address"]');
 
 if (addressInput) {
-  function debounce(fn, delay) {
-    let timeout;
-    return function (...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => fn.apply(this, args), delay);
-    };
-  }
+    addressInput.addEventListener('input', debounce(async () => {
+        const addr = addressInput.value.trim();
+        if (!addr || !uploadMap) return;
+        try {
+            const res = await fetch(`includes/geocode.php?q=${encodeURIComponent(addr)}`);
+            const data = await res.json();
+            if (data.length) {
+                const { lat, lon } = data[0];
+                uploadMap.setView([lat, lon], 14);
+                if (uploadMarker) uploadMap.removeLayer(uploadMarker);
+                uploadMarker = L.marker([lat, lon]).addTo(uploadMap)
+                    .bindPopup('Selected location').openPopup();
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lon;
+            }
+        } catch(e) { console.error(e); }
+    }, 500));
+}
 
-  addressInput.addEventListener('input', debounce(async function () {
+// ---------- FORM SUBMIT ----------
+uploadForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const lat = document.getElementById('latitude').value.trim();
+    const lng = document.getElementById('longitude').value.trim();
     const address = addressInput.value.trim();
-    if (!address || !uploadMap) return;
 
-    try {
-      const response = await fetch(`geocode.php?q=${encodeURIComponent(address)}`);
-      const data = await response.json();
-
-      if (data && data.length > 0) {
-        const { lat, lon } = data[0];
-        uploadMap.setView([lat, lon], 14);
-
-        if (uploadMarker) uploadMap.removeLayer(uploadMarker);
-        uploadMarker = L.marker([lat, lon]).addTo(uploadMap)
-          .bindPopup('Selected location').openPopup();
-
-        document.querySelector('input[name="latitude"]').value = lat;
-        document.querySelector('input[name="longitude"]').value = lon;
-      } else {
-        console.warn('Address not found. You can click on the map to set location.');
-      }
-    } catch (err) {
-      console.error('Error fetching address:', err);
+    if ((!lat || !lng) && !address) {
+        alert('Please select a location either by entering an address or clicking on the map.');
+        return;
     }
-  }, 500)); 
-}
 
+    const formData = new FormData(uploadForm);
+    formData.set('photoData', finalImage.src);
 
-
-// FORM VALIDATION FIX
-
-const uploadForm = document.getElementById('uploadForm');
-uploadForm.addEventListener('submit', (e) => {
-  const lat = document.getElementById('latitude').value.trim();
-  const lng = document.getElementById('longitude').value.trim();
-  const address = document.querySelector('input[name="address"]').value.trim();
-
-  
-  if ((!lat || !lng) && !address) {
-    e.preventDefault();
-    alert('Please select a location either by entering an address or clicking on the map.');
-    return false;
-  }
-});
-
-
-
-
-function hideFeedMap() {
-  const m = document.getElementById('feedMap');
-  const mapBtn = document.getElementById('showMap');
-  if (m) {
-    m.style.display = 'none'; 
-  }
-}
-
-function showFeedMap() {
-  const m = document.getElementById('feedMap');
-  const mapBtn = document.getElementById('showMap');
-  if (m) {
-    m.style.display = 'block'; 
-  }
-}
-
-openBtns.forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    uploadModal.classList.remove('hidden');
-    hideFeedMap(); 
-    setTimeout(() => { if (uploadMap) uploadMap.invalidateSize(); }, 200);
-  });
-});
-
-closeBtn.addEventListener('click', () => {
-  uploadModal.classList.add('hidden');
-  showFeedMap(); 
-});
-
-
-
-
-
-function debounce(fn, delay) {
-  let timeout;
-  return function (...args) {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => fn.apply(this, args), delay);
-  };
-}
-
-cityInput.addEventListener('input', debounce(async function () {
-    const city = cityInput.value.trim();
-    if (!city || !uploadMap) return;
     try {
-        const res = await fetch(`geocode.php?q=${encodeURIComponent(city)}`);
-        const data = await res.json();
-        if (data.length) {
-            const { lat, lon } = data[0];
-            uploadMap.setView([lat, lon], 13);
-        }
-    } catch (err) {
+        const res = await fetch('includes/upload.php', { method: 'POST', body: formData });
+        const text = await res.text();
+        if (text.includes('Invalid image type')) return alert('Invalid image type!');
+        if (text.includes('Failed to save image')) return alert('Failed to save image!');
+        alert('Upload successful!');
+        uploadModal.classList.add('hidden');
+        location.reload();
+    } catch(err) {
         console.error(err);
+        alert('Upload failed');
     }
-}, 500));
-
-
+});
 
 
 

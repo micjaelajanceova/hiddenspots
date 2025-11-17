@@ -103,7 +103,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     }
+
+    // --- ZOBRAZENIE CHYBY MIMO VŠETKYCH BLOCOK ---
+    if ($error) {
+        echo "<p style='color:red;'>$error</p>";
+    }
 }
+
+
 
 
 ?>
