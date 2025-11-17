@@ -112,14 +112,11 @@ if ($user_id) {
     $favorited = $stmt->fetch() ? true : false;
 }
 
-$user_photo = !empty($user['profile_photo']) ? '/' . $user['profile_photo'] : null;
-$photo_path = __DIR__ . '/' . $photo_url; 
-echo "<!-- DEBUG: full path = $photo_path -->";
 ?>
 
 
 
-<main class="flex-1 bg-gray-50 min-h-screen pt-8 pb-8 md:pb-12 px-4 md:px-8 max-w-7xl mx-auto flex flex-col gap-8">
+<main class="flex-1 bg-white min-h-screen pt-8 pb-8 md:pb-12 px-4 md:px-8 max-w-7xl mx-auto flex flex-col gap-8">
 
 <!-- LOGIN / SIGNUP -->
 <?php include 'includes/profile-header.php'; ?>
@@ -156,9 +153,10 @@ echo "<!-- DEBUG: full path = $photo_path -->";
     </div>
   </div>
 
-  <?php
 
-$user_photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
+
+  <?php
+$photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 ?>
 
 
@@ -187,11 +185,10 @@ $user_photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null
 
 
     <!-- Author Info -->
-    <!-- Author Info -->
 <div class="flex items-center gap-2 mt-2">
-    <?php if($user_photo_url): ?>
+    <?php if(!empty($user['profile_photo'])): ?>
         <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
-            <img src="<?= htmlspecialchars($user_photo_url) ?>" 
+            <img src="<?= htmlspecialchars($user['profile_photo']) ?>" 
                  alt="<?= htmlspecialchars($user_name) ?>" 
                  class="w-10 h-10 rounded-full object-cover">
         </a>
@@ -210,14 +207,16 @@ $user_photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null
 </div>
 
 
+
 <!-- Description -->
 <div class="flex flex-col gap-1">
   <div id="spotDescription"
-       contenteditable="false"
-       class="text-sm text-gray-700 w-full border border-transparent rounded p-2 transition-all break-words whitespace-pre-wrap max-h-96 overflow-y-auto"
-       data-spot-id="<?= $spot['id'] ?>">
-    <?= htmlspecialchars($spot['description']) ?>
-  </div>
+     contenteditable="false"
+     class="text-sm text-gray-700 w-full border border-transparent rounded px-2 transition-all break-words whitespace-normal overflow-visible"
+     data-spot-id="<?= $spot['id'] ?>">
+    <?= nl2br(htmlspecialchars($spot['description'])) ?>
+</div>
+
 
   <!-- Character count -->
   <div id="descCharCount" class="text-xs text-gray-500 text-right hidden">
@@ -362,7 +361,9 @@ textarea.addEventListener('input', () => {
                     <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded-full mt-2 text-sm">Update</button>
                 </form>
             <?php else: ?>
-                <div class="text-gray-700 text-sm break-words"><?=htmlspecialchars($c['text'])?></div>
+                <div class="text-gray-700 text-sm break-words whitespace-normal break-all pr-3">
+                <?=htmlspecialchars($c['text'])?>
+            </div>
             <?php endif; ?>
 
             <div class="flex justify-between mt-2 text-xs text-gray-500">
@@ -389,6 +390,7 @@ textarea.addEventListener('input', () => {
 
   </div>
 </div>
+<script src="assets/js/main.js"></script>
 </main>
 
 <script>
@@ -409,7 +411,6 @@ const MAX_CHARS = 1000;
 
 
 // FAVOURITE BUTTON
-
 favBtn.addEventListener('click', () => {
   const spotId = <?= $spot_id ?>;
   fetch('actions/favourite.php', {
@@ -450,7 +451,6 @@ function showFavToast(message) {
 
 
 // LIKE BUTTON
-
 likeBtn.addEventListener('click', () => {
   const spotId = <?= $spot_id ?>;
   fetch('actions/like.php', {
@@ -475,112 +475,112 @@ likeBtn.addEventListener('click', () => {
   });
 });
 
-
 // SPOT DESCRIPTION EDITING
-
 document.addEventListener("DOMContentLoaded", () => {
-  if (!editMenuBtn || !descDiv || !saveBtn) return;
+    if (!editMenuBtn || !descDiv || !saveBtn) return;
 
-  const menu = document.getElementById("spotMenu");
+    const menu = document.getElementById("spotMenu");
 
-  // Toggle menu
-  const menuBtn = document.getElementById("spotMenuBtn");
-  if (menuBtn && menu) {
-    menuBtn.addEventListener("click", e => {
-      e.stopPropagation();
-      menu.classList.toggle("hidden");
-    });
-    document.addEventListener("click", () => menu.classList.add("hidden"));
-  }
-
-  function placeCaretAtEnd(el) {
-    el.focus();
-    if (typeof window.getSelection !== "undefined"
-        && typeof document.createRange !== "undefined") {
-      const range = document.createRange();
-      range.selectNodeContents(el);
-      range.collapse(false);
-      const sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
+    // Toggle menu
+    const menuBtn = document.getElementById("spotMenuBtn");
+    if (menuBtn && menu) {
+        menuBtn.addEventListener("click", e => {
+            e.stopPropagation();
+            menu.classList.toggle("hidden");
+        });
+        document.addEventListener("click", () => menu.classList.add("hidden"));
     }
-  }
 
-  function updateCharCount() {
-    const chars = descDiv.innerText.trim().length;
-    charCountDiv.textContent = `${chars} / ${MAX_CHARS} characters`;
-  }
+    // Place caret at the end
+    function placeCaretAtEnd(el) {
+        el.focus();
+        if (typeof window.getSelection !== "undefined" && typeof document.createRange !== "undefined") {
+            const range = document.createRange();
+            range.selectNodeContents(el);
+            range.collapse(false);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+    }
 
+    // Count characters + special Enter = 100
+    function getEffectiveCharCount(el) {
+        let count = 0;
+        el.childNodes.forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE) {
+                count += node.textContent.length;
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+                const tag = node.tagName.toLowerCase();
+                if (tag === 'div' || tag === 'br') count += 99;
+                count += node.innerText.length;
+            }
+        });
+        return count;
+    }
 
-  editMenuBtn.addEventListener("click", () => {
-    menu.classList.add("hidden");
-    descDiv.contentEditable = "true";
-    descDiv.classList.add("bg-gray-100");
-    saveBtn.classList.remove("hidden");
-    charCountDiv.classList.remove("hidden");
-    updateCharCount();
-  });
+    // Update character count display
+    function updateCharCount() {
+        charCountDiv.textContent = `${getEffectiveCharCount(descDiv)} / ${MAX_CHARS} characters`;
+    }
 
- descDiv.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault(); 
-    document.execCommand("insertHTML", false, "<br>"); 
-  }
-});
-
-descDiv.addEventListener("input", () => {
-  let html = descDiv.innerHTML;
-
-  // Collapse multiple <br> or empty divs into one
-  html = html.replace(/(<br>|\n|\<div\>)+/g, "<br>");
-
-  // Remove leading <br>
-  html = html.replace(/^<br>/, "");
-
-  // Remove trailing <br>
-  html = html.replace(/<br>$/, "");
-
-  // Limit to MAX_CHARS
-  const text = descDiv.textContent;
-  if (text.length > MAX_CHARS) {
-    descDiv.textContent = text.slice(0, MAX_CHARS);
-    placeCaretAtEnd(descDiv);
-  } else {
-    descDiv.innerHTML = html;
-    placeCaretAtEnd(descDiv);
-  }
-
-  updateCharCount();
-});
-
-
-  // Save description
-  saveBtn.addEventListener("click", () => {
-    let newDesc = descDiv.innerText.trim();
-    const spotId = descDiv.dataset.spotId;
-
-    fetch("", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `edit_spot_id=${encodeURIComponent(spotId)}&edit_description=${encodeURIComponent(newDesc)}`
-    })
-    .then(() => {
-      descDiv.contentEditable = "false";
-      descDiv.classList.remove("bg-gray-100");
-      saveBtn.classList.add("hidden");
-      charCountDiv.classList.add("hidden");
-
-      const toast = document.createElement("div");
-      toast.textContent = "Description updated successfully ✅";
-      toast.className = "fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow";
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 2500);
+    // Activate edit mode
+    editMenuBtn.addEventListener("click", () => {
+        menu.classList.add("hidden");
+        descDiv.contentEditable = "true";
+        descDiv.classList.add("bg-gray-100");
+        saveBtn.classList.remove("hidden");
+        charCountDiv.classList.remove("hidden");
+        updateCharCount();
+        placeCaretAtEnd(descDiv);
     });
-  });
+
+    // Limit input characters
+descDiv.addEventListener("beforeinput", (e) => {
+    if (e.inputType === "deleteContentBackward" || e.inputType === "deleteContentForward") return;
+
+    let currentCount = getEffectiveCharCount(descDiv);
+    let addition = 0;
+
+    if (e.inputType === "insertLineBreak") {
+        addition = 100; 
+    } else if (e.data) {
+        addition = e.data.length;
+    }
+
+    // BLOCK input if it would meet or exceed MAX_CHARS
+    if (currentCount + addition > MAX_CHARS || currentCount + addition === MAX_CHARS) {
+        e.preventDefault();
+    }
 });
 
+    // Update char count on every input
+    descDiv.addEventListener("input", updateCharCount);
 
+    // Save description
+    saveBtn.addEventListener("click", () => {
+        const newDesc = descDiv.innerText.trim();
+        const spotId = descDiv.dataset.spotId;
 
+        fetch("", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `edit_spot_id=${encodeURIComponent(spotId)}&edit_description=${encodeURIComponent(newDesc)}`
+        })
+        .then(() => {
+            descDiv.contentEditable = "false";
+            descDiv.classList.remove("bg-gray-100");
+            saveBtn.classList.add("hidden");
+            charCountDiv.classList.add("hidden");
+
+            const toast = document.createElement("div");
+            toast.textContent = "Description updated successfully ✅";
+            toast.className = "fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow";
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
+        });
+    });
+});
 
 
 // MAP
@@ -618,10 +618,7 @@ function initCityMap() {
         .bindPopup(`<b><?= addslashes($spot['name']) ?></b><br><?= addslashes($spot['address'] ?? '') ?>`)
         .openPopup();
 }
-
-
 </script>
-
 
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

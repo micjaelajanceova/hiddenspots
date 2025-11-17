@@ -68,7 +68,7 @@ $user_role = $_SESSION['role'] ?? 'user';
       </a>
 
       <?php if (isset($_SESSION['user_id']) && $user_role === 'admin'): ?>
-    <a href="admin.php" class="flex items-center gap-4 font-semibold hover:text-red-500">
+    <a href="/admin.php" class="flex items-center gap-4 font-semibold hover:text-red-500">
       <i class="ph-shield-star text-lg"></i> Admin Panel
     </a>
 <?php endif; ?>

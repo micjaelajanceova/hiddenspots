@@ -53,7 +53,7 @@ $photo_url = $user_photo ? '/' . $user_photo : null;
       </div>
 
       <!-- Count of saved spots -->
-      <div class="text-gray-700 text-sm md:text-base font-semibold">
+      <div class="text-gray-700 text-sm md:text-base font-semibold mt-0 md:mt-6">
         <?= count($favorites) ?> saved spots
       </div>
 
