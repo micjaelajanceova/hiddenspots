@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $error = "Invalid image type.";
                 } else {
                     $fileName = time() . '_' . bin2hex(random_bytes(6)) . '.' . $ext;
-                    $filePath = __DIR__ . '/uploads/' . $fileName;
+                    $filePath = __DIR__ . '/../uploads/'  . $fileName;
 
                     if (!file_put_contents($filePath, $data)) {
                         $error = "Failed to save image.";
