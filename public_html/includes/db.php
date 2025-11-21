@@ -1,9 +1,5 @@
 <?php
-$host = 'mysql63.unoeuro.com';
-$db   = 'hiddenspots_dk_db';
-$user = 'hiddenspots_dk';
-$pass = 'pAkEef9DnwyG2bagF3th';
-$charset = 'utf8mb4';
+require __DIR__ . '/constants.php';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 $options = [

@@ -94,62 +94,51 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <div id="feedMap" style="display:none; height:500px; margin-top:16px;"></div>
 
-
-   <!-- ALL SPOTS PHOTO FEED -->
+<!-- PHOTO FEED -->
 <?php if (!empty($spots)): ?>
   
   <!-- Masonry container -->
   <div id="masonry" class="mt-6">
     
     <?php foreach ($spots as $spot): ?>
-      <div class="masonry-item mb-4">
-        <a href="spot-view.php?id=<?= htmlspecialchars($spot['id']) ?>" 
-           class="block overflow-hidden group relative">
-           
-          <img 
-            src="<?= htmlspecialchars($spot['file_path']) ?>" 
-            alt="<?= htmlspecialchars($spot['name']) ?>" 
-            class="w-full h-auto max-h-[600px] block transition-transform duration-300 group-hover:scale-105"
-          >
-
-          <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex 
-                      items-center justify-center text-white text-sm font-semibold">
-            <?= htmlspecialchars($spot['name']) ?>
-          </div>
-
-          <div class="absolute bottom-1 left-1 text-white text-xs bg-black/50 px-1">
-            @<?= htmlspecialchars($spot['user_name']) ?>
-          </div>
-
-        </a>
-      </div>
+  <?php include __DIR__ . '/includes/photo-feed.php';  ?>
+  
     <?php endforeach; ?>
 
   </div>
 
-<?php else: ?>
-  <p class="text-center text-gray-500 mt-10">No spots uploaded yet.</p>
-<?php endif; ?>
+  <!-- Macy.js script pre Masonry -->
+    <style>
+  #masonry {
+  display: none;
+}
 
-
-  </div>
-</main>
+</style>
 
 <script src="https://cdn.jsdelivr.net/npm/macy@2"></script>
-
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+window.addEventListener('load', () => {
   const masonry = Macy({
     container: '#masonry',
     columns: 4,
     margin: 12,
-    breakAt: {
-      640: 2,   // sm
-      1024: 3   // lg
-    }
+    breakAt: { 1024: 3, 640: 2, 0: 1 },
+    trueOrder: false,
+    waitForImages: true
   });
+
+  masonry.recalculate(true);
+  document.getElementById('masonry').style.display = 'block';
 });
-</script>
+  </script>
+  
+  <?php else: ?>
+  <p class="text-center text-gray-500 mt-10">No spots uploaded yet.</p>
+<?php endif; ?>
+
+  </div>
+</main>
+
 
 
 <script>

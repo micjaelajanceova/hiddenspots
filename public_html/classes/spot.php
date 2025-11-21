@@ -7,13 +7,18 @@ class Spot {
 
     public function getNewest($limit=10){
         $stmt = $this->pdo->query("
-            SELECT h.*, COUNT(c.id) AS comments_count, 
-            (SELECT COUNT(*) FROM likes l WHERE l.spot_id = h.id) AS likes 
-            FROM hidden_spots h
-            LEFT JOIN comments c ON h.id = c.spot_id
-            GROUP BY h.id
-            ORDER BY h.created_at DESC
-            LIMIT $limit
+            SELECT 
+            h.*, 
+            u.name AS user_name,
+            COUNT(c.id) AS comments_count,
+            (SELECT COUNT(*) FROM likes l WHERE l.spot_id = h.id) AS likes
+        FROM hidden_spots h
+        LEFT JOIN users u ON h.user_id = u.id
+        LEFT JOIN comments c ON h.id = c.spot_id
+        GROUP BY h.id
+        ORDER BY h.created_at DESC
+        LIMIT $limit
+
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -30,22 +35,31 @@ class Spot {
     }
 
     public function getComments($spot_id){
-        $stmt = $this->pdo->prepare("
-            SELECT c.*, u.name AS user_name, u.profile_photo, c.user_id
-            FROM comments c
-            LEFT JOIN users u ON c.user_id = u.id
-            WHERE c.spot_id = ?
-            ORDER BY c.created_at DESC
-        ");
-        $stmt->execute([$spot_id]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $this->pdo->prepare("
+        SELECT 
+            c.id,
+            c.user_id,
+            c.text,
+            c.created_at,
+            u.name AS user_name,
+            u.profile_photo
+        FROM comments c
+        LEFT JOIN users u ON c.user_id = u.id
+        WHERE c.spot_id = ?
+        ORDER BY c.created_at DESC
+    ");
+    $stmt->execute([$spot_id]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
         public function getByUser($user_id){
         $stmt = $this->pdo->prepare("
-            SELECT *
-            FROM hidden_spots
-            WHERE user_id = ?
-            ORDER BY created_at DESC
+            SELECT h.*, u.name AS user_name
+            FROM hidden_spots h
+            JOIN users u ON h.user_id = u.id
+            WHERE h.user_id = ?
+            ORDER BY h.created_at DESC
+
         ");
         $stmt->execute([$user_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

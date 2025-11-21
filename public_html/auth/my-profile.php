@@ -49,18 +49,42 @@ $mySpots = $spotObj->getByUser($user_id);
 
 <!-- USER'S PHOTO FEED -->
 <?php if (!empty($mySpots)): ?>
-  <div class="w-full columns-2 sm:columns-3 lg:columns-4 gap-4 space-y-4">
+  
+  <!-- Masonry container -->
+  <div id="masonry" class="mt-6">
+
       <?php foreach ($mySpots as $spot): ?>
-      <a href="../spot-view.php?id=<?= htmlspecialchars($spot['id']) ?>" class="block break-inside-avoid overflow-hidden group relative">
-          <img src="../<?= htmlspecialchars($spot['file_path']) ?>" 
-              alt="<?= htmlspecialchars($spot['name']) ?>" 
-              class="w-full object-cover transition-transform duration-300 group-hover:scale-105">
-          <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-sm font-semibold">
-          <?= htmlspecialchars($spot['name']) ?>
-          </div>
-      </a>
-      <?php endforeach; ?>
+
+      <?php include __DIR__ . '/../includes/photo-feed.php';  ?>
+
+    <?php endforeach; ?>
   </div>
+
+   <!-- Macy.js script pre Masonry -->
+    <style>
+  #masonry {
+  display: none;
+}
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/macy@2"></script>
+<script>
+window.addEventListener('load', () => {
+  const masonry = Macy({
+    container: '#masonry',
+    columns: 4,
+    margin: 12,
+    breakAt: { 1024: 3, 640: 2, 0: 1 },
+    trueOrder: false,
+    waitForImages: true
+  });
+
+  masonry.recalculate(true);
+  document.getElementById('masonry').style.display = 'block';
+});
+  </script>
+
 <?php else: ?>
   <p class="text-center text-gray-500 mt-10">This user hasn't uploaded any spots yet.</p>
 <?php endif; ?>

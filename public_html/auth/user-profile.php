@@ -23,7 +23,12 @@ if (!empty($user['profile_photo'])) {
 
 
 $spotObj = new Spot($pdo);
-$stmt = $pdo->prepare("SELECT * FROM hidden_spots WHERE user_id=? ORDER BY created_at DESC");
+$stmt = $pdo->prepare("SELECT h.*, u.name AS user_name
+FROM hidden_spots h
+JOIN users u ON h.user_id = u.id
+WHERE h.user_id = ?
+ORDER BY h.created_at DESC
+");
 $stmt->execute([$user_id]);
 $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -45,20 +50,43 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   <div class="border-t border-gray-300 mb-8"></div>
 
-<!-- USER'S PHOTO FEED -->
+ <!-- USER'S PHOTO FEED -->
 <?php if (!empty($spots)): ?>
-  <div class="w-full columns-2 sm:columns-3 lg:columns-4 gap-4 space-y-4">
+
+  <!-- Masonry container -->
+  <div id="masonry" class="mt-6">
     <?php foreach ($spots as $spot): ?>
-      <a href="../spot-view.php?id=<?= htmlspecialchars($spot['id']) ?>" class="block break-inside-avoid overflow-hidden group relative">
-        <img src="../<?= htmlspecialchars($spot['file_path']) ?>" 
-             alt="<?= htmlspecialchars($spot['name']) ?>" 
-             class="w-full object-cover transition-transform duration-300 group-hover:scale-105">
-        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-sm font-semibold">
-          <?= htmlspecialchars($spot['name']) ?>
-        </div>
-      </a>
+
+      <?php include __DIR__ . '/../includes/photo-feed.php';  ?>
     <?php endforeach; ?>
+    
   </div>
+
+   <!-- Macy.js script pre Masonry -->
+    <style>
+  #masonry {
+  display: none;
+}
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/macy@2"></script>
+<script>
+window.addEventListener('load', () => {
+  const masonry = Macy({
+    container: '#masonry',
+    columns: 4,
+    margin: 12,
+    breakAt: { 1024: 3, 640: 2, 0: 1 },
+    trueOrder: false,
+    waitForImages: true
+  });
+
+  masonry.recalculate(true);
+  document.getElementById('masonry').style.display = 'block';
+});
+  </script>
+
 <?php else: ?>
   <p class="text-center text-gray-500 mt-10">This user hasn't uploaded any spots yet.</p>
 <?php endif; ?>

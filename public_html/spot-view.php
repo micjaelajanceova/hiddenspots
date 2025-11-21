@@ -14,6 +14,17 @@ if (!$spot) die("Spot not found.");
 
 
 
+// Time ago function
+function timeAgo($datetime) {
+    $timestamp = strtotime($datetime);
+    $difference = time() - $timestamp;
+
+    if ($difference < 60) return "about " . $difference . " seconds ago";
+    if ($difference < 3600) return "about " . floor($difference/60) . " minutes ago";
+    if ($difference < 86400) return "about " . floor($difference/3600) . " hours ago";
+
+    return date("d.m.Y H:i", $timestamp);
+}
 
 // Fetch comments
 $comments = $spotObj->getComments($spot_id);
@@ -136,11 +147,16 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
   </button>
 </span>
 
-<div id="cityMap" style="display:none; height:400px; margin-top:12px; margin-bottom: 20px"></div>
+
+<div id="cityMap" style="display:none; height:400px; margin-top:12px;"></div>
 
 
   <h1 class="text-3xl font-bold"><?=htmlspecialchars($spot['name'])?></h1>
+
 </div>
+
+
+
 
 <!-- Image + Right Panel -->
 <div class="flex flex-col lg:flex-row gap-6 bg-white p-4 shadow">
@@ -214,13 +230,16 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
     </a>
 </div>
 
+<div class="text-gray-500 text-sm">
+    <span>Posted <?= timeAgo($spot['created_at']) ?></span>
+</div>
 
 
 <!-- Description -->
 <div class="flex flex-col gap-1">
   <div id="spotDescription"
      contenteditable="false"
-     class="text-sm text-gray-700 w-full border border-transparent rounded px-2 transition-all break-words whitespace-normal overflow-visible"
+     class="text-sm text-gray-700 w-full border border-transparent rounded transition-all break-words whitespace-normal overflow-visible"
      data-spot-id="<?= $spot['id'] ?>">
     <?= nl2br(htmlspecialchars($spot['description'])) ?>
 </div>
@@ -228,7 +247,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 
   <!-- Character count -->
   <div id="descCharCount" class="text-xs text-gray-500 text-right hidden">
-    0 / 1000 characters
+    0 / 1100 characters
   </div>
 
   <!-- Hidden save button -->
@@ -241,9 +260,6 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
     Save Description
   </button>
 </div>
-
-
-
 
 
 
@@ -286,10 +302,8 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
     </svg>
   </button>
 
+
 </div>
-
-
-
 
 
 
@@ -302,7 +316,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
     <form method="post">
         <textarea name="text" placeholder="Write your comment"
             id="commentText"
-            class="w-full p-3 border border-gray-300 resize-none rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200 pr-12"></textarea>
+            class="w-full p-3 border border-gray-300 resize-none rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200 pr-12 text-sm"></textarea>
         <button type="submit" name="comment"
             id="postText"
             class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 font-semibold cursor-not-allowed transition-colors"
@@ -329,8 +343,6 @@ textarea.addEventListener('input', () => {
 });
 </script>
 <?php endif; ?>
-
-
 
 
      <!-- Existing Comments -->
@@ -375,7 +387,7 @@ textarea.addEventListener('input', () => {
             <?php endif; ?>
 
             <div class="flex justify-between mt-2 text-xs text-gray-500">
-                <span><?=date("d M Y", strtotime($c['created_at']))?></span>
+                <span>Posted <?= timeAgo($c['created_at']) ?></span>
                 <?php if(isset($_SESSION['user_id']) && ($_SESSION['user_id']==$c['user_id'] || $isAdmin)): ?>
                     <div class="flex gap-2">
                         <form method="post" style="display:inline;">
@@ -398,7 +410,6 @@ textarea.addEventListener('input', () => {
 
   </div>
 </div>
-<script src="assets/js/main.js"></script>
 </main>
 
 <script>
@@ -483,6 +494,8 @@ likeBtn.addEventListener('click', () => {
   });
 });
 
+
+
 // SPOT DESCRIPTION EDITING
 document.addEventListener("DOMContentLoaded", () => {
     if (!editMenuBtn || !descDiv || !saveBtn) return;
@@ -555,12 +568,33 @@ descDiv.addEventListener("beforeinput", (e) => {
     } else if (e.data) {
         addition = e.data.length;
     }
+    
 
     // BLOCK input if it would meet or exceed MAX_CHARS
     if (currentCount + addition > MAX_CHARS || currentCount + addition === MAX_CHARS) {
         e.preventDefault();
     }
 });
+
+
+descDiv.addEventListener("paste", (e) => {
+    e.preventDefault(); // prevent the default paste
+
+    const pasteData = (e.clipboardData || window.clipboardData).getData('text');
+    const currentCount = getEffectiveCharCount(descDiv);
+
+    // How many characters can still be added
+    const allowed = Math.max(0, MAX_CHARS - currentCount);
+
+    // If no characters are allowed, do nothing
+    if (allowed <= 0) return;
+
+    // Insert only the allowed portion
+    const textToInsert = pasteData.substring(0, allowed);
+    document.execCommand('insertText', false, textToInsert);
+});
+
+
 
     // Update char count on every input
     descDiv.addEventListener("input", updateCharCount);
