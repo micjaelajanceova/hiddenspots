@@ -72,8 +72,6 @@ $photo_url = $user_photo ? '/' . $user_photo : null;
     <?php endforeach; ?>
 
   </div>
-
-
 <?php else: ?>
   <p class="text-center text-gray-500 mt-10">You haven't added any favorite spots yet.</p>
 <?php endif; ?>
