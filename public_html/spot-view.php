@@ -143,6 +143,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 <span class="text-gray-500 uppercase">
   <button id="showCityMapBtn" class="hover:underline text-blue-600 bg-transparent border-0 p-0 cursor-pointer">
     <?= htmlspecialchars($spot['city']) ?>
+    <span id="mapArrow" class="inline-block transition-transform duration-300">▼</span>
   </button>
 </span>
 
@@ -426,6 +427,10 @@ const charCountDiv = document.getElementById("descCharCount");
 
 const MAX_CHARS = 1000;
 
+const spotAddress = "<?= $spot['address'] ?? '' ?>";
+const spotLat = <?= $spot['latitude'] ?>;
+const spotLng = <?= $spot['longitude'] ?>;
+
 
 // FAVOURITE BUTTON
 favBtn.addEventListener('click', () => {
@@ -655,9 +660,37 @@ function initCityMap() {
     }).addTo(cityMap);
 
     L.marker([lat, lng]).addTo(cityMap)
-        .bindPopup(`<b><?= addslashes($spot['name']) ?></b><br><?= addslashes($spot['address'] ?? '') ?>`)
-        .openPopup();
+    .bindPopup(`
+    <b><?= addslashes($spot['name']) ?></b><br>
+    <?php if (!empty($spot['address'])): ?>
+        <?= addslashes($spot['address']) ?>
+    <?php else: ?>
+        <?= $spot['latitude'] . ', ' . $spot['longitude'] ?>
+    <?php endif; ?>
+`)
+.openPopup();
 }
+
+// MAP TOGGLE
+
+cityMapBtn.addEventListener('click', () => {
+    const isHidden = cityMapDiv.style.display === 'none';
+    cityMapDiv.style.display = isHidden ? 'block' : 'none';
+
+    const mapArrow = document.getElementById('mapArrow');
+    if(isHidden){
+        mapArrow.style.transform = 'rotate(180deg)'; // šípka hore
+        setTimeout(() => {
+            if (!cityMap) initCityMap();
+            else cityMap.invalidateSize();
+        }, 100);
+    } else {
+        mapArrow.style.transform = 'rotate(0deg)'; // šípka dole
+    }
+});
+
+
+
 
 
 
