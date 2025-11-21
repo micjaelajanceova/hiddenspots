@@ -24,3 +24,15 @@ uploadForm.addEventListener('submit', e => {
         alert('Please select a location either by entering an address or clicking on the map.');
     }
 });
+
+
+// Background slideshow for login.php
+const slides = document.querySelectorAll('.bg-slide');
+let current = 0;
+slides[current].style.opacity = 1;
+
+setInterval(() => {
+    slides[current].style.opacity = 0;
+    current = (current + 1) % slides.length;
+    slides[current].style.opacity = 1;
+}, 5000); 
