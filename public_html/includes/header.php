@@ -42,9 +42,9 @@ $show_navbar = $show_navbar ?? true;
 ?>
 
 <?php if ($show_navbar): ?>
-<body class="flex flex-col md:flex-row min-h-screen">
+<body class="flex flex-col min-h-screen">
 
-
+  <div class="flex flex-1 flex-col md:flex-row">
 <aside class="hidden md:flex flex-col md:w-64 bg-gray-100 border-r sticky top-0 h-screen p-4 shadow-lg shadow-gray-300 z-10">
 
 
