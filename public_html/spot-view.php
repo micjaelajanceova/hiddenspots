@@ -626,6 +626,10 @@ function initCityMap() {
         .bindPopup(`<b><?= addslashes($spot['name']) ?></b><br><?= addslashes($spot['address'] ?? '') ?>`)
         .openPopup();
 }
+
+
+
+
 </script>
 
 
