@@ -43,7 +43,7 @@
             <h2 class="max-w-2xl mb-12">
                 Discover, save, and share hidden spots
             </h2>
-<div class="grid md:grid-cols-3 gap-8">
+    <div class="grid md:grid-cols-3 gap-8">
     <!-- Card 1 -->
     <a href="feed.php" class="group relative block overflow-hidden hover:shadow-2xl">
         <img src="assets/img/about3.JPEG" alt="Upload" class="h-80 w-full object-cover transform transition-transform duration-300 group-hover:scale-105">
@@ -83,12 +83,6 @@
         </h4>
     </a>
 </div>
-
-
-
-
-
-
-
+    </main>
 
 <?php include 'includes/footer.php'; ?>

@@ -111,7 +111,6 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 <script>
-
 // FILTER DROPDOWN TOGGLE
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('filterBtn');

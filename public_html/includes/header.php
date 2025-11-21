@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/db.php'; // ← pridaj toto
+require_once __DIR__ . '/db.php'; 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -82,7 +82,7 @@ $show_navbar = $show_navbar ?? true;
     <a href="/admin.php" class="flex items-center gap-4 font-semibold hover:text-red-500">
       <i class="ph-shield-star text-lg"></i> Admin Panel
     </a>
-<?php endif; ?>
+    <?php endif; ?>
 
     </nav>
   </div>

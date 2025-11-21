@@ -220,6 +220,3 @@ if (success) {
     }
 }
 </script>
-
-</body>
-</html>

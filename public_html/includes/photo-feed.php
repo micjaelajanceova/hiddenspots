@@ -2,8 +2,6 @@
 // PHOTO FEED TEMPLATE
 
 ?>
-
-
       <div class="masonry-item mb-4">
         <a href="../spot-view.php?id=<?= htmlspecialchars($spot['id']) ?>" 
            class="block overflow-hidden group relative">
