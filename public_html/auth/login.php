@@ -2,9 +2,6 @@
 require_once __DIR__ . '/../includes/db.php';
 session_start();
 
-// Hide navbar on login/register page when its false, only include head
-$show_navbar = false;
-include __DIR__ . '/../includes/header.php';
 
 $msg = '';
 $success = false;
@@ -115,6 +112,12 @@ if (isset($_POST['action'])) {
     }
 }
 }
+?>
+
+<?php
+// Hide navbar on login/register page when its false, only include head
+$show_navbar = false;
+include __DIR__ . '/../includes/header.php';
 ?>
 
 <!--  HTML STARTS HERE -->
