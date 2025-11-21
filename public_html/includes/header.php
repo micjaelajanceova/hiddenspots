@@ -42,8 +42,9 @@ $show_navbar = $show_navbar ?? true;
 ?>
 
 <?php if ($show_navbar): ?>
-<body class="flex flex-col md:flex-row min-h-screen">
+<body class="flex flex-col min-h-screen">
 
+  <div class="flex flex-1 flex-col md:flex-row">
 <aside class="hidden md:flex flex-col md:w-64 bg-gray-100 border-r sticky top-0 h-screen p-4 shadow-lg shadow-gray-300 z-10">
 
 
@@ -360,6 +361,7 @@ if (addressInput) {
     }, 500));
 }
 
+
 // ---------- FORM SUBMIT ----------
 uploadForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -368,25 +370,50 @@ uploadForm.addEventListener('submit', async (e) => {
     const lng = document.getElementById('longitude').value.trim();
     const address = addressInput.value.trim();
 
+    // Kontrola, či je zadaná lokalita
     if ((!lat || !lng) && !address) {
         alert('Please select a location either by entering an address or clicking on the map.');
         return;
     }
 
-    const formData = new FormData(uploadForm); // <-- automatically includes the <input type="file">
-    
+    // Priprav FormData a Base64 fotku
+    const formData = new FormData(uploadForm);
+    if (finalImage.src) {
+        formData.set('photoData', finalImage.src);
+    } else {
+        alert('Please select a photo.');
+        return;
+    }
+
     try {
-        const res = await fetch('includes/upload.php', { method: 'POST', body: formData });
+        const res = await fetch('includes/upload.php', {
+            method: 'POST',
+            body: formData
+        });
+
         const text = await res.text();
 
-        if (text.includes('Failed to save image')) return alert('Failed to save image!');
-        if (text.includes('Database error')) return alert('Database error!');
-        
+        // Kontrola chýb z upload.php
+        if (text.includes('Invalid image type')) {
+            return alert('Invalid image type!');
+        }
+        if (text.includes('Failed to save image')) {
+            return alert('Failed to save image!');
+        }
+        if (text.includes('Please fill all required fields')) {
+            return alert('Please fill all required fields.');
+        }
+        if (text.includes('Please provide a location')) {
+            return alert('Please provide a location either by address or by clicking on the map.');
+        }
+
+        // Ak všetko OK
         alert('Upload successful!');
         uploadModal.classList.add('hidden');
         location.reload();
-    } catch(err) {
-        console.error(err);
+
+    } catch (err) {
+        console.error('Upload error:', err);
         alert('Upload failed');
     }
 });
