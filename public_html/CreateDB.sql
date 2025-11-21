@@ -146,3 +146,34 @@ BEGIN
 END$$
 DELIMITER ;
 
+
+-- ======================================
+-- INDEXES
+-- ======================================
+
+-- USERS
+CREATE INDEX idx_users_name ON users (name);
+
+-- HIDDEN SPOTS
+CREATE INDEX idx_spots_name ON hidden_spots (name);
+CREATE INDEX idx_spots_city ON hidden_spots (city);
+CREATE INDEX idx_spots_user ON hidden_spots (user_id);
+
+-- COMMENTS
+CREATE INDEX idx_comments_user ON comments (user_id);
+CREATE INDEX idx_comments_spot ON comments (spot_id);
+
+-- FAVORITES
+CREATE INDEX idx_favorites_user ON favorites (user_id);
+CREATE INDEX idx_favorites_spot ON favorites (spot_id);
+
+-- LIKES
+CREATE INDEX idx_likes_user ON likes (user_id);
+CREATE INDEX idx_likes_spot ON likes (spot_id);
+
+-- NOTIFICATIONS
+CREATE INDEX idx_notifications_user ON notifications (user_id);
+CREATE INDEX idx_notifications_spot ON notifications (spot_id);
+CREATE INDEX idx_notifications_source ON notifications (source_user_id);
+
+
