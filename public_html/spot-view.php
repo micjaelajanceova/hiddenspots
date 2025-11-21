@@ -183,7 +183,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 ?>
 
 
-<div class="w-full lg:w-1/2 flex flex-col pl-4 gap-4 max-h-[650px] overflow-y-auto relative">
+<div class="w-full lg:w-1/2 flex flex-col pl-4 gap-4 max-h-[600px] overflow-y-auto relative">
 
     <!-- Three dots menu for spot -->
 <?php if(isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $spot['user_id'] || $isAdmin)): ?>
