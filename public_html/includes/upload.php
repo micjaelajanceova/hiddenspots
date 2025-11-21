@@ -1,9 +1,6 @@
 <?php
-require_once 'includes/db.php';
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/db.php';
+if (session_status() === PHP_SESSION_NONE) session_start();
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: auth/login.php");
@@ -14,16 +11,18 @@ $error = null;
 
 function getCoordinates($address) {
     $url = "https://nominatim.openstreetmap.org/search?format=json&q=" . urlencode($address);
+
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_USERAGENT, 'HiddenSpotsApp/1.0');
+    curl_setopt($ch, CURLOPT_USERAGENT, 'HiddenSpotsApp/1.0'); 
     $response = curl_exec($ch);
     curl_close($ch);
 
     if (!$response) return null;
 
     $data = json_decode($response, true);
+
     if (!empty($data) && isset($data[0]['lat']) && isset($data[0]['lon'])) {
         return [
             'lat' => $data[0]['lat'],
@@ -63,23 +62,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $data = substr($photoData, strpos($photoData, ',') + 1);
                 $data = base64_decode($data);
                 $ext = strtolower($type[1]);
-                $allowed = ['jpg','jpeg','png','gif','webp'];
+                $allowed = ['jpg','jpeg','png','webp'];
 
                 if (!in_array($ext, $allowed)) {
                     $error = "Invalid image type.";
                 } else {
                     $fileName = time() . '_' . bin2hex(random_bytes(6)) . '.' . $ext;
-                    $filePath = __DIR__ . '/uploads/' . $fileName;
+                    $filePath = __DIR__ . '/../uploads/'  . $fileName;
 
                     if (!file_put_contents($filePath, $data)) {
                         $error = "Failed to save image.";
                     } else {
                         try {
                             $sql = "INSERT INTO hidden_spots 
-                                (user_id, name, description, city, address, type, file_path, latitude, longitude, created_at) 
-                                VALUES 
-                                (:user_id, :name, :description, :city, :address, :type, :file_path, :latitude, :longitude, NOW())";
-
+                                    (user_id, name, description, city, address, type, file_path, latitude, longitude, created_at) 
+                                    VALUES (:user_id, :name, :description, :city, :address, :type, :file_path, :latitude, :longitude, NOW())";
                             $stmt = $pdo->prepare($sql);
                             $stmt->execute([
                                 ':user_id' => $user_id,
@@ -93,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 ':longitude' => $longitude
                             ]);
 
-                            header("Location: index.php?upload=success");
+                            header("Location: ../index.php?upload=success");
                             exit();
                         } catch (PDOException $e) {
                             if (file_exists($filePath)) unlink($filePath);
@@ -106,5 +103,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     }
+
+    // --- ZOBRAZENIE CHYBY MIMO VŠETKYCH BLOCOK ---
+    if ($error) {
+        echo "<p style='color:red;'>$error</p>";
+    }
 }
+
+
+
+
 ?>
