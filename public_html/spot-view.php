@@ -165,7 +165,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
   <div class="relative flex-1 group overflow-hidden">
     <img src="<?= htmlspecialchars($spot['file_path']) ?>" 
          alt="<?= htmlspecialchars($spot['name']) ?>" 
-         class="w-full h-[400px] md:h-[600px] object-cover transition duration-500" 
+         class="w-full h-[400px] md:h-[700px] object-cover transition duration-500" 
          id="spotImage">
 
 
