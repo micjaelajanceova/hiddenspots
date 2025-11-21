@@ -133,7 +133,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 
 
 
-<main class="flex-1 bg-white min-h-screen pt-8 pb-8 md:pb-12 px-4 md:px-8 flex flex-col gap-8">
+<main class="flex-1 bg-white min-h-screen pt-8  md:pb-12 px-4 md:px-8 flex flex-col">
 
 <!-- LOGIN / SIGNUP -->
 <?php include 'includes/profile-header.php'; ?>
@@ -183,7 +183,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 ?>
 
 
-<div class="w-full lg:w-1/2 flex flex-col pl-4 gap-4 max-h-[600px] overflow-y-auto relative">
+<div class="w-full lg:w-1/2 flex flex-col px-4 gap-4 max-h-[600px] overflow-y-auto relative">
 
     <!-- Three dots menu for spot -->
 <?php if(isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $spot['user_id'] || $isAdmin)): ?>
