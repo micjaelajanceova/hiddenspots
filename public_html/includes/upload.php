@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $data = substr($photoData, strpos($photoData, ',') + 1);
                 $data = base64_decode($data);
                 $ext = strtolower($type[1]);
-                $allowed = ['jpg','jpeg','png','webp'];
+                $allowed = ['jpg','jpeg','png','webp', 'gif'];
 
                 if (!in_array($ext, $allowed)) {
                     $error = "Invalid image type.";
