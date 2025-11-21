@@ -58,19 +58,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$latitude || !$longitude) {
             $error = "Please provide a location either by address or by clicking on the map.";
         } else {
-            if (preg_match('/^data:image\/(\w+);base64,/', $photoData, $type)) {
-                $data = substr($photoData, strpos($photoData, ',') + 1);
-                $data = base64_decode($data);
-                $ext = strtolower($type[1]);
+            if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
                 $allowed = ['jpg','jpeg','png','webp'];
-
+                $ext = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
+            
                 if (!in_array($ext, $allowed)) {
                     $error = "Invalid image type.";
                 } else {
                     $fileName = time() . '_' . bin2hex(random_bytes(6)) . '.' . $ext;
-                    $filePath = __DIR__ . '/../uploads/'  . $fileName;
-
-                    if (!file_put_contents($filePath, $data)) {
+                    $filePath = __DIR__ . '/../uploads/' . $fileName;
+            
+                    if (!move_uploaded_file($_FILES['photo']['tmp_name'], $filePath)) {
                         $error = "Failed to save image.";
                     } else {
                         try {
