@@ -74,25 +74,6 @@ $photo_url = $user_photo ? '/' . $user_photo : null;
   </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/macy@2"></script>
-<script>
-window.addEventListener('load', () => {
-  const masonry = Macy({
-    container: '#masonry',
-    columns: 4,
-    margin: 12,
-    breakAt: { 1024: 3, 640: 2, 0: 1 },
-    trueOrder: false,
-    waitForImages: true
-  });
-
-  masonry.recalculate(true);
-  document.getElementById('masonry').style.display = 'block';
-});
-</script>
-
-
-
 <?php else: ?>
   <p class="text-center text-gray-500 mt-10">You haven't added any favorite spots yet.</p>
 <?php endif; ?>
