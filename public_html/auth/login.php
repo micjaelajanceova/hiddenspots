@@ -54,6 +54,23 @@ if (isset($_POST['action'])) {
 
     if ($_POST['action'] === 'register') {
 
+        // Basic validations
+        if ($msg === '') {
+                // Check email uniqueness
+                $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
+                $stmt->execute(['email' => $_POST['email']]);
+                if ($stmt->fetch()) {
+                    $msg = "Email already exists.";
+                    $showRegisterForm = true;
+                } else {
+                    // Check username uniqueness
+                    $stmt = $pdo->prepare("SELECT id FROM users WHERE name = :name");
+                    $stmt->execute(['name' => $username]);
+                    if ($stmt->fetch()) {
+                        $msg = "Username already exists.";
+                        $showRegisterForm = true;
+                    } else {
+
             // Password validation
             $password = $_POST['password'] ?? '';
             $passwordConfirm = $_POST['password_confirm'] ?? '';
@@ -77,23 +94,7 @@ if (isset($_POST['action'])) {
             $showRegisterForm = true;
         } else {
                 
-
-            // If validation passed, continue
-            if ($msg === '') {
-                // Check email uniqueness
-                $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
-                $stmt->execute(['email' => $_POST['email']]);
-                if ($stmt->fetch()) {
-                    $msg = "Email already exists.";
-                    $showRegisterForm = true;
-                } else {
-                    // Check username uniqueness
-                    $stmt = $pdo->prepare("SELECT id FROM users WHERE name = :name");
-                    $stmt->execute(['name' => $username]);
-                    if ($stmt->fetch()) {
-                        $msg = "Username already exists.";
-                        $showRegisterForm = true;
-                    } else {
+            
                         // Insert user
                         $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
                         $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, badges) 
