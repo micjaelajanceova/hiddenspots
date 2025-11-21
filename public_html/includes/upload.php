@@ -34,6 +34,29 @@ function getCoordinates($address) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+  //  CSRF TOKEN CHECK
+  if (!isset($_POST['csrf_token']) 
+  || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+  die("Invalid CSRF token");
+    }
+
+
+//  RATE LIMIT – max 5 uploads in 1 minute
+    $stmt = $pdo->prepare("
+    SELECT COUNT(*) 
+    FROM hidden_spots 
+    WHERE user_id = ? 
+    AND created_at >= (NOW() - INTERVAL 1 MINUTE)
+    ");
+    $stmt->execute([$_SESSION['user_id']]);
+    $uploadsLastMinute = $stmt->fetchColumn();
+
+    if ($uploadsLastMinute > 5) {
+        die("Too many uploads – slow down.");
+    }
+
+
     $user_id = (int) $_SESSION['user_id'];
     $name = trim($_POST['name'] ?? '');
     $city = trim($_POST['city'] ?? '');
