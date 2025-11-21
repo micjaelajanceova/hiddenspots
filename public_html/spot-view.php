@@ -409,7 +409,6 @@ textarea.addEventListener('input', () => {
     </section>
 
   </div>
-</div>
 </main>
 
 <script>
