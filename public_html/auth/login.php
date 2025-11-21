@@ -53,6 +53,7 @@ if (isset($_POST['action'])) {
 
 
     if ($_POST['action'] === 'register') {
+        $username = $_POST['name'] ?? '';
         if ($msg === '') {
                 // Check email uniqueness
                 $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
