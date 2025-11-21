@@ -45,7 +45,7 @@ try {
 <section class="mt-12 pb-20">
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="mb-3">TRENDING</h1>
+      <h1 class="mb-3">TRENDINg</h1>
       <h2 class="mt-1">Explore what most people miss.</h2>
     </div>
     <a href="trending.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">See more →</a>
