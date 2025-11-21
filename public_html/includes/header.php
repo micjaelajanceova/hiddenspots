@@ -226,7 +226,14 @@ $show_navbar = $show_navbar ?? true;
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-
-
-
+<script>
+const uploadModal = document.getElementById('uploadModal');
+const closeBtn = document.getElementById('closeUploadModal');
+const openBtns = document.querySelectorAll('a[onclick*="uploadModal"], button.ph-plus');
+const uploadForm = document.getElementById('uploadForm');
+const photoInput = document.getElementById('photoInput');
+const previewImage = document.getElementById('previewImage');
+const finalImage = document.getElementById('finalImage');
+const photoDataInput = document.getElementById('photoData');
+</script>
 
