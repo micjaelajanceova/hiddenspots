@@ -33,8 +33,15 @@ $user_role = $_SESSION['role'] ?? 'user';
     <title>HiddenSpots — discover your city's secret places</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="/assets/css/style.css?v=<?php echo time(); ?>">
+
 </head>
+
+<?php
+$show_navbar = $show_navbar ?? true; 
+?>
+
+<?php if ($show_navbar): ?>
 <body class="flex flex-col md:flex-row min-h-screen">
 
 
@@ -212,7 +219,7 @@ $user_role = $_SESSION['role'] ?? 'user';
 
 </nav>
 
-
+<?php endif; ?>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>

@@ -2,6 +2,10 @@
 require_once __DIR__ . '/../includes/db.php';
 session_start();
 
+// Hide navbar on login/register page when its false, only include head
+$show_navbar = false;
+include __DIR__ . '/../includes/header.php';
+
 $msg = '';
 $success = false;
 
@@ -15,6 +19,7 @@ try {
 }
 
 // Handle login/register
+$showRegisterForm = false;
 if (isset($_POST['action'])) {
     if ($_POST['action'] === 'login') {
         $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
@@ -48,72 +53,30 @@ if (isset($_POST['action'])) {
 
 
     if ($_POST['action'] === 'register') {
-                    // PASSWORD VALIDATION
+
+            // Password validation
             $password = $_POST['password'] ?? '';
             $passwordConfirm = $_POST['password_confirm'] ?? '';
 
-            // match
-            if ($password !== $passwordConfirm) {
-                $msg = "Passwords do not match.";
-            }
-            // length
-            elseif (strlen($password) < 6) {
-                $msg = "Password must be at least 6 characters.";
-            }
-            // max length
-            elseif (strlen($password) > 50) {
-                $msg = "Password cannot be longer than 50 characters.";
-            }
-            // must contain letters
-            elseif (!preg_match('/[a-zA-Z]/', $password)) {
-                $msg = "Password must contain at least one letter.";
-            }
-            // must contain numbers
-            elseif (!preg_match('/[0-9]/', $password)) {
-                $msg = "Password must contain at least one number.";
-            }
-             // must contain at least one lowercase letter
-            elseif (!preg_match('/[a-z]/', $password)) {
-                $msg = "Password must contain at least one lowercase letter.";
-            }
-            // must contain at least one uppercase letter
-            elseif (!preg_match('/[A-Z]/', $password)) {
-                $msg = "Password must contain at least one uppercase letter.";
-            }
-            else {
-    
+            if ($password !== $passwordConfirm || strlen($password) < 6 || strlen($password) > 50
+            || !preg_match('/[a-z]/', $password)
+            || !preg_match('/[A-Z]/', $password)
+            || !preg_match('/[0-9]/', $password)) {
+            // Short, Instagram-like message
+            $msg = "Password must be 6–50 characters with uppercase, lowercase, and a number.";
+            $showRegisterForm = true;
+        } else {
 
-            // --- Username validation (Instagram-like) ---
+                    
+            // Username validation 
+            $errors = []; // reset errors before username checks
             $username = $_POST['name'] ?? '';
 
-            // lowercase only
-            if ($username !== strtolower($username)) {
-                $msg = "Username cannot contain uppercase letters.";
-            }
-            // no spaces
-            elseif (preg_match('/\s/', $username)) {
-                $msg = "Username cannot contain spaces.";
-            }
-            // only allowed characters
-            elseif (!preg_match('/^[a-z0-9._]+$/', $username)) {
-                $msg = "Username can only contain letters, numbers, dots and underscores.";
-            }
-            // cannot start with . or _
-            elseif (preg_match('/^[._]/', $username)) {
-                $msg = "Username cannot start with a dot or underscore.";
-            }
-            // cannot end with . or _
-            elseif (preg_match('/[._]$/', $username)) {
-                $msg = "Username cannot end with a dot or underscore.";
-            }
-            // no consecutive dots
-            elseif (strpos($username, '..') !== false) {
-                $msg = "Username cannot contain consecutive dots.";
-            }
-            // max length
-            elseif (strlen($username) > 20) {
-                $msg = "Username cannot be longer than 20 characters.";
-            }
+            if (!preg_match('/^[a-z0-9](?!.*[._]{2})[a-z0-9._]{1,18}[a-z0-9]$/', $username)) {
+            $msg = "Username must be 3–20 characters, lowercase letters, numbers, dots, or underscores.";
+            $showRegisterForm = true;
+        } else {
+                
 
             // If validation passed, continue
             if ($msg === '') {
@@ -122,12 +85,14 @@ if (isset($_POST['action'])) {
                 $stmt->execute(['email' => $_POST['email']]);
                 if ($stmt->fetch()) {
                     $msg = "Email already exists.";
+                    $showRegisterForm = true;
                 } else {
                     // Check username uniqueness
                     $stmt = $pdo->prepare("SELECT id FROM users WHERE name = :name");
                     $stmt->execute(['name' => $username]);
                     if ($stmt->fetch()) {
                         $msg = "Username already exists.";
+                        $showRegisterForm = true;
                     } else {
                         // Insert user
                         $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -140,41 +105,18 @@ if (isset($_POST['action'])) {
                         ]);
                         $msg = "Account created! You can now log in.";
                         $success = true;
+                        $showRegisterForm = false;
                     }
                 }
             }
         }
     }
 }
-
-
+}
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login / Register - Hidden Spots</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
 
-  .bg-slide {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-    transform: scale(1);
-    animation: zoom 10s infinite alternate;
-  }
-  @keyframes zoom {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.02); }
-  }
-</style>
-</head>
-<body class="min-h-screen flex items-center justify-center relative overflow-hidden">
+<!--  HTML STARTS HERE -->
+<main class="min-h-screen flex items-center justify-center relative overflow-hidden">
 
 <!-- Background slideshow -->
 <div id="bgSlideshow" class="absolute inset-0 z-0">
@@ -223,8 +165,9 @@ if (isset($_POST['action'])) {
             <button type="button" id="showLogin" class="text-blue-600 font-semibold hover:underline">Login</button>
         </p>
     </form>
-</div>
+    </main>
 
+    
 <script>
 // Toggle login/register
 const showRegister = document.getElementById('showRegister');

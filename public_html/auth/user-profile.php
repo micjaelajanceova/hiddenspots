@@ -62,13 +62,6 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
   </div>
 
-   <!-- Macy.js script pre Masonry -->
-    <style>
-  #masonry {
-  display: none;
-}
-
-</style>
 
 <script src="https://cdn.jsdelivr.net/npm/macy@2"></script>
 <script>

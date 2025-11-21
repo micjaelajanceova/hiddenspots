@@ -60,13 +60,6 @@ $mySpots = $spotObj->getByUser($user_id);
     <?php endforeach; ?>
   </div>
 
-   <!-- Macy.js script pre Masonry -->
-    <style>
-  #masonry {
-  display: none;
-}
-
-</style>
 
 <script src="https://cdn.jsdelivr.net/npm/macy@2"></script>
 <script>
