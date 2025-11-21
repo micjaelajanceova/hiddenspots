@@ -53,8 +53,6 @@ if (isset($_POST['action'])) {
 
 
     if ($_POST['action'] === 'register') {
-
-        // Basic validations
         if ($msg === '') {
                 // Check email uniqueness
                 $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
@@ -94,6 +92,8 @@ if (isset($_POST['action'])) {
             $showRegisterForm = true;
         } else {
                 
+
+            // If validation passed, continue
             
                         // Insert user
                         $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
