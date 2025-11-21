@@ -32,8 +32,6 @@ $photo_url = $user_photo ? '/' . $user_photo : null;
 
 <main class="flex-1 bg-white min-h-screen overflow-y-auto">   
   <div class="w-full px-4 sm:px-6 lg:px-8 py-8">
-
-
     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-4">
       
       <!-- Profile photo + Title -->
@@ -63,26 +61,18 @@ $photo_url = $user_photo ? '/' . $user_photo : null;
     <div class="border-t border-gray-300 mb-6"></div>
 
     <!-- Favorites grid -->
-<?php if (!empty($favorites)): ?>
+    <?php if (!empty($favorites)): ?>
 
-   <!-- Masonry container -->
-  <div id="masonry" class="mt-6">
+      <!-- Masonry container -->
+      <div id="masonry" class="mt-6">
 
-    <?php foreach ($favorites as $spot): ?>
-      <?php include __DIR__ . '/includes/photo-feed.php';  ?>
+        <?php foreach ($favorites as $spot): ?>
+        <?php include __DIR__ . '/includes/photo-feed.php';  ?>
     
     <?php endforeach; ?>
 
-    
   </div>
 
-   <!-- Macy.js script pre Masonry -->
-  <style>
-  #masonry {
-  display: none;
-}
-
-</style>
 
 <script src="https://cdn.jsdelivr.net/npm/macy@2"></script>
 <script>
