@@ -52,7 +52,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
         type="search" 
         placeholder="Search city — e.g. Copenhagen"
         value="<?= htmlspecialchars($city) ?>"
-        class="w-64 px-3 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-400 text-sm"
+        class="w-64 px-3 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-black text-sm"
    
       />
       <button type="submit" class="bg-gray-200 text-black px-3 py-1 rounded text-sm hover:opacity-95">
