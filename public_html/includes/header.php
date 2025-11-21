@@ -363,61 +363,16 @@ if (addressInput) {
 
 
 // ---------- FORM SUBMIT ----------
-uploadForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const lat = document.getElementById('latitude').value.trim();
-    const lng = document.getElementById('longitude').value.trim();
+uploadForm.addEventListener('submit', e => {
+    const lat = latitudeInput.value.trim();
+    const lng = longitudeInput.value.trim();
     const address = addressInput.value.trim();
 
-    // Kontrola, či je zadaná lokalita
     if ((!lat || !lng) && !address) {
+        e.preventDefault();
         alert('Please select a location either by entering an address or clicking on the map.');
-        return;
-    }
-
-    // Priprav FormData a Base64 fotku
-    const formData = new FormData(uploadForm);
-    if (finalImage.src) {
-        formData.set('photoData', finalImage.src);
-    } else {
-        alert('Please select a photo.');
-        return;
-    }
-
-    try {
-        const res = await fetch('includes/upload.php', {
-            method: 'POST',
-            body: formData
-        });
-
-        const text = await res.text();
-
-        // Kontrola chýb z upload.php
-        if (text.includes('Invalid image type')) {
-            return alert('Invalid image type!');
-        }
-        if (text.includes('Failed to save image')) {
-            return alert('Failed to save image!');
-        }
-        if (text.includes('Please fill all required fields')) {
-            return alert('Please fill all required fields.');
-        }
-        if (text.includes('Please provide a location')) {
-            return alert('Please provide a location either by address or by clicking on the map.');
-        }
-
-        // Ak všetko OK
-        alert('Upload successful!');
-        uploadModal.classList.add('hidden');
-        location.reload();
-
-    } catch (err) {
-        console.error('Upload error:', err);
-        alert('Upload failed');
     }
 });
-
 
 
 
