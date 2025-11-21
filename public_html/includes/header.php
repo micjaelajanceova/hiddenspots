@@ -46,10 +46,9 @@ $show_navbar = $show_navbar ?? true;
 
 <aside class="hidden md:flex flex-col md:w-64 bg-gray-100 border-r sticky top-0 h-screen p-4 shadow-lg shadow-gray-300 z-10">
 
- <div class="flex-1 flex flex-col min-h-screen">
+
 
   <div class="flex flex-col gap-8">
-
 <a href="/index.php" class="logo text-black hover:text-blue-500">
   <span class="text-2xl font-extrabold text-black">HiddenSpots</span>
 </a>
@@ -215,9 +214,9 @@ $show_navbar = $show_navbar ?? true;
   <a href="/about.php" class="text-gray-600 hover:text-blue-500">
     <i class="ph-info text-2xl"></i>
   </a>
-
 </nav>
 
+ <div class="flex-1 flex flex-col min-h-screen">
 <?php endif; ?>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
