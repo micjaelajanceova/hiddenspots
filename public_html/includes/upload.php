@@ -69,34 +69,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     $fileName = time() . '_' . bin2hex(random_bytes(6)) . '.' . $ext;
                     $uploadDir = __DIR__ . '/../uploads/';
-                        if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
-                        if (!is_writable($uploadDir)) die("Upload folder is not writable!");
-                        $filePath = $uploadDir . $fileName;
-                        else {
-                           try {
-                            $sql = "INSERT INTO hidden_spots 
-                                    (user_id, name, description, city, address, type, file_path, latitude, longitude, created_at) 
-                                    VALUES (:user_id, :name, :description, :city, :address, :type, :file_path, :latitude, :longitude, NOW())";
-                            $stmt = $pdo->prepare($sql);
-                            $stmt->execute([
-                                ':user_id' => $user_id,
-                                ':name' => $name,
-                                ':description' => $description,
-                                ':city' => $city,
-                                ':address' => $address,
-                                ':type' => $category,
-                                ':file_path' => 'uploads/' . $fileName,
-                                ':latitude' => $latitude,
-                                ':longitude' => $longitude
-                            ]);
+if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+if (!is_writable($uploadDir)) die("Upload folder is not writable!");
 
-                            header("Location: ../index.php?upload=success");
-                            exit();
-                        } catch (PDOException $e) {
-                            if (file_exists($filePath)) unlink($filePath);
-                            $error = "Database error: " . $e->getMessage();
-                        }
-                    }
+// uloženie súboru
+if (!file_put_contents($uploadDir . $fileName, $data)) {
+    $error = "Failed to save image.";
+} else {
+    try {
+        $sql = "INSERT INTO hidden_spots 
+                (user_id, name, description, city, address, type, file_path, latitude, longitude, created_at) 
+                VALUES (:user_id, :name, :description, :city, :address, :type, :file_path, :latitude, :longitude, NOW())";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':user_id' => $user_id,
+            ':name' => $name,
+            ':description' => $description,
+            ':city' => $city,
+            ':address' => $address,
+            ':type' => $category,
+            ':file_path' => 'uploads/' . $fileName,
+            ':latitude' => $latitude,
+            ':longitude' => $longitude
+        ]);
+
+        header("Location: ../index.php?upload=success");
+        exit();
+    } catch (PDOException $e) {
+        if (file_exists($uploadDir . $fileName)) unlink($uploadDir . $fileName);
+        $error = "Database error: " . $e->getMessage();
+    }
+}
+
                 }
             } else {
                 $error = "Invalid image data.";
