@@ -36,9 +36,6 @@ $sql .= " ORDER BY hs.created_at DESC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-
-
 ?>
 
 
@@ -111,7 +108,6 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <p class="text-center text-gray-500 mt-10">No spots uploaded yet.</p>
 <?php endif; ?>
 
-  </div>
 </main>
 
 
