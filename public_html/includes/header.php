@@ -373,14 +373,15 @@ uploadForm.addEventListener('submit', async (e) => {
         return;
     }
 
-    const formData = new FormData(uploadForm);
-    formData.set('photoData', finalImage.src);
-
+    const formData = new FormData(uploadForm); // <-- automatically includes the <input type="file">
+    
     try {
         const res = await fetch('includes/upload.php', { method: 'POST', body: formData });
         const text = await res.text();
-        if (text.includes('Invalid image type')) return alert('Invalid image type!');
+
         if (text.includes('Failed to save image')) return alert('Failed to save image!');
+        if (text.includes('Database error')) return alert('Database error!');
+        
         alert('Upload successful!');
         uploadModal.classList.add('hidden');
         location.reload();
@@ -389,6 +390,7 @@ uploadForm.addEventListener('submit', async (e) => {
         alert('Upload failed');
     }
 });
+
 
 
 
