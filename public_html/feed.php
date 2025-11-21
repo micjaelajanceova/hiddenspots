@@ -39,9 +39,6 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 
-
-
-
 <main class="flex-1 bg-white min-h-screen overflow-y-auto pt-6 px-4 sm:px-6 lg:px-8"> 
 
 
@@ -98,7 +95,8 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <div id="masonry" class="mt-6">
     
     <?php foreach ($spots as $spot): ?>
-  <?php include __DIR__ . '/includes/photo-feed.php';  ?>
+    
+      <?php include __DIR__ . '/includes/photo-feed.php';  ?>
   
     <?php endforeach; ?>
 
@@ -106,7 +104,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
   
   <?php else: ?>
   <p class="text-center text-gray-500 mt-10">No spots uploaded yet.</p>
-<?php endif; ?>
+  <?php endif; ?>
 
 </main>
 
@@ -193,14 +191,6 @@ function initFeedMap() {
         }
     });
 }
-
-
-
-
-
-
-
-
 </script>
 
 

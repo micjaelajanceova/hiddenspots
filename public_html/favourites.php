@@ -58,43 +58,30 @@ $photo_url = $user_photo ? '/' . $user_photo : null;
     </div>
 
 
+
     <div class="border-t border-gray-300 mb-6"></div>
+
+
 
     <!-- Favorites grid -->
     <?php if (!empty($favorites)): ?>
 
       <!-- Masonry container -->
       <div id="masonry" class="mt-6">
+      <?php foreach ($favorites as $spot): ?>
 
-        <?php foreach ($favorites as $spot): ?>
         <?php include __DIR__ . '/includes/photo-feed.php';  ?>
     
-    <?php endforeach; ?>
+      <?php endforeach; ?>
+      </div>
 
-  </div>
-<?php else: ?>
-  <p class="text-center text-gray-500 mt-10">You haven't added any favorite spots yet.</p>
-<?php endif; ?>
+    <?php else: ?>
+      <p class="text-center text-gray-500 mt-10">You haven't added any favorite spots yet.</p>
+    <?php endif; ?>
 
 
   </div>
 </main>
 
-<script>
-// PROFILE MENU TOGGLE
-const profileBtn = document.getElementById('profileBtn');
-const profileMenu = document.getElementById('profileMenu');
-if(profileBtn && profileMenu){
-  profileBtn.addEventListener('click', e => {
-    e.stopPropagation();
-    profileMenu.classList.toggle('hidden');
-  });
-  document.addEventListener('click', e => {
-    if(!profileMenu.contains(e.target) && !profileBtn.contains(e.target)){
-      profileMenu.classList.add('hidden');
-    }
-  });
-});
-</script>
 
 <?php include 'includes/footer.php'; ?>
