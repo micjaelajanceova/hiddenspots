@@ -80,22 +80,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Edit spot description
-if (isset($_POST['edit_spot_id'], $_POST['edit_description']) && ($isAdmin || $_SESSION['user_id'] == $spot['user_id'])) {
-    $stmt = $pdo->prepare("UPDATE hidden_spots SET description=:desc WHERE id=:id");
-    $stmt->execute([
-        'desc' => $_POST['edit_description'],
-        'id' => $_POST['edit_spot_id']
-    ]);
-    header("Location: spot-view.php?id=" . $_POST['edit_spot_id']);
-    exit();
+if (isset($_POST['edit_spot_id'], $_POST['edit_description'])) {
+    if ($isAdmin || $_SESSION['user_id'] == $spot['user_id']) {
+        $spotObj->updateDescription($_POST['edit_spot_id'], $_POST['edit_description']);
+        header("Location: spot-view.php?id=" . $_POST['edit_spot_id']);
+        exit();
+    }
 }
 
 // Delete spot
-if (isset($_POST['delete_spot_id']) && ($isAdmin || $_SESSION['user_id'] == $spot['user_id'])) {
-    $stmt = $pdo->prepare("DELETE FROM hidden_spots WHERE id=:id");
-    $stmt->execute(['id'=>$_POST['delete_spot_id']]);
-    header("Location: feed.php"); // redirect after deletion
-    exit();
+if (isset($_POST['delete_spot_id'])) {
+    if ($isAdmin || $_SESSION['user_id'] == $spot['user_id']) {
+        $spotObj->deleteSpot($_POST['delete_spot_id']);
+        header("Location: feed.php");
+        exit();
+    }
 }
 
 
