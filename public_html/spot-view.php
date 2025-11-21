@@ -634,13 +634,19 @@ const cityMapDiv = document.getElementById('cityMap');
 let cityMap; 
 
 cityMapBtn.addEventListener('click', () => {
-    cityMapDiv.style.display = cityMapDiv.style.display === 'none' ? 'block' : 'none';
-
-    if (cityMapDiv.style.display === 'block') {
+    const mapArrow = document.getElementById('mapArrow');
+    const isHidden = cityMapDiv.style.display === 'none';
+    
+    cityMapDiv.style.display = isHidden ? 'block' : 'none';
+    
+    if (isHidden) {
+        mapArrow.style.transform = 'rotate(180deg)'; // šípka hore
         setTimeout(() => {
             if (!cityMap) initCityMap();
             else cityMap.invalidateSize();
         }, 100);
+    } else {
+        mapArrow.style.transform = 'rotate(0deg)'; // šípka dole
     }
 });
 
@@ -671,23 +677,6 @@ function initCityMap() {
 .openPopup();
 }
 
-// MAP TOGGLE
-
-cityMapBtn.addEventListener('click', () => {
-    const isHidden = cityMapDiv.style.display === 'none';
-    cityMapDiv.style.display = isHidden ? 'block' : 'none';
-
-    const mapArrow = document.getElementById('mapArrow');
-    if(isHidden){
-        mapArrow.style.transform = 'rotate(180deg)'; // šípka hore
-        setTimeout(() => {
-            if (!cityMap) initCityMap();
-            else cityMap.invalidateSize();
-        }, 100);
-    } else {
-        mapArrow.style.transform = 'rotate(0deg)'; // šípka dole
-    }
-});
 
 
 
