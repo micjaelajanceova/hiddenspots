@@ -165,7 +165,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
   <div class="relative flex-1 group overflow-hidden">
     <img src="<?= htmlspecialchars($spot['file_path']) ?>" 
          alt="<?= htmlspecialchars($spot['name']) ?>" 
-         class="w-full h-[400px] md:h-[700px] object-cover transition duration-500" 
+         class="w-full h-[400px] md:h-[600px] object-cover transition duration-500" 
          id="spotImage">
 
 
@@ -183,7 +183,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 ?>
 
 
-<div class="w-full lg:w-2/5 flex flex-col gap-4 max-h-[600px] overflow-y-auto relative">
+<div class="w-full lg:w-3/5 flex flex-col gap-4 max-h-[600px] overflow-y-auto relative">
 
     <!-- Three dots menu for spot -->
 <?php if(isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $spot['user_id'] || $isAdmin)): ?>
