@@ -100,9 +100,9 @@ window.addEventListener('load', () => {
 
   </div>
 </main>
+</body>
 
 <script>
-
 // PROFILE MENU TOGGLE
 const profileBtn = document.getElementById('profileBtn');
 const profileMenu = document.getElementById('profileMenu');
