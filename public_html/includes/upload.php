@@ -68,12 +68,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $error = "Invalid image type.";
                 } else {
                     $fileName = time() . '_' . bin2hex(random_bytes(6)) . '.' . $ext;
-                    $filePath = __DIR__ . '/../uploads/'  . $fileName;
-
-                    if (!file_put_contents($filePath, $data)) {
-                        $error = "Failed to save image.";
-                    } else {
-                        try {
+                    $uploadDir = __DIR__ . '/../uploads/';
+                        if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+                        if (!is_writable($uploadDir)) die("Upload folder is not writable!");
+                        $filePath = $uploadDir . $fileName;
+                        else {
+                           try {
                             $sql = "INSERT INTO hidden_spots 
                                     (user_id, name, description, city, address, type, file_path, latitude, longitude, created_at) 
                                     VALUES (:user_id, :name, :description, :city, :address, :type, :file_path, :latitude, :longitude, NOW())";

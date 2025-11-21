@@ -20,7 +20,7 @@ echo "<!-- DEBUG: full path = " . __DIR__ . '/../' . $photo_url . " -->";
 
 <?php if(isset($_SESSION['user_id'])): ?>
   <!-- STICKY PROFILE (only when logged in) -->
-  <div class="fixed top-1 right-0 z-50 px-4 py-3 flex justify-end items-center w-full md:w-auto">
+  <div class="fixed top-1 right-0 z-50 px-4 py-3 flex justify-end items-center w-full md:w-auto profile-header">
     <div class="relative">
       <button id="profileBtn" 
   class="flex items-center justify-center w-10 h-10 bg-black text-white rounded-full font-semibold text-lg overflow-hidden 
@@ -67,4 +67,59 @@ if (profileBtn && profileMenu) {
     }
   });
 }
+
+
+
+
+
+(function () {
+
+  function isVisible(el) {
+    return !!el && window.getComputedStyle(el).display !== 'none' && el.offsetParent !== null;
+  }
+
+
+  document.addEventListener('click', function (e) {
+    const profileBtn = document.getElementById('profileBtn');
+    const profileMenu = document.getElementById('profileMenu');
+    const cityMap = document.getElementById('cityMap');
+    const showCityMapBtn = document.getElementById('showCityMapBtn');
+
+    const clickedProfileBtn = profileBtn && profileBtn.contains(e.target);
+    const clickedProfileMenu = profileMenu && profileMenu.contains(e.target);
+
+    const clickedMap = cityMap && cityMap.contains(e.target);
+    const clickedMapBtn = showCityMapBtn && showCityMapBtn.contains(e.target);
+
+    // --- BEHAVIOUR:
+    // 1) If user clicked profileBtn or profileMenu -> close the map (if open)
+    if (clickedProfileBtn || clickedProfileMenu) {
+      if (cityMap && isVisible(cityMap)) {
+        cityMap.style.display = 'none';
+      }
+      // Let existing profile toggle logic run (do not stop propagation)
+      return;
+    }
+
+    // 2) If user clicked map or mapBtn -> close profile menu (if open)
+    if (clickedMap || clickedMapBtn) {
+      if (profileMenu && !profileMenu.classList.contains('hidden')) {
+        profileMenu.classList.add('hidden');
+      }
+      // If click was on mapBtn itself, also toggle the map (existing map button handler may do that)
+      // We don't stopPropagation so existing handlers work.
+      return;
+    }
+
+    // 3) If clicked anywhere else -> close both
+    if (profileMenu && !profileMenu.classList.contains('hidden')) {
+      profileMenu.classList.add('hidden');
+    }
+    if (cityMap && isVisible(cityMap)) {
+      cityMap.style.display = 'none';
+    }
+  }, true); // use capture phase to react early
+})();
+
+
 </script>
