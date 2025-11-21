@@ -1,4 +1,4 @@
-<footer class="w-full text-center py-6 text-gray-500 text-sm">
+<footer class="text-center py-6 text-gray-500 text-sm">
     © <?= date('Y') ?> Hidden Spots — All rights reserved.
 </footer>
 
