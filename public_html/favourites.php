@@ -100,7 +100,6 @@ window.addEventListener('load', () => {
 
   </div>
 </main>
-</body>
 
 <script>
 // PROFILE MENU TOGGLE
