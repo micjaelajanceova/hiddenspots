@@ -426,6 +426,10 @@ const charCountDiv = document.getElementById("descCharCount");
 
 const MAX_CHARS = 1000;
 
+const spotAddress = "<?= $spot['address'] ?? '' ?>";
+const spotLat = <?= $spot['latitude'] ?>;
+const spotLng = <?= $spot['longitude'] ?>;
+
 
 // FAVOURITE BUTTON
 favBtn.addEventListener('click', () => {
@@ -655,9 +659,19 @@ function initCityMap() {
     }).addTo(cityMap);
 
     L.marker([lat, lng]).addTo(cityMap)
-        .bindPopup(`<b><?= addslashes($spot['name']) ?></b><br><?= addslashes($spot['address'] ?? '') ?>`)
-        .openPopup();
+    .bindPopup(`
+    <b><?= addslashes($spot['name']) ?></b><br>
+    <?php if (!empty($spot['address'])): ?>
+        <?= addslashes($spot['address']) ?>
+    <?php else: ?>
+        <?= $spot['latitude'] . ', ' . $spot['longitude'] ?>
+    <?php endif; ?>
+`)
+.openPopup();
 }
+
+
+
 
 
 
