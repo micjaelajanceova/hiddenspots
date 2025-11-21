@@ -3,6 +3,10 @@ require_once __DIR__ . '/db.php'; // ← pridaj toto
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+if (empty($_SESSION['csrf_token'])) {
+  $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 
 
 
@@ -138,6 +142,7 @@ $show_navbar = $show_navbar ?? true;
         <h2 class="text-lg font-semibold mb-4">New Hidden Spot</h2>
         <form id="uploadForm" action="includes/upload.php" method="post" enctype="multipart/form-data" class="space-y-4">
           <input type="hidden" name="photoData" id="photoData">
+          <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
           <input type="text" name="name" placeholder="Name" required class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-400 outline-none" />
           <input type="text" name="city" placeholder="City" required class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-400 outline-none" />
           <input type="text" name="address" placeholder="Address (optional)" class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-400 outline-none" />
