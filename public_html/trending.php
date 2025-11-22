@@ -35,39 +35,17 @@ $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
   <h2 class="mt-1 text-gray-600">Most popular uploads from the last 7 days.</h2>
 
   <div 
-    class="
-      mt-6 
-      grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4
-      overflow-x-auto 
-      snap-x snap-mandatory 
-      sm:overflow-visible
-      flex-nowrap sm:grid
-      flex sm:block
-    "
-  >
+    class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto snap-x snap-mandatory sm:overflow-visible flex-nowrap sm:grid flex sm:block">
     <?php foreach($trendingWeek as $index => $s): ?>
       <article 
-        class="
-          relative 
-          overflow-hidden bg-white shadow hover:shadow-lg 
-          flex flex-col h-full 
-          min-w-[80%] sm:min-w-0 
-          snap-start
-        "
-      >
+        class="relative overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full min-w-[80%] sm:min-w-0 snap-start">
         <a href="spot-view.php?id=<?=htmlspecialchars($s['id'])?>" class="flex flex-col h-full">
           
           <!-- IMAGE WRAPPER -->
           <div class="relative w-full h-96 bg-gray-200 overflow-hidden">
 
             <!-- BADGE (ŠIKMÝ) -->
-            <div class="
-              absolute top-3 left-[-40px] 
-              bg-red-600 text-white text-xs font-bold 
-              px-10 py-1 
-              transform -rotate-45
-              shadow-md
-            ">
+            <div class="absolute top-3 left-[-40px] bg-red-600 text-white text-xs font-bold px-10 py-1 transform -rotate-45 shadow-md">
               TOP #<?= $index + 1 ?>
             </div>
 
@@ -89,7 +67,7 @@ $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
             </div>
             <div class="flex items-center justify-between mt-3 text-xs text-gray-400">
               <span><?=htmlspecialchars($s['city'])?> • <?=date("d M", strtotime($s['created_at']))?></span>
-              <span>❤️ <?=intval($s['total_likes'])?></span>
+              <span>Likes:<?=intval($s['total_likes'])?></span>
             </div>
           </div>
 
@@ -101,41 +79,47 @@ $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- ALL TIME TRENDING -->
     <section class="mt-12 pb-20">
-      <h1 class="mb-3"> Trending all-time</h1>
-      <h2 class="mt-1">Most liked posts ever uploaded.</h2>
+    <h1 class="mb-3">Trending all-time</h1>
+  <h2 class="mt-1 text-gray-600">Most liked posts ever uploaded.</h2>
 
-      <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <?php if(!empty($trendingAll)): ?>
-          <?php foreach($trendingAll as $s): ?>
-            <article class="overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full">
-              <a href="spot-view.php?id=<?=htmlspecialchars($s['id'])?>" class="flex flex-col h-full">
-                <div class="w-full h-96 bg-gray-200 overflow-hidden">
-                  <img src="<?=htmlspecialchars($s['file_path'])?>"
-                       alt="<?=htmlspecialchars($s['name'])?>"
-                       class="w-full h-full object-cover transform transition duration-300 hover:scale-105">
-                </div>
-                <div class="p-3 flex flex-col justify-between flex-1">
-                  <div>
-                    <h2 class="font-semibold"><?=htmlspecialchars($s['name'])?></h2>
-                    <p class="text-sm text-gray-600 mt-1">
-                      <?=htmlspecialchars(mb_strimwidth($s['description'] ?? '',0,120,'...'))?>
-                    </p>
-                  </div>
-                  <div class="flex items-center justify-between mt-3 text-xs text-gray-400">
-                    <span><?=htmlspecialchars($s['city'])?> • <?=date("d M", strtotime($s['created_at']))?></span>
-                    <span>Likes: <?=intval($s['total_likes'])?></span>
-                  </div>
-                </div>
-              </a>
-            </article>
-          <?php endforeach; ?>
-        <?php else: ?>
-          <?php for($i=0;$i<9;$i++): ?>
-            <div class="overflow-hidden bg-gray-100 h-96 rounded-lg"></div>
-          <?php endfor; ?>
-        <?php endif; ?>
-      </div>
-    </section>
+  <div 
+    class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto snap-x snap-mandatory sm:overflow-visible flex-nowrap sm:grid flex sm:block">
+    <?php foreach($trendingAll as $index => $s): ?>
+      <article 
+        class="relative overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full min-w-[80%] sm:min-w-0 snap-start">
+        <a href="spot-view.php?id=<?=htmlspecialchars($s['id'])?>" class="flex flex-col h-full">
+          
+          <!-- IMAGE -->
+          <div class="relative w-full h-96 bg-gray-200 overflow-hidden">
+
+            <!-- BADGE -->
+            <div class="absolute top-3 left-[-40px] bg-indigo-600 text-white text-xs font-bold px-10 py-1 transform -rotate-45 shadow-md">TOP #<?= $index + 1 ?>
+            </div>
+
+            <img 
+              src="<?=htmlspecialchars($s['file_path'])?>"
+              alt="<?=htmlspecialchars($s['name'])?>"
+              class="w-full h-full object-cover transform transition duration-300 hover:scale-105">
+          </div>
+
+          <div class="p-3 flex flex-col justify-between flex-1">
+            <div>
+              <h2 class="font-semibold"><?=htmlspecialchars($s['name'])?></h2>
+              <p class="text-sm text-gray-600 mt-1">
+                <?=htmlspecialchars(mb_strimwidth($s['description'] ?? '',0,120,'...'))?>
+              </p>
+            </div>
+            <div class="flex items-center justify-between mt-3 text-xs text-gray-400">
+              <span><?=htmlspecialchars($s['city'])?> • <?=date("d M", strtotime($s['created_at']))?></span>
+              <span>Likes:<?=intval($s['total_likes'])?></span>
+            </div>
+          </div>
+
+        </a>
+      </article>
+    <?php endforeach; ?>
+  </div>
+</section>
 
   </div>
 </main>
