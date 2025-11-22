@@ -49,7 +49,8 @@ $show_navbar = $show_navbar ?? true;
 <body class="flex flex-col min-h-screen">
 
   <div class="flex flex-1 flex-col md:flex-row">
-<aside class="hidden md:flex flex-col md:w-64 bg-gray-100 border-r sticky top-0 h-screen p-4 shadow-lg shadow-gray-300 z-10">
+<aside id="sidebar" class="hidden md:flex flex-col md:w-64 bg-gray-100 border-r sticky top-0 h-screen p-4 shadow-lg shadow-gray-300 z-10 transition-all duration-300">
+
 
 
 
@@ -58,6 +59,10 @@ $show_navbar = $show_navbar ?? true;
   <span class="text-2xl font-extrabold text-black">HiddenSpots</span>
 </a>
 
+<!-- Toggle Button -->
+<button id="sidebarToggle" class="md:hidden lg:flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 transition self-start">
+  <i class="ph-list text-xl"></i>
+</button>
 
 
 
@@ -233,5 +238,21 @@ const photoInput = document.getElementById('photoInput');
 const previewImage = document.getElementById('previewImage');
 const finalImage = document.getElementById('finalImage');
 const photoDataInput = document.getElementById('photoData');
+
+
+const sidebar = document.getElementById('sidebar');
+const toggleBtn = document.getElementById('sidebarToggle');
+
+toggleBtn.addEventListener('click', () => {
+  // zúženie sidebaru
+  sidebar.classList.toggle('w-16');        // šírka z 64 -> 16 (4rem)
+  sidebar.classList.toggle('p-1');         // menej paddingu
+
+  // skrytie textu
+  document.querySelectorAll('.sidebar-text').forEach(el => {
+    el.classList.toggle('hidden');
+  });
+});
+
 </script>
 
