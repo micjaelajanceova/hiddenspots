@@ -45,7 +45,7 @@ $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
           <div class="relative w-full h-96 bg-gray-200 overflow-hidden">
 
             <!-- BADGE (ŠIKMÝ) -->
-            <div class="absolute top-3 left-[-40px] bg-red-600 text-white text-xs font-bold px-10 py-1 transform -rotate-45 shadow-md">
+            <div class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-3 py-1 transform -rotate-12shadow-md z-10">
               TOP #<?= $index + 1 ?>
             </div>
 
@@ -93,7 +93,7 @@ $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
           <div class="relative w-full h-96 bg-gray-200 overflow-hidden">
 
             <!-- BADGE -->
-            <div class="absolute top-3 left-[-40px] bg-indigo-600 text-white text-xs font-bold px-10 py-1 transform -rotate-45 shadow-md">TOP #<?= $index + 1 ?>
+            <div class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-3 py-1 transform -rotate-12shadow-md z-10">TOP #<?= $index + 1 ?>
             </div>
 
             <img 
