@@ -45,7 +45,7 @@ try {
 <section class="mt-12 pb-20">
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="mb-3">Trending</h1>
+      <h1 class="text-4xl font-bold mb-3">Trending</h1>
       <h2 class="mt-1">Explore what most people miss.</h2>
     </div>
     <a href="trending.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">See more →</a>
@@ -115,7 +115,7 @@ try {
 <section class="mt-12 pb-20">
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-2xl font-bold mb-3">Hot new pictures</h1>
+      <h1 class="text-4xl font-bold mb-3">Hot new pictures</h1>
       <h2 class="mt-1">Discover new pictures every day.</h2>
     </div>
     <a href="feed.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">See more →</a>
@@ -155,7 +155,7 @@ try {
 
 <!-- LATEST COMMENTS -->
 <section class="mt-12 pb-20">
-  <h1 class="mb-3">Latest comments</h1>
+  <h1 class="text-4xl font-bold mb-3">Latest comments</h1>
   <h2 class="mt-1">See who else loves these hidden places.</h2>
 
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
