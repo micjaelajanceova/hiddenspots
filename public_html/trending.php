@@ -1,9 +1,8 @@
-<?php include 'includes/header.php'; ?>
-
 <?php
+include 'includes/header.php';
 require_once 'includes/db.php';
 
-// 1) Top 6 z posledných 7 dní
+// 1) TOP 6 za posledných 7 dní
 $stmtWeek = $pdo->query("
     SELECT hs.*, COUNT(l.id) AS total_likes
     FROM hidden_spots hs
@@ -24,45 +23,89 @@ $stmtAll = $pdo->query("
     ORDER BY total_likes DESC
     LIMIT 9
 ");
-
 $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<h2 class="text-2xl font-bold mb-4">🔥 Trending this week</h2>
+<main class="flex-1 bg-white min-h-screen overflow-y-auto pt-10">
+  <div class="w-full px-4 sm:px-6 lg:px-8">
 
-<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 mb-10">
-<?php foreach ($trendingWeek as $spot): ?>
-    <a href="spot.php?id=<?= $spot['id'] ?>" 
-       class="bg-white rounded-xl shadow hover:shadow-lg transition p-2">
-       
-        <img src="<?= $spot['file_path'] ?>" 
-             alt="" 
-             class="w-full h-32 object-cover rounded-lg mb-2">
+    <!-- THIS WEEK TRENDING -->
+    <section class="mt-12 pb-20">
+      <h1 class="text-2xl font-bold mb-3">🔥 Trending this week</h1>
+      <h2 class="mt-1">Most popular uploads from the last 7 days.</h2>
 
-        <p class="text-sm font-semibold text-center truncate">
-            <?= htmlspecialchars($spot['name']) ?>
-        </p>
-    </a>
-<?php endforeach; ?>
-</div>
+      <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <?php if(!empty($trendingWeek)): ?>
+          <?php foreach($trendingWeek as $s): ?>
+            <article class="overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full">
+              <a href="spot-view.php?id=<?=htmlspecialchars($s['id'])?>" class="flex flex-col h-full">
+                <div class="w-full h-96 bg-gray-200 overflow-hidden">
+                  <img src="<?=htmlspecialchars($s['file_path'])?>"
+                       alt="<?=htmlspecialchars($s['name'])?>"
+                       class="w-full h-full object-cover transform transition duration-300 hover:scale-105">
+                </div>
+                <div class="p-3 flex flex-col justify-between flex-1">
+                  <div>
+                    <h2 class="font-semibold"><?=htmlspecialchars($s['name'])?></h2>
+                    <p class="text-sm text-gray-600 mt-1">
+                      <?=htmlspecialchars(mb_strimwidth($s['description'] ?? '',0,120,'...'))?>
+                    </p>
+                  </div>
+                  <div class="flex items-center justify-between mt-3 text-xs text-gray-400">
+                    <span><?=htmlspecialchars($s['city'])?> • <?=date("d M", strtotime($s['created_at']))?></span>
+                    <span>Likes: <?=intval($s['total_likes'])?></span>
+                  </div>
+                </div>
+              </a>
+            </article>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <?php for($i=0;$i<6;$i++): ?>
+            <div class="overflow-hidden bg-gray-100 h-96 rounded-lg"></div>
+          <?php endfor; ?>
+        <?php endif; ?>
+      </div>
+    </section>
 
+    <!-- ALL TIME TRENDING -->
+    <section class="mt-12 pb-20">
+      <h1 class="text-2xl font-bold mb-3">📈 Trending all-time</h1>
+      <h2 class="mt-1">Most liked posts ever uploaded.</h2>
 
-<h2 class="text-2xl font-bold mb-4">📈 Trending all-time</h2>
+      <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <?php if(!empty($trendingAll)): ?>
+          <?php foreach($trendingAll as $s): ?>
+            <article class="overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full">
+              <a href="spot-view.php?id=<?=htmlspecialchars($s['id'])?>" class="flex flex-col h-full">
+                <div class="w-full h-96 bg-gray-200 overflow-hidden">
+                  <img src="<?=htmlspecialchars($s['file_path'])?>"
+                       alt="<?=htmlspecialchars($s['name'])?>"
+                       class="w-full h-full object-cover transform transition duration-300 hover:scale-105">
+                </div>
+                <div class="p-3 flex flex-col justify-between flex-1">
+                  <div>
+                    <h2 class="font-semibold"><?=htmlspecialchars($s['name'])?></h2>
+                    <p class="text-sm text-gray-600 mt-1">
+                      <?=htmlspecialchars(mb_strimwidth($s['description'] ?? '',0,120,'...'))?>
+                    </p>
+                  </div>
+                  <div class="flex items-center justify-between mt-3 text-xs text-gray-400">
+                    <span><?=htmlspecialchars($s['city'])?> • <?=date("d M", strtotime($s['created_at']))?></span>
+                    <span>Likes: <?=intval($s['total_likes'])?></span>
+                  </div>
+                </div>
+              </a>
+            </article>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <?php for($i=0;$i<9;$i++): ?>
+            <div class="overflow-hidden bg-gray-100 h-96 rounded-lg"></div>
+          <?php endfor; ?>
+        <?php endif; ?>
+      </div>
+    </section>
 
-<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-9 gap-4">
-<?php foreach ($trendingAll as $spot): ?>
-    <a href="spot.php?id=<?= $spot['id'] ?>" 
-       class="bg-white rounded-xl shadow hover:shadow-lg transition p-2">
-       
-        <img src="<?= $spot['file_path'] ?>" 
-             alt="" 
-             class="w-full h-32 object-cover rounded-lg mb-2">
-
-        <p class="text-sm font-semibold text-center truncate">
-            <?= htmlspecialchars($spot['name']) ?>
-        </p>
-    </a>
-<?php endforeach; ?>
-</div>
+  </div>
+</main>
 
 <?php include 'includes/footer.php'; ?>
