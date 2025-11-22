@@ -49,18 +49,19 @@ $show_navbar = $show_navbar ?? true;
 <body class="flex flex-col min-h-screen">
 
   <div class="flex flex-1 flex-col md:flex-row">
-<aside id="sidebar" class="hidden md:flex flex-col md:w-64 bg-gray-100 border-r sticky top-0 h-screen p-4 shadow-lg shadow-gray-300 z-10 transition-all duration-300">
+<aside id="sidebar" class="hidden md:flex flex-col bg-gray-100 border-r sticky top-0 h-screen p-4 shadow-lg shadow-gray-300 z-10 transition-all duration-300">
 
 
 
 
   <div class="flex flex-col gap-8">
 <a href="/index.php" class="logo text-black hover:text-blue-500">
-  <span class="text-2xl font-extrabold text-black">HiddenSpots</span>
+  <span class="sidebar-logo-full text-2xl">HiddenSpots</span>
+  <span class="sidebar-logo-collapsed text-2xl hidden">HS</span>
 </a>
 
 <!-- Toggle Button -->
-<button id="sidebarToggle" class="md:hidden lg:flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 transition self-start">
+<button id="sidebarToggle" class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 transition self-start mb-4">
   <i class="ph-list text-xl"></i>
 </button>
 
@@ -251,8 +252,11 @@ const toggleBtn = document.getElementById('sidebarToggle');
 
 toggleBtn.addEventListener('click', () => {
   // Zúženie sidebaru
-  sidebar.classList.toggle('w-16');  // zmena šírky
-  sidebar.classList.toggle('p-1');   // zmena paddingu
+sidebar.classList.toggle('w-64');
+sidebar.classList.toggle('w-16');
+sidebar.classList.toggle('p-4');
+sidebar.classList.toggle('p-2');
+
 
   // Skrytie menu textov
   document.querySelectorAll('.sidebar-text').forEach(el => el.classList.toggle('hidden'));
