@@ -70,21 +70,21 @@ $show_navbar = $show_navbar ?? true;
 
     <!-- Menu links -->
     <nav class="flex flex-col pt-5 gap-6 text-black">
-      <a href="/feed.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+      <a href="/feed.php" class="flex items-center gap-4 font-semibold hover:text-blue-500 sidebar-text">
         <i class="ph-house text-lg"></i> Feed
       </a>
-      <a href="/favourites.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+      <a href="/favourites.php" class="flex items-center gap-4 font-semibold hover:text-blue-500 sidebar-text">
         <i class="ph-heart text-lg"></i> Favourites
       </a>
-      <a href="/trending.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+      <a href="/trending.php" class="flex items-center gap-4 font-semibold hover:text-blue-500 sidebar-text">
         <i class="ph-trend-up text-lg"></i> Trending
       </a>
-      <a href="/about.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+      <a href="/about.php" class="flex items-center gap-4 font-semibold hover:text-blue-500 sidebar-text">
         <i class="ph-info text-lg"></i> About HS
       </a>
 
       <?php if (isset($_SESSION['user_id']) && $user_role === 'admin'): ?>
-    <a href="/admin.php" class="flex items-center gap-4 font-semibold hover:text-red-500">
+    <a href="/admin.php" class="flex items-center gap-4 font-semibold hover:text-red-500 sidebar-text">
       <i class="ph-shield-star text-lg"></i> Admin Panel
     </a>
     <?php endif; ?>
@@ -97,7 +97,7 @@ $show_navbar = $show_navbar ?? true;
   <!-- Upload Button -->
   <div class="mt-auto">
   <a href="#" id="desktopUploadBtn"
-     class="w-full sm:w-auto py-2 px-4 bg-black text-white rounded-lg flex items-center justify-center gap-2 hover:bg-gray-800 transition"
+     class="w-full sm:w-auto py-2 px-4 bg-black text-white rounded-lg flex items-center justify-center gap-2 hover:bg-gray-800 transition sidebar-text"
      onclick="event.preventDefault(); document.getElementById('uploadModal').classList.remove('hidden');">
     <span>+</span> Upload
   </a>
