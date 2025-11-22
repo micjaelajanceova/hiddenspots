@@ -252,10 +252,10 @@ const toggleBtn = document.getElementById('sidebarToggle');
 
 toggleBtn.addEventListener('click', () => {
   // Zúženie sidebaru
-sidebar.classList.toggle('w-64');
 sidebar.classList.toggle('w-16');
-sidebar.classList.toggle('p-4');
+sidebar.classList.toggle('w-64');
 sidebar.classList.toggle('p-2');
+sidebar.classList.toggle('p-4');
 
 
   // Skrytie menu textov
