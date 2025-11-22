@@ -21,7 +21,7 @@ $stmtAll = $pdo->query("
     LEFT JOIN likes l ON hs.id = l.spot_id
     GROUP BY hs.id
     ORDER BY total_likes DESC
-    LIMIT 9
+    LIMIT 6
 ");
 $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
 ?>
