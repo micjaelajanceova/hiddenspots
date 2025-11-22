@@ -49,13 +49,14 @@ $show_navbar = $show_navbar ?? true;
 <body class="flex flex-col min-h-screen">
 
   <div class="flex flex-1 flex-col md:flex-row">
-<aside id="sidebar" class="hidden md:flex flex-col bg-gray-100 border-r sticky top-0 h-screen p-4 shadow-lg shadow-gray-300 z-10 transition-all duration-300">
+<aside id="sidebar" class="hidden md:flex flex-col bg-gray-100 border-r sticky top-0 h-screen p-4 shadow-lg shadow-gray-300 z-10 transition-all duration-300 w-64">
 
 
 
 
   <div class="flex flex-col gap-8">
-<a href="/index.php" class="logo text-black hover:text-blue-500">
+    <div>
+<a href="/index.php" class="logo text-black hover:text-blue-500 text-center">
   <span class="sidebar-logo-full text-2xl">HiddenSpots</span>
   <span class="sidebar-logo-collapsed text-2xl hidden">HS</span>
 </a>
@@ -64,7 +65,7 @@ $show_navbar = $show_navbar ?? true;
 <button id="sidebarToggle" class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 transition self-start mb-4">
   <i class="ph-list text-xl"></i>
 </button>
-
+</div>
 
 
 
