@@ -55,7 +55,7 @@ $show_navbar = $show_navbar ?? true;
 
 
   <div class="flex flex-col gap-8">
-    <div>
+    <div class="flex items-center justify-between">
 <a href="/index.php" class="logo text-black hover:text-blue-500 text-center">
   <span class="sidebar-logo-full text-2xl">HiddenSpots</span>
   <span class="sidebar-logo-collapsed text-2xl hidden">HS</span>
@@ -65,9 +65,8 @@ $show_navbar = $show_navbar ?? true;
 <button id="sidebarToggle" class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 transition self-start mb-4">
   <i class="ph-list text-xl"></i>
 </button>
+
 </div>
-
-
 
 
     <!-- Menu links -->
