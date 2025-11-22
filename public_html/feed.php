@@ -71,7 +71,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </button>
     <div id="filterDropdown" class="hidden absolute mt-2 right-0 w-40 bg-white border border-gray-300 rounded shadow-lg z-50">
       <a href="feed.php?<?= $city ? 'query='.urlencode($city) : '' ?>" 
-         class="block px-4 py-2 hover:bg-gray-100 <?= $filter_type==''?'font-semibold':'' ?>">All</a>
+         class=" mr-2 block px-4 py-2 hover:bg-gray-100 <?= $filter_type==''?'font-semibold':'' ?>">All</a>
       <?php foreach($types as $type): ?>
         <a href="feed.php?<?= $city ? 'query='.urlencode($city).'&' : '' ?>type=<?= urlencode($type) ?>" 
            class="block px-4 py-2 hover:bg-gray-100 <?= $filter_type==$type?'font-semibold':'' ?>">
