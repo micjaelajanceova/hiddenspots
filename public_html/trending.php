@@ -44,9 +44,9 @@ $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
           <!-- IMAGE WRAPPER -->
           <div class="relative w-full h-96 bg-gray-200 overflow-hidden">
 
-            <!-- BADGE (ŠIKMÝ) -->
-            <div class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-3 py-1 transform -rotate-12shadow-md z-10">
-              TOP #<?= $index + 1 ?>
+            <!-- BADGE  -->
+            <?php if ($index < 3): ?>
+            <div class="absolute top-3 left-3 bg-white text-black text-xs font-bold px-3 py-1 transform -rotate-12shadow-mdz-10">TOP #<?= $index + 1 ?>
             </div>
 
             <!-- IMAGE -->
@@ -93,7 +93,8 @@ $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
           <div class="relative w-full h-96 bg-gray-200 overflow-hidden">
 
             <!-- BADGE -->
-            <div class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-3 py-1 transform -rotate-12shadow-md z-10">TOP #<?= $index + 1 ?>
+            <?php if ($index < 3): ?>
+            <div class="absolute top-3 left-3 bg-white text-black text-xs font-bold px-3 py-1 transform -rotate-12shadow-mdz-10">TOP #<?= $index + 1 ?>
             </div>
 
             <img 
