@@ -63,7 +63,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </form>
 
     <!-- FILTER DROPDOWN -->
-  <div class="relative ml-2">
+  <div class="relative mx-2 sm:mx-0">
     <button id="filterBtn" class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gray-200 hover:bg-gray-300 text-sm ">
       <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
         <path d="M4 7h16M4 12h16M4 17h16" stroke-width="2" stroke-linecap="round"/>
@@ -71,7 +71,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </button>
     <div id="filterDropdown" class="hidden absolute mt-2 right-0 w-40 bg-white border border-gray-300 rounded shadow-lg z-50">
       <a href="feed.php?<?= $city ? 'query='.urlencode($city) : '' ?>" 
-         class=" block px-6 py-2 hover:bg-gray-100 <?= $filter_type==''?'font-semibold':'' ?>">All</a>
+         class=" block px-4 py-2 hover:bg-gray-100 <?= $filter_type==''?'font-semibold':'' ?>">All</a>
       <?php foreach($types as $type): ?>
         <a href="feed.php?<?= $city ? 'query='.urlencode($city).'&' : '' ?>type=<?= urlencode($type) ?>" 
            class="block px-4 py-2 hover:bg-gray-100 <?= $filter_type==$type?'font-semibold':'' ?>">
