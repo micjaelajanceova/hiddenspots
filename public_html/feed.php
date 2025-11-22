@@ -174,18 +174,21 @@ function initFeedMap() {
     const lng = parseFloat(spot.longitude);
     if(!isNaN(lat) && !isNaN(lng)) {
         const marker = L.marker([lat, lng]).addTo(feedMap);
+        const displayAddress = spot.address ? spot.address : `Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`;
+
         const popupContent = `
             <div style="text-align:center; max-width:200px;">
                 <img src="${spot.file_path}" 
-                     alt="${spot.name}" 
-                     style="width:100%; height:120px; object-fit:cover; border-radius:6px; margin-bottom:5px;" />
+                    alt="${spot.name}" 
+                    style="width:100%; height:120px; object-fit:cover; border-radius:6px; margin-bottom:5px;" />
                 <b><a href="spot-view.php?id=${spot.id}"
                       style="color:#1d4ed8; text-decoration:none;">
                     ${spot.name}
                 </a></b><br>
-                ${spot.address}<br>
+                ${displayAddress}<br>
                 <small>@${spot.user_name}</small>
             </div>`;
+
         marker.bindPopup(popupContent);
         }
     });
