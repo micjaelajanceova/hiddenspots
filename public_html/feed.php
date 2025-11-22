@@ -46,6 +46,13 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   <!-- SEARCH -->
   <div class=" flex items-center gap-2 mb-6">
+     
+  <!-- SHOW MAP BUTTON -->
+      <button id="showMap" class="ml-2 px-3 py-1 bg-black text-white rounded text-sm">
+          Map
+      </button>
+
+
     <form action="feed.php" method="get" class="flex gap-2 items-center w-auto">
       <input 
         name="query" 
@@ -76,14 +83,9 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <?= htmlspecialchars($type) ?>
         </a>
       <?php endforeach; ?>
-
-      <!-- SHOW MAP BUTTON -->
-<button id="showMap" class="ml-2 px-3 py-1 bg-black text-white rounded text-sm">
-    Map
-</button>
     </div>
   </div>
- 
+
 
 </div>
 
