@@ -70,22 +70,27 @@ $show_navbar = $show_navbar ?? true;
 
     <!-- Menu links -->
     <nav class="flex flex-col pt-5 gap-6 text-black">
-      <a href="/feed.php" class="flex items-center gap-4 font-semibold hover:text-blue-500 sidebar-text">
-        <i class="ph-house text-lg"></i> Feed
+      <a href="/feed.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+      <i class="ph-house text-lg"></i>
+      <span class="sidebar-text">Feed</span>
       </a>
-      <a href="/favourites.php" class="flex items-center gap-4 font-semibold hover:text-blue-500 sidebar-text">
-        <i class="ph-heart text-lg"></i> Favourites
+      <a href="/favourites.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+        <i class="ph-heart text-lg"></i>
+        <span class="sidebar-text">Favourites</span>
       </a>
-      <a href="/trending.php" class="flex items-center gap-4 font-semibold hover:text-blue-500 sidebar-text">
-        <i class="ph-trend-up text-lg"></i> Trending
+      <a href="/trending.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+        <i class="ph-trend-up text-lg"></i>
+        <span class="sidebar-text">Trending</span>
       </a>
-      <a href="/about.php" class="flex items-center gap-4 font-semibold hover:text-blue-500 sidebar-text">
-        <i class="ph-info text-lg"></i> About HS
+      <a href="/about.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+        <i class="ph-info text-lg"></i>
+        <span class="sidebar-text">About HS</span>
       </a>
 
       <?php if (isset($_SESSION['user_id']) && $user_role === 'admin'): ?>
-    <a href="/admin.php" class="flex items-center gap-4 font-semibold hover:text-red-500 sidebar-text">
-      <i class="ph-shield-star text-lg"></i> Admin Panel
+    <a href="/admin.php" class="flex items-center gap-4 font-semibold hover:text-red-500">
+      <i class="ph-shield-star text-lg"></i>
+      <span class="sidebar-text">Admin Panel</span>
     </a>
     <?php endif; ?>
 
@@ -97,9 +102,10 @@ $show_navbar = $show_navbar ?? true;
   <!-- Upload Button -->
   <div class="mt-auto">
   <a href="#" id="desktopUploadBtn"
-     class="w-full sm:w-auto py-2 px-4 bg-black text-white rounded-lg flex items-center justify-center gap-2 hover:bg-gray-800 transition sidebar-text"
+     class="w-full sm:w-auto py-2 px-4 bg-black text-white rounded-lg flex items-center justify-center gap-2 hover:bg-gray-800 transition"
      onclick="event.preventDefault(); document.getElementById('uploadModal').classList.remove('hidden');">
-    <span>+</span> Upload
+    <span class="sidebar-upload-text">+ Upload</span>
+    <span class="sidebar-upload-collapsed hidden">+</span>
   </a>
   </div>
   </aside>
@@ -244,15 +250,22 @@ const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('sidebarToggle');
 
 toggleBtn.addEventListener('click', () => {
-  // zúženie sidebaru
-  sidebar.classList.toggle('w-16');        // šírka z 64 -> 16 (4rem)
-  sidebar.classList.toggle('p-1');         // menej paddingu
+  // Zúženie sidebaru
+  sidebar.classList.toggle('w-16');  // zmena šírky
+  sidebar.classList.toggle('p-1');   // zmena paddingu
 
-  // skrytie textu
-  document.querySelectorAll('.sidebar-text').forEach(el => {
-    el.classList.toggle('hidden');
-  });
+  // Skrytie menu textov
+  document.querySelectorAll('.sidebar-text').forEach(el => el.classList.toggle('hidden'));
+
+  // Skratenie loga
+  document.querySelector('.sidebar-logo-full').classList.toggle('hidden');
+  document.querySelector('.sidebar-logo-collapsed').classList.toggle('hidden');
+
+  // Skratenie upload buttonu
+  document.querySelector('.sidebar-upload-text').classList.toggle('hidden');
+  document.querySelector('.sidebar-upload-collapsed').classList.toggle('hidden');
 });
+
 
 </script>
 
