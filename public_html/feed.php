@@ -174,7 +174,7 @@ function initFeedMap() {
     const lng = parseFloat(spot.longitude);
     if(!isNaN(lat) && !isNaN(lng)) {
         const marker = L.marker([lat, lng]).addTo(feedMap);
-        const displayAddress = spot.address ? spot.address : `Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`;
+        const displayAddress = spot.address ? spot.address : `${lat.toFixed(5)},  ${lng.toFixed(5)}`;
 
         const popupContent = `
             <div style="text-align:center; max-width:200px;">
