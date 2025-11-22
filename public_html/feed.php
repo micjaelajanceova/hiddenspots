@@ -45,7 +45,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <?php include 'includes/profile-header.php'; ?>
 
   <!-- SEARCH -->
-  <div class=" flex items-center gap-2 mb-6">
+  <div class=" flex flex-wrap items-center gap-2 mb-6">
      
   <!-- SHOW MAP BUTTON -->
       <button id="showMap" class="ml-2 px-3 py-1 bg-black text-white rounded text-sm">
@@ -59,7 +59,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
         type="search" 
         placeholder="Search city — e.g. Copenhagen"
         value="<?= htmlspecialchars($city) ?>"
-        class="w-64 px-3 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-black text-sm"
+        class="w-full max-w-xs sm:max-w-md px-3py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-black text-sm"
    
       />
       <button type="submit" class="bg-gray-200 text-black px-3 py-1 rounded text-sm hover:opacity-95">

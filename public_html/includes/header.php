@@ -159,11 +159,9 @@ $show_navbar = $show_navbar ?? true;
           <select name="category" required class="w-full border rounded p-2 bg-white focus:ring-2 focus:ring-blue-400 outline-none">
             <option value="">Select a category</option>
             <option>Nature</option>
-            <option>Cafés</option>
-            <option>Urban</option>
-            <option>Architecture</option>
+            <option>Café & Restaurant</option>
+            <option>Art & Culture</option>
             <option>Viewpoint</option>
-            <option>Restaurant</option>
             <option>Other</option>
           </select>
 
