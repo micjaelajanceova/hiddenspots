@@ -251,21 +251,33 @@ const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('sidebarToggle');
 
 toggleBtn.addEventListener('click', () => {
-  // Zúženie sidebaru
-sidebar.classList.toggle('w-16');
-sidebar.classList.toggle('w-64');
-sidebar.classList.toggle('p-2');
-sidebar.classList.toggle('p-4');
+  const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
 
+  if (isCollapsed) {
+    // Zúžený sidebar
+    sidebar.classList.remove('w-64', 'p-4');
+    sidebar.classList.add('w-16', 'p-2');
 
-  // Skrytie menu textov
-  document.querySelectorAll('.sidebar-text').forEach(el => el.classList.toggle('hidden'));
+    // Ikony centrovať a gap zrušiť
+    document.querySelectorAll('#sidebar nav a').forEach(link => {
+      link.classList.remove('justify-start', 'gap-4');
+      link.classList.add('justify-center', 'gap-0');
+    });
+  } else {
+    // Rozšírený sidebar
+    sidebar.classList.remove('w-16', 'p-2');
+    sidebar.classList.add('w-64', 'p-4');
 
-  // Skratenie loga
+    // Obnoviť gap a zarovnanie
+    document.querySelectorAll('#sidebar nav a').forEach(link => {
+      link.classList.remove('justify-center', 'gap-0');
+      link.classList.add('justify-start', 'gap-4');
+    });
+  }
+
+  // Toggle loga a upload buttonu
   document.querySelector('.sidebar-logo-full').classList.toggle('hidden');
   document.querySelector('.sidebar-logo-collapsed').classList.toggle('hidden');
-
-  // Skratenie upload buttonu
   document.querySelector('.sidebar-upload-text').classList.toggle('hidden');
   document.querySelector('.sidebar-upload-collapsed').classList.toggle('hidden');
 });
