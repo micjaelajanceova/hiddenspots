@@ -77,11 +77,12 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </a>
       <?php endforeach; ?>
     </div>
-  </div>
-  <!-- SHOW MAP BUTTON -->
+     <!-- SHOW MAP BUTTON -->
 <button id="showMap" class="ml-2 px-3 py-1 bg-black text-white rounded text-sm">
     Map
 </button>
+  </div>
+ 
 
 </div>
 
