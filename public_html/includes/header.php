@@ -258,7 +258,10 @@ toggleBtn.addEventListener('click', () => {
     sidebar.classList.remove('w-64', 'p-4');
     sidebar.classList.add('w-16', 'p-2');
 
-    // Ikony centrovať a gap zrušiť
+    // Skryť texty
+    document.querySelectorAll('.sidebar-text').forEach(el => el.classList.add('hidden'));
+
+    // Centrovať ikony
     document.querySelectorAll('#sidebar nav a').forEach(link => {
       link.classList.remove('justify-start', 'gap-4');
       link.classList.add('justify-center', 'gap-0');
@@ -267,6 +270,9 @@ toggleBtn.addEventListener('click', () => {
     // Rozšírený sidebar
     sidebar.classList.remove('w-16', 'p-2');
     sidebar.classList.add('w-64', 'p-4');
+
+    // Ukázať texty
+    document.querySelectorAll('.sidebar-text').forEach(el => el.classList.remove('hidden'));
 
     // Obnoviť gap a zarovnanie
     document.querySelectorAll('#sidebar nav a').forEach(link => {
@@ -281,7 +287,6 @@ toggleBtn.addEventListener('click', () => {
   document.querySelector('.sidebar-upload-text').classList.toggle('hidden');
   document.querySelector('.sidebar-upload-collapsed').classList.toggle('hidden');
 });
-
 
 </script>
 
