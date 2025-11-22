@@ -31,7 +31,7 @@ $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- THIS WEEK TRENDING -->
     <section class="mt-3 pb-20">
-    <h1 class="mb-3">🔥 Trending this week</h1>
+    <h1 class="text-4xl font-bold mb-3">🔥 Trending this week</h1>
   <h2 class="mt-1 text-gray-600">Most popular uploads from the last 7 days.</h2>
 
   <div 
@@ -81,7 +81,7 @@ $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- ALL TIME TRENDING -->
     <section class="mt-12 pb-20">
-    <h1 class="mb-3">Trending all-time</h1>
+    <h1 class=" text-4xl font-bold mb-3">Trending all-time</h1>
   <h2 class="mt-1 text-gray-600">Most liked posts ever uploaded.</h2>
 
   <div 
