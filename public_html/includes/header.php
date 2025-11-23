@@ -252,8 +252,7 @@ const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('sidebarToggle');
 
 
-const saved = localStorage.getItem('sidebarCollapsed');
-if (saved === '1') {
+
 toggleBtn.addEventListener('click', () => {
   const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
 
@@ -285,33 +284,11 @@ toggleBtn.addEventListener('click', () => {
     });
   }
 
-  // Uložiť stav do localStorage
-  localStorage.setItem('sidebarCollapsed', isCollapsed ? '1' : '0');
-
-  if (isCollapsed) {
-    sidebar.classList.remove('w-64', 'p-4');
-    sidebar.classList.add('w-16', 'p-2');
-    document.querySelectorAll('.sidebar-text').forEach(el => el.classList.add('hidden'));
-    document.querySelectorAll('#sidebar nav a').forEach(link => {
-      link.classList.remove('justify-start', 'gap-4');
-      link.classList.add('justify-center', 'gap-0');
-    });
-  } else {
-    sidebar.classList.remove('w-16', 'p-2');
-    sidebar.classList.add('w-64', 'p-4');
-    document.querySelectorAll('.sidebar-text').forEach(el => el.classList.remove('hidden'));
-    document.querySelectorAll('#sidebar nav a').forEach(link => {
-      link.classList.remove('justify-center', 'gap-0');
-      link.classList.add('justify-start', 'gap-4');
-    });
-  }
-
   // Toggle loga a upload buttonu
   document.querySelector('.sidebar-logo-full').classList.toggle('hidden');
   document.querySelector('.sidebar-logo-collapsed').classList.toggle('hidden');
   document.querySelector('.sidebar-upload-text').classList.toggle('hidden');
   document.querySelector('.sidebar-upload-collapsed').classList.toggle('hidden');
-});
 
   sidebar.addEventListener('transitionend', (e) => {
   if (e.propertyName === 'width' || e.propertyName === 'padding-left') {
@@ -322,6 +299,9 @@ toggleBtn.addEventListener('click', () => {
     }
   }
 });
+});
+
+
 
 
 
