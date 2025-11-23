@@ -12,7 +12,7 @@ try {
     $stmt = $pdo->query("SELECT file_path FROM hidden_spots ORDER BY created_at DESC");
     $bgImages = $stmt->fetchAll(PDO::FETCH_COLUMN);
 } catch (PDOException $e) {
-    $bgImages = ['assets/img/default-bg.jpg']; // fallback
+    $bgImages = ['/hiddenspots/public_html/assets/img/default-bg.jpg']; // fallback
 }
 
 // Handle login/register
