@@ -57,7 +57,7 @@ $show_navbar = $show_navbar ?? true;
     <div class="flex items-center justify-between">
 <a href="/index.php" class="logo text-black hover:text-blue-500 text-center">
   <span class="sidebar-logo-full text-2xl">HiddenSpots</span>
-  <img src="/hiddenspots/public_html/assets/img/logo.svg" alt="HS" class="sidebar-logo-collapsed text-2xl hidden">
+  <img src="/assets/img/logo.svg" alt="HS" class="sidebar-logo-collapsed text-2xl hidden">
 </a>
 
 <!-- Toggle Button -->
