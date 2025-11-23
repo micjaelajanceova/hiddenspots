@@ -3,6 +3,9 @@
 </footer>
 </div>
 
+<!-- Images Loaded script -->
+<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+
 <!-- Mansonry script -->
 <script src="https://cdn.jsdelivr.net/npm/macy@2"></script>
 
