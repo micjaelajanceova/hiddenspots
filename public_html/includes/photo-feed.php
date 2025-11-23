@@ -9,7 +9,7 @@
           <img 
             src="../<?= htmlspecialchars($spot['file_path']) ?>" 
             alt="<?= htmlspecialchars($spot['name']) ?>" 
-            class="w-full max-h-[600px] object-cover block transition-transform duration-300 group-hover:scale-105"
+            class="w-full max-h-[clamp(200px,50vh,600px)] object-cover block transition-transform duration-300 group-hover:scale-105"
           >
 
           <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex 
