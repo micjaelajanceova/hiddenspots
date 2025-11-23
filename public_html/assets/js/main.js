@@ -4,7 +4,7 @@ function initMasonry() {
     container: '#masonry',
     columns: 4,
     margin: 12,
-    breakAt: { 1024: 3, 640: 2, 0: 2 },
+    breakAt: { 1024: 3, 640: 2, 0: 1 },
     trueOrder: false,
     waitForImages: true
   });

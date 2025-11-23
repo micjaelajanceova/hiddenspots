@@ -251,6 +251,15 @@ const photoDataInput = document.getElementById('photoData');
 const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('sidebarToggle');
 
+// Load state on page load
+const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+if (isCollapsed) {
+  collapseSidebar();
+} else {
+  expandSidebar();
+}
+
+
 toggleBtn.addEventListener('click', () => {
   const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
 
