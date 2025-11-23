@@ -247,11 +247,10 @@ const previewImage = document.getElementById('previewImage');
 const finalImage = document.getElementById('finalImage');
 const photoDataInput = document.getElementById('photoData');
 
-
 const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('sidebarToggle');
 
-// ---------- Obnovenie stavu sidebar po reload ----------
+// ----------- Načítať uložený stav sidebaru ----------
 const saved = localStorage.getItem('sidebarCollapsed');
 if (saved === '1') {
   sidebar.classList.add('sidebar-collapsed');
@@ -270,12 +269,9 @@ if (saved === '1') {
   document.querySelector('.sidebar-upload-collapsed').classList.remove('hidden');
 }
 
-// ---------- Toggle sidebar ----------
+// ----------- Toggle sidebar ----------
 toggleBtn.addEventListener('click', () => {
   const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
-
-  // uloženie stavu
-  localStorage.setItem('sidebarCollapsed', isCollapsed ? '1' : '0');
 
   if (isCollapsed) {
     sidebar.classList.remove('w-64', 'p-4');
@@ -295,13 +291,17 @@ toggleBtn.addEventListener('click', () => {
     });
   }
 
+  // Toggle loga a upload buttonu
   document.querySelector('.sidebar-logo-full').classList.toggle('hidden');
   document.querySelector('.sidebar-logo-collapsed').classList.toggle('hidden');
   document.querySelector('.sidebar-upload-text').classList.toggle('hidden');
   document.querySelector('.sidebar-upload-collapsed').classList.toggle('hidden');
+
+  // uložiť stav do localStorage
+  localStorage.setItem('sidebarCollapsed', isCollapsed ? '1' : '0');
 });
 
-// ---------- Masonry recalc po dokončení animácie ----------
+// ----------- Masonry recalc po dokončení animácie ----------
 sidebar.addEventListener('transitionend', (e) => {
   if (e.propertyName === 'width' || e.propertyName === 'padding-left') {
     if (window.masonry) {
@@ -309,6 +309,7 @@ sidebar.addEventListener('transitionend', (e) => {
     }
   }
 });
+
 
 </script>
 
