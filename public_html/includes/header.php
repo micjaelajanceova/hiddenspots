@@ -261,7 +261,15 @@ if (isCollapsed) {
 
 
 toggleBtn.addEventListener('click', () => {
-  const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
+  const collapsed = sidebar.classList.toggle('sidebar-collapsed');
+  localStorage.setItem('sidebarCollapsed', collapsed);
+
+  if (collapsed) {
+    collapseSidebar();
+  } else {
+    expandSidebar();
+  }
+});
 
   if (isCollapsed) {
     sidebar.classList.remove('w-64', 'p-4');
