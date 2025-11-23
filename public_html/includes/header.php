@@ -251,8 +251,6 @@ const photoDataInput = document.getElementById('photoData');
 const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('sidebarToggle');
 
-
-
 toggleBtn.addEventListener('click', () => {
   const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
 
@@ -290,7 +288,10 @@ toggleBtn.addEventListener('click', () => {
   document.querySelector('.sidebar-upload-text').classList.toggle('hidden');
   document.querySelector('.sidebar-upload-collapsed').classList.toggle('hidden');
 
-  sidebar.addEventListener('transitionend', (e) => {
+  
+});
+
+sidebar.addEventListener('transitionend', (e) => {
   if (e.propertyName === 'width' || e.propertyName === 'padding-left') {
     if (typeof initMasonry === 'function') {
       initMasonry();
@@ -299,9 +300,6 @@ toggleBtn.addEventListener('click', () => {
     }
   }
 });
-});
-
-
 
 
 
