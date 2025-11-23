@@ -288,13 +288,15 @@ toggleBtn.addEventListener('click', () => {
   document.querySelector('.sidebar-upload-text').classList.toggle('hidden');
   document.querySelector('.sidebar-upload-collapsed').classList.toggle('hidden');
 
-  setTimeout(() => {
-    if (typeof initMasonry === "function") {
+  sidebar.addEventListener('transitionend', (e) => {
+  if (e.propertyName === 'width' || e.propertyName === 'padding-left') {
+    if (typeof initMasonry === 'function') {
       initMasonry();
     } else if (window.masonry) {
       window.masonry.recalculate(true);
     }
-  }, 300);
+  }
+});
 });
 
 
