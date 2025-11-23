@@ -289,11 +289,9 @@ toggleBtn.addEventListener('click', () => {
   document.querySelector('.sidebar-upload-collapsed').classList.toggle('hidden');
 
 
-  sidebar.addEventListener('transitionend', () => {
-  if (window.masonry) {
-    window.masonry.recalculate(true);
-  }
-});
+  setTimeout(() => {
+    if (window.masonry) window.masonry.recalculate(true);
+  }, 350); // CSS transition je 300ms, pridaj malý buffer
 });
 
 
