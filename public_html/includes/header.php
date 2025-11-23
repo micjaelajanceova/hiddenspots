@@ -57,7 +57,7 @@ $show_navbar = $show_navbar ?? true;
     <!-- Toggle Button -->
 
 <button id="sidebarToggle" class="flex items-center justify-center w-3 h-8 rounded-full hover:bg-gray-200 transition self-end">
-  <i class="ph-menu text-xl"></i>
+  <i class="ph-list text-xl"></i>
 </button>
     
 <a href="/index.php" class="logo text-black hover:text-blue-500 mb-10">
