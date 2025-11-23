@@ -287,12 +287,13 @@ toggleBtn.addEventListener('click', () => {
   document.querySelector('.sidebar-logo-collapsed').classList.toggle('hidden');
   document.querySelector('.sidebar-upload-text').classList.toggle('hidden');
   document.querySelector('.sidebar-upload-collapsed').classList.toggle('hidden');
+
+  if (window.masonry) {
+    window.masonry.recalculate(true);
+  }
 });
 
-const resizeObserver = new ResizeObserver(() => {
-  if (window.masonry) window.masonry.recalculate(true);
-});
-resizeObserver.observe(sidebar);
+
 
 
 </script>
