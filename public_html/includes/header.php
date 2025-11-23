@@ -250,32 +250,15 @@ const photoDataInput = document.getElementById('photoData');
 
 const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('sidebarToggle');
-const iconExpanded = toggleBtn.querySelector('.sidebar-icon-expanded');
-const iconCollapsed = toggleBtn.querySelector('.sidebar-icon-collapsed');
 
-// Na načítanie stavu zo storage
-let isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-if (isCollapsed) {
-  sidebar.classList.add('sidebar-collapsed', 'w-16', 'p-2');
-  iconExpanded.classList.add('hidden');
-  iconCollapsed.classList.remove('hidden');
-  document.querySelectorAll('.sidebar-text').forEach(el => el.classList.add('hidden'));
-  document.querySelectorAll('#sidebar nav a').forEach(link => {
-    link.classList.remove('justify-start', 'gap-4');
-    link.classList.add('justify-center', 'gap-0');
-  });
-} else {
-  sidebar.classList.add('w-64', 'p-4');
-}
-
-// Toggle klikom
 toggleBtn.addEventListener('click', () => {
-  isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
-  localStorage.setItem('sidebarCollapsed', isCollapsed);
+  const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
+
 
   if (isCollapsed) {
     sidebar.classList.remove('w-64', 'p-4');
     sidebar.classList.add('w-16', 'p-2');
+
     document.querySelectorAll('.sidebar-text').forEach(el => el.classList.add('hidden'));
     document.querySelectorAll('#sidebar nav a').forEach(link => {
       link.classList.remove('justify-start', 'gap-4');
@@ -284,17 +267,13 @@ toggleBtn.addEventListener('click', () => {
   } else {
     sidebar.classList.remove('w-16', 'p-2');
     sidebar.classList.add('w-64', 'p-4');
+
     document.querySelectorAll('.sidebar-text').forEach(el => el.classList.remove('hidden'));
     document.querySelectorAll('#sidebar nav a').forEach(link => {
       link.classList.remove('justify-center', 'gap-0');
       link.classList.add('justify-start', 'gap-4');
     });
   }
-
-  iconExpanded.classList.toggle('hidden');
-  iconCollapsed.classList.toggle('hidden');
-});
-
 
   document.querySelector('.sidebar-logo-full').classList.toggle('hidden');
   document.querySelector('.sidebar-logo-collapsed').classList.toggle('hidden');
@@ -312,6 +291,12 @@ toggleBtn.addEventListener('click', () => {
 
 });
 
+const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+if (isCollapsed) {
+  sidebar.classList.add('sidebar-collapsed');
+  iconExpanded.classList.add('hidden');
+  iconCollapsed.classList.remove('hidden');
+}
 });
 
 
