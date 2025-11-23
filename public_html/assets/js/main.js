@@ -1,5 +1,5 @@
 // Initialize Macy.js for Masonry layout
-window.addEventListener('load', () => {
+function initMasonry() {
   window.masonry = Macy({
     container: '#masonry',
     columns: 4,
@@ -9,8 +9,9 @@ window.addEventListener('load', () => {
     waitForImages: true
   });
 
-  window.masonry.recalculate(true);
   document.getElementById('masonry').style.display = 'block';
+}
+
+window.addEventListener('load', () => {
+  initMasonry();
 });
-
-
