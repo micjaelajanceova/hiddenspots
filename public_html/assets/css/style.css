@@ -1,15 +1,8 @@
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #aa2c2c;
-  color: #333333;
-  margin: 0;
-  padding: 0;
-}
 
 h1 {
   font-size: 7.5rem;
   font-weight: 700;
-  line-height: 1;
+  line-height: 2;
   background: rgb(128, 179, 226);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -18,7 +11,7 @@ h1 {
 }
 
 h2 {
-  font-size: 1.5rem;
+  font-size: 6.5rem;
   font-weight: 400;
   line-height: 1.1;
 }
