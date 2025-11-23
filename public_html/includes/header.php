@@ -35,7 +35,7 @@ $user_role = $_SESSION['role'] ?? 'user';
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>HiddenSpots — discover your city's secret places</title>
-    <link rel="icon" type="image/png" href="/hiddenspots/public_html/assets/img/logo.svg">
+    <link rel="icon" type="image/png" href="/public_html/assets/img/logo.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/hiddenspots/public_html/assets/css/style.css?v=<?php echo time(); ?>">
 </head>
@@ -57,12 +57,13 @@ $show_navbar = $show_navbar ?? true;
     <div class="flex items-center justify-between">
 <a href="/index.php" class="logo text-black hover:text-blue-500 text-center">
   <span class="sidebar-logo-full text-2xl">HiddenSpots</span>
-  <span class="sidebar-logo-collapsed text-2xl hidden">HS</span>
+  <img src="/public_html/assets/img/logo.svg" alt="HS" class="sidebar-logo-collapsed text-2xl hidden">
 </a>
 
 <!-- Toggle Button -->
 <button id="sidebarToggle" class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 transition self-start">
   <i class="ph-list text-xl"></i>
+  
 </button>
 
 </div>
