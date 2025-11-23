@@ -55,7 +55,8 @@ $show_navbar = $show_navbar ?? true;
 
   <div class="flex flex-col">
     <!-- Toggle Button -->
-<button id="sidebarToggle" class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-200 transition self-end">
+
+<button id="sidebarToggle" class="flex items-center justify-center w-3 h-8 rounded-full hover:bg-gray-200 transition self-end">
   <i class="ph-menu text-xl"></i>
 </button>
     
@@ -250,9 +251,10 @@ const photoDataInput = document.getElementById('photoData');
 const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('sidebarToggle');
 
+
+
 toggleBtn.addEventListener('click', () => {
   const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
-
 
   if (isCollapsed) {
     sidebar.classList.remove('w-64', 'p-4');
@@ -287,15 +289,7 @@ toggleBtn.addEventListener('click', () => {
       window.masonry.recalculate(true);
     }
   }
-
 });
-
-const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-if (isCollapsed) {
-  sidebar.classList.add('sidebar-collapsed');
-  iconExpanded.classList.add('hidden');
-  iconCollapsed.classList.remove('hidden');
-}
 });
 
 
