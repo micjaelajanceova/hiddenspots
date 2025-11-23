@@ -289,11 +289,11 @@ toggleBtn.addEventListener('click', () => {
   document.querySelector('.sidebar-upload-collapsed').classList.toggle('hidden');
 
 
-  requestAnimationFrame(() => {
+  setTimeout(() => {
     if (window.masonry) {
       window.masonry.recalculate(true);
     }
-  }; 50);
+  }, 50);
 });
 
 
