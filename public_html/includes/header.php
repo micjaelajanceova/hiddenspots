@@ -53,24 +53,25 @@ $show_navbar = $show_navbar ?? true;
 
 
 
-  <div class="flex flex-col gap-8">
-    <div class="flex items-center justify-between">
-<a href="/index.php" class="logo text-black hover:text-blue-500 text-center">
-  <span class="sidebar-logo-full text-2xl">HiddenSpots</span>
+  <div class="flex flex-col">
+    <!-- Toggle Button -->
+
+<button id="sidebarToggle" class="flex items-center justify-center w-3 h-5 rounded-full hover:bg-gray-200 transition self-end">
+  <i class="ph-caret-left text-xl"></i>
+</button>
+    
+<a href="/index.php" class="logo text-black hover:text-blue-500 mb-10">
+  <span class="sidebar-logo-full text-2xl ">HiddenSpots</span>
   <img src="/assets/img/logo.svg" alt="HS" class="sidebar-logo-collapsed text-2xl hidden">
 </a>
 
-<!-- Toggle Button -->
-<button id="sidebarToggle" class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 transition self-start">
-  <i class="ph-list text-xl"></i>
-  
-</button>
 
-</div>
+
+
 
 
     <!-- Menu links -->
-    <nav class="flex flex-col pt-5 gap-6 text-black">
+    <nav class="flex flex-col pt-5 gap-8 text-black">
       <a href="/feed.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
       <i class="ph-house text-lg"></i>
       <span class="sidebar-text">Feed</span>
