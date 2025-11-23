@@ -247,31 +247,46 @@ const previewImage = document.getElementById('previewImage');
 const finalImage = document.getElementById('finalImage');
 const photoDataInput = document.getElementById('photoData');
 
+
 const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('sidebarToggle');
 
-// ----------- Načítať uložený stav sidebaru ----------
+
 const saved = localStorage.getItem('sidebarCollapsed');
 if (saved === '1') {
-  sidebar.classList.add('sidebar-collapsed');
-  sidebar.classList.remove('w-64', 'p-4');
-  sidebar.classList.add('w-16', 'p-2');
-
-  document.querySelectorAll('.sidebar-text').forEach(el => el.classList.add('hidden'));
-  document.querySelectorAll('#sidebar nav a').forEach(link => {
-    link.classList.remove('justify-start', 'gap-4');
-    link.classList.add('justify-center', 'gap-0');
-  });
-
-  document.querySelector('.sidebar-logo-full').classList.add('hidden');
-  document.querySelector('.sidebar-logo-collapsed').classList.remove('hidden');
-  document.querySelector('.sidebar-upload-text').classList.add('hidden');
-  document.querySelector('.sidebar-upload-collapsed').classList.remove('hidden');
-}
-
-// ----------- Toggle sidebar ----------
 toggleBtn.addEventListener('click', () => {
   const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
+
+  if (isCollapsed) {
+    // Zúžený sidebar
+    sidebar.classList.remove('w-64', 'p-4');
+    sidebar.classList.add('w-16', 'p-2');
+
+    // Skryť texty
+    document.querySelectorAll('.sidebar-text').forEach(el => el.classList.add('hidden'));
+
+    // Centrovať ikony
+    document.querySelectorAll('#sidebar nav a').forEach(link => {
+      link.classList.remove('justify-start', 'gap-4');
+      link.classList.add('justify-center', 'gap-0');
+    });
+  } else {
+    // Rozšírený sidebar
+    sidebar.classList.remove('w-16', 'p-2');
+    sidebar.classList.add('w-64', 'p-4');
+
+    // Ukázať texty
+    document.querySelectorAll('.sidebar-text').forEach(el => el.classList.remove('hidden'));
+
+    // Obnoviť gap a zarovnanie
+    document.querySelectorAll('#sidebar nav a').forEach(link => {
+      link.classList.remove('justify-center', 'gap-0');
+      link.classList.add('justify-start', 'gap-4');
+    });
+  }
+
+  // Uložiť stav do localStorage
+  localStorage.setItem('sidebarCollapsed', isCollapsed ? '1' : '0');
 
   if (isCollapsed) {
     sidebar.classList.remove('w-64', 'p-4');
@@ -296,19 +311,18 @@ toggleBtn.addEventListener('click', () => {
   document.querySelector('.sidebar-logo-collapsed').classList.toggle('hidden');
   document.querySelector('.sidebar-upload-text').classList.toggle('hidden');
   document.querySelector('.sidebar-upload-collapsed').classList.toggle('hidden');
-
-  // uložiť stav do localStorage
-  localStorage.setItem('sidebarCollapsed', isCollapsed ? '1' : '0');
 });
 
-// ----------- Masonry recalc po dokončení animácie ----------
-sidebar.addEventListener('transitionend', (e) => {
+  sidebar.addEventListener('transitionend', (e) => {
   if (e.propertyName === 'width' || e.propertyName === 'padding-left') {
-    if (window.masonry) {
+    if (typeof initMasonry === 'function') {
+      initMasonry();
+    } else if (window.masonry) {
       window.masonry.recalculate(true);
     }
   }
 });
+
 
 
 </script>
