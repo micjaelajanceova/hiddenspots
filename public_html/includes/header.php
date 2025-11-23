@@ -293,7 +293,7 @@ toggleBtn.addEventListener('click', () => {
     if (window.masonry) {
       window.masonry.recalculate(true);
     }
-  });
+  }; 50);
 });
 
 
