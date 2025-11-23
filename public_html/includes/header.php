@@ -286,15 +286,25 @@ function expandSidebar() {
   document.querySelector('.sidebar-upload-collapsed').classList.add('hidden');
 }
 
-// Load saved state
+// --- LOAD STATE WITHOUT TRANSITION ---
 const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+
+// temporarily disable transition
+sidebar.classList.add('!transition-none'); // Tailwind override (or add a helper class)
+
 if (isCollapsed) {
   collapseSidebar();
 } else {
   expandSidebar();
 }
 
-// Toggle button click
+// force reflow so the browser registers changes
+sidebar.offsetHeight;
+
+// re-enable transition for user interaction
+sidebar.classList.remove('!transition-none');
+
+// --- TOGGLE BUTTON ---
 toggleBtn.addEventListener('click', () => {
   const collapsed = sidebar.classList.contains('sidebar-collapsed');
   if (collapsed) {
@@ -306,7 +316,7 @@ toggleBtn.addEventListener('click', () => {
   }
 });
 
-// Recalculate Masonry after animation
+// Masonry recalculation
 sidebar.addEventListener('transitionend', (e) => {
   if (e.propertyName === 'width' || e.propertyName === 'padding-left') {
     if (typeof initMasonry === 'function') {
@@ -316,6 +326,7 @@ sidebar.addEventListener('transitionend', (e) => {
     }
   }
 });
+
 
 
 </script>
