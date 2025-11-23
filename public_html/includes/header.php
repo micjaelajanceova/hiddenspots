@@ -287,12 +287,12 @@ toggleBtn.addEventListener('click', () => {
   document.querySelector('.sidebar-logo-collapsed').classList.toggle('hidden');
   document.querySelector('.sidebar-upload-text').classList.toggle('hidden');
   document.querySelector('.sidebar-upload-collapsed').classList.toggle('hidden');
-
-
-  setTimeout(() => {
-    if (window.masonry) window.masonry.recalculate(true);
-  }, 350); // CSS transition je 300ms, pridaj malý buffer
 });
+
+const resizeObserver = new ResizeObserver(() => {
+  if (window.masonry) window.masonry.recalculate(true);
+});
+resizeObserver.observe(sidebar);
 
 
 </script>
