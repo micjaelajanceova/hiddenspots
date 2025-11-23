@@ -288,9 +288,9 @@ toggleBtn.addEventListener('click', () => {
   document.querySelector('.sidebar-upload-text').classList.toggle('hidden');
   document.querySelector('.sidebar-upload-collapsed').classList.toggle('hidden');
 
-   requestAnimationFrame(() => {
-  window.dispatchEvent(new Event('resize'));
-});
+  setTimeout(() => {
+    window.dispatchEvent(new Event('resize'));
+  }, 100); // malé oneskorenie 100ms
 });
 
 
