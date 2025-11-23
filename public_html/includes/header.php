@@ -288,10 +288,13 @@ toggleBtn.addEventListener('click', () => {
   document.querySelector('.sidebar-upload-text').classList.toggle('hidden');
   document.querySelector('.sidebar-upload-collapsed').classList.toggle('hidden');
 
-  if (window.masonry) {
-    window.masonry.recalculate(true);
-  }
+  setTimeout(() => {
+    if (window.masonry) {
+      window.masonry.recalculate(true);
+    }
+  }, 50);
 });
+
 
 
 
