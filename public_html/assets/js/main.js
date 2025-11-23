@@ -1,8 +1,6 @@
 // Initialize Macy.js for Masonry layout
-let masonry;
-
 window.addEventListener('load', () => {
-    masonry = Macy({
+    const masonry = Macy({
     container: '#masonry',
     columns: 4,
     margin: 12,
