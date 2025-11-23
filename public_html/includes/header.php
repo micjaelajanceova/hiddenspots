@@ -251,73 +251,37 @@ const photoDataInput = document.getElementById('photoData');
 const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('sidebarToggle');
 
-// Functions to collapse/expand
-function collapseSidebar() {
-  sidebar.classList.add('sidebar-collapsed');
-  sidebar.classList.remove('w-64', 'p-4');
-  sidebar.classList.add('w-16', 'p-2');
 
-  document.querySelectorAll('.sidebar-text').forEach(el => el.classList.add('hidden'));
-  document.querySelectorAll('#sidebar nav a').forEach(link => {
-    link.classList.remove('justify-start', 'gap-4');
-    link.classList.add('justify-center', 'gap-0');
-  });
 
-  document.querySelector('.sidebar-logo-full').classList.add('hidden');
-  document.querySelector('.sidebar-logo-collapsed').classList.remove('hidden');
-  document.querySelector('.sidebar-upload-text').classList.add('hidden');
-  document.querySelector('.sidebar-upload-collapsed').classList.remove('hidden');
-}
-
-function expandSidebar() {
-  sidebar.classList.remove('sidebar-collapsed');
-  sidebar.classList.remove('w-16', 'p-2');
-  sidebar.classList.add('w-64', 'p-4');
-
-  document.querySelectorAll('.sidebar-text').forEach(el => el.classList.remove('hidden'));
-  document.querySelectorAll('#sidebar nav a').forEach(link => {
-    link.classList.remove('justify-center', 'gap-0');
-    link.classList.add('justify-start', 'gap-4');
-  });
-
-  document.querySelector('.sidebar-logo-full').classList.remove('hidden');
-  document.querySelector('.sidebar-logo-collapsed').classList.add('hidden');
-  document.querySelector('.sidebar-upload-text').classList.remove('hidden');
-  document.querySelector('.sidebar-upload-collapsed').classList.add('hidden');
-}
-
-// --- LOAD STATE WITHOUT TRANSITION ---
-const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-
-// temporarily disable transition
-sidebar.classList.add('!transition-none'); // Tailwind override (or add a helper class)
-
-if (isCollapsed) {
-  collapseSidebar();
-} else {
-  expandSidebar();
-}
-
-// force reflow so the browser registers changes
-sidebar.offsetHeight;
-
-// re-enable transition for user interaction
-sidebar.classList.remove('!transition-none');
-
-// --- TOGGLE BUTTON ---
 toggleBtn.addEventListener('click', () => {
-  const collapsed = sidebar.classList.contains('sidebar-collapsed');
-  if (collapsed) {
-    expandSidebar();
-    localStorage.setItem('sidebarCollapsed', false);
-  } else {
-    collapseSidebar();
-    localStorage.setItem('sidebarCollapsed', true);
-  }
-});
+  const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
 
-// Masonry recalculation
-sidebar.addEventListener('transitionend', (e) => {
+  if (isCollapsed) {
+    sidebar.classList.remove('w-64', 'p-4');
+    sidebar.classList.add('w-16', 'p-2');
+
+    document.querySelectorAll('.sidebar-text').forEach(el => el.classList.add('hidden'));
+    document.querySelectorAll('#sidebar nav a').forEach(link => {
+      link.classList.remove('justify-start', 'gap-4');
+      link.classList.add('justify-center', 'gap-0');
+    });
+  } else {
+    sidebar.classList.remove('w-16', 'p-2');
+    sidebar.classList.add('w-64', 'p-4');
+
+    document.querySelectorAll('.sidebar-text').forEach(el => el.classList.remove('hidden'));
+    document.querySelectorAll('#sidebar nav a').forEach(link => {
+      link.classList.remove('justify-center', 'gap-0');
+      link.classList.add('justify-start', 'gap-4');
+    });
+  }
+
+  document.querySelector('.sidebar-logo-full').classList.toggle('hidden');
+  document.querySelector('.sidebar-logo-collapsed').classList.toggle('hidden');
+  document.querySelector('.sidebar-upload-text').classList.toggle('hidden');
+  document.querySelector('.sidebar-upload-collapsed').classList.toggle('hidden');
+
+ sidebar.addEventListener('transitionend', (e) => {
   if (e.propertyName === 'width' || e.propertyName === 'padding-left') {
     if (typeof initMasonry === 'function') {
       initMasonry();
@@ -326,7 +290,7 @@ sidebar.addEventListener('transitionend', (e) => {
     }
   }
 });
-
+});
 
 
 </script>
