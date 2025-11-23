@@ -56,8 +56,7 @@ $show_navbar = $show_navbar ?? true;
   <div class="flex flex-col">
     <!-- Toggle Button -->
 <button id="sidebarToggle" class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-200 transition self-end">
-  <i class="ph-caret-left text-xl sidebar-icon-expanded"></i>
-  <i class="ph-caret-right text-xl sidebar-icon-collapsed hidden"></i>
+  <i class="ph-menu text-xl"></i>
 </button>
     
 <a href="/index.php" class="logo text-black hover:text-blue-500 mb-10">
