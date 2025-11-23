@@ -250,15 +250,10 @@ const photoDataInput = document.getElementById('photoData');
 
 const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('sidebarToggle');
-const iconExpanded = toggleBtn.querySelector('.sidebar-icon-expanded');
-const iconCollapsed = toggleBtn.querySelector('.sidebar-icon-collapsed');
-
 
 
 toggleBtn.addEventListener('click', () => {
   const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
-  iconExpanded.classList.toggle('hidden');
-  iconCollapsed.classList.toggle('hidden');
 
   if (isCollapsed) {
     sidebar.classList.remove('w-64', 'p-4');
@@ -296,12 +291,25 @@ toggleBtn.addEventListener('click', () => {
 
 });
 
+const iconExpanded = toggleBtn.querySelector('.sidebar-icon-expanded');
+const iconCollapsed = toggleBtn.querySelector('.sidebar-icon-collapsed');
+
+// Na načítanie stavu zo storage
 const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
 if (isCollapsed) {
   sidebar.classList.add('sidebar-collapsed');
   iconExpanded.classList.add('hidden');
   iconCollapsed.classList.remove('hidden');
 }
+
+// Toggle klikom
+toggleBtn.addEventListener('click', () => {
+  const collapsed = sidebar.classList.toggle('sidebar-collapsed');
+  localStorage.setItem('sidebarCollapsed', collapsed);
+
+  iconExpanded.classList.toggle('hidden');
+  iconCollapsed.classList.toggle('hidden');
+});
 });
 
 
