@@ -35,7 +35,7 @@ $user_role = $_SESSION['role'] ?? 'user';
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>HiddenSpots — discover your city's secret places</title>
-    <link rel="HS logo" type="image/png" href="/assets/img/logo.png">
+    <link rel="icon" type="image/png" href="/assets/img/logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/assets/css/style.css?v=<?php echo time(); ?>">
 </head>
