@@ -56,7 +56,7 @@ $show_navbar = $show_navbar ?? true;
   <div class="flex flex-col">
     <!-- Toggle Button -->
 
-<button id="sidebarToggle" class="flex items-center justify-center w-3 h-5 rounded-full hover:bg-gray-200 transition self-end">
+<button id="sidebarToggle" class="flex items-center justify-center w-3 h-8 rounded-full hover:bg-gray-200 transition self-end">
   <i class="ph-caret-left text-xl"></i>
 </button>
     
@@ -287,7 +287,12 @@ toggleBtn.addEventListener('click', () => {
   document.querySelector('.sidebar-logo-collapsed').classList.toggle('hidden');
   document.querySelector('.sidebar-upload-text').classList.toggle('hidden');
   document.querySelector('.sidebar-upload-collapsed').classList.toggle('hidden');
+
+  if (masonry) {
+    masonry.recalculate(true);
+  }
 });
+
 
 </script>
 
