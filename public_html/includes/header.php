@@ -59,8 +59,8 @@ $show_navbar = $show_navbar ?? true;
   
   <!-- Logo (vľavo) -->
   <a href="/index.php" class="logo text-black hover:text-blue-500">
-    <span class="sidebar-logo-full text-2xl">HiddenSpots</span>
-    <img src="/assets/img/logo.svg" alt="HS" class="sidebar-logo-collapsed hidden h-8">
+    <span class="sidebar-logo-full text-2xl font-bold">HiddenSpots</span>
+    <img src="/assets/img/logo.svg" alt="HS" class="sidebar-logo-collapsed hidden h-10 mt-3">
   </a>
 
   <!-- Toggle Button (vpravo) -->
@@ -267,7 +267,6 @@ toggleBtn.addEventListener('click', () => {
 
     const header = document.getElementById('sidebarHeader');
 
-  if (window.innerWidth >= 768) {
     if (isCollapsed) {
       // Collapse → toggle hore, logo dole
       header.classList.add('flex-col', 'items-center', 'gap-3');
@@ -277,7 +276,14 @@ toggleBtn.addEventListener('click', () => {
       header.classList.remove('flex-col', 'items-center', 'gap-3');
       header.classList.add('flex-row', 'justify-between');
     }
-  }
+
+    if (isCollapsed) {
+      header.classList.add('flex-col', 'items-center', 'gap-3');
+      header.classList.remove('flex-row', 'justify-between');
+    } else {
+      header.classList.remove('flex-col', 'items-center', 'gap-3');
+      header.classList.add('flex-row', 'justify-between');
+    }
 
   const icon = toggleBtn.querySelector('i');
   if (isCollapsed) {
@@ -291,7 +297,6 @@ toggleBtn.addEventListener('click', () => {
   if (isCollapsed) {
     sidebar.classList.remove('w-64', 'p-4');
     sidebar.classList.add('w-16', 'p-2');
-
     document.querySelectorAll('.sidebar-text').forEach(el => el.classList.add('hidden'));
     document.querySelectorAll('#sidebar nav a').forEach(link => {
       link.classList.remove('justify-start', 'gap-4');
@@ -300,7 +305,6 @@ toggleBtn.addEventListener('click', () => {
   } else {
     sidebar.classList.remove('w-16', 'p-2');
     sidebar.classList.add('w-64', 'p-4');
-
     document.querySelectorAll('.sidebar-text').forEach(el => el.classList.remove('hidden'));
     document.querySelectorAll('#sidebar nav a').forEach(link => {
       link.classList.remove('justify-center', 'gap-0');
