@@ -54,16 +54,23 @@ $show_navbar = $show_navbar ?? true;
 
 
   <div class="flex flex-col">
-    <!-- Toggle Button -->
 
-<button id="sidebarToggle" class="flex items-center justify-center w-3 h-10 rounded-full hover:bg-gray-200 transition self-end">
-  <i class="ph-list text-xl"></i>
-</button>
-    
-<a href="/index.php" class="logo text-black hover:text-blue-500 mb-10">
-  <span class="sidebar-logo-full text-2xl ">HiddenSpots</span>
-  <img src="/assets/img/logo.svg" alt="HS" class="sidebar-logo-collapsed text-2xl hidden">
-</a>
+    <div id="sidebarHeader" class="flex items-center justify-between mb-10 transition-all">
+  
+  <!-- Logo (vľavo) -->
+  <a href="/index.php" class="logo text-black hover:text-blue-500">
+    <span class="sidebar-logo-full text-2xl">HiddenSpots</span>
+    <img src="/assets/img/logo.svg" alt="HS" class="sidebar-logo-collapsed hidden h-8">
+  </a>
+
+  <!-- Toggle Button (vpravo) -->
+    <button id="sidebarToggle" 
+          class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 transition">
+    <i class="ph-caret-left text-xl"></i> <!-- Predvolená ikona pre expand -->
+  </button>
+
+
+</div>
 
 
 
@@ -257,6 +264,29 @@ const toggleBtn = document.getElementById('sidebarToggle');
 
 toggleBtn.addEventListener('click', () => {
   const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
+
+    const header = document.getElementById('sidebarHeader');
+
+  if (window.innerWidth >= 768) {
+    if (isCollapsed) {
+      // Collapse → toggle hore, logo dole
+      header.classList.add('flex-col', 'items-center', 'gap-3');
+      header.classList.remove('flex-row', 'justify-between');
+    } else {
+      // Expand → logo vľavo, toggle vpravo
+      header.classList.remove('flex-col', 'items-center', 'gap-3');
+      header.classList.add('flex-row', 'justify-between');
+    }
+  }
+
+  const icon = toggleBtn.querySelector('i');
+  if (isCollapsed) {
+    icon.classList.remove('ph-caret-left');
+    icon.classList.add('ph-caret-right');
+  } else {
+    icon.classList.remove('ph-caret-right');
+    icon.classList.add('ph-caret-left');
+  }
 
   if (isCollapsed) {
     sidebar.classList.remove('w-64', 'p-4');
