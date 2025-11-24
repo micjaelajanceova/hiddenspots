@@ -233,7 +233,7 @@ $show_navbar = $show_navbar ?? true;
   </a>
 </nav>
 
- <div class="flex-1 flex flex-col min-h-screen pb-15 md:pb-0">
+ <div class="flex-1 flex flex-col min-h-screen pb-16 md:pb-0">
 <?php endif; ?>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
