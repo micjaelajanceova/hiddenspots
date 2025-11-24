@@ -56,7 +56,7 @@ $show_navbar = $show_navbar ?? true;
   <div class="flex flex-col">
     <!-- Toggle Button -->
 
-<button id="sidebarToggle" class="flex items-center justify-center w-3 h-8 rounded-full hover:bg-gray-200 transition self-end">
+<button id="sidebarToggle" class="flex items-center justify-center w-3 h-10 rounded-full hover:bg-gray-200 transition self-end">
   <i class="ph-list text-xl"></i>
 </button>
     
@@ -73,7 +73,7 @@ $show_navbar = $show_navbar ?? true;
     <!-- Menu links -->
     <nav class="flex flex-col pt-5 gap-8 text-black">
       <a href="/feed.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
-      <i class="ph-house text-lg"></i>
+      <i class="ph-rows text-lg"></i>
       <span class="sidebar-text">Feed</span>
       </a>
       <a href="/favourites.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
@@ -85,7 +85,7 @@ $show_navbar = $show_navbar ?? true;
         <span class="sidebar-text">Trending</span>
       </a>
       <a href="/about.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
-        <i class="ph-info text-lg"></i>
+        <i class="ph-question text-lg"></i>
         <span class="sidebar-text">About HS</span>
       </a>
 
@@ -193,7 +193,9 @@ $show_navbar = $show_navbar ?? true;
 
   <!-- Mobile top logo -->
   <div class="md:hidden sticky top-0 border-b p-3 flex justify-center bg-gray-100 z-50">
-    <a href="/index.php" class="text-3xl font-extrabold text-black hover:text-blue-500">HS</a>
+    <a href="/index.php" class="flex items-center justify-center">
+  <img src="/assets/img/logo.svg" alt="HS" class="h-8">
+  </a>
   </div>
 
 <script src="https://unpkg.com/phosphor-icons"></script>
@@ -202,18 +204,18 @@ $show_navbar = $show_navbar ?? true;
 <nav class="fixed bottom-0 left-0 right-0 bg-white flex justify-around items-center p-2 md:hidden border-t shadow-md z-50">
 
   <!-- Home -->
-  <a href="/feed.php" class="text-gray-600 hover:text-blue-500">
-    <i class="ph-house text-2xl"></i>
+  <a href="/feed.php" class="text-gray-600 hover:text-blue-500 flex items-center justify-center">
+    <i class="ph-rows text-2xl"></i>
   </a>
 
   <!-- Favourites -->
-  <a href="/favourites.php" class="text-gray-600 hover:text-blue-500">
+  <a href="/favourites.php" class="text-gray-600 hover:text-blue-500 flex items-center justify-center">
     <i class="ph-heart text-2xl"></i>
   </a>
 
 <!-- Upload button (center, mobil) -->
 <button 
-    class="bg-black text-white p-3 rounded-full shadow-md"
+    class="bg-black text-white p-3 rounded-full shadow-md flex items-center justify-center"
     onclick="document.getElementById('uploadModal').classList.remove('hidden')"
 >
     <i class="ph-plus text-2xl"></i>
@@ -221,17 +223,17 @@ $show_navbar = $show_navbar ?? true;
 
 
   <!-- Trending -->
-  <a href="/trending.php" class="text-gray-600 hover:text-blue-500">
+  <a href="/trending.php" class="text-gray-600 hover:text-blue-500 flex items-center justify-center">
     <i class="ph-trend-up text-2xl"></i>
   </a>
 
   <!-- About -->
-  <a href="/about.php" class="text-gray-600 hover:text-blue-500">
-    <i class="ph-info text-2xl"></i>
+  <a href="/about.php" class="text-gray-600 hover:text-blue-500 flex items-center justify-center">
+    <i class="ph-question text-2xl"></i>
   </a>
 </nav>
 
- <div class="flex-1 flex flex-col min-h-screen">
+ <div class="flex-1 flex flex-col min-h-screen pb-15 md:pb-0">
 <?php endif; ?>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />

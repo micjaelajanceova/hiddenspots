@@ -123,7 +123,7 @@ $photo_src = $user_photo ? '../' . $user_photo : null;
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<main class="flex flex-col items-center min-h-screen w-screen bg-gray-50 overflow-auto relative">
+<main class="flex flex-col items-center min-h-screen w-full bg-gray-50 overflow-auto relative">
   <div class="bg-white shadow-xl p-6 w-full max-w-3xl m-4 my-10">
 
    
