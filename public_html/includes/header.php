@@ -60,7 +60,7 @@ $show_navbar = $show_navbar ?? true;
   <!-- Logo (vľavo) -->
   <a href="/index.php" class="logo text-black hover:text-blue-500">
     <span class="sidebar-logo-full text-2xl font-bold">HiddenSpots</span>
-    <img src="/assets/img/logo.svg" alt="HS" class="sidebar-logo-collapsed hidden h-10 mt-3">
+    <img src="/assets/img/logo.svg" alt="HS" class="sidebar-logo-collapsed hidden h-16 mt-3">
   </a>
 
   <!-- Toggle Button (vpravo) -->
