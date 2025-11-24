@@ -84,7 +84,7 @@ $show_navbar = $show_navbar ?? true;
       <span class="sidebar-text">Feed</span>
       </a>
       <a href="/favourites.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
-        <i class="ph-heart text-lg"></i>
+        <i class="ph-bookmark-simple text-lg"></i>
         <span class="sidebar-text">Favourites</span>
       </a>
       <a href="/trending.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
@@ -217,7 +217,7 @@ $show_navbar = $show_navbar ?? true;
 
   <!-- Favourites -->
   <a href="/favourites.php" class="text-gray-600 hover:text-blue-500 flex items-center justify-center">
-    <i class="ph-heart text-2xl"></i>
+    <i class="ph-bookmark-simple text-2xl"></i>
   </a>
 
 <!-- Upload button (center, mobil) -->
