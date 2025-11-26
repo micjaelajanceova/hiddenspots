@@ -139,15 +139,14 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 <?php include 'includes/profile-header.php'; ?>
 
 <button id="showCityMapBtn" 
-        class="inline-flex items-center gap-1 w-fit text-blue-600 font-semibold 
-               hover:underline bg-transparent border-0 p-0 cursor-pointer">
+        class="px-3 py-1 bg-black text-white rounded text-sm">
     Show on Map
     <span id="mapArrow" class="inline-block transition-transform duration-300">▼</span>
 </button>
 
 
 <!-- Spot title -->
-<span class="text-gray-500 uppercase block">
+<span class="text-gray-500 block">
     <?= htmlspecialchars($spot['city']) ?>
 </span>
 
