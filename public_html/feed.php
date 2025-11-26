@@ -156,6 +156,40 @@ mapBtn.addEventListener('click', () => {
     }
 });
 
+
+
+
+    // --- CLOSE MAP WHEN CLICKING PROFILE HEADER OR MENU ---
+    if(profileBtn && mapDiv){
+        profileBtn.addEventListener('click', () => {
+            if(mapDiv.style.display === 'block'){
+                mapDiv.style.display = 'none';
+            }
+        });
+    }
+    if(profileMenu && mapDiv){
+        profileMenu.addEventListener('click', () => {
+            if(mapDiv.style.display === 'block'){
+                mapDiv.style.display = 'none';
+            }
+        });
+    }
+
+    // --- CLOSE MAP WHEN CLICKING OUTSIDE ---
+    document.addEventListener('click', (e) => {
+        const clickedProfile = profileBtn?.contains(e.target) || profileMenu?.contains(e.target);
+        const clickedMapBtn = mapBtn?.contains(e.target);
+
+        if(!clickedProfile && !clickedMapBtn){
+            if(mapDiv.style.display === 'block'){
+                mapDiv.style.display = 'none';
+            }
+        }
+    });
+
+
+
+
 function initFeedMap() {
     const spots = <?= json_encode($spots) ?>;
 
@@ -196,18 +230,7 @@ function initFeedMap() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const profileHeader = document.querySelector('.profile-header'); // adjust the selector if needed
-    const mapDiv = document.getElementById('feedMap');
 
-    if (profileHeader && mapDiv) {
-        profileHeader.addEventListener('click', () => {
-            if (mapDiv.style.display === 'block') {
-                mapDiv.style.display = 'none';
-            }
-        });
-    }
-});
 </script>
 
 
