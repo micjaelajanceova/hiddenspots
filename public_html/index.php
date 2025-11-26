@@ -57,6 +57,12 @@ try {
         <article class="overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full">
           <a href="spot-view.php?id=<?=htmlspecialchars($s['id'])?>" class="flex flex-col h-full">
             <div class="w-full h-96 bg-gray-200 overflow-hidden">
+
+              
+              <small class="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
+                  @<?= htmlspecialchars($s['user_name']) ?>
+              </small>
+
               <img src="<?=htmlspecialchars($s['file_path'])?>" alt="<?=htmlspecialchars($s['name'])?>" class="w-full h-full object-cover transform transition duration-300 hover:scale-105">
             </div>
             <div class="p-3 flex flex-col justify-between flex-1">
@@ -127,6 +133,12 @@ try {
         <article class=" overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full ">
           <a href="spot-view.php?id=<?=htmlspecialchars($n['id'])?>" class="flex flex-col h-full">
             <div class="w-full h-96 bg-gray-200 overflow-hidden ">
+
+
+            <small class="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
+                  @<?= htmlspecialchars($s['user_name']) ?>
+              </small>
+
               <img src="<?=htmlspecialchars($n['file_path'])?>" alt="<?=htmlspecialchars($n['name'])?>" class="w-full h-full object-cover transform transition duration-300 hover:scale-105">
             </div>
             <div class="p-3 flex flex-col justify-between flex-1">
