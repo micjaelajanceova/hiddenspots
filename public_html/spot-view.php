@@ -149,7 +149,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 
 
   <button id="showCityMapBtn" 
-        class="inline-flex items-center gap-1 w-fit px-3 py-1 bg-white text-black rounded text-sm my-4">
+        class="inline-flex items-center gap-1 w-fit px-3 py-1 bg-black text-white rounded text-sm my-4">
     Show on Map
     <span id="mapArrow" class="inline-block transition-transform duration-300">▼</span>
 </button>
