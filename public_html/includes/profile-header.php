@@ -111,13 +111,6 @@ if (profileBtn && profileMenu) {
       return;
     }
 
-    // 3) If clicked anywhere else -> close both
-    if (profileMenu && !profileMenu.classList.contains('hidden')) {
-      profileMenu.classList.add('hidden');
-    }
-    if (cityMap && isVisible(cityMap)) {
-      cityMap.style.display = 'none';
-    }
   }, true); // use capture phase to react early
 })();
 
