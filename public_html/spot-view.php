@@ -145,19 +145,16 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 </span>
 
 
-
-<div id="cityMap" style="display:none; height:400px; margin-top:12px;"></div>
-
-
   <h1 class="text-3xl font-bold"><?=htmlspecialchars($spot['name'])?></h1>
 
 
   <button id="showCityMapBtn" 
-        class="inline-flex items-center gap-1 w-fit px-3 py-1 bg-black text-white rounded text-sm">
+        class="inline-flex items-center gap-1 w-fit px-3 py-1 bg-black text-white rounded text-sm mb-3">
     Show on Map
     <span id="mapArrow" class="inline-block transition-transform duration-300">▼</span>
 </button>
 
+<div id="cityMap" style="display:none; height:400px; margin-top:12px;"></div>
 
 
 <!-- Image + Right Panel -->
