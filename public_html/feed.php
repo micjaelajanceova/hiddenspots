@@ -195,6 +195,19 @@ function initFeedMap() {
         }
     });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const profileHeader = document.querySelector('.profile-header'); // adjust the selector if needed
+    const mapDiv = document.getElementById('feedMap');
+
+    if (profileHeader && mapDiv) {
+        profileHeader.addEventListener('click', () => {
+            if (mapDiv.style.display === 'block') {
+                mapDiv.style.display = 'none';
+            }
+        });
+    }
+});
 </script>
 
 
