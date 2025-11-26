@@ -139,7 +139,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 <?php include 'includes/profile-header.php'; ?>
 
 <button id="showCityMapBtn" 
-        class="flex items-center gap-1 w-fit text-blue-600 font-semibold 
+        class="inline-flex items-center gap-1 w-fit text-blue-600 font-semibold 
                hover:underline bg-transparent border-0 p-0 cursor-pointer">
     Show on Map
     <span id="mapArrow" class="inline-block transition-transform duration-300">▼</span>
