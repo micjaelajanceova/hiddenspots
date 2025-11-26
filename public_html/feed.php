@@ -175,17 +175,6 @@ mapBtn.addEventListener('click', () => {
         });
     }
 
-    // --- CLOSE MAP WHEN CLICKING OUTSIDE ---
-    document.addEventListener('click', (e) => {
-        const clickedProfile = profileBtn?.contains(e.target) || profileMenu?.contains(e.target);
-        const clickedMapBtn = mapBtn?.contains(e.target);
-
-        if(!clickedProfile && !clickedMapBtn){
-            if(mapDiv.style.display === 'block'){
-                mapDiv.style.display = 'none';
-            }
-        }
-    });
 
 
 
