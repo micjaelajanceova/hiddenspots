@@ -60,7 +60,7 @@ try {
 
               
             <small class="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
-                  @<?= htmlspecialchars($n['user_name'] ?? 'unknown') ?>
+                  @<?= htmlspecialchars($s['user_name'] ?? 'unknown') ?>
               </small>
 
               <img src="<?=htmlspecialchars($s['file_path'])?>" alt="<?=htmlspecialchars($s['name'])?>" class="w-full h-full object-cover transform transition duration-300 hover:scale-105">
