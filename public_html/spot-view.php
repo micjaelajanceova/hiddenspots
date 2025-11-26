@@ -138,14 +138,19 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 <!-- LOGIN / SIGNUP -->
 <?php include 'includes/profile-header.php'; ?>
 
-<!-- Spot title -->
-<div class="flex flex-col gap-2">
-<span class="text-gray-500 uppercase">
-  <button id="showCityMapBtn" class="hover:underline text-blue-600 bg-transparent border-0 p-0 cursor-pointer">
-    <?= htmlspecialchars($spot['city']) ?>
+<button id="showCityMapBtn" 
+        class="flex items-center gap-1 w-fit text-blue-600 font-semibold 
+               hover:underline bg-transparent border-0 p-0 cursor-pointer">
+    Show on Map
     <span id="mapArrow" class="inline-block transition-transform duration-300">▼</span>
-  </button>
+</button>
+
+
+<!-- Spot title -->
+<span class="text-gray-500 uppercase block">
+    <?= htmlspecialchars($spot['city']) ?>
 </span>
+
 
 
 <div id="cityMap" style="display:none; height:400px; margin-top:12px;"></div>

@@ -63,7 +63,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </form>
 
     <!-- FILTER DROPDOWN -->
-  <div class="relative mx-0 sm:mx-2">
+  <div class="relative mx-2">
     <button id="filterBtn" class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gray-200 hover:bg-gray-300 text-sm ">
       <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
         <path d="M4 7h16M4 12h16M4 17h16" stroke-width="2" stroke-linecap="round"/>
