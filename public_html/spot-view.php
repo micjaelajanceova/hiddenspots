@@ -158,7 +158,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 
   <h1 class="text-3xl font-bold"><?=htmlspecialchars($spot['name'])?></h1>
 
-</div>
+
 
 
 
