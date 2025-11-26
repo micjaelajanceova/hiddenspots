@@ -136,7 +136,7 @@ try {
 
 
             <small class="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
-                  @<?= htmlspecialchars($s['user_name']) ?>
+                  @<?= htmlspecialchars($n['user_name']) ?>
               </small>
 
               <img src="<?=htmlspecialchars($n['file_path'])?>" alt="<?=htmlspecialchars($n['name'])?>" class="w-full h-full object-cover transform transition duration-300 hover:scale-105">
