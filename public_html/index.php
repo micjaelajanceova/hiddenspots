@@ -132,11 +132,16 @@ try {
             <div class="w-full h-96 bg-gray-200 overflow-hidden ">
 
               <img src="<?=htmlspecialchars($n['file_path'])?>" alt="<?=htmlspecialchars($n['name'])?>" class="w-full h-full object-cover transform transition duration-300 hover:scale-105">
+              
+              <?php if(!empty($n['user_name'])): ?>
+              <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white px-3 py-1 text-sm">
+                <?=htmlspecialchars($n['user_name'])?>
+              </div>
+              <?php endif; ?>
             </div>
             <div class="p-3 flex flex-col justify-between flex-1">
               <div>
                 <h2 class="font-semibold"><?=htmlspecialchars($n['name'])?></h2>
-                <p class="text-sm text-gray-500 mt-1">By <?=htmlspecialchars($n['user_name'])?></p>
                 <p class="text-sm text-gray-600 mt-1"><?=htmlspecialchars(mb_strimwidth($n['description'] ?? '',0,70,'...'))?></p>
               </div>
               <div class="flex items-center justify-between mt-3 text-xs text-gray-400">
