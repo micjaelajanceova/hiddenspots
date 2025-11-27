@@ -27,7 +27,6 @@ $user_id = $_SESSION['user_id'] ?? null;
 $user_role = $_SESSION['role'] ?? 'user';
 ?>
 
-<?php $isLoggedIn = isset($_SESSION['user_id']); ?>
 
 
 <!doctype html>
@@ -111,12 +110,12 @@ $show_navbar = $show_navbar ?? true;
 
   <!-- Upload Button -->
   <div class="mt-auto">
-  <a href="#" id="desktopUploadBtn"
-     class="w-full sm:w-auto py-2 px-4 bg-black text-white rounded-lg flex items-center justify-center gap-2 hover:bg-gray-800 transition"
-     onclick="event.preventDefault(); document.getElementById('uploadModal').classList.remove('hidden');">
-    <span class="sidebar-upload-text">+ Upload</span>
-    <span class="sidebar-upload-collapsed hidden">+</span>
-  </a>
+
+    <a href="#" id="desktopUploadBtn"
+      class="w-full sm:w-auto py-2 px-4 bg-black text-white rounded-lg flex items-center justify-center gap-2 hover:bg-gray-800 transition">
+        <span class="sidebar-upload-text">+ Upload</span>
+        <span class="sidebar-upload-collapsed hidden">+</span>
+    </a>
   </div>
   </aside>
 
@@ -223,9 +222,7 @@ $show_navbar = $show_navbar ?? true;
 
 <!-- Upload button (center, mobil) -->
 <button 
-    class="bg-black text-white p-3 rounded-full shadow-md flex items-center justify-center"
-    onclick="document.getElementById('uploadModal').classList.remove('hidden')"
->
+    class="bg-black text-white p-3 rounded-full shadow-md flex items-center justify-center ph-plus">
     <i class="ph-plus text-2xl"></i>
 </button>
 
@@ -330,27 +327,6 @@ toggleBtn.addEventListener('click', () => {
 
 });
 
-const isLoggedIn = <?= $isLoggedIn ? 'true' : 'false' ?>;
-
-// Desktop upload button
-document.getElementById('desktopUploadBtn').addEventListener('click', e => {
-    e.preventDefault();
-    if (!isLoggedIn) {
-        window.location.href = '/auth/login.php';
-        return;
-    }
-    document.getElementById('uploadModal').classList.remove('hidden');
-});
-
-// Mobile upload button
-document.querySelector('button.ph-plus')?.addEventListener('click', e => {
-    e.preventDefault();
-    if (!isLoggedIn) {
-        window.location.href = '/auth/login.php';
-        return;
-    }
-    document.getElementById('uploadModal').classList.remove('hidden');
-});
 
 </script>
 
