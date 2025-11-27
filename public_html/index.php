@@ -56,12 +56,17 @@ try {
       <?php foreach(array_slice($sticky, 0, 3) as $s): ?>
         <article class="overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full">
           <a href="spot-view.php?id=<?=htmlspecialchars($s['id'])?>" class="flex flex-col h-full">
-            <div class="w-full h-96 bg-gray-200 overflow-hidden">
+          <div class="w-full h-96 bg-gray-200 overflow-hidden relative">
+              <img src="<?=htmlspecialchars($s['file_path'])?>" alt="<?=htmlspecialchars($s['name'])?>" 
+                  class="w-full h-full object-cover transform transition duration-300 hover:scale-105">
 
-            
+              <?php if(!empty($s['user_name'])): ?>
+              <div class="absolute bottom-0 left-0 bg-black bg-opacity-50 text-white px-1 py-1 text-sm">
+                  <?=htmlspecialchars($s['user_name'])?>
+              </div>
+              <?php endif; ?>
+          </div>
 
-              <img src="<?=htmlspecialchars($s['file_path'])?>" alt="<?=htmlspecialchars($s['name'])?>" class="w-full h-full object-cover transform transition duration-300 hover:scale-105">
-            </div>
             <div class="p-3 flex flex-col justify-between flex-1">
               <div>
                 <h2 class="font-semibold"><?=htmlspecialchars($s['name'])?></h2>
@@ -131,15 +136,15 @@ try {
           <a href="spot-view.php?id=<?=htmlspecialchars($n['id'])?>" class="flex flex-col h-full">
           
           <div class="w-full h-96 bg-gray-200 overflow-hidden relative">
-    <img src="<?=htmlspecialchars($n['file_path'])?>" alt="<?=htmlspecialchars($n['name'])?>" 
-         class="w-full h-full object-cover transform transition duration-300 hover:scale-105">
+              <img src="<?=htmlspecialchars($n['file_path'])?>" alt="<?=htmlspecialchars($n['name'])?>" 
+                  class="w-full h-full object-cover transform transition duration-300 hover:scale-105">
 
-    <?php if(!empty($n['user_name'])): ?>
-    <div class="absolute bottom-0 left-0 bg-black bg-opacity-50 text-white px-3 py-1 text-sm">
-        <?=htmlspecialchars($n['user_name'])?>
-    </div>
-    <?php endif; ?>
-</div>
+              <?php if(!empty($n['user_name'])): ?>
+              <div class="absolute bottom-0 left-0 bg-black bg-opacity-50 text-white px-1 py-1 text-sm">
+                  <?=htmlspecialchars($n['user_name'])?>
+              </div>
+              <?php endif; ?>
+          </div>
 
             <div class="p-3 flex flex-col justify-between flex-1">
               <div>
