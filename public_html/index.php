@@ -17,7 +17,12 @@ $newest = $spotObj->getNewest(20);
 
 // TRENDING (Sticky)
 try {
-    $stmt = $pdo->query("SELECT * FROM view_hot_pictures");
+  $stmt = $pdo->query("
+  SELECT v.*, u.name AS user_name
+  FROM view_hot_pictures v
+  JOIN users u ON v.user_id = u.id
+");
+
     $sticky = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $sticky = [];
