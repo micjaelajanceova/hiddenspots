@@ -102,7 +102,7 @@ CREATE TABLE spot_tags (
 
 -- Hot pictures view
 CREATE VIEW view_hot_pictures AS
-SELECT hs.id, hs.name, hs.description, hs.file_path, hs.city, hs.likes, hs.created_at, COUNT(c.id) AS comments_count
+SELECT hs.id, hs.name, hs.description, hs.file_path, hs.city, hs.likes, hs.created_at, u.name AS user_name, COUNT(c.id) AS comments_count
 FROM hidden_spots hs
 LEFT JOIN comments c ON hs.id = c.spot_id
 GROUP BY hs.id
