@@ -190,7 +190,9 @@ try {
             </a>
           <?php endif; ?>
           <div>
-            <div class="font-medium"><?= htmlspecialchars($c['user_name']) ?></div>
+            <a href="auth/user-profile.php?user_id=<?= $c['user_id'] ?>" class="font-medium hover:underline">
+              <?= htmlspecialchars($c['user_name']) ?>
+            </a>
             <div class="text-xs text-gray-400"><?= date("d M Y", strtotime($c['created_at'])) ?></div>
           </div>
         </div>
