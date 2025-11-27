@@ -17,12 +17,7 @@ $newest = $spotObj->getNewest(20);
 
 // TRENDING (Sticky)
 try {
-  $stmt = $pdo->query("
-  SELECT v.*, u.name AS user_name
-  FROM view_hot_pictures v
-  JOIN users u ON v.user_id = u.id
-");
-
+    $stmt = $pdo->query("SELECT * FROM view_hot_pictures");
     $sticky = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $sticky = [];
@@ -63,10 +58,7 @@ try {
           <a href="spot-view.php?id=<?=htmlspecialchars($s['id'])?>" class="flex flex-col h-full">
             <div class="w-full h-96 bg-gray-200 overflow-hidden">
 
-              
-            <small class="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
-                  @<?= htmlspecialchars($s['user_name'] ?? 'unknown') ?>
-              </small>
+            
 
               <img src="<?=htmlspecialchars($s['file_path'])?>" alt="<?=htmlspecialchars($s['name'])?>" class="w-full h-full object-cover transform transition duration-300 hover:scale-105">
             </div>
@@ -138,11 +130,6 @@ try {
         <article class=" overflow-hidden bg-white shadow hover:shadow-lg flex flex-col h-full ">
           <a href="spot-view.php?id=<?=htmlspecialchars($n['id'])?>" class="flex flex-col h-full">
             <div class="w-full h-96 bg-gray-200 overflow-hidden ">
-
-
-            <small class="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
-                  @<?= htmlspecialchars($n['user_name'] ?? 'unknown') ?>
-              </small>
 
               <img src="<?=htmlspecialchars($n['file_path'])?>" alt="<?=htmlspecialchars($n['name'])?>" class="w-full h-full object-cover transform transition duration-300 hover:scale-105">
             </div>
