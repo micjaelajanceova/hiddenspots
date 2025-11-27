@@ -27,6 +27,7 @@ $user_id = $_SESSION['user_id'] ?? null;
 $user_role = $_SESSION['role'] ?? 'user';
 ?>
 
+<?php $isLoggedIn = isset($_SESSION['user_id']); ?>
 
 
 <!doctype html>
@@ -326,8 +327,30 @@ toggleBtn.addEventListener('click', () => {
     }
   }
 });
+
 });
 
+const isLoggedIn = <?= $isLoggedIn ? 'true' : 'false' ?>;
+
+// Desktop upload button
+document.getElementById('desktopUploadBtn').addEventListener('click', e => {
+    e.preventDefault();
+    if (!isLoggedIn) {
+        window.location.href = '/auth/login.php';
+        return;
+    }
+    document.getElementById('uploadModal').classList.remove('hidden');
+});
+
+// Mobile upload button
+document.querySelector('button.ph-plus')?.addEventListener('click', e => {
+    e.preventDefault();
+    if (!isLoggedIn) {
+        window.location.href = '/auth/login.php';
+        return;
+    }
+    document.getElementById('uploadModal').classList.remove('hidden');
+});
 
 </script>
 
