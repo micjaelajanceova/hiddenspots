@@ -39,6 +39,8 @@ try {
 <!-- LOGIN / SIGNUP -->
 <?php include 'includes/profile-header.php'; ?>
 
+<?php $isLoggedIn = isset($_SESSION['user_id']); ?>
+
 
 
    <!-- TRENDING (Sticky) -->
