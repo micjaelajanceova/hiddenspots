@@ -230,7 +230,6 @@ try {
     <button 
       id="openUploadModal" 
       class="mt-6 bg-white text-black px-8 py-3 rounded-full text-lg shadow hover:bg-gray-200 transition"
-      onclick="document.getElementById('uploadModal').classList.remove('hidden')"
     >
       + Upload
     </button>
@@ -262,6 +261,40 @@ if (profileBtn && profileMenu) {
     });
 }
 
+const isLoggedIn = <?= isset($_SESSION['user_id']) ? 'true' : 'false' ?>;
+
+const uploadModal = document.getElementById('uploadModal');
+
+// Desktop / main page upload button
+document.getElementById('openUploadModal').addEventListener('click', e => {
+    e.preventDefault();
+    if (!isLoggedIn) {
+        window.location.href = '/auth/login.php';
+        return;
+    }
+    uploadModal.classList.remove('hidden');
+});
+
+// Sidebar desktop button
+const desktopBtn = document.getElementById('desktopUploadBtn');
+desktopBtn?.addEventListener('click', e => {
+    e.preventDefault();
+    if (!isLoggedIn) {
+        window.location.href = '/auth/login.php';
+        return;
+    }
+    uploadModal.classList.remove('hidden');
+});
+
+// Mobile button
+document.querySelector('button.ph-plus')?.addEventListener('click', e => {
+    e.preventDefault();
+    if (!isLoggedIn) {
+        window.location.href = '/auth/login.php';
+        return;
+    }
+    uploadModal.classList.remove('hidden');
+});
 
 </script>
 

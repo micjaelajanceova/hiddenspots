@@ -222,9 +222,9 @@ $show_navbar = $show_navbar ?? true;
   </a>
 
 <!-- Upload button (center, mobil) -->
-<button 
-    class="bg-black text-white p-3 rounded-full shadow-md flex items-center justify-center ph-plus">
-    <i class="ph-plus text-2xl"></i>
+<button id="mobileUploadBtn"
+        class="md:hidden bg-black text-white p-3 rounded-full shadow-md flex items-center justify-center">
+  <i class="ph-plus text-2xl"></i>
 </button>
 
 
