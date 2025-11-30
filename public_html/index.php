@@ -2,9 +2,6 @@
 include 'includes/db.php';
 include 'includes/header.php';
 include 'classes/spot.php';
-
-
-
 require_once 'includes/db.php';
 require_once 'classes/SessionHandle.php';
 

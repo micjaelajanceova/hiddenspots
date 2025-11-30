@@ -133,7 +133,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 
 
 
-<main class="flex-1 bg-white min-h-screen pt-8  md:pb-12 px-4 md:px-8 flex flex-col">
+<main class="flex-1 bg-white min-h-screen pt-2 md:pt-8  md:pb-12 px-4 md:px-8 flex flex-col">
 
 <!-- LOGIN / SIGNUP -->
 <?php include 'includes/profile-header.php'; ?>
