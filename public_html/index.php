@@ -33,7 +33,7 @@ try {
 
 ?>
 
-<main class="flex-1 bg-white min-h-screen overflow-y-auto pt-12">   
+<main class="flex-1 bg-white min-h-screen overflow-y-auto pt-2">   
   <div class="w-full px-4 sm:px-6 lg:px-8">
 
 <!-- LOGIN / SIGNUP -->
@@ -101,7 +101,7 @@ try {
 
     </div>
 
-    <div class="relative p-8 flex flex-col items-start max-w-xl">
+    <div class="relative p-4 md:p-8 flex flex-col items-start max-w-xl">
       <h6 class="text-4xl font-bold text-white">About HiddenSpot</h6>
       <p3 class="mt-2 text-white">
         A photo-sharing app for secret city places. Discover, save and share hidden gems in your town.

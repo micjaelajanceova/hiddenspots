@@ -8,7 +8,7 @@
     <div class="py-2 md:py-10 lg:py-20">
       <div class="w-full px-4 sm:px-6 lg:px-8">
         <!-- Section 1 -->
-        <div class="grid md:grid-cols-12 gap-12 items-center mb-2 md:mb-24">
+        <div class="grid md:grid-cols-12 gap-12 items-center mb-10 md:mb-24">
             <div class="md:col-span-4">
                 <h1 class="mb-3">About HS</h1>
                 <h2 class="mb-6">Community for explorers</h2>
@@ -40,7 +40,7 @@
         <!-- Section 3  -->
         <div class="pt-12">
             <h1 class="mb-4">How it works?</h1>
-            <h2 class="max-w-2xl mb-12">
+            <h2 class="max-w-2xl mb-4 md:mb-12">
                 Discover, save, and share hidden spots
             </h2>
     <div class="grid md:grid-cols-3 gap-8">
