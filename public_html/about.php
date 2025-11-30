@@ -5,10 +5,10 @@
     <!-- LOGIN / SIGNUP -->
     <?php include 'includes/profile-header.php'; ?>
 
-    <div class="py-10 lg:py-20">
+    <div class="py-2 md:py-10 lg:py-20">
       <div class="w-full px-4 sm:px-6 lg:px-8">
         <!-- Section 1 -->
-        <div class="grid md:grid-cols-12 gap-12 items-center mb-24">
+        <div class="grid md:grid-cols-12 gap-12 items-center mb-2 md:mb-24">
             <div class="md:col-span-4">
                 <h1 class="mb-3">About HS</h1>
                 <h2 class="mb-6">community for explorers</h2>
@@ -23,7 +23,7 @@
         </div>
 
         <!-- Section 2  -->
-        <div class="grid md:grid-cols-12 gap-12 items-center mb-24">
+        <div class="grid md:grid-cols-12 gap-12 items-center mb-2 md:mb-24">
             <div class="md:col-span-8 order-2 md:order-1">
                 <img src="assets/img/about2.JPEG" alt="Community" class="shadow-lg w-full h-[450px] object-cover">
             </div>

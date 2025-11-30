@@ -59,7 +59,7 @@ $photo_url = $user_photo ? '/' . $user_photo : null;
 
 
 
-    <div class="border-t border-gray-300 mb-6"></div>
+    <div class="border-t border-gray-300 mb-0 md:mb-6"></div>
 
 
 

@@ -26,14 +26,14 @@ $stmtAll = $pdo->query("
 $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<main class="flex-1 bg-white min-h-screen overflow-y-auto pt-10">
+<main class="flex-1 bg-white min-h-screen overflow-y-auto pt-2 md:pt-10">
 
 <?php include 'includes/profile-header.php'; ?>
 
   <div class="w-full px-4 sm:px-6 lg:px-8">
 
     <!-- THIS WEEK TRENDING -->
-    <section class="mt-3 pb-20">
+    <section class="mt-2 md:mt-12 pb-2 md:pb-20">
     <h1 class="text-4xl font-bold mb-3">🔥 Trending this week</h1>
   <h2 class="mt-1 text-gray-600">Most popular uploads from the last 7 days.</h2>
 
@@ -83,7 +83,7 @@ $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
 </section>
 
     <!-- ALL TIME TRENDING -->
-    <section class="mt-12 pb-20">
+    <section class="mt-2 md:mt-12 pb-2 md:pb-20">
     <h1 class=" text-4xl font-bold mb-3">Trending all-time</h1>
   <h2 class="mt-1 text-gray-600">Most liked posts ever uploaded.</h2>
 
