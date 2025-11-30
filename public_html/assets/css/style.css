@@ -72,15 +72,15 @@ p {
 /* ---------- Mobile Responsive Styles ---------- */
 @media (max-width: 768px) {
   h1 {
-    font-size: 1.5rem !important;
+    font-size: 1.65rem !important;
   }
 
   h2 {
-    font-size: 0.95rem !important;
+    font-size: 1.2rem !important;
   }
 
   h3 {
-    font-size: 0.95rem !important;
+    font-size: 1.1rem !important;
   }
 
   h4 {
