@@ -161,8 +161,8 @@ include __DIR__ . '/../includes/header.php';
     <div class="flex flex-col md:flex-row gap-6">
 
       
-      <div class="flex-1 flex flex-col items-center">
-        <div class="relative w-36 h-36 rounded-full border-4 border-gray-200 shadow-sm flex items-center justify-center bg-gray-200 text-4xl font-bold text-white overflow-hidden">
+      <div class="flex-1 flex flex-col items-center justify-center">
+        <div class="relative w-36 h-36 rounded-full border-4 border-gray-200 shadow-sm flex items-center justify-center bg-white text-4xl font-bold overflow-hidden">
           <?php if ($user_photo): ?>
             <img id="photoPreview" src="<?= htmlspecialchars($photo_src) ?>" class="w-full h-full object-cover">
           <?php else: ?>
