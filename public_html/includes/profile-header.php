@@ -43,7 +43,8 @@ echo "<!-- DEBUG: full path = " . __DIR__ . '/../' . $photo_url . " -->";
 
 <?php else: ?>
   <!-- NON-STICKY LOGIN / REGISTER (for guests) -->
-  <div class="absolute right-5 flex gap-3 z-40 top-16 md:top-5">
+  <div class="absolute flex gap-3 z-40 top-16 left-1/2 -translate-x-1/2 
+            md:top-5 md:right-5 md:left-auto md:translate-x-0">
     <a href="auth/login.php?action=login" class="bg-black text-white px-4 py-2 rounded-full">Login</a>
     <a href="auth/login.php?action=register" class="bg-gray-200 text-black px-4 py-2 rounded-full">Register</a>
   </div>
