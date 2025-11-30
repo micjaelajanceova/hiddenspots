@@ -11,7 +11,7 @@
         <div class="grid md:grid-cols-12 gap-12 items-center mb-2 md:mb-24">
             <div class="md:col-span-4">
                 <h1 class="mb-3">About HS</h1>
-                <h2 class="mb-6">community for explorers</h2>
+                <h2 class="mb-6">Community for explorers</h2>
                 <p class="text-justify">
                     HiddenSpots is a community-driven platform dedicated to uncovering and sharing the hidden gems of your city.
                 We believe the best places are often the ones you stumble upon by accident – quiet cafés, secret parks, tucked-away art spots, or breathtaking viewpoints that aren’t on the tourist map. <br> Here, you can share your favorite hidden locations and discover others’ secret spots.

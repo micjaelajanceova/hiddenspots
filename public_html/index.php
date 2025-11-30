@@ -33,7 +33,7 @@ try {
 
 ?>
 
-<main class="flex-1 bg-white min-h-screen overflow-y-auto pt-2 md:pt-10">   
+<main class="flex-1 bg-white min-h-screen overflow-y-auto pt-12">   
   <div class="w-full px-4 sm:px-6 lg:px-8">
 
 <!-- LOGIN / SIGNUP -->
@@ -91,7 +91,7 @@ try {
 </section>
 
 <!-- ABOUT -->
-<section class="mt-2 md:mt-12 pb-2 md:pb-20">
+<section class="mt-10 md:mt-12 pb-10 md:pb-20">
   <div class="relative overflow-hidden shadow-md h-96">
 
     <div class="absolute inset-0">
@@ -122,7 +122,7 @@ try {
 
 
    <!-- HOT NEW PICTURES -->
-<section class="mt-2 md:mt-12 pb-2 md:pb-20">
+<section class="mt-2 md:mt-12 pb-10 md:pb-20">
   <div class="flex items-center justify-between">
     <div>
       <h1 class="text-4xl font-bold mb-3">Hot new pictures</h1>
@@ -173,7 +173,7 @@ try {
 
 
 <!-- LATEST COMMENTS -->
-<section class="mt-2 md:mt-12 pb-2 md:pb-20">
+<section class="mt-2 md:mt-12 pb-10 md:pb-20">
   <h1 class="text-4xl font-bold mb-3">Latest comments</h1>
   <h2 class="mt-1">See who else loves these hidden places.</h2>
 
