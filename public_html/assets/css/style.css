@@ -41,14 +41,14 @@ p {
 }
 
 .button {
-  font-size: 1rem;
-  font-weight: 600;
-  padding: 0.55rem 1rem;
-  border: none;
-  cursor: pointer;
-  background: rgb(32, 34, 37) ;
-  color: #ffffff;
-  transition: opacity 0.3s ease;
+  font-size: 1rem !important; 
+  font-weight: 600 !important;
+  padding: 0.55rem 1rem !important;
+  border: none !important;
+  cursor: pointer !important;
+  background: rgb(32, 34, 37) !important;
+  color: #ffffff !important;
+  transition: opacity 0.3s ease !important;
 }
 
 .button:hover {
@@ -104,5 +104,9 @@ p {
 
   p {
     font-size: 0.8rem !important;
+  }
+    .button {
+    font-size: 0.9rem !important;
+    padding: 0.5rem 0.9rem !important;
   }
 }
