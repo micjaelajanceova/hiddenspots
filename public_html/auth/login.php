@@ -142,7 +142,7 @@ include __DIR__ . '/../includes/header.php';
             $isSuccess = str_contains($msg, 'Account created'); 
             $msgColor = $isSuccess ? 'text-green-600' : 'text-red-600';
         ?>
-        <p class="<?= $msgColor ?> font-bold text-center mb-4"><?= htmlspecialchars($msg) ?></p>
+        <p class="<?= $msgColor ?> font-bold text-center mb-4 !text-red-600"><?= htmlspecialchars($msg) ?></p>
     <?php endif; ?>
 
     <!-- LOGIN FORM -->
