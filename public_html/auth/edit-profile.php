@@ -157,11 +157,6 @@ include __DIR__ . '/../includes/header.php';
       <h1 class="text-2xl font-bold text-center flex-1">Edit Profile</h1>
     </div>
 
-    <?php if ($msg): ?>
-      <div class="mb-4 text-sm <?= $msg_type === 'success' ? 'text-green-600' : 'text-red-600' ?>">
-        <?= htmlspecialchars($msg) ?>
-      </div>
-    <?php endif; ?>
 
     <div class="flex flex-col md:flex-row gap-6">
 
@@ -220,6 +215,11 @@ include __DIR__ . '/../includes/header.php';
             <label class="block text-sm text-gray-600">Confirm new password</label>
             <input type="password" name="confirm_password" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2" required>
           </div>
+          <?php if ($msg): ?>
+            <div class="mb-4 text-sm <?= $msg_type === 'success' ? 'text-green-600' : 'text-red-600' ?>">
+              <?= htmlspecialchars($msg) ?>
+            </div>
+          <?php endif; ?>
           <div class="mt-4">
             <button type="submit" class="bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800 transition w-full">Update Password</button>
           </div>
