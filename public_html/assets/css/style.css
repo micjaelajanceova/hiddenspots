@@ -40,21 +40,6 @@ p {
   color: #5f5d5d !important;
 }
 
-.button {
-  font-size: 1rem !important; 
-  font-weight: 600 !important;
-  padding: 0.55rem 1rem !important;
-  border: none !important;
-  cursor: pointer !important;
-  background: rgb(32, 34, 37) !important;
-  color: #ffffff !important;
-  transition: opacity 0.3s ease !important;
-}
-
-.button:hover {
-  opacity: 0.85;
-}
-
 #favCheck {
     transition: opacity 0.3s ease;
 }
@@ -108,9 +93,5 @@ p {
 
   p {
     font-size: 1rem !important;
-  }
-    .button {
-    font-size: 0.9rem !important;
-    padding: 0.5rem 0.9rem !important;
   }
 }

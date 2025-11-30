@@ -231,7 +231,7 @@ try {
     <h4 class=" text-gray-300 mt-2">Share a secret spot with us.</h4>
     <button 
       id="openUploadModal" 
-      class="mt-6 bg-white text-black px-4 py-2 rounded-full text-xs md:text-sm shadow hover:bg-gray-200 transition"
+      class="mt-6 bg-white text-black px-5 py-2 rounded-full text-xs md:text-sm shadow hover:bg-gray-200 transition font-medium"
     >
       + Upload
     </button>

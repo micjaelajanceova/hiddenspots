@@ -2,6 +2,23 @@
 session_start();
 require_once __DIR__ . '/../includes/db.php';
 
+// --- Password validation function ---
+function validatePassword($password) {
+    if (strlen($password) < 6 || strlen($password) > 50) {
+        return "Password must be 6–50 characters.";
+    }
+    if (!preg_match('/[A-Z]/', $password)) {
+        return "Password must contain at least one uppercase letter.";
+    }
+    if (!preg_match('/[a-z]/', $password)) {
+        return "Password must contain at least one lowercase letter.";
+    }
+    if (!preg_match('/[0-9]/', $password)) {
+        return "Password must contain at least one number.";
+    }
+    return true;
+}
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -101,11 +118,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_password'])) {
             $msg = 'Incorrect current password.';
             $msg_type = 'error';
         } else {
+            $newCheck = validatePassword($new);
+        if ($newCheck !== true) {
+            $msg = $newCheck;
+            $msg_type = 'error';
+        } else {
             $hash = password_hash($new, PASSWORD_DEFAULT);
             $stmt = $pdo->prepare("UPDATE users SET password = ? WHERE id = ?");
             $stmt->execute([$hash, $user_id]);
             $msg = 'Password updated successfully.';
             $msg_type = 'success';
+        }
         }
     }
 }
