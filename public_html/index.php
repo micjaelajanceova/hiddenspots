@@ -45,9 +45,9 @@ try {
 
    <!-- TRENDING (Sticky) -->
 <section class="mt-2 md:mt-12 pb-2 md:pb-20">
-  <div class="flex items-center justify-between gap-4">
+  <div class="flex items-center justify-between gap-8">
     <div>
-      <h1 class="text-4xl font-bold mb-3">Trending</h1>
+      <h1 class="text-4xl font-bold mb-0 md:mb-3">Trending</h1>
       <h2 class="mt-1">Explore what most people miss.</h2>
     </div>
     <a href="trending.php" class="inline-flex mt-12 whitespace-nowrap items-center gap-2 bg-black text-white px-4 py-2 rounded-full text-sm">See more →</a>
@@ -123,9 +123,9 @@ try {
 
    <!-- HOT NEW PICTURES -->
 <section class="mt-2 md:mt-12 pb-10 md:pb-20">
-  <div class="flex items-center justify-between gap-4">
+  <div class="flex items-center justify-between gap-8">
     <div>
-      <h1 class="text-4xl font-bold mb-3">Hot new pictures</h1>
+      <h1 class="text-4xl font-bold mb-0 md:mb-3">Hot new pictures</h1>
       <h2 class="mt-1">Discover new pictures every day.</h2>
     </div>
     <a href="feed.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full mt-12 whitespace-nowrap text-sm">See more →</a>
@@ -174,7 +174,7 @@ try {
 
 <!-- LATEST COMMENTS -->
 <section class="mt-2 md:mt-12 pb-10 md:pb-20">
-  <h1 class="text-4xl font-bold mb-3">Latest comments</h1>
+  <h1 class="text-4xl font-bold mb-0 md:mb-3">Latest comments</h1>
   <h2 class="mt-1">See who else loves these hidden places.</h2>
 
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
