@@ -20,7 +20,7 @@ echo "<!-- DEBUG: full path = " . __DIR__ . '/../' . $photo_url . " -->";
 
 <?php if(isset($_SESSION['user_id'])): ?>
   <!-- STICKY PROFILE (only when logged in) -->
-  <div class="fixed top-1 right-2 z-50 flex items-center justify-end md:w-auto profile-header">
+  <div class="fixed top-2 right-2 z-50 flex items-center justify-end md:w-auto profile-header">
     <div class="relative">
       <button id="profileBtn" 
   class="flex items-center justify-center w-10 h-10 bg-black text-white rounded-full font-semibold text-lg overflow-hidden 

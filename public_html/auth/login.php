@@ -134,7 +134,7 @@ include __DIR__ . '/../includes/header.php';
 <button onclick="history.back()" class="absolute top-5 left-5 px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-gray-800 z-10">← Back</button>
 
 <!-- Login/Register Form -->
-<div class="bg-white bg-opacity-90 p-10 rounded-xl shadow-xl max-w-md w-full z-10 relative">
+<div class="bg-white bg-opacity-90 p-10 rounded-xl shadow-xl max-w-md w-full z-10 relative mx-2 md:mx-0">
     <h2 class="text-2xl font-bold mb-6 text-center">Welcome to HiddenSpots</h2>
 
     <?php if ($msg): ?>

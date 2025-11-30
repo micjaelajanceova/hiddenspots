@@ -200,7 +200,7 @@ $show_navbar = $show_navbar ?? true;
 </div>
 
   <!-- Mobile top logo -->
-  <div class="md:hidden sticky top-0 border-b p-3 flex justify-center bg-gray-100 z-50">
+  <div class="md:hidden sticky top-0 border-b p-3 flex justify-start bg-gray-100 z-50">
     <a href="/index.php" class="flex items-center justify-center">
   <img src="/assets/img/logo.svg" alt="HS" class="h-10">
   </a>
