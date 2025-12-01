@@ -4,24 +4,35 @@ require_once 'includes/db.php';
 
 // 1) TOP 6 za posledných 7 dní
 $stmtWeek = $pdo->query("
-    SELECT hs.*, COUNT(l.id) AS total_likes
-    FROM hidden_spots hs
-    LEFT JOIN likes l ON hs.id = l.spot_id
-    WHERE hs.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
-    GROUP BY hs.id
-    ORDER BY total_likes DESC
-    LIMIT 6
+SELECT 
+hs.*,
+COUNT(DISTINCT l.id) AS total_likes,
+COUNT(DISTINCT c.id) AS total_comments,
+(COUNT(DISTINCT l.id) + COUNT(DISTINCT c.id)) AS trending_score
+FROM hidden_spots hs
+LEFT JOIN likes l ON hs.id = l.spot_id
+LEFT JOIN comments c ON hs.id = c.spot_id
+WHERE hs.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+GROUP BY hs.id
+HAVING trending_score > 0
+ORDER BY trending_score DESC
+LIMIT 6
 ");
 $trendingWeek = $stmtWeek->fetchAll(PDO::FETCH_ASSOC);
 
 // 2) TOP 9 celkovo
 $stmtAll = $pdo->query("
-    SELECT hs.*, COUNT(l.id) AS total_likes
-    FROM hidden_spots hs
-    LEFT JOIN likes l ON hs.id = l.spot_id
-    GROUP BY hs.id
-    ORDER BY total_likes DESC
-    LIMIT 6
+SELECT 
+hs.*,
+COUNT(DISTINCT l.id) AS total_likes,
+COUNT(DISTINCT c.id) AS total_comments,
+(COUNT(DISTINCT l.id) + COUNT(DISTINCT c.id)) AS trending_score
+FROM hidden_spots hs
+LEFT JOIN likes l ON hs.id = l.spot_id
+LEFT JOIN comments c ON hs.id = c.spot_id
+GROUP BY hs.id
+ORDER BY trending_score DESC
+LIMIT 6
 ");
 $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
 ?>
