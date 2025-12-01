@@ -42,7 +42,7 @@ $mySpots = $spotObj->getByUser($user_id);
   </div>
 
   <!-- EDIT PROFILE BUTTON -->
-  <a href="edit-profile.php" class="bg-gray-200 text-black px-4 py-2 rounded-full hover:bg-gray-300 transition text-sm sm:text-base">Edit Profile</a>
+  <a href="edit-profile.php" class="bg-gray-200 text-black px-4 py-2 rounded-full hover:bg-gray-300 transition text-sm sm:px-4 sm:py-2 sm:text-base">Edit Profile</a>
 </div>
 
 <div class="border-t border-gray-300 mb-8"></div>
