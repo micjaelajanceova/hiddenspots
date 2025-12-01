@@ -128,7 +128,7 @@ try {
       <h1 class="text-4xl font-bold mb-3">Hot new pictures</h1>
       <h2 class="mt-1">Discover new pictures every day.</h2>
     </div>
-    <a href="feed.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full text-sm sm:text-base">See more →</a>
+    <a href="feed.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full text-sm sm:px-4 sm:py-2 sm:text-base">See more →</a>
   </div>
 
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -212,7 +212,7 @@ try {
           </div>
         </div>
         <p class="text-sm text-gray-600 mt-3 whitespace-normal break-all"><?= htmlspecialchars(mb_strimwidth($c['text'],0,140,'...')) ?></p>
-        <a href="spot-view.php?id=<?= htmlspecialchars($c['spot_id']) ?>" class=" mt-auto inline-block mt-3 bg-black text-white px-3 py-2 rounded-full text-sm sm:px-4 sm:py-2 sm:text-base">See post →</a>
+        <a href="spot-view.php?id=<?= htmlspecialchars($c['spot_id']) ?>" class=" mt-auto inline-block mt-3 bg-black text-white px-3 py-2 rounded-full text-sm self-start">See post →</a>
       </div>
     <?php endforeach; ?>
   </div>
