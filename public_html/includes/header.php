@@ -156,7 +156,7 @@ $show_navbar = $show_navbar ?? true;
     <!-- STEP 3: Form -->
     <div id="stepForm" class="hidden flex-1 h-full overflow-hidden flex flex-col md:flex-row">
       <!-- Image preview -->
-      <div class="w-full md:w-1/2 h-64 md:h-full md:h-full bg-black flex justify-center items-center overflow-hidden mb-4 md:mb-0">
+      <div class="w-full md:w-1/2 h-96  md:h-full bg-black flex justify-center items-center overflow-hidden mb-4 md:mb-0">
         <img id="finalImage" class="w-full h-full object-cover" />
       </div>
 
