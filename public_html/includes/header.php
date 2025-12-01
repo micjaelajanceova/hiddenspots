@@ -161,7 +161,7 @@ $show_navbar = $show_navbar ?? true;
       </div>
 
       <!-- Form -->
-      <div class="w-1/2 p-6 overflow-y-auto">
+      <div class="w-full md:w-1/2 p-6 overflow-y-auto">
         <h2 class="text-lg font-semibold mb-4">New Hidden Spot</h2>
         <form id="uploadForm" action="includes/upload.php" method="post" enctype="multipart/form-data" class="space-y-4">
           <input type="hidden" name="photoData" id="photoData">
