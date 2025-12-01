@@ -8,12 +8,10 @@ SELECT
 hs.*,
 COUNT(DISTINCT l.id) AS total_likes,
 COUNT(DISTINCT c.id) AS total_comments,
-COUNT(DISTINCT s.id) AS total_saves,
-(COUNT(DISTINCT l.id) + COUNT(DISTINCT c.id) + COUNT(DISTINCT s.id)) AS trending_score
+(COUNT(DISTINCT l.id) + COUNT(DISTINCT c.id)) AS trending_score
 FROM hidden_spots hs
 LEFT JOIN likes l ON hs.id = l.spot_id
 LEFT JOIN comments c ON hs.id = c.spot_id
-LEFT JOIN saves s ON hs.id = s.spot_id
 WHERE hs.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
 GROUP BY hs.id
 HAVING trending_score > 0
@@ -28,12 +26,10 @@ SELECT
 hs.*,
 COUNT(DISTINCT l.id) AS total_likes,
 COUNT(DISTINCT c.id) AS total_comments,
-COUNT(DISTINCT s.id) AS total_saves,
-(COUNT(DISTINCT l.id) + COUNT(DISTINCT c.id) + COUNT(DISTINCT s.id)) AS trending_score
+(COUNT(DISTINCT l.id) + COUNT(DISTINCT c.id)) AS trending_score
 FROM hidden_spots hs
 LEFT JOIN likes l ON hs.id = l.spot_id
 LEFT JOIN comments c ON hs.id = c.spot_id
-LEFT JOIN saves s ON hs.id = s.spot_id
 GROUP BY hs.id
 ORDER BY trending_score DESC
 LIMIT 6
