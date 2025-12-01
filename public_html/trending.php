@@ -84,7 +84,7 @@ $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
             </div>
             <div class="flex items-center justify-between mt-3 text-xs text-gray-400">
               <span><?=htmlspecialchars($s['city'])?> • <?=date("d M", strtotime($s['created_at']))?></span>
-              <span>Likes:<?=intval($s['total_likes'])?></span>
+              <span>Likes: <?=intval($s['likes'])?> • Comments: <?=intval($s['comments_count'])?></span>
             </div>
           </div>
 
@@ -131,7 +131,7 @@ $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
             </div>
             <div class="flex items-center justify-between mt-3 text-xs text-gray-400">
               <span><?=htmlspecialchars($s['city'])?> • <?=date("d M", strtotime($s['created_at']))?></span>
-              <span>Likes:<?=intval($s['total_likes'])?></span>
+              <span>Likes: <?=intval($s['likes'])?> • Comments: <?=intval($s['comments_count'])?></span>
             </div>
           </div>
 
