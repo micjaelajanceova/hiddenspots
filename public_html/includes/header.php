@@ -248,7 +248,7 @@ $show_navbar = $show_navbar ?? true;
 <script>
 const uploadModal = document.getElementById('uploadModal');
 const closeBtn = document.getElementById('closeUploadModal');
-const openBtns = document.querySelectorAll('a[onclick*="uploadModal"], button.ph-plus');
+const mobileUploadBtn = document.getElementById('mobileUploadBtn');
 const uploadForm = document.getElementById('uploadForm');
 const photoInput = document.getElementById('photoInput');
 const previewImage = document.getElementById('previewImage');
@@ -341,7 +341,7 @@ document.getElementById('desktopUploadBtn').addEventListener('click', e => {
 });
 
 // Mobile upload button
-document.querySelector('button.ph-plus')?.addEventListener('click', e => {
+document.getElementById('mobileUploadBtn')?.addEventListener('click', e => {
     e.preventDefault();
     if (!isLoggedIn) {
         window.location.href = '/auth/login.php';
@@ -349,6 +349,7 @@ document.querySelector('button.ph-plus')?.addEventListener('click', e => {
     }
     document.getElementById('uploadModal').classList.remove('hidden');
 });
+
 
 </script>
 
