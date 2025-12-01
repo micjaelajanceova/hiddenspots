@@ -67,7 +67,7 @@ $show_navbar = $show_navbar ?? true;
   <!-- Toggle Button (vpravo) -->
     <button id="sidebarToggle" 
           class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 transition">
-    <i class="ph-caret-left text-xl"></i> <!-- Predvolená ikona pre expand -->
+    <i class="ph-caret-left text-xl"></i> 
   </button>
 
 

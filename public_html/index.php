@@ -2,6 +2,9 @@
 include 'includes/db.php';
 include 'includes/header.php';
 include 'classes/spot.php';
+
+
+
 require_once 'includes/db.php';
 require_once 'classes/SessionHandle.php';
 
@@ -30,24 +33,24 @@ try {
 
 ?>
 
-<main class="flex-1 bg-white min-h-screen overflow-y-auto pt-2">   
+<main class="flex-1 bg-white min-h-screen overflow-y-auto pt-10">   
   <div class="w-full px-4 sm:px-6 lg:px-8">
 
 <!-- LOGIN / SIGNUP -->
 <?php include 'includes/profile-header.php'; ?>
 
-
+<?php $isLoggedIn = isset($_SESSION['user_id']); ?>
 
 
 
    <!-- TRENDING (Sticky) -->
-<section class="mt-2 md:mt-12 pb-2 md:pb-20">
-  <div class="flex items-center justify-between gap-8">
+<section class="mt-12 pb-20">
+  <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-4xl font-bold mb-0 md:mb-3">Trending</h1>
+      <h1 class="text-4xl font-bold mb-3">Trending</h1>
       <h2 class="mt-1">Explore what most people miss.</h2>
     </div>
-    <a href="trending.php" class="inline-flex mt-12 whitespace-nowrap items-center gap-2 bg-black text-white px-4 py-2 rounded-full text-sm">See more →</a>
+    <a href="trending.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">See more →</a>
   </div>
 
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -88,7 +91,7 @@ try {
 </section>
 
 <!-- ABOUT -->
-<section class="mt-10 md:mt-12 pb-10 md:pb-20">
+<section class="mt-12 pb-20">
   <div class="relative overflow-hidden shadow-md h-96">
 
     <div class="absolute inset-0">
@@ -98,7 +101,7 @@ try {
 
     </div>
 
-    <div class="relative p-4 md:p-8 flex flex-col items-start max-w-xl">
+    <div class="relative p-8 flex flex-col items-start max-w-xl">
       <h6 class="text-4xl font-bold text-white">About HiddenSpot</h6>
       <p3 class="mt-2 text-white">
         A photo-sharing app for secret city places. Discover, save and share hidden gems in your town.
@@ -119,13 +122,13 @@ try {
 
 
    <!-- HOT NEW PICTURES -->
-<section class="mt-2 md:mt-12 pb-10 md:pb-20">
-  <div class="flex items-center justify-between gap-8">
+<section class="mt-12 pb-20">
+  <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-4xl font-bold mb-0 md:mb-3">Hot new pictures</h1>
+      <h1 class="text-4xl font-bold mb-3">Hot new pictures</h1>
       <h2 class="mt-1">Discover new pictures every day.</h2>
     </div>
-    <a href="feed.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full mt-12 whitespace-nowrap text-sm">See more →</a>
+    <a href="feed.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full">See more →</a>
   </div>
 
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -170,8 +173,8 @@ try {
 
 
 <!-- LATEST COMMENTS -->
-<section class="mt-2 md:mt-12 pb-10 md:pb-20">
-  <h1 class="text-4xl font-bold mb-0 md:mb-3">Latest comments</h1>
+<section class="mt-12 pb-20">
+  <h1 class="text-4xl font-bold mb-3">Latest comments</h1>
   <h2 class="mt-1">See who else loves these hidden places.</h2>
 
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -222,13 +225,13 @@ try {
 
 
 <!-- UPLOAD CTA -->
-<section class="mt-2 md:mt-12 mb-5 lg:mb-5">
+<section class="mt-12 mb-20 lg:mb-5">
   <div class="bg-black p-10 flex flex-col items-center text-center">
     <h2 class="text-3xl font-bold text-white">Upload a new picture</h2>
-    <h4 class=" text-gray-300 mt-2">Share a secret spot with us.</h4>
+    <h4 class="text-sm text-gray-300 mt-2">Share a secret spot with us.</h4>
     <button 
       id="openUploadModal" 
-      class="mt-6 bg-white text-black px-5 py-2 rounded-full text-xs md:text-sm shadow hover:bg-gray-200 transition font-medium"
+      class="mt-6 bg-white text-black px-8 py-3 rounded-full text-lg shadow hover:bg-gray-200 transition"
     >
       + Upload
     </button>
@@ -284,6 +287,7 @@ desktopBtn?.addEventListener('click', e => {
     }
     uploadModal.classList.remove('hidden');
 });
+
 
 
 </script>
