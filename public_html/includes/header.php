@@ -256,6 +256,7 @@ const finalImage = document.getElementById('finalImage');
 const photoDataInput = document.getElementById('photoData');
 
 
+
 const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('sidebarToggle');
 
@@ -331,6 +332,16 @@ toggleBtn.addEventListener('click', () => {
 document.addEventListener('DOMContentLoaded', () => {
 
 const isLoggedIn = <?= $isLoggedIn ? 'true' : 'false' ?>;
+const uploadModal = document.getElementById('uploadModal');
+
+
+    // Main index button
+    const mainBtn = document.getElementById('openUploadModal');
+    mainBtn?.addEventListener('click', e => {
+        e.preventDefault();
+        if (!isLoggedIn) return window.location.href = '/auth/login.php';
+        uploadModal.classList.remove('hidden');
+    });
 
 // Desktop upload button
 document.getElementById('desktopUploadBtn').addEventListener('click', e => {
