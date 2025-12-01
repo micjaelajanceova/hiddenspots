@@ -285,8 +285,9 @@ desktopBtn?.addEventListener('click', e => {
     uploadModal.classList.remove('hidden');
 });
 
-// Mobile button
-document.querySelector('button.ph-plus')?.addEventListener('click', e => {
+
+document.getElementById('openUploadModal').addEventListener('click',
+ e => {
     e.preventDefault();
     if (!isLoggedIn) {
         window.location.href = '/auth/login.php';
