@@ -36,7 +36,7 @@ try {
 <!-- LOGIN / SIGNUP -->
 <?php include 'includes/profile-header.php'; ?>
 
-<?php $isLoggedIn = isset($_SESSION['user_id']); ?>
+
 
 
 
@@ -285,16 +285,6 @@ desktopBtn?.addEventListener('click', e => {
     uploadModal.classList.remove('hidden');
 });
 
-
-document.getElementById('openUploadModal').addEventListener('click',
- e => {
-    e.preventDefault();
-    if (!isLoggedIn) {
-        window.location.href = '/auth/login.php';
-        return;
-    }
-    uploadModal.classList.remove('hidden');
-});
 
 </script>
 
