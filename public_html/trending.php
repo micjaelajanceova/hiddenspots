@@ -33,6 +33,7 @@ $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
   <div class="w-full px-4 sm:px-6 lg:px-8">
 
     <!-- THIS WEEK TRENDING -->
+    <?php if (count($trendingWeek) > 0): ?>
     <section class="mt-2 md:mt-12 pb-2 md:pb-20">
     <h1 class="text-4xl font-bold mb-3">🔥 Trending this week</h1>
   <h2 class="mt-1 text-gray-600">Most popular uploads from the last 7 days.</h2>
@@ -81,6 +82,7 @@ $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
     <?php endforeach; ?>
   </div>
 </section>
+<?php endif; ?>
 
     <!-- ALL TIME TRENDING -->
     <section class="mt-2 md:mt-12 pb-2 md:pb-20">
