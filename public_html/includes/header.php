@@ -328,6 +328,8 @@ toggleBtn.addEventListener('click', () => {
 
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+
 const isLoggedIn = <?= $isLoggedIn ? 'true' : 'false' ?>;
 
 // Desktop upload button
@@ -348,6 +350,7 @@ document.getElementById('mobileUploadBtn')?.addEventListener('click', e => {
         return;
     }
     document.getElementById('uploadModal').classList.remove('hidden');
+});
 });
 
 
