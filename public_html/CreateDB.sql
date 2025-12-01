@@ -107,7 +107,7 @@ FROM hidden_spots hs
 LEFT JOIN comments c ON hs.id = c.spot_id
 GROUP BY hs.id
 ORDER BY hs.likes DESC, comments_count DESC
-LIMIT 10;
+LIMIT 3;
 
 -- Latest comments view
 CREATE VIEW view_latest_comments AS
@@ -116,7 +116,7 @@ FROM comments c
 JOIN users u ON c.user_id = u.id
 JOIN hidden_spots hs ON c.spot_id = hs.id
 ORDER BY c.created_at DESC
-LIMIT 10;
+LIMIT 3;
 
 -- ======================================
 -- TRIGGERS
