@@ -154,9 +154,9 @@ $show_navbar = $show_navbar ?? true;
     </div>
 
     <!-- STEP 3: Form -->
-    <div id="stepForm" class="hidden flex flex-1 h-full overflow-hidden">
+    <div id="stepForm" class="hidden flex-1 h-full overflow-hidden flex flex-col md:flex-row">
       <!-- Image preview -->
-      <div class="w-1/2 h-full bg-black flex justify-center items-center overflow-hidden">
+      <div class="w-full md:w-1/2 h-64 md:h-full bg-black flex justify-center items-center overflow-hidden mb-4 md:mb-0">
         <img id="finalImage" class="w-full h-full object-cover" />
       </div>
 
@@ -175,7 +175,7 @@ $show_navbar = $show_navbar ?? true;
           <input type="hidden" name="longitude" id="longitude">
 
           <!-- MAP -->
-          <div id="uploadMap" class="w-full h-56 rounded-lg shadow-md border border-gray-200 my-2"></div>
+          <div id="uploadMap" class="w-full h-56 md:h-64 rounded-lg shadow-md border border-gray-200 my-2"></div>
 
           <select name="category" required class="w-full border rounded p-2 bg-white focus:ring-2 focus:ring-blue-400 outline-none">
             <option value="">Select a category</option>
