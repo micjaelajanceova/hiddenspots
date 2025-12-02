@@ -45,7 +45,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <?php include 'includes/profile-header.php'; ?>
 
   <!-- SEARCH -->
-  <div class=" flex flex-wrap items-center gap-2 mb-6 sm:mt-base mt-6">
+  <div class=" flex flex-wrap items-center gap-2 mb-6 mt-6 sm:mt-base">
 
 
     <form action="feed.php" method="get" class="flex gap-2 items-center w-auto">
