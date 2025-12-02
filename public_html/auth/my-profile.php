@@ -2,6 +2,8 @@
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../classes/spot.php';
+require_once __DIR__ . '/../classes/user.php';
+
 
 // check if user is logged in
 if(!isset($_SESSION['user_id'])){
