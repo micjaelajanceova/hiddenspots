@@ -44,7 +44,7 @@ try {
 
 
    <!-- TRENDING (Sticky) -->
-<section class="mt-12 pb-20">
+<section class="mt-6 sm:mt-12 pb-20">
   <div class="flex items-center justify-between">
     <div>
       <h1 class="text-4xl font-bold mb-3">Trending</h1>
