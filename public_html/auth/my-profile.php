@@ -10,18 +10,18 @@ if(!isset($_SESSION['user_id'])){
 }
 
 $user_id = $_SESSION['user_id'];
-// Fetch user info 
-$stmt = $pdo->prepare("SELECT name, profile_photo FROM users WHERE id=?");
-$stmt->execute([$user_id]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
-$user_name = $user['name'] ?? 'User';
-$user_photo = $user['profile_photo'] ?? null;
+
+// Use User class to fetch current user info
+$userObj = new User($pdo);
+$user = $userObj->getById($user_id);
+
+if (!$user) die("User not found.");
+
+// Get the user's profile photo (if they uploaded one)
+$photo_url = $userObj->getProfilePhoto($user_id);
 
 
-$stmt = $pdo->prepare("SELECT profile_photo FROM users WHERE id=?");
-$stmt->execute([$user_id]);
-$user_photo = $stmt->fetchColumn();
-
+// Create Spot object to fetch user's uploaded spots
 $spotObj = new Spot($pdo);
 $mySpots = $spotObj->getByUser($user_id);
 ?>

@@ -3,35 +3,25 @@ include __DIR__ . '/../includes/db.php';
 include __DIR__ . '/../includes/header.php';
 include __DIR__ . '/../classes/spot.php';
 
-
-
-
+// Get user ID – either from the URL or from the logged-in user's session
 $user_id = $_GET['user_id'] ?? $_SESSION['user_id'];
 if (!$user_id) die("No user ID provided.");
 
+// Use User class to fetch user info
+$userObj = new User($pdo);
+$user = $userObj->getById($user_id);
 
-$stmt = $pdo->prepare("SELECT id, name, profile_photo FROM users WHERE id=?");
-$stmt->execute([$user_id]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$user) die("User not found.");
 
-
-$photo_url = null;
-if (!empty($user['profile_photo'])) {
-    $photo_url = '/' . $user['profile_photo'];
-}
+// Get user's profile photo path (or fallback)
+$photo_url = $userObj->getProfilePhoto($user_id);
 
 
+// Fetch all spots uploaded by this user
 $spotObj = new Spot($pdo);
-$stmt = $pdo->prepare("SELECT h.*, u.name AS user_name
-FROM hidden_spots h
-JOIN users u ON h.user_id = u.id
-WHERE h.user_id = ?
-ORDER BY h.created_at DESC
-");
-$stmt->execute([$user_id]);
-$spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$spots = $spotObj->getByUser($user_id);
 ?>
+
 
 <main class="flex-1 bg-white min-h-screen px-4 sm:px-6 lg:px-8 py-10">
 

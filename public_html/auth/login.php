@@ -3,11 +3,11 @@ require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/password-validate.php';
 session_start();
 
-
+// Initialize message and success flag
 $msg = '';
 $success = false;
 
-
+// Load background images for slideshow
 $bgImages = [];
 try {
     $stmt = $pdo->query("SELECT file_path FROM hidden_spots ORDER BY created_at DESC");
@@ -16,10 +16,13 @@ try {
     $bgImages = ['/assets/img/default-bg.jpg']; // fallback
 }
 
-// Handle login/register
+// Handle form submissions
 $showRegisterForm = false;
 if (isset($_POST['action'])) {
+
+    // ===== LOGIN =====
     if ($_POST['action'] === 'login') {
+        // Get user info from DB by email
         $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
         $stmt->execute(['email' => $_POST['email']]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -27,13 +30,16 @@ if (isset($_POST['action'])) {
         if ($user) {
             if ($user['blocked']) {
                 $msg = "Your account has been blocked. Please contact the administrator.";
+                // Check password
             } elseif (password_verify($_POST['password'], $user['password'])) {
+                // Save user info in session
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['user_email'] = $user['email'];
                 $_SESSION['role'] = $user['role'];
                 $_SESSION['profile_photo'] = $user['profile_photo'] ?? null;
 
+                // Redirect based on role
                 if ($user['role'] === 'admin') {
                     header("Location: ../admin.php");
                     exit();
@@ -49,10 +55,11 @@ if (isset($_POST['action'])) {
         }
     } 
 
-
+// ===== REGISTER =====
     if ($_POST['action'] === 'register') {
         $username = $_POST['name'] ?? '';
         if ($msg === '') {
+            
                 // Check email uniqueness
                 $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
                 $stmt->execute(['email' => $_POST['email']]);
@@ -60,6 +67,7 @@ if (isset($_POST['action'])) {
                     $msg = "Email already exists.";
                     $showRegisterForm = true;
                 } else {
+
                     // Check username uniqueness
                     $stmt = $pdo->prepare("SELECT id FROM users WHERE name = :name");
                     $stmt->execute(['name' => $username]);
@@ -68,32 +76,32 @@ if (isset($_POST['action'])) {
                         $showRegisterForm = true;
                     } else {
 
-            // Password validation
-            $password = $_POST['password'] ?? '';
-            $passwordConfirm = $_POST['password_confirm'] ?? '';
+                    // Password validation
+                    $password = $_POST['password'] ?? '';
+                    $passwordConfirm = $_POST['password_confirm'] ?? '';
 
-            if ($password !== $passwordConfirm) {
-                $msg = "Passwords do not match.";
-                $showRegisterForm = true;
-            } else {
-                $validationResult = validatePassword($password); // <-- call the function
-                if ($validationResult !== true) {
-                    $msg = $validationResult;
-                    $showRegisterForm = true;
-                } else {
+                    if ($password !== $passwordConfirm) {
+                        $msg = "Passwords do not match.";
+                        $showRegisterForm = true;
+                    } else {
+                        $validationResult = validatePassword($password); // <-- call the function
+                        if ($validationResult !== true) {
+                            $msg = $validationResult;
+                            $showRegisterForm = true;
+                        } else {
 
                     
-            // Username validation 
-            $errors = []; // reset errors before username checks
-            $username = $_POST['name'] ?? '';
+                        // Username validation 
+                        $errors = []; // reset errors before username checks
+                        $username = $_POST['name'] ?? '';
 
-            if (!preg_match('/^[a-z0-9](?!.*[._]{2})[a-z0-9._]{1,18}[a-z0-9]$/', $username)) {
-            $msg = "Username must be 3–20 characters, lowercase letters, numbers, dots, or underscores.";
-            $showRegisterForm = true;
-        } else {
+                        if (!preg_match('/^[a-z0-9](?!.*[._]{2})[a-z0-9._]{1,18}[a-z0-9]$/', $username)) {
+                        $msg = "Username must be 3–20 characters, lowercase letters, numbers, dots, or underscores.";
+                        $showRegisterForm = true;
+                        } else {
                 
 
-            // If validation passed, continue
+                        // If validation passed, continue
             
                         // Insert user
                         $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -113,7 +121,8 @@ if (isset($_POST['action'])) {
         }
     }
 }
-}}
+}
+}
 ?>
 
 <?php
