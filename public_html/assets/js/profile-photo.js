@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fd.append('profile_photo', file);
 
     try {
-      const res = await fetch(window.location.href, { method: 'POST', body: fd });
+      const res = await fetch('../actions/profile-photo.php', { method: 'POST', body: fd });
       const data = await res.json();
       if (data.success) {
           photoPreview.src = '../' + data.path;
