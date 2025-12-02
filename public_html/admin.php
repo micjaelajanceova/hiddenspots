@@ -91,7 +91,7 @@ $comments = $pdo->query("
 $users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
 
 // ===== FETCH SITE INFO =====
-$siteInfo = $pdo->query("SELECT * FROM site_info LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+$siteInfo = $pdo->query("SELECT * FROM site_settings LIMIT 1")->fetch(PDO::FETCH_ASSOC);
 
 // ===== FETCH STYLING SETTINGS =====
 $stylingSettings = $pdo->query("SELECT * FROM styling_settings LIMIT 1")->fetch(PDO::FETCH_ASSOC);
