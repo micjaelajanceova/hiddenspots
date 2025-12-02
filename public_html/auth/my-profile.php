@@ -32,11 +32,9 @@ $mySpots = $spotObj->getByUser($user_id);
 <div class="flex items-center justify-between mb-6">
   <div class="flex items-center gap-4">
     <div class="w-16 h-16 bg-black text-white flex items-center justify-center rounded-full text-2xl font-semibold">
-     <?php if($user_photo && file_exists(__DIR__ . '/../' . $user_photo)): ?>
-    <!-- Use absolute path from web root -->
-    <img src="/<?= htmlspecialchars($user_photo) ?>" alt="Profile" class="w-full h-full object-cover rounded-full">
+     <?php if ($photo_url): ?>
+        <img src="<?= htmlspecialchars($photo_url) ?>" alt="Profile" class="w-full h-full object-cover rounded-full">
     <?php else: ?>
-        <!-- Fallback: first letter of username -->
         <?= strtoupper(substr($user_name, 0, 1)) ?>
     <?php endif; ?>
     </div>
