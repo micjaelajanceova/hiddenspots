@@ -66,10 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       const res = await fetch('../actions/profile-photo.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'remove_photo=1'
-      });
+      method: 'POST',
+      body: fd
+    });
       const data = await res.json();
       if (data.success) {
         // hide photo and show initials
