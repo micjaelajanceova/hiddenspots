@@ -60,19 +60,23 @@ if (isset($_POST['update_site'])) {
   $rules = trim($_POST['rules']);
   $contact = trim($_POST['contact']);
   $theme_color = trim($_POST['theme_color']);
-  $font_size = trim($_POST['font_size']);
+  $font_size = trim($_POST['font_size']); // len ak chceš zachovať font_size
 
   // Update site info
-  $stmt = $pdo->prepare("UPDATE site_info SET description=?, rules=?, contact=? WHERE id=1");
-  $stmt->execute([$description, $rules, $contact]);
+  $stmt = $pdo->prepare("
+      UPDATE site_settings 
+      SET site_description=?, rules=?, contact_info=?, primary_color=?
+      WHERE id=1
+  ");
+  $stmt->execute([$description, $rules, $contact, $theme_color]);
 
-  // Update styling settings
-  $stmt = $pdo->prepare("UPDATE styling_settings SET theme_color=?, font_size=? WHERE id=1");
-  $stmt->execute([$theme_color, $font_size]);
-
-  echo "<script>alert('Site info and styling updated successfully'); window.location='admin.php';</script>";
+  echo "<script>alert('Site info updated successfully'); window.location='admin.php';</script>";
   exit();
 }
+
+// ===== FETCH SITE INFO =====
+$siteInfo = $pdo->query("SELECT * FROM site_settings WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+
 
 
 // Fetch data
@@ -118,30 +122,32 @@ $stylingSettings = $pdo->query("SELECT * FROM styling_settings LIMIT 1")->fetch(
 <div id="site" class="tab-content hidden mt-6">
   <div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
     <form method="POST">
+      
       <div class="mb-4">
         <label class="block font-semibold mb-1">Description</label>
-        <textarea name="description" class="w-full border p-2 rounded" rows="3"><?= htmlspecialchars($siteInfo['description']) ?></textarea>
+        <textarea name="description" class="w-full border p-2 rounded" rows="3"><?= htmlspecialchars($siteInfo['site_description']) ?></textarea>
       </div>
+      
       <div class="mb-4">
         <label class="block font-semibold mb-1">Rules</label>
         <textarea name="rules" class="w-full border p-2 rounded" rows="3"><?= htmlspecialchars($siteInfo['rules']) ?></textarea>
       </div>
+
       <div class="mb-4">
         <label class="block font-semibold mb-1">Contact</label>
-        <input type="text" name="contact" class="w-full border p-2 rounded" value="<?= htmlspecialchars($siteInfo['contact']) ?>">
+        <input type="text" name="contact" class="w-full border p-2 rounded" value="<?= htmlspecialchars($siteInfo['contact_info']) ?>">
       </div>
+
       <div class="mb-4">
         <label class="block font-semibold mb-1">Theme color</label>
-        <input type="color" name="theme_color" value="<?= htmlspecialchars($stylingSettings['theme_color']) ?>">
+        <input type="color" name="theme_color" class="w-full h-10 p-1 rounded border" value="<?= htmlspecialchars($siteInfo['primary_color']) ?>">
       </div>
-      <div class="mb-4">
-        <label class="block font-semibold mb-1">Font size</label>
-        <input type="text" name="font_size" value="<?= htmlspecialchars($stylingSettings['font_size']) ?>" class="border p-2 rounded">
-      </div>
+
       <button type="submit" name="update_site" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Save</button>
     </form>
   </div>
 </div>
+
 
 
   <!-- SPOTS -->
