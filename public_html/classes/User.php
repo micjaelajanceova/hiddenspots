@@ -6,7 +6,7 @@ class User {
         $this->pdo = $pdo;
     }
     
-
+    // Fetch user by ID
     public function getById($user_id) {
         $stmt = $this->pdo->prepare("SELECT * FROM users WHERE id = ?");
         $stmt->execute([$user_id]);
