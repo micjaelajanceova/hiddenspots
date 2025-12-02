@@ -143,12 +143,14 @@ include __DIR__ . '/../includes/header.php';
     <h2 class="text-2xl font-bold mb-6 text-center">Welcome to HiddenSpots</h2>
 
     <?php if ($msg): ?>
-        <?php 
-            $isSuccess = str_contains($msg, 'Account created'); 
-            $msgColor = $isSuccess ? 'text-green-600' : 'text-red-600';
-        ?>
-        <p class="<?= $msgColor ?> font-bold text-center mb-4 !text-red-600"><?= htmlspecialchars($msg) ?></p>
-    <?php endif; ?>
+    <?php 
+        // Check if the message indicates success
+        $isSuccess = str_contains($msg, 'Account created'); 
+        $msgColor = $isSuccess ? 'text-green-600' : 'text-red-600';
+    ?>
+    <!-- Use the calculated class, remove any hardcoded red class -->
+    <p class="<?= $msgColor ?> font-bold text-center mb-4"><?= htmlspecialchars($msg) ?></p>
+<?php endif; ?>
 
     <!-- LOGIN FORM -->
     <form id="loginForm" class="flex flex-col gap-4" method="post">
