@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/password-validate.php';
 require_once __DIR__ . '/../classes/User.php';
+require_once __DIR__ . '/../classes/spot.php';
 session_start();
 
 $userObj = new User($pdo);
