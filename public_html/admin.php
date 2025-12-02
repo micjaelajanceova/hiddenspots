@@ -1,4 +1,44 @@
 <?php
+// Zobrazovanie chýb
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Pripojenie k DB
+include 'includes/db.php';
+
+// Skontrolujeme PDO objekt
+if (!$pdo) {
+    die("PDO object not initialized!");
+}
+echo "<h3>Connected to database successfully</h3>";
+
+// Funkcia na test SELECT
+function testTable($pdo, $table) {
+    echo "<h4>Testing table: $table</h4>";
+    try {
+        $stmt = $pdo->query("SELECT * FROM $table LIMIT 5");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($rows) {
+            echo "<pre>";
+            print_r($rows);
+            echo "</pre>";
+        } else {
+            echo "No data found in $table or table doesn't exist.<br>";
+        }
+    } catch (PDOException $e) {
+        echo "Error querying $table: " . $e->getMessage() . "<br>";
+    }
+}
+
+// Testujeme všetky potrebné tabuľky
+testTable($pdo, "hidden_spots");
+testTable($pdo, "comments");
+testTable($pdo, "users");
+testTable($pdo, "site_settings");
+?>
+
+<?php
 include 'includes/db.php';
 include 'includes/header.php';
 include 'classes/spot.php';
@@ -255,18 +295,32 @@ if (!$site) {
 <main class="flex-1 min-h-screen overflow-y-auto">
 <div class="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-8">
 
-  <!-- Admin Tabs HTML -->
-<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
-  <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">Admin Panel</h1>
-  <div class="flex gap-3 flex-wrap mt-4 md:mt-0">
-    <button id="tab-spots" onclick="showTab('spots')" class="tab-btn px-5 py-2 rounded-full font-medium shadow">Spots</button>
-    <button id="tab-comments" onclick="showTab('comments')" class="tab-btn px-5 py-2 rounded-full font-medium shadow">Comments</button>
-    <button id="tab-users" onclick="showTab('users')" class="tab-btn px-5 py-2 rounded-full font-medium shadow">Users</button>
-    <button id="tab-site" onclick="showTab('site')" class="tab-btn px-5 py-2 rounded-full font-medium shadow">Site Settings</button>
-  </div>
-</div>
+  <!-- Admin header -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
+    <!-- Title -->
+    <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">Admin Panel</h1>
 
-<div class="border-t border-gray-300 mb-6"></div>
+    <!-- Tabs -->
+    <div class="flex gap-3 flex-wrap mt-4 md:mt-0">
+      <button id="tab-spots" onclick="showTab('spots')" class="tab-btn px-5 py-2 rounded-full font-medium shadow">Spots</button>
+      <button id="tab-comments" onclick="showTab('comments')" class="tab-btn px-5 py-2 rounded-full font-medium shadow">Comments</button>
+      <button id="tab-users" onclick="showTab('users')" class="tab-btn px-5 py-2 rounded-full font-medium shadow">Users</button>
+      <button id="tab-site" onclick="showTab('site')" class="tab-btn px-5 py-2 rounded-full font-medium shadow">Site Settings</button>
+    </div>
+  </div>
+
+  <div class="border-t border-gray-300 mb-6"></div>
+
+  <?php if ($errors): ?>
+    <div class="bg-red-100 text-red-800 p-3 rounded mb-4">
+      <?php foreach ($errors as $err) echo '<div>'.e($err).'</div>'; ?>
+    </div>
+  <?php endif; ?>
+  <?php if ($success): ?>
+    <div class="bg-green-100 text-green-800 p-3 rounded mb-4">
+      <?= e($success) ?>
+    </div>
+  <?php endif; ?>
 
 <!-- SPOTS -->
 <div id="spots" class="tab-content">
@@ -288,81 +342,212 @@ if (!$site) {
   </div>
 
   <div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
+  <table class="min-w-full border-collapse w-full table-auto">
+    <thead>
+      <tr class="bg-gray-200 text-left">
+        <th class="p-2 sm:p-3 border-b text-sm sm:text-base">ID</th>
+        <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Name</th>
+        <th class="p-2 sm:p-3 border-b text-sm sm:text-base">City</th>
+        <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Photo</th>
+        <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Created</th>
+        <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Featured</th>
+        <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($spots as $s): ?>
+        <tr class="border-b hover:bg-gray-100 align-top">
+          <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($s['id']) ?></td>
+          <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($s['name']) ?></td>
+          <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($s['city']) ?></td>
+          <td class="p-2 sm:p-3 text-sm sm:text-base">
+            <?php if (!empty($s['file_path'])): ?>
+              <img src="<?= e($s['file_path']) ?>" class="w-12 sm:w-16 h-12 sm:h-16 object-cover rounded">
+            <?php endif; ?>
+          </td>
+          <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($s['created_at']) ?></td>
+          <td class="p-2 sm:p-3 text-sm sm:text-base">
+            <form method="POST" style="display:inline-block;">
+              <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>">
+              <input type="hidden" name="id" value="<?= e($s['id']) ?>">
+              <button type="submit" name="toggle_featured" class="<?= $s['featured'] ? 'bg-yellow-500' : 'bg-gray-300' ?> text-white px-2 py-1 rounded text-xs">
+                <?= $s['featured'] ? 'Featured' : 'Mark featured' ?>
+              </button>
+            </form>
+          </td>
+          <td class="p-2 sm:p-3 text-sm sm:text-base">
+            <!-- Edit form -->
+            <details class="mb-1">
+              <summary class="cursor-pointer text-blue-600">Edit</summary>
+              <form method="POST" enctype="multipart/form-data" class="mt-2">
+                <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>">
+                <input type="hidden" name="id" value="<?= e($s['id']) ?>">
+
+                <input name="name" value="<?= e($s['name']) ?>" class="border p-1 w-full mb-1" />
+                <input name="city" value="<?= e($s['city']) ?>" class="border p-1 w-full mb-1" />
+                <input name="address" value="<?= e($s['address']) ?>" class="border p-1 w-full mb-1" />
+                <textarea name="description" class="border p-1 w-full mb-1"><?= e($s['description']) ?></textarea>
+                <input type="file" name="photo" accept="image/*" class="border p-1 mb-2 w-full" />
+
+                <button type="submit" name="edit_spot" class="bg-blue-500 text-white px-2 py-1 rounded text-xs">Save</button>
+              </form>
+            </details>
+
+            <!-- Delete form -->
+            <form method="POST" onsubmit="return confirm('Delete this spot?');" style="display:inline-block; margin-left:6px;">
+              <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>">
+              <input type="hidden" name="id" value="<?= e($s['id']) ?>">
+              <button type="submit" name="delete_spot" class="bg-red-500 text-white px-2 py-1 rounded text-xs">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <?php endforeach; ?>
+    </tbody>
+  </table>
+</div>
+
+</div>
+
+<!-- COMMENTS -->
+<div id="comments" class="tab-content hidden mt-6">
+  <div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
     <table class="min-w-full border-collapse w-full table-auto">
       <thead>
         <tr class="bg-gray-200 text-left">
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">ID</th>
-          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Name</th>
-          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">City</th>
-          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Photo</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">User</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Spot</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Text</th>
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Created</th>
-          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Featured</th>
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <?php if ($spots): ?>
-          <?php foreach ($spots as $s): ?>
-            <tr class="border-b hover:bg-gray-100 align-top">
-              <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($s['id']) ?></td>
-              <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($s['name']) ?></td>
-              <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($s['city']) ?></td>
-              <td class="p-2 sm:p-3 text-sm sm:text-base">
-                <?php if (!empty($s['file_path'])): ?>
-                  <img src="<?= e($s['file_path']) ?>" class="w-12 sm:w-16 h-12 sm:h-16 object-cover rounded">
-                <?php endif; ?>
-              </td>
-              <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($s['created_at']) ?></td>
-              <td class="p-2 sm:p-3 text-sm sm:text-base">
-                <form method="POST" style="display:inline-block;">
-                  <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>">
-                  <input type="hidden" name="id" value="<?= e($s['id']) ?>">
-                  <button type="submit" name="toggle_featured" class="<?= $s['featured'] ? 'bg-yellow-500' : 'bg-gray-300' ?> text-white px-2 py-1 rounded text-xs">
-                    <?= $s['featured'] ? 'Featured' : 'Mark featured' ?>
-                  </button>
-                </form>
-              </td>
-              <td class="p-2 sm:p-3 text-sm sm:text-base">
-                <!-- Edit / Delete forms here -->
-              </td>
-            </tr>
-          <?php endforeach; ?>
-        <?php else: ?>
-          <tr>
-            <td colspan="7" class="text-center text-gray-500 p-4">No spots found</td>
+        <?php foreach ($comments as $c): ?>
+          <tr class="border-b hover:bg-gray-100 align-top">
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($c['id']) ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($c['user_name']) ?> (id: <?= e($c['user_id']) ?>)</td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($c['spot_name']) ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base">
+              <form method="POST" class="flex flex-col gap-2">
+                <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>">
+                <textarea name="text" class="border border-gray-300 rounded p-2 w-full text-xs sm:text-sm" rows="2"><?= e($c['text']) ?></textarea>
+                <input type="hidden" name="id" value="<?= e($c['id']) ?>">
+                <div class="flex gap-2 flex-wrap">
+                  <button type="submit" name="edit_comment" class="bg-blue-500 text-white px-2 sm:px-3 py-1 rounded hover:bg-blue-600 text-xs sm:text-sm">Save</button>
+                  <button type="submit" name="delete_comment" class="bg-red-500 text-white px-2 sm:px-3 py-1 rounded hover:bg-red-600 text-xs sm:text-sm" onclick="return confirm('Delete this comment?');">Delete</button>
+                </div>
+              </form>
+            </td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($c['created_at']) ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"></td>
           </tr>
-        <?php endif; ?>
+        <?php endforeach; ?>
       </tbody>
     </table>
   </div>
 </div>
 
-<!-- COMMENTS / USERS / SITE same structure, just wrap each with: -->
-<div id="comments" class="tab-content hidden">...</div>
-<div id="users" class="tab-content hidden">...</div>
-<div id="site" class="tab-content hidden">...</div>
+<!-- USERS -->
+<div id="users" class="tab-content hidden mt-6">
+  <div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
+    <table class="min-w-full border-collapse w-full table-auto">
+      <thead>
+        <tr class="bg-gray-200 text-left">
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">ID</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Name</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Email</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Role</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Blocked</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($users as $u): ?>
+          <tr class="border-b hover:bg-gray-100 align-top">
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($u['id']) ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($u['name']) ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($u['email']) ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($u['role']) ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $u['blocked'] ? 'Yes' : 'No' ?></td>
+            <td class="p-2 sm:p-3 text-sm sm:text-base">
+              <details>
+                <summary class="cursor-pointer text-blue-600">Edit</summary>
+                <form method="POST" class="mt-2">
+                  <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>">
+                  <input type="hidden" name="id" value="<?= e($u['id']) ?>">
+                  <input name="name" value="<?= e($u['name']) ?>" class="border p-1 w-full mb-1" />
+                  <input name="email" value="<?= e($u['email']) ?>" class="border p-1 w-full mb-1" />
+                  <select name="role" class="border p-1 w-full mb-1">
+                    <option value="user" <?= $u['role'] === 'user' ? 'selected' : '' ?>>user</option>
+                    <option value="admin" <?= $u['role'] === 'admin' ? 'selected' : '' ?>>admin</option>
+                  </select>
+                  <label class="flex items-center gap-2"><input type="checkbox" name="reset_password" value="1"> Reset password (generate)</label>
+                  <div class="mt-2 flex gap-2">
+                    <button type="submit" name="edit_user" class="bg-blue-500 text-white px-2 py-1 rounded text-xs">Save</button>
+                  </div>
+                </form>
+              </details>
 
-<!-- JS for tab switching -->
+              <form method="POST" style="display:inline-block;margin-left:6px;">
+                <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>">
+                <input type="hidden" name="id" value="<?= e($u['id']) ?>">
+                <button type="submit" name="toggle_block" class="<?= $u['blocked'] ? 'bg-red-500' : 'bg-blue-500' ?> text-white px-2 sm:px-3 py-1 rounded hover:opacity-80 text-xs sm:text-sm">
+                  <?= $u['blocked'] ? 'Unblock' : 'Block' ?>
+                </button>
+              </form>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SITE SETTINGS -->
+<div id="site" class="tab-content hidden mt-6">
+  <div class="bg-gray-50 rounded-lg shadow p-4">
+    <form method="POST">
+      <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>">
+      <h3 class="font-semibold text-lg mb-2">Site Description</h3>
+      <textarea name="site_description" rows="4" class="w-full border p-2 mb-3"><?= e($site['site_description'] ?? '') ?></textarea>
+
+      <h3 class="font-semibold text-lg mb-2">Rules and Regulations</h3>
+      <textarea name="rules" rows="6" class="w-full border p-2 mb-3"><?= e($site['rules'] ?? '') ?></textarea>
+
+      <h3 class="font-semibold text-lg mb-2">Contact Information</h3>
+      <input name="contact_info" class="w-full border p-2 mb-3" value="<?= e($site['contact_info'] ?? '') ?>" />
+
+      <h3 class="font-semibold text-lg mb-2">Styling (Primary color)</h3>
+      <input name="primary_color" class="w-40 border p-2 mb-3" value="<?= e($site['primary_color'] ?? '') ?>" />
+
+      <div>
+        <button type="submit" name="update_site_settings" class="bg-green-600 text-white px-3 py-1 rounded">Save settings</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+</div>
+</main>
+
 <script>
-function showTab(tabId){
-  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-  document.getElementById(tabId).classList.remove('hidden');
-
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.classList.remove('bg-black', 'text-white');
-    btn.classList.add('bg-gray-200', 'text-gray-800');
-  });
-
-  const activeBtn = document.getElementById('tab-' + tabId);
-  if(activeBtn){
-    activeBtn.classList.remove('bg-gray-200', 'text-gray-800');
-    activeBtn.classList.add('bg-black', 'text-white');
+  function showTab(tabId){
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+    document.getElementById(tabId).classList.remove('hidden');
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('bg-black', 'text-white');
+      btn.classList.add('bg-gray-200', 'text-gray-800');
+    });
+    const activeBtn = document.getElementById('tab-' + tabId);
+    if (activeBtn) {
+      activeBtn.classList.remove('bg-gray-200', 'text-gray-800');
+      activeBtn.classList.add('bg-black', 'text-white');
+    }
   }
-}
-
-// Show first tab by default
-document.addEventListener('DOMContentLoaded', () => showTab('spots'));
+  document.addEventListener('DOMContentLoaded', function() {
+      showTab('spots');
+  });
 </script>
-
 
 <?php include 'includes/footer.php'; ?>
