@@ -3,22 +3,29 @@ session_start();
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/password-validate.php';
 
+
+// Redirect to login page if user is not logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
+// Store the logged-in user's ID for queries
 $user_id = $_SESSION['user_id'];
+
+// Variables for messages shown to user
 $msg = '';
 $msg_type = '';
 
 
 // --- Password update ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_password'])) {
+  // Get posted passwords
     $current = $_POST['current_password'] ?? '';
     $new = $_POST['new_password'] ?? '';
     $confirm = $_POST['confirm_password'] ?? '';
 
+    // Validate new passwords
     if (empty($new)) {
         $msg = 'New password cannot be empty.';
         $msg_type = 'error';
@@ -26,19 +33,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_password'])) {
         $msg = 'Passwords do not match.';
         $msg_type = 'error';
     } else {
+      // Fetch current hashed password from database
         $stmt = $pdo->prepare("SELECT password FROM users WHERE id = ?");
         $stmt->execute([$user_id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        // Verify current password matches
         if (!$row || !password_verify($current, $row['password'])) {
             $msg = 'Incorrect current password.';
             $msg_type = 'error';
         } else {
+          // Validate new password using custom function
             $newCheck = validatePassword($new);
         if ($newCheck !== true) {
             $msg = $newCheck;
             $msg_type = 'error';
         } else {
+          // Hash new password and update database
             $hash = password_hash($new, PASSWORD_DEFAULT);
             $stmt = $pdo->prepare("UPDATE users SET password = ? WHERE id = ?");
             $stmt->execute([$hash, $user_id]);
@@ -54,6 +65,7 @@ $stmt = $pdo->prepare("SELECT name, email, profile_photo FROM users WHERE id = ?
 $stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// Get user info with fallback to session values
 $user_name = $user['name'] ?? ($_SESSION['user_name'] ?? '');
 $user_email = $user['email'] ?? ($_SESSION['user_email'] ?? '');
 $user_photo = $user['profile_photo'] ?? ($_SESSION['profile_photo'] ?? null);

@@ -31,11 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
     uploadStatus.classList.remove('hidden');
     uploadStatus.textContent = 'Uploading...';
 
-     // Send file to server
+     // Prepare file to send via AJAX (FormData)
     const fd = new FormData();
     fd.append('profile_photo', file);
 
     try {
+      // Send file to PHP script
       const res = await fetch('../actions/profile-photo.php', { method: 'POST', body: fd });
       const data = await res.json();
       // Update preview to saved file
@@ -54,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
           setTimeout(() => uploadStatus.classList.add('hidden'), 2000);
       }
       } catch (err) {
+        // Handle network or other errors
         uploadStatus.textContent = 'Upload failed.';
         setTimeout(() => uploadStatus.classList.add('hidden'), 2000);
     }
@@ -68,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fd.append('remove_photo', '1');
 
     try {
+      // Send AJAX request to remove photo
       const res = await fetch('../actions/profile-photo.php', {
       method: 'POST',
       body: fd

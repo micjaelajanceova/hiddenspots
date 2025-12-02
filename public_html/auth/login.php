@@ -134,7 +134,10 @@ include __DIR__ . '/../includes/header.php';
 <button onclick="history.back()" class="absolute top-5 left-5 px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-gray-800 z-10">← Back</button>
 
 <!-- Login/Register Form -->
-<div class="bg-white bg-opacity-90 p-10 rounded-xl shadow-xl max-w-md w-full z-10 relative mx-2 md:mx-0">
+<div id="loginContainer" 
+     data-msg="<?= htmlspecialchars($msg ?? '') ?>" 
+     data-success="<?= isset($success) && $success ? 'true' : 'false' ?>"
+     class="bg-white bg-opacity-90 p-10 rounded-xl shadow-xl max-w-md w-full z-10 relative mx-2 md:mx-0">
     <h2 class="text-2xl font-bold mb-6 text-center">Welcome to HiddenSpots</h2>
 
     <?php if ($msg): ?>
@@ -171,63 +174,3 @@ include __DIR__ . '/../includes/header.php';
         </p>
     </form>
     </main>
-
-    
-<script>
-// Toggle login/register
-const showRegister = document.getElementById('showRegister');
-const showLogin = document.getElementById('showLogin');
-const loginForm = document.getElementById('loginForm');
-const registerForm = document.getElementById('registerForm');
-
-// Toggle login/register buttons
-showRegister?.addEventListener('click', () => {
-    loginForm.classList.add('hidden');
-    registerForm.classList.remove('hidden');
-});
-showLogin?.addEventListener('click', () => {
-    registerForm.classList.add('hidden');
-    loginForm.classList.remove('hidden');
-});
-
-// PHP values
-const msg = <?= json_encode($msg ?? '') ?>;
-const success = <?= isset($success) && $success ? 'true' : 'false' ?>;
-
-// Decide which form to show
-if (success) {
-    loginForm.classList.remove('hidden');
-    registerForm.classList.add('hidden');
-} else if (
-    msg.includes('Email already exists') ||
-    msg.includes('Passwords do not match') ||
-    msg.includes('Password') ||   
-    msg.includes('Username cannot') ||       
-    msg.includes('Username already exists') 
-) {
-    loginForm.classList.add('hidden');
-    registerForm.classList.remove('hidden');
-} else {
-    
-    const params = new URLSearchParams(window.location.search);
-    const action = params.get('action');
-    if (action === 'register') {
-        loginForm.classList.add('hidden');
-        registerForm.classList.remove('hidden');
-    } else {
-        loginForm.classList.remove('hidden');
-        registerForm.classList.add('hidden');
-    }
-}
-
-// Background slideshow for login.php
-const slides = document.querySelectorAll('.bg-slide');
-let current = 0;
-slides[current].style.opacity = 1;
-
-setInterval(() => {
-    slides[current].style.opacity = 0;
-    current = (current + 1) % slides.length;
-    slides[current].style.opacity = 1;
-}, 5000); 
-</script>
