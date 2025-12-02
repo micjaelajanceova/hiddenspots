@@ -64,6 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     if (!confirm('Remove profile photo?')) return; // ask for confirmation
 
+    const fd = new FormData();
+    fd.append('remove_photo', '1');
+
     try {
       const res = await fetch('../actions/profile-photo.php', {
       method: 'POST',
