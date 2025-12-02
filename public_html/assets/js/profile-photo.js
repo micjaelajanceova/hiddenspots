@@ -7,17 +7,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const photoLetter = document.getElementById('photoLetter');
   const uploadStatus = document.getElementById('uploadStatus');
 
-  // Open file picker
+  // Open file picker when "Change Photo" clicked
   changePhotoBtn.addEventListener('click', (e) => {
     e.preventDefault();
     photoInput.click();
   });
 
-  // Upload photo
+  // Handle photo selection and upload
   photoInput.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
+    // Preview image on page
     const reader = new FileReader();
     reader.onload = (ev) => {
       photoPreview.src = ev.target.result;
@@ -26,15 +27,18 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     reader.readAsDataURL(file);
 
+    // Show uploading message
     uploadStatus.classList.remove('hidden');
     uploadStatus.textContent = 'Uploading...';
 
+     // Send file to server
     const fd = new FormData();
     fd.append('profile_photo', file);
 
     try {
       const res = await fetch('../actions/profile-photo.php', { method: 'POST', body: fd });
       const data = await res.json();
+      // Update preview to saved file
       if (data.success) {
           photoPreview.src = '../' + data.path;
           uploadStatus.textContent = 'Photo saved!';
@@ -43,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
           uploadStatus.classList.add('text-green-600');  
           setTimeout(() => uploadStatus.classList.add('hidden'), 2000);
       } else {
+        // Show error message
           uploadStatus.textContent = 'Error: ' + (data.message || 'Upload failed');
           uploadStatus.classList.remove('text-green-600');
           uploadStatus.classList.add('text-red-600');
@@ -54,19 +59,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Remove photo
+  // Remove profile photo
   removePhotoBtn.addEventListener('click', async (e) => {
     e.preventDefault();
-    if (!confirm('Remove profile photo?')) return;
+    if (!confirm('Remove profile photo?')) return; // ask for confirmation
 
     try {
-      const res = await fetch(window.location.href, {
+      const res = await fetch('../actions/profile-photo.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: 'remove_photo=1'
       });
       const data = await res.json();
       if (data.success) {
+        // hide photo and show initials
         photoPreview.src = '';
         photoPreview.classList.add('hidden');
         if(photoLetter) photoLetter.style.display = 'block';
