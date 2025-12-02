@@ -23,6 +23,7 @@ class Spot {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+
     public function getById($id){
         $stmt = $this->pdo->prepare("
             SELECT h.*, 
@@ -78,6 +79,15 @@ public function deleteSpot($spot_id) {
 
     $stmt = $this->pdo->prepare("DELETE FROM hidden_spots WHERE id = ?");
     return $stmt->execute([$spot_id]);
+}
+
+public function getRecentFiles($limit = 10) {
+    try {
+        $stmt = $this->pdo->query("SELECT file_path FROM hidden_spots ORDER BY created_at DESC LIMIT $limit");
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    } catch (PDOException $e) {
+        return ['/assets/img/default-bg.jpg']; // fallback
+    }
 }
 
 }

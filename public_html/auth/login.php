@@ -10,13 +10,8 @@ $msg = '';
 $success = false;
 
 // Load background images for slideshow
-$bgImages = [];
-try {
-    $stmt = $pdo->query("SELECT file_path FROM hidden_spots ORDER BY created_at DESC");
-    $bgImages = $stmt->fetchAll(PDO::FETCH_COLUMN);
-} catch (PDOException $e) {
-    $bgImages = ['/assets/img/default-bg.jpg']; // fallback
-}
+$spotObj = new Spot($pdo);
+$bgImages = $spotObj->getRecentFiles(10);
 
 // Handle form submissions
 $showRegisterForm = false;
