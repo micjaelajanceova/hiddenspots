@@ -25,8 +25,8 @@ echo "<!-- DEBUG: full path = " . __DIR__ . '/../' . $photo_url . " -->";
       <button id="profileBtn" 
   class="flex items-center justify-center w-10 h-10 bg-black text-white rounded-full font-semibold text-lg overflow-hidden 
          hover:ring-2 hover:ring-white hover:scale-105 transition duration-200 ease-in-out cursor-pointer">
-        <?php if($photo_url && file_exists(__DIR__ .'/../' . $photo_url)): ?>
-          <img src="<?= htmlspecialchars($photo_url) ?>" alt="Profile" class="w-full h-full object-cover rounded-full">
+        <?php if(!empty($photo_url)): ?>
+          <img src="<?= htmlspecialchars('/' . ltrim($photo_url,'/')) ?>" alt="Profile" class="w-full h-full object-cover rounded-full">
         <?php else: ?>
           <?= strtoupper(substr($name, 0, 1)) ?>
         <?php endif; ?>
