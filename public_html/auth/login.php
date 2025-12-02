@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/password-validate.php';
 session_start();
 
 
@@ -71,14 +72,15 @@ if (isset($_POST['action'])) {
             $password = $_POST['password'] ?? '';
             $passwordConfirm = $_POST['password_confirm'] ?? '';
 
-            if ($password !== $passwordConfirm || strlen($password) < 6 || strlen($password) > 50
-            || !preg_match('/[a-z]/', $password)
-            || !preg_match('/[A-Z]/', $password)
-            || !preg_match('/[0-9]/', $password)) {
-            // Short, Instagram-like message
-            $msg = "Password must be 6–50 characters with uppercase, lowercase, and a number.";
-            $showRegisterForm = true;
-        } else {
+            if ($password !== $passwordConfirm) {
+                $msg = "Passwords do not match.";
+                $showRegisterForm = true;
+            } else {
+                $validationResult = validatePassword($password); // <-- call the function
+                if ($validationResult !== true) {
+                    $msg = $validationResult;
+                    $showRegisterForm = true;
+                } else {
 
                     
             // Username validation 
@@ -111,7 +113,7 @@ if (isset($_POST['action'])) {
         }
     }
 }
-}
+}}
 ?>
 
 <?php
