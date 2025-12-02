@@ -48,7 +48,7 @@ class User {
         return password_verify($password, $user['password']) ? $user : false;
     }
 
-    // Return profile photo URL or null for initials
+    // --- Profile photo methods ---
     public function getProfilePhoto($user_id) {
         $stmt = $this->pdo->prepare("SELECT profile_photo FROM users WHERE id = ?");
         $stmt->execute([$user_id]);
@@ -57,6 +57,34 @@ class User {
             return '/' . $photo;
         }
         return null; // fallback to initials
+    }
+
+    public function updateProfilePhoto($user_id, $path) {
+        // Remove old photo if exists
+        $old = $this->getProfilePhoto($user_id);
+        if ($old && file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $old)) {
+            @unlink($_SERVER['DOCUMENT_ROOT'] . '/' . $old);
+        }
+
+        $stmt = $this->pdo->prepare("UPDATE users SET profile_photo = ? WHERE id = ?");
+        return $stmt->execute([$path, $user_id]);
+    }
+
+    public function removeProfilePhoto($user_id) {
+        $old = $this->getProfilePhoto($user_id);
+        if ($old && file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $old)) {
+            @unlink($_SERVER['DOCUMENT_ROOT'] . '/' . $old);
+        }
+
+        $stmt = $this->pdo->prepare("UPDATE users SET profile_photo = NULL WHERE id = ?");
+        return $stmt->execute([$user_id]);
+    }
+
+    // Update user password
+    public function updatePassword($user_id, $newPassword) {
+        $hash = password_hash($newPassword, PASSWORD_DEFAULT);
+        $stmt = $this->pdo->prepare("UPDATE users SET password = ? WHERE id = ?");
+        return $stmt->execute([$hash, $user_id]);
     }
 }
 ?>
