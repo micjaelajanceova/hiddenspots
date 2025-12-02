@@ -1,12 +1,8 @@
-
 h1 {
   font-size: 2.5rem !important;
   font-weight: 700 !important;
   line-height: 1.2 !important;
   background: rgb(128, 179, 226) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
   color: transparent !important;
 }
 
@@ -40,10 +36,12 @@ p {
   color: #5f5d5d !important;
 }
 
+ /* Favorite animation */
 #favCheck {
     transition: opacity 0.3s ease;
 }
 
+/* Show favorite icon */
 #favCheck.show {
     opacity: 1;
 }
@@ -64,7 +62,7 @@ p {
     100% { transform: scale(1.02); }
   }
 
-   /* Macy.js script pre Masonry */
+   /* Macy.js script for feed layout */
   #masonry {
   display: none;
 }

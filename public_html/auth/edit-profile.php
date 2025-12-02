@@ -1,23 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../includes/db.php';
-
-// --- Password validation function ---
-function validatePassword($password) {
-    if (strlen($password) < 6 || strlen($password) > 50) {
-        return "Password must be 6–50 characters.";
-    }
-    if (!preg_match('/[A-Z]/', $password)) {
-        return "Password must contain at least one uppercase letter.";
-    }
-    if (!preg_match('/[a-z]/', $password)) {
-        return "Password must contain at least one lowercase letter.";
-    }
-    if (!preg_match('/[0-9]/', $password)) {
-        return "Password must contain at least one number.";
-    }
-    return true;
-}
+require_once __DIR__ . '/../includes/password-validate.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -28,74 +12,6 @@ $user_id = $_SESSION['user_id'];
 $msg = '';
 $msg_type = '';
 
-// --- AJAX Remove profile photo ---
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove_photo']) && $_POST['remove_photo'] == '1') {
-    header('Content-Type: application/json');
-
-    $stmt = $pdo->prepare("SELECT profile_photo FROM users WHERE id = ?");
-    $stmt->execute([$user_id]);
-    $current = $stmt->fetchColumn();
-
-    if ($current) {
-        $pathOnDisk = __DIR__ . '/../' . $current;
-        if (file_exists($pathOnDisk)) @unlink($pathOnDisk);
-    }
-
-    $stmt = $pdo->prepare("UPDATE users SET profile_photo = NULL WHERE id = ?");
-    $stmt->execute([$user_id]);
-
-    unset($_SESSION['profile_photo']);
-    echo json_encode(['success' => true]);
-    exit();
-}
-
-// --- AJAX Upload profile photo ---
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_photo']) && empty($_POST['update_password']) && !isset($_POST['remove_photo'])) {
-    $response = ['success' => false, 'message' => 'Upload failed'];
-
-    if ($_FILES['profile_photo']['error'] === UPLOAD_ERR_OK) {
-        $tmp = $_FILES['profile_photo']['tmp_name'];
-        $orig = basename($_FILES['profile_photo']['name']);
-        $ext = strtolower(pathinfo($orig, PATHINFO_EXTENSION));
-        $allowed = ['jpg','jpeg','png','webp','gif'];
-
-        if (!in_array($ext, $allowed)) {
-            $response['message'] = 'Invalid file type.';
-        } else {
-            $filename = uniqid('pf_') . '.' . $ext;
-            $targetDir = __DIR__ . '/../uploads/profile/';
-            if (!is_dir($targetDir)) mkdir($targetDir, 0755, true);
-            $dest = $targetDir . $filename;
-
-            if (move_uploaded_file($tmp, $dest)) {
-                $relative = 'uploads/profile/' . $filename;
-
-                
-                $stmt = $pdo->prepare("SELECT profile_photo FROM users WHERE id = ?");
-                $stmt->execute([$user_id]);
-                $old = $stmt->fetchColumn();
-                if ($old) {
-                    $oldPath = __DIR__ . '/../' . $old;
-                    if (file_exists($oldPath)) @unlink($oldPath);
-                }
-
-                $stmt = $pdo->prepare("UPDATE users SET profile_photo = ? WHERE id = ?");
-                $stmt->execute([$relative, $user_id]);
-
-                $_SESSION['profile_photo'] = $relative;
-                $response = ['success' => true, 'path' => $relative];
-            } else {
-                $response['message'] = 'Could not move uploaded file.';
-            }
-        }
-    } else {
-        $response['message'] = 'Upload error code: ' . $_FILES['profile_photo']['error'];
-    }
-
-    header('Content-Type: application/json');
-    echo json_encode($response);
-    exit();
-}
 
 // --- Password update ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_password'])) {
@@ -230,87 +146,6 @@ include __DIR__ . '/../includes/header.php';
   </div>
 </main>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const photoInput = document.getElementById('photoInput');
-  const changePhotoBtn = document.getElementById('changePhotoBtn');
-  const removePhotoBtn = document.getElementById('removePhotoBtn');
-  const photoPreview = document.getElementById('photoPreview');
-  const photoLetter = document.getElementById('photoLetter');
-  const uploadStatus = document.getElementById('uploadStatus');
-
-  // Open file picker
-  changePhotoBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    photoInput.click();
-  });
-
-  // Upload photo
-  photoInput.addEventListener('change', async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      photoPreview.src = ev.target.result;
-      photoPreview.classList.remove('hidden');
-      if(photoLetter) photoLetter.style.display = 'none';
-    };
-    reader.readAsDataURL(file);
-
-    uploadStatus.classList.remove('hidden');
-    uploadStatus.textContent = 'Uploading...';
-
-    const fd = new FormData();
-    fd.append('profile_photo', file);
-
-    try {
-      const res = await fetch(window.location.href, { method: 'POST', body: fd });
-      const data = await res.json();
-if (data.success) {
-    photoPreview.src = '../' + data.path;
-    uploadStatus.textContent = 'Photo saved!';
-    uploadStatus.classList.remove('hidden');
-    uploadStatus.classList.remove('text-red-600'); 
-    uploadStatus.classList.add('text-green-600');  
-    setTimeout(() => uploadStatus.classList.add('hidden'), 2000);
-} else {
-    uploadStatus.textContent = 'Error: ' + (data.message || 'Upload failed');
-    uploadStatus.classList.remove('text-green-600');
-    uploadStatus.classList.add('text-red-600');
-    setTimeout(() => uploadStatus.classList.add('hidden'), 2000);
-}
-
-    } catch (err) {
-      uploadStatus.textContent = 'Upload failed.';
-      setTimeout(() => uploadStatus.classList.add('hidden'), 2000);
-    }
-  });
-
-  // Remove photo
-  removePhotoBtn.addEventListener('click', async (e) => {
-    e.preventDefault();
-    if (!confirm('Remove profile photo?')) return;
-
-    try {
-      const res = await fetch(window.location.href, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'remove_photo=1'
-      });
-      const data = await res.json();
-      if (data.success) {
-        photoPreview.src = '';
-        photoPreview.classList.add('hidden');
-        if(photoLetter) photoLetter.style.display = 'block';
-      } else {
-        alert('Could not remove photo.');
-      }
-    } catch (err) {
-      alert('Could not remove photo.');
-    }
-  });
-});
-</script>
+<script src="/js/profile-photo.js" defer></script>
 
 <?php include __DIR__ . '/../includes/footer.php'; ?>

@@ -9,9 +9,11 @@ function initMasonry() {
     waitForImages: true
   });
 
+  // Show the masonry container after initialization
   document.getElementById('masonry').style.display = 'block';
 }
 
+// Run the masonry layout when page loads
 window.addEventListener('load', () => {
   initMasonry();
 });

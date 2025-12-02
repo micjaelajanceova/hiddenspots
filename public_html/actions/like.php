@@ -1,12 +1,18 @@
 <?php
-include '../includes/db.php';
+// Database connection
+require_once '../includes/db.php';
+
+// Needed to identify the logged-in user
 session_start();
 
+// Get user ID from session
 $user_id = $_SESSION['user_id'] ?? null;
 
+// Handle like/unlike action
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $spot_id = intval($_POST['spot_id'] ?? 0);
 
+    // User must be logged in to like a spot
     if (!$user_id) {
         http_response_code(403);
         echo 'not_logged_in';

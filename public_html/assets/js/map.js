@@ -1,3 +1,4 @@
+// ---------- Upload Modal & Map Logic ----------
 const uploadModal = document.getElementById('uploadModal');
 const closeBtn = document.getElementById('closeUploadModal');
 const openBtns = document.querySelectorAll('a[onclick*="uploadModal"], button.ph-plus');
@@ -11,7 +12,7 @@ const addressInput = document.querySelector('input[name="address"]');
 
 let uploadMap, uploadMarker;
 
-// ---------- DEBOUNCE ----------
+// ---------- Debounce ----------
 function debounce(fn, delay) {
   let timeout;
   return function(...args) {
@@ -20,7 +21,7 @@ function debounce(fn, delay) {
   };
 }
 
-// ---------- MAP ----------
+// ---------- Map ----------
 document.addEventListener('DOMContentLoaded', () => {
     const mapEl = document.getElementById('uploadMap');
     if (!mapEl) return;
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(uploadMap);
 
+    // Add marker on map click
     uploadMap.on('click', (e) => {
         const { lat, lng } = e.latlng;
         if (uploadMarker) uploadMap.removeLayer(uploadMarker);
@@ -40,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// ---------- MODAL OPEN/CLOSE ----------
+// ---------- Modal Open/Close ----------
 openBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -52,7 +54,7 @@ openBtns.forEach(btn => {
         uploadModal.classList.remove('hidden');
         hideFeedMap();
 
-        // reset
+        // reset form steps and images
         document.getElementById('stepSelect').classList.remove('hidden');
         document.getElementById('stepPreview').classList.add('hidden');
         document.getElementById('stepForm').classList.add('hidden');
@@ -70,7 +72,7 @@ closeBtn.addEventListener('click', () => {
     showFeedMap();
 });
 
-// ---------- PHOTO PREVIEW ----------
+// ---------- Photo Preview ----------
 photoInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -87,7 +89,7 @@ photoInput.addEventListener('change', (e) => {
     reader.readAsDataURL(file);
 });
 
-// ---------- NEXT/BACK ----------
+// ---------- Next/Back Navigation ----------
 document.getElementById('nextBtn').addEventListener('click', () => {
     document.getElementById('stepPreview').classList.add('hidden');
     document.getElementById('stepForm').classList.remove('hidden');
@@ -99,7 +101,7 @@ document.getElementById('backBtn').addEventListener('click', () => {
     document.getElementById('stepPreview').classList.remove('hidden');
 });
 
-// ---------- GEOCODE ----------
+// ---------- Geocode City Input ----------
 if (cityInput) {
     cityInput.addEventListener('input', debounce(async () => {
         const city = cityInput.value.trim();
@@ -115,6 +117,7 @@ if (cityInput) {
     }, 500));
 }
 
+// ---------- Geocode Address Input ----------
 if (addressInput) {
     addressInput.addEventListener('input', debounce(async () => {
         const addr = addressInput.value.trim();
