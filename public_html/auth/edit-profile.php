@@ -66,7 +66,7 @@ include __DIR__ . '/../includes/header.php';
   <div class="bg-white shadow-xl p-6 w-full max-w-3xl m-4 my-10">
 
    
-    <div class="flex justify-start items-center mb-12">
+    <div class="flex justify-between items-center mb-12">
       <a href="my-profile.php" class="text-gray-600 hover:underline flex items-center gap-1">
         ← Back
       </a>
@@ -77,7 +77,7 @@ include __DIR__ . '/../includes/header.php';
     <div class="flex flex-col md:flex-row gap-6">
 
       
-      <div class="flex-1 flex flex-col items-center justify-center">
+      <div class="flex-1 flex flex-col items-center justify-start">
         <div class="relative w-36 h-36 rounded-full border-4 border-gray-200 shadow-sm flex items-center justify-center bg-white text-4xl font-bold overflow-hidden">
           <?php if ($user_photo): ?>
             <img id="photoPreview" src="<?= htmlspecialchars($photo_src) ?>" class="w-full h-full object-cover">
