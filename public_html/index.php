@@ -48,7 +48,7 @@ try {
   <div class="flex items-center justify-between">
     <div>
       <h1 class="text-4xl font-bold mb-3">Trending</h1>
-      <h2 class="mt-1 text-base sm:text-2xl">Explore what most people miss.</h2>
+      <h2 class="mt-1 text-sm sm:text-2xl">Explore what most people miss.</h2>
     </div>
     <a href="trending.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full text-sm sm:px-4 sm:py-2 sm:text-base">See more →</a>
   </div>
