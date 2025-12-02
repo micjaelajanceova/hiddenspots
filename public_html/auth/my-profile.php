@@ -19,6 +19,10 @@ $user = $userObj->getById($user_id);
 
 if (!$user) die("User not found.");
 
+// Assign user_name for template
+$user_name = $user['name'] ?? 'User';
+
+
 // Get the user's profile photo (if they uploaded one)
 $photo_url = $userObj->getProfilePhoto($user_id);
 
