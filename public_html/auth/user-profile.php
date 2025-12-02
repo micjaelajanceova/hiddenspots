@@ -1,8 +1,9 @@
 <?php
 include __DIR__ . '/../includes/db.php';
 include __DIR__ . '/../includes/header.php';
-include __DIR__ . '/../classes/spot.php';
 require_once __DIR__ . '/../classes/user.php';
+include __DIR__ . '/../classes/spot.php';
+
 
 
 // Get user ID – either from the URL or from the logged-in user's session
