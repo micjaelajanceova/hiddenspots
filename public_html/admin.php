@@ -302,72 +302,70 @@ if (!$site) {
   </div>
 
   <div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
-    <table class="min-w-full border-collapse w-full table-auto">
-      <thead>
-        <tr class="bg-gray-200 text-left">
-          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">ID</th>
-          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Name</th>
-          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">City</th>
-          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Photo</th>
-          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Created</th>
-          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Featured</th>
-          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($spots as $s): ?>
-          <tr class="border-b hover:bg-gray-100 align-top">
-            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($s['id']) ?></td>
-            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($s['name']) ?></td>
-            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($s['city']) ?></td>
-            <td class="p-2 sm:p-3 text-sm sm:text-base">
-              <?php if (!empty($s['file_path'])): ?>
-                <img src="<?= e($s['file_path']) ?>" class="w-12 sm:w-16 h-12 sm:h-16 object-cover rounded">
-              <?php endif; ?>
-            </td>
-            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($s['created_at']) ?></td>
-            <td class="p-2 sm:p-3 text-sm sm:text-base">
-              <form method="POST" style="display:inline-block;">
+  <table class="min-w-full border-collapse w-full table-auto">
+    <thead>
+      <tr class="bg-gray-200 text-left">
+        <th class="p-2 sm:p-3 border-b text-sm sm:text-base">ID</th>
+        <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Name</th>
+        <th class="p-2 sm:p-3 border-b text-sm sm:text-base">City</th>
+        <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Photo</th>
+        <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Created</th>
+        <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Featured</th>
+        <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($spots as $s): ?>
+        <tr class="border-b hover:bg-gray-100 align-top">
+          <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($s['id']) ?></td>
+          <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($s['name']) ?></td>
+          <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($s['city']) ?></td>
+          <td class="p-2 sm:p-3 text-sm sm:text-base">
+            <?php if (!empty($s['file_path'])): ?>
+              <img src="<?= e($s['file_path']) ?>" class="w-12 sm:w-16 h-12 sm:h-16 object-cover rounded">
+            <?php endif; ?>
+          </td>
+          <td class="p-2 sm:p-3 text-sm sm:text-base"><?= e($s['created_at']) ?></td>
+          <td class="p-2 sm:p-3 text-sm sm:text-base">
+            <form method="POST" style="display:inline-block;">
+              <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>">
+              <input type="hidden" name="id" value="<?= e($s['id']) ?>">
+              <button type="submit" name="toggle_featured" class="<?= $s['featured'] ? 'bg-yellow-500' : 'bg-gray-300' ?> text-white px-2 py-1 rounded text-xs">
+                <?= $s['featured'] ? 'Featured' : 'Mark featured' ?>
+              </button>
+            </form>
+          </td>
+          <td class="p-2 sm:p-3 text-sm sm:text-base">
+            <!-- Edit form -->
+            <details class="mb-1">
+              <summary class="cursor-pointer text-blue-600">Edit</summary>
+              <form method="POST" enctype="multipart/form-data" class="mt-2">
                 <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>">
                 <input type="hidden" name="id" value="<?= e($s['id']) ?>">
-                <button type="submit" name="toggle_featured" class="<?= $s['featured'] ? 'bg-yellow-500' : 'bg-gray-300' ?> text-white px-2 py-1 rounded text-xs">
-                  <?= $s['featured'] ? 'Featured' : 'Mark featured' ?>
-                </button>
-              </form>
-            </td>
-            <td class="p-2 sm:p-3 text-sm sm:text-base">
-              <!-- Edit button toggle to show inline edit form -->
-              <details class="mb-1">
-                <summary class="cursor-pointer text-blue-600">Edit</summary>
-                <form method="POST" enctype="multipart/form-data" class="mt-2">
-                  <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>">
-                  <input type="hidden" name="id" value="<?= e($s['id']) ?>">
-                  <input name="name" value="<?= e($s['name']) ?>" class="border p-1 w-full mb-1" />
-                  <input name="city" value="<?= e($s['city']) ?>" class="border p-1 w-full mb-1" />
-                  <input name="address" value="<?= e($s['address']) ?>" class="border p-1 w-full mb-1" />
-                  <textarea name="description" class="border p-1 w-full mb-1"><?= e($s['description']) ?></textarea>
-                  <input type="file" name="photo" accept="image/*" class="border p-1 mb-2 w-full" />
-                  <div class="flex gap-2">
-                    <button type="submit" name="edit_spot" class="bg-blue-500 text-white px-2 py-1 rounded text-xs">Save</button>
-                    <form method="POST" onsubmit="return confirm('Delete this spot?');">
-                      <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>">
-                      <input type="hidden" name="id" value="<?= e($s['id']) ?>">
-                    </form>
-                  </div>
-                </form>
-              </details>
 
-              <form method="POST" onsubmit="return confirm('Delete this spot?');" style="display:inline-block;margin-left:6px;">
-                <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>">
-                <input type="hidden" name="id" value="<?= e($s['id']) ?>">
-                <button type="submit" name="delete_spot" class="bg-red-500 text-white px-2 py-1 rounded text-xs">Delete</button>
+                <input name="name" value="<?= e($s['name']) ?>" class="border p-1 w-full mb-1" />
+                <input name="city" value="<?= e($s['city']) ?>" class="border p-1 w-full mb-1" />
+                <input name="address" value="<?= e($s['address']) ?>" class="border p-1 w-full mb-1" />
+                <textarea name="description" class="border p-1 w-full mb-1"><?= e($s['description']) ?></textarea>
+                <input type="file" name="photo" accept="image/*" class="border p-1 mb-2 w-full" />
+
+                <button type="submit" name="edit_spot" class="bg-blue-500 text-white px-2 py-1 rounded text-xs">Save</button>
               </form>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
-  </div>
+            </details>
+
+            <!-- Delete form -->
+            <form method="POST" onsubmit="return confirm('Delete this spot?');" style="display:inline-block; margin-left:6px;">
+              <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>">
+              <input type="hidden" name="id" value="<?= e($s['id']) ?>">
+              <button type="submit" name="delete_spot" class="bg-red-500 text-white px-2 py-1 rounded text-xs">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <?php endforeach; ?>
+    </tbody>
+  </table>
+</div>
+
 </div>
 
 <!-- COMMENTS -->
