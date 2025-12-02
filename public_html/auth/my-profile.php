@@ -4,9 +4,8 @@ require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../classes/User.php';
 require_once __DIR__ . '/../classes/spot.php';
 
-
-// check if user is logged in
-if(!isset($_SESSION['user_id'])){
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
     header("Location: login.php?action=login");
     exit();
 }
@@ -16,16 +15,11 @@ $user_id = $_SESSION['user_id'];
 // Use User class to fetch current user info
 $userObj = new User($pdo);
 $user = $userObj->getById($user_id);
-
 if (!$user) die("User not found.");
 
-// Assign user_name for template
-$user_name = $user['name'] ?? 'User';
-
-
-// Get the user's profile photo (if they uploaded one)
+// Define username and get the user's profile photo path (or null for initials)
+$user_name = $user['name'];
 $photo_url = $userObj->getProfilePhoto($user_id);
-
 
 // Create Spot object to fetch user's uploaded spots
 $spotObj = new Spot($pdo);
