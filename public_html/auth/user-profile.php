@@ -4,8 +4,6 @@ include __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../classes/User.php';
 include __DIR__ . '/../classes/spot.php';
 
-
-
 // Get user ID – either from the URL or from the logged-in user's session
 $user_id = $_GET['user_id'] ?? $_SESSION['user_id'];
 if (!$user_id) die("No user ID provided.");
@@ -24,7 +22,6 @@ $photo_url = $userObj->getProfilePhoto($user_id);
 $spotObj = new Spot($pdo);
 $spots = $spotObj->getByUser($user_id);
 ?>
-
 
 <main class="flex-1 bg-white min-h-screen px-4 sm:px-6 lg:px-8 py-10">
 
@@ -55,13 +52,9 @@ $spots = $spotObj->getByUser($user_id);
     
   </div>
 
-
 <?php else: ?>
   <p class="text-center text-gray-500 mt-10">This user hasn't uploaded any spots yet.</p>
 <?php endif; ?>
-
-
-
   
   <div class="text-center mt-12">
     <a href="../index.php" class="text-gray-600 hover:underline">← Back to Home</a>
