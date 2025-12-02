@@ -83,6 +83,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <!-- SHOW MAP BUTTON -->
       <button id="showMap" class=" px-3 py-1 bg-black text-white rounded text-sm">
           Map
+          <span id="feedMapArrow" class="inline-block transition-transform duration-300">▼</span>
       </button>
 
 </div>
@@ -146,8 +147,17 @@ const mapDiv = document.getElementById('feedMap');
 let feedMap; 
 
 mapBtn.addEventListener('click', () => {
-    mapDiv.style.display = mapDiv.style.display === 'none' ? 'block' : 'none';
+   
+    // toggle map
+    const isHidden = mapDiv.style.display === 'none';
+    mapDiv.style.display = isHidden ? 'block' : 'none';
 
+    // rotate arrow ▼
+    const arrow = document.getElementById('feedMapArrow');
+    if (arrow) {
+        arrow.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+    
     if (mapDiv.style.display === 'block') {
         setTimeout(() => {
             if (!feedMap) initFeedMap(); 
