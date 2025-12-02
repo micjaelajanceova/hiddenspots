@@ -124,37 +124,33 @@ $siteInfo = $pdo->query("SELECT * FROM site_settings WHERE id=1")->fetch(PDO::FE
       <!-- Description -->
       <div class="mb-4">
         <label class="block font-semibold mb-1">Description</label>
-        <textarea name="description" class="w-full border p-2 rounded" rows="3"><?= htmlspecialchars($siteInfo['site_description']) ?></textarea>
+        <textarea name="description" class="w-full border p-2 rounded" rows="3"><?= htmlspecialchars($siteInfo['site_description'] ?? '') ?></textarea>
       </div>
 
       <!-- Rules -->
       <div class="mb-4">
         <label class="block font-semibold mb-1">Rules</label>
-        <textarea name="rules" class="w-full border p-2 rounded" rows="3"><?= htmlspecialchars($siteInfo['rules']) ?></textarea>
+        <textarea name="rules" class="w-full border p-2 rounded" rows="3"><?= htmlspecialchars($siteInfo['rules'] ?? '') ?></textarea>
       </div>
 
       <!-- Contact -->
       <div class="mb-4">
         <label class="block font-semibold mb-1">Contact</label>
-        <input type="text" name="contact" class="w-full border p-2 rounded" value="<?= htmlspecialchars($siteInfo['contact_info']) ?>">
+        <input type="text" name="contact" class="w-full border p-2 rounded" value="<?= htmlspecialchars($siteInfo['contact_info'] ?? '') ?>">
       </div>
 
       <!-- Theme color -->
       <div class="mb-4">
         <label class="block font-semibold mb-1">Theme color</label>
-        <input type="color" name="theme_color" class="w-full h-10 p-1 rounded border" value="<?= htmlspecialchars($siteInfo['primary_color']) ?>">
+        <input type="color" name="theme_color" class="w-full h-10 p-1 rounded border" value="<?= htmlspecialchars($siteInfo['primary_color'] ?? '#579692') ?>">
       </div>
 
-      <!-- Font size -->
-      <div class="mb-4">
-        <label class="block font-semibold mb-1">Font size</label>
-        <input type="text" name="font_size" class="w-full border p-2 rounded" value="<?= htmlspecialchars($siteInfo['font_size']) ?>">
-      </div>
-
+ 
       <button type="submit" name="update_site" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Save</button>
     </form>
   </div>
 </div>
+
 
 
 
