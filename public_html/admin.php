@@ -74,9 +74,6 @@ if (isset($_POST['update_site'])) {
   exit();
 }
 
-// ===== FETCH SITE INFO =====
-$siteInfo = $pdo->query("SELECT * FROM site_settings WHERE id=1")->fetch(PDO::FETCH_ASSOC);
-
 
 
 // Fetch data
@@ -92,9 +89,6 @@ $users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY 
 
 // ===== FETCH SITE INFO =====
 $siteInfo = $pdo->query("SELECT * FROM site_settings LIMIT 1")->fetch(PDO::FETCH_ASSOC);
-
-// ===== FETCH STYLING SETTINGS =====
-$stylingSettings = $pdo->query("SELECT * FROM styling_settings LIMIT 1")->fetch(PDO::FETCH_ASSOC);
 
 
 ?>
@@ -118,35 +112,50 @@ $stylingSettings = $pdo->query("SELECT * FROM styling_settings LIMIT 1")->fetch(
 
   <div class="border-t border-gray-300 mb-6"></div>
 
+  <?php
+// ===== FETCH SITE INFO =====
+$siteInfo = $pdo->query("SELECT * FROM site_settings WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+?>
+
 <!-- SITE INFO TAB -->
 <div id="site" class="tab-content hidden mt-6">
   <div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
     <form method="POST">
-      
+      <!-- Description -->
       <div class="mb-4">
         <label class="block font-semibold mb-1">Description</label>
         <textarea name="description" class="w-full border p-2 rounded" rows="3"><?= htmlspecialchars($siteInfo['site_description']) ?></textarea>
       </div>
-      
+
+      <!-- Rules -->
       <div class="mb-4">
         <label class="block font-semibold mb-1">Rules</label>
         <textarea name="rules" class="w-full border p-2 rounded" rows="3"><?= htmlspecialchars($siteInfo['rules']) ?></textarea>
       </div>
 
+      <!-- Contact -->
       <div class="mb-4">
         <label class="block font-semibold mb-1">Contact</label>
         <input type="text" name="contact" class="w-full border p-2 rounded" value="<?= htmlspecialchars($siteInfo['contact_info']) ?>">
       </div>
 
+      <!-- Theme color -->
       <div class="mb-4">
         <label class="block font-semibold mb-1">Theme color</label>
         <input type="color" name="theme_color" class="w-full h-10 p-1 rounded border" value="<?= htmlspecialchars($siteInfo['primary_color']) ?>">
+      </div>
+
+      <!-- Font size -->
+      <div class="mb-4">
+        <label class="block font-semibold mb-1">Font size</label>
+        <input type="text" name="font_size" class="w-full border p-2 rounded" value="<?= htmlspecialchars($siteInfo['font_size']) ?>">
       </div>
 
       <button type="submit" name="update_site" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Save</button>
     </form>
   </div>
 </div>
+
 
 
 
