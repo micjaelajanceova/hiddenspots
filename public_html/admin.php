@@ -1,59 +1,22 @@
 <?php
-// Zobrazovanie chýb
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-// Pripojenie k DB
-include 'includes/db.php';
-
-// Skontrolujeme PDO objekt
-if (!$pdo) {
-    die("PDO object not initialized!");
-}
-echo "<h3>Connected to database successfully</h3>";
-
-// Funkcia na test SELECT
-function testTable($pdo, $table) {
-    echo "<h4>Testing table: $table</h4>";
-    try {
-        $stmt = $pdo->query("SELECT * FROM $table LIMIT 5");
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        if ($rows) {
-            echo "<pre>";
-            print_r($rows);
-            echo "</pre>";
-        } else {
-            echo "No data found in $table or table doesn't exist.<br>";
-        }
-    } catch (PDOException $e) {
-        echo "Error querying $table: " . $e->getMessage() . "<br>";
-    }
-}
-
-// Testujeme všetky potrebné tabuľky
-testTable($pdo, "hidden_spots");
-testTable($pdo, "comments");
-testTable($pdo, "users");
-testTable($pdo, "site_settings");
-?>
-
-<?php
-include 'includes/db.php';
-include 'includes/header.php';
-include 'classes/spot.php';
-include 'includes/profile-header.php';
-
-// Start session if not started
+// -------------------- SESSION + SECURITY --------------------
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 // Only admin can access
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-  header("Location: index.php");
-  exit();
+    header("Location: index.php");
+    exit();
 }
 
-// ---------- CSRF token ----------
+// -------------------- DB + CLASSES --------------------
+require_once 'includes/db.php';
+require_once 'classes/spot.php';
+
+// Teraz môžeme bezpečne include súbory, ktoré majú HTML výstup
+include 'includes/header.php';
+include 'includes/profile-header.php';
+
+// -------------------- CSRF --------------------
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
@@ -64,11 +27,11 @@ function check_csrf($token) {
 // Helper: sanitize output
 function e($v){ return htmlspecialchars($v ?? '','ENT_QUOTES','UTF-8'); }
 
-// --------- Handle POST actions ----------
+// -------------------- HANDLE POST ACTIONS --------------------
 $errors = [];
 $success = null;
 
-// --- DELETE SPOT ---
+// DELETE SPOT
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_spot'])) {
     if (!check_csrf($_POST['csrf_token'] ?? '')) { $errors[] = 'Invalid CSRF token'; }
     else {
@@ -79,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_spot'])) {
     }
 }
 
-// --- CREATE SPOT ---
+// CREATE SPOT
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_spot'])) {
     if (!check_csrf($_POST['csrf_token'] ?? '')) { $errors[] = 'Invalid CSRF token'; }
     else {
@@ -88,8 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_spot'])) {
         $address = trim($_POST['address'] ?? '');
         $description = trim($_POST['description'] ?? '');
 
-        // basic validation
         if ($name === '') $errors[] = 'Name required';
+
         // handle file upload
         $uploaded_path = null;
         if (!empty($_FILES['photo']['name'])) {
@@ -123,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_spot'])) {
     }
 }
 
-// --- EDIT SPOT ---
+// EDIT SPOT
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_spot'])) {
     if (!check_csrf($_POST['csrf_token'] ?? '')) { $errors[] = 'Invalid CSRF token'; }
     else {
@@ -149,7 +112,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_spot'])) {
                         @mkdir(dirname(__FILE__).'/uploads', 0755, true);
                     }
                     if (move_uploaded_file($up['tmp_name'], dirname(__FILE__).'/'.$filename)) {
-                        // update with new file path
                         $stmt = $pdo->prepare("UPDATE hidden_spots SET file_path = ? WHERE id = ?");
                         $stmt->execute([$filename, $id]);
                     } else {
