@@ -38,7 +38,7 @@ $mySpots = $spotObj->getByUser($user_id);
         <?= strtoupper(substr($user_name, 0, 1)) ?>
     <?php endif; ?>
     </div>
-    <h1 class="text-2xl font-bold"><?= htmlspecialchars($user_name) ?></h1>
+    <h1 class="text-xl sm:text-2xl font-bold"><?= htmlspecialchars($user_name) ?></h1>
   </div>
 
   <!-- EDIT PROFILE BUTTON -->
