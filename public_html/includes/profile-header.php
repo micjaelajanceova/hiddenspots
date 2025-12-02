@@ -1,12 +1,19 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) session_start();
+$photo = null;
+$name = 'User';
+$user_id = $_SESSION['user_id'] ?? null;
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+if ($user_id) {
+    $stmt = $pdo->prepare("SELECT name, profile_photo FROM users WHERE id=?");
+    $stmt->execute([$user_id]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($row) {
+        $name = $row['name'] ?? $name;
+        $photo = $row['profile_photo'] ?? null;
+    }
 }
 
-
-$name = $profile_user['name'] ?? ($_SESSION['user_name'] ?? 'User');
-$photo = $profile_user['profile_photo'] ?? ($_SESSION['profile_photo'] ?? null);
 
 $photo_url = null;
 if (!empty($photo)) {
