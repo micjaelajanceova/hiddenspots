@@ -242,6 +242,14 @@ $comments = $pdo->query("
 ")->fetchAll(PDO::FETCH_ASSOC);
 $users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
 $site = $pdo->query("SELECT * FROM site_settings WHERE id = 1 LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+if (!$site) {
+    $site = [
+        'site_description' => '',
+        'rules' => '',
+        'contact_info' => '',
+        'primary_color' => '#579692'
+    ];
+}
 ?>
 
 <main class="flex-1 min-h-screen overflow-y-auto">
