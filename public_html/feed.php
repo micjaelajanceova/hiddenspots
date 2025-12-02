@@ -39,7 +39,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 
-<main class="flex-1 bg-white min-h-screen overflow-y-auto pt-2 md:pt-6 px-4 sm:px-6 lg:px-8 mt-6"> 
+<main class="flex-1 bg-white min-h-screen overflow-y-auto pt-2 md:pt-6 px-4 sm:px-6 lg:px-8"> 
 
 
   <?php include 'includes/profile-header.php'; ?>
