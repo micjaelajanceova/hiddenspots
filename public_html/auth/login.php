@@ -174,3 +174,5 @@ include __DIR__ . '/../includes/header.php';
         </p>
     </form>
     </main>
+
+<script src="/assets/js/login.js" defer></script>

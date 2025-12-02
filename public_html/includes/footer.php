@@ -14,7 +14,7 @@
 
 <script src="/assets/js/profile-photo.js" defer></script>
 
-<script src="/assets/js/login.js" defer></script>
+
 <!-- Map and Upload scripts -->
 <script>
   const isLoggedIn = <?= isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
