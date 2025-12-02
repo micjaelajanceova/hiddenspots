@@ -66,7 +66,7 @@ include __DIR__ . '/../includes/header.php';
   <div class="bg-white shadow-xl p-6 w-full max-w-3xl m-4 my-10">
 
    
-    <div class="flex justify-between items-center mb-12">
+    <div class="flex justify-start items-center mb-12">
       <a href="my-profile.php" class="text-gray-600 hover:underline flex items-center gap-1">
         ← Back
       </a>
