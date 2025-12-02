@@ -1,7 +1,7 @@
 <?php
 include __DIR__ . '/../includes/db.php';
 include __DIR__ . '/../includes/header.php';
-require_once __DIR__ . '/../classes/user.php';
+require_once __DIR__ . '/../classes/User.php';
 include __DIR__ . '/../classes/spot.php';
 
 
