@@ -146,6 +146,6 @@ include __DIR__ . '/../includes/header.php';
   </div>
 </main>
 
-<script src="/js/profile-photo.js" defer></script>
+<script src="/assets/js/profile-photo.js" defer></script>
 
 <?php include __DIR__ . '/../includes/footer.php'; ?>
