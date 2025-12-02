@@ -150,7 +150,7 @@ include __DIR__ . '/../includes/header.php';
     ?>
     <!-- Use the calculated class, remove any hardcoded red class -->
     <p class="<?= $msgColor ?> font-bold text-center mb-4"><?= htmlspecialchars($msg) ?></p>
-<?php endif; ?>
+    <?php endif; ?>
 
     <!-- LOGIN FORM -->
     <form id="loginForm" class="flex flex-col gap-4" method="post">
