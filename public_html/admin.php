@@ -60,7 +60,6 @@ if (isset($_POST['update_site'])) {
   $rules = trim($_POST['rules']);
   $contact = trim($_POST['contact']);
   $theme_color = trim($_POST['theme_color']);
-  $font_size = trim($_POST['font_size']); // len ak chceš zachovať font_size
 
   // Update site info
   $stmt = $pdo->prepare("
@@ -228,6 +227,21 @@ $siteInfo = $pdo->query("SELECT * FROM site_settings LIMIT 1")->fetch(PDO::FETCH
 
       <label class="block font-semibold mb-1">Card 3 – Text</label>
       <textarea name="card3_text" class="w-full border p-2 rounded mb-6" rows="3"><?= htmlspecialchars($siteInfo['card3_text'] ?? '') ?></textarea>
+
+
+         <label>Site Description</label>
+    <textarea name="site_description" rows="4"><?= htmlspecialchars($siteDescription) ?></textarea>
+
+    <label>Rules & Regulations</label>
+    <textarea name="rules" rows="4"><?= htmlspecialchars($siteRules) ?></textarea>
+
+    <label>Contact Information</label>
+    <textarea name="contact_info" rows="4"><?= htmlspecialchars($siteContact) ?></textarea>
+
+    <label>Primary Color</label>
+    <input type="color" name="primary_color" value="<?= htmlspecialchars($siteColor) ?>">
+
+    <button type="submit" name="save_settings">Save Settings</button>
 
 
       <button type="submit" name="update_site" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">

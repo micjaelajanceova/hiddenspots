@@ -1,27 +1,33 @@
 <?php
 require_once __DIR__ . '/db.php';
 
-$settingsStmt = $pdo->query("SELECT rules, contact_info FROM site_settings WHERE id = 1 LIMIT 1");
-$footerInfo = $settingsStmt->fetch(PDO::FETCH_ASSOC);
-?>
+// Load ALL footer settings (description, rules, contact, color)
+$stmt = $pdo->query("SELECT site_description, rules, contact_info, primary_color 
+                     FROM site_settings 
+                     WHERE id = 1 LIMIT 1");
 
+$settings = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$siteDescription = $settings['site_description'] ?? '';
+$siteRules = $settings['rules'] ?? '';
+$siteContact = $settings['contact_info'] ?? '';
+?>
 <footer class="text-center py-6 text-gray-500 text-sm">
+
+    <?php if (!empty($siteDescription)): ?>
+        <p><?= nl2br(htmlspecialchars($siteDescription)) ?></p>
+    <?php endif; ?>
+
+    <?php if (!empty($siteRules)): ?>
+        <p><strong>Rules:</strong><br><?= nl2br(htmlspecialchars($siteRules)) ?></p>
+    <?php endif; ?>
+
+    <?php if (!empty($siteContact)): ?>
+        <p><strong>Contact:</strong><br><?= nl2br(htmlspecialchars($siteContact)) ?></p>
+    <?php endif; ?>
     © <?= date('Y') ?> Hidden Spots — All rights reserved.
     
-    <?php if (!empty($footerInfo['rules'])): ?>
-        <div class="mt-2 text-gray-400 text-xs">
-            <strong>Rules:</strong>
-            <?= nl2br(htmlspecialchars($footerInfo['rules'])) ?>
-        </div>
-    <?php endif; ?>
 
-    <?php if (!empty($footerInfo['contact_info'])): ?>
-        <div class="mt-1 text-gray-400 text-xs">
-            <strong>Contact:</strong>
-            <?= nl2br(htmlspecialchars($footerInfo['contact_info'])) ?>
-        </div>
-    <?php endif; ?>
-    
 </footer>
 </div>
 
