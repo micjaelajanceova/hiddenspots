@@ -133,9 +133,13 @@ $comments = $pdo->query("
 $users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
 
 // ===== FETCH SITE INFO =====
-$siteInfo = $pdo->query("SELECT * FROM site_settings LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+$siteInfoStmt = $pdo->query("SELECT site_description, rules, contact_info, primary_color FROM site_settings WHERE id=1 LIMIT 1");
+$siteInfo = $siteInfoStmt->fetch(PDO::FETCH_ASSOC);
 
-
+$siteDescription = $siteInfo['site_description'] ?? '';
+$siteRules = $siteInfo['rules'] ?? '';
+$siteContact = $siteInfo['contact_info'] ?? '';
+$siteColor = $siteInfo['primary_color'] ?? '#579692';
 ?>
 
 <main class="flex-1 min-h-screen overflow-y-auto">
