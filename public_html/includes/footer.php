@@ -1,5 +1,27 @@
+<?php
+require_once __DIR__ . '/db.php';
+
+$settingsStmt = $pdo->query("SELECT rules, contact_info FROM site_settings WHERE id = 1 LIMIT 1");
+$footerInfo = $settingsStmt->fetch(PDO::FETCH_ASSOC);
+?>
+
 <footer class="text-center py-6 text-gray-500 text-sm">
     © <?= date('Y') ?> Hidden Spots — All rights reserved.
+    
+    <?php if (!empty($footerInfo['rules'])): ?>
+        <div class="mt-2 text-gray-400 text-xs">
+            <strong>Rules:</strong>
+            <?= nl2br(htmlspecialchars($footerInfo['rules'])) ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (!empty($footerInfo['contact_info'])): ?>
+        <div class="mt-1 text-gray-400 text-xs">
+            <strong>Contact:</strong>
+            <?= nl2br(htmlspecialchars($footerInfo['contact_info'])) ?>
+        </div>
+    <?php endif; ?>
+    
 </footer>
 </div>
 

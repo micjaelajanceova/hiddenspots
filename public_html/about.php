@@ -1,5 +1,35 @@
 <?php include 'includes/header.php'; ?>
 
+<?php
+include 'includes/db.php';
+
+$stmt = $pdo->query("SELECT * FROM site_settings WHERE id = 1");
+$settings = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Assign variables (titles, subtitles, texts...)
+$about_title1     = $settings['about_title1'] ?? '';
+$about_subtitle1  = $settings['about_subtitle1'] ?? '';
+$about_text1      = $settings['about_text1'] ?? '';
+
+$about_title2     = $settings['about_title2'] ?? '';
+$about_subtitle2  = $settings['about_subtitle2'] ?? '';
+$about_text2      = $settings['about_text2'] ?? '';
+
+$how_title        = $settings['how_title'] ?? '';
+$how_subtitle     = $settings['how_subtitle'] ?? '';
+
+$card1_title      = $settings['card1_title'] ?? '';
+$card1_text       = $settings['card1_text'] ?? '';
+
+$card2_title      = $settings['card2_title'] ?? '';
+$card2_text       = $settings['card2_text'] ?? '';
+
+$card3_title      = $settings['card3_title'] ?? '';
+$card3_text       = $settings['card3_text'] ?? '';
+?>
+
+
+
     
     <main class="flex-1 bg-white min-h-screen overflow-y-auto">
     <!-- LOGIN / SIGNUP -->
@@ -10,12 +40,12 @@
         <!-- Section 1 -->
         <div class="grid md:grid-cols-12 gap-12 items-center mb-10 md:mb-24">
             <div class="md:col-span-4">
-                <h1 class="mb-3">About HS</h1>
-                <h2 class="mb-6">Community for explorers</h2>
-                <p class="text-justify">
-                    HiddenSpots is a community-driven platform dedicated to uncovering and sharing the hidden gems of your city.
-                We believe the best places are often the ones you stumble upon by accident – quiet cafés, secret parks, tucked-away art spots, or breathtaking viewpoints that aren’t on the tourist map. <br> Here, you can share your favorite hidden locations and discover others’ secret spots.
-                </p>
+            <h1 class="mb-3"><?php echo htmlspecialchars($about_title1); ?></h1>
+            <h2 class="mb-6"><?php echo htmlspecialchars($about_subtitle1); ?></h2>
+            <p class="text-justify">
+                <?php echo nl2br(htmlspecialchars($about_text1)); ?>
+            </p>
+
             </div>
             <div class="md:col-span-8">
                 <img src="assets/img/about1.JPEG" alt="Hidden spot" class="shadow-lg w-full h-[450px] object-cover">
@@ -30,20 +60,20 @@
             <div class="md:col-span-4 order-1 md:order-2">
                 <h1 class="mb-3">Explore</h1>
                 <h2 class="mb-6">Filter by location, type, and keep your favorite spots handy</h2>
+                <h1 class="mb-3"><?php echo htmlspecialchars($about_title2); ?></h1>
+                <h2 class="mb-6"><?php echo htmlspecialchars($about_subtitle2); ?></h2>
                 <p class="text-justify">
-                HiddenSpots makes exploring effortless. Use filters to find spots by area or category – from cozy cafés and secret parks to hidden art installations and scenic viewpoints.
-                <br>
-                Found a place you love? Save it to your favorites and return anytime to continue your adventure. HiddenSpots helps you track your discoveries, revisit your spots, and explore at your own pace.
+                    <?php echo nl2br(htmlspecialchars($about_text2)); ?>
                 </p>
             </div>
         </div>
         <!-- Section 3  -->
         <div class="pt-12">
-            <h1 class="mb-4">How it works?</h1>
-            <h2 class="max-w-2xl mb-4 md:mb-12">
-                Discover, save, and share hidden spots
-            </h2>
-    <div class="grid md:grid-cols-3 gap-8">
+        <h1 class="mb-4"><?php echo htmlspecialchars($how_title); ?></h1>
+        <h2 class="max-w-2xl mb-4 md:mb-12">
+            <?php echo htmlspecialchars($how_subtitle); ?>
+        </h2>
+            <div class="grid md:grid-cols-3 gap-8">
     <!-- Card 1 -->
     <a href="feed.php" class="group relative block overflow-hidden hover:shadow-2xl">
         <img src="assets/img/about3.JPEG" alt="Upload" class="h-80 w-full object-cover transform transition-transform duration-300 group-hover:scale-105">
@@ -51,12 +81,12 @@
         <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
         <h3 class="absolute top-4 left-4 text-white font-bold text-xl drop-shadow-lg z-10">
-            Explore New Spots
+            <?php echo htmlspecialchars($card1_title); ?>
         </h3>
-
         <h4 class="absolute bottom-4 right-4 text-white text-right opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg z-10 max-w-[90%]">
-            Browse the latest hidden places shared by the community.
+            <?php echo htmlspecialchars($card1_text); ?>
         </h4>
+
     </a>
 
     <!-- Card 2 -->
@@ -64,11 +94,12 @@
         <img src="assets/img/about4.JPEG" alt="Explore" class="h-80 w-full object-cover transform transition-transform duration-300 group-hover:scale-105">
         <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         <h3 class="absolute top-4 left-4 text-white font-bold text-xl drop-shadow-lg z-10">
-            Most Popular Spots
+            <?php echo htmlspecialchars($card2_title); ?>
         </h3>
         <h4 class="absolute bottom-4 right-4 text-white text-right opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg z-10 max-w-[90%]">
-            See what locations are currently getting the most attention.
+            <?php echo htmlspecialchars($card2_text); ?>
         </h4>
+
     </a>
 
     <!-- Card 3 -->
@@ -76,11 +107,12 @@
         <img src="assets/img/about5.JPEG" alt="Community" class="h-80 w-full object-cover transform transition-transform duration-300 group-hover:scale-105">
         <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         <h3 class="absolute top-4 left-4 text-white font-bold text-xl drop-shadow-lg z-10">
-            Join the Community
+            <?php echo htmlspecialchars($card3_title); ?>
         </h3>
         <h4 class="absolute bottom-4 right-4 text-white text-right opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg z-10 max-w-[90%]">
-            Save favourites and connect with like-minded explorers.
+            <?php echo htmlspecialchars($card3_text); ?>
         </h4>
+
     </a>
 </div>
     </main>

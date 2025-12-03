@@ -64,11 +64,57 @@ if (isset($_POST['update_site'])) {
 
   // Update site info
   $stmt = $pdo->prepare("
-      UPDATE site_settings 
-      SET site_description=?, rules=?, contact_info=?, primary_color=?
-      WHERE id=1
+  UPDATE site_settings SET
+      site_description=?,
+      rules=?,
+      contact_info=?,
+      primary_color=?,
+  
+      about_title=?,
+      about_subtitle=?,
+      about_text=?,
+  
+      explore_title=?,
+      explore_subtitle=?,
+      explore_text=?,
+  
+      how_title=?,
+      how_subtitle=?,
+  
+      card1_title=?,
+      card1_text=?,
+      card2_title=?,
+      card2_text=?,
+      card3_title=?,
+      card3_text=?
+  WHERE id=1
   ");
-  $stmt->execute([$description, $rules, $contact, $theme_color]);
+  
+  $stmt->execute([
+      $description,
+      $rules,
+      $contact,
+      $theme_color,
+  
+      $_POST['about_title'],
+      $_POST['about_subtitle'],
+      $_POST['about_text'],
+  
+      $_POST['explore_title'],
+      $_POST['explore_subtitle'],
+      $_POST['explore_text'],
+  
+      $_POST['how_title'],
+      $_POST['how_subtitle'],
+  
+      $_POST['card1_title'],
+      $_POST['card1_text'],
+      $_POST['card2_title'],
+      $_POST['card2_text'],
+      $_POST['card3_title'],
+      $_POST['card3_text'],
+  ]);
+  
 
   echo "<script>alert('Site info updated successfully'); window.location='admin.php';</script>";
   exit();
@@ -112,41 +158,82 @@ $siteInfo = $pdo->query("SELECT * FROM site_settings LIMIT 1")->fetch(PDO::FETCH
 
   <div class="border-t border-gray-300 mb-6"></div>
 
-  <?php
-// ===== FETCH SITE INFO =====
-$siteInfo = $pdo->query("SELECT * FROM site_settings WHERE id=1")->fetch(PDO::FETCH_ASSOC);
-?>
-
+ 
 <!-- SITE INFO TAB -->
 <div id="site" class="tab-content hidden mt-6">
   <div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
     <form method="POST">
-      <!-- Description -->
-      <div class="mb-4">
-        <label class="block font-semibold mb-1">Description</label>
-        <textarea name="description" class="w-full border p-2 rounded" rows="3"><?= htmlspecialchars($siteInfo['site_description'] ?? '') ?></textarea>
-      </div>
 
-      <!-- Rules -->
-      <div class="mb-4">
-        <label class="block font-semibold mb-1">Rules</label>
-        <textarea name="rules" class="w-full border p-2 rounded" rows="3"><?= htmlspecialchars($siteInfo['rules'] ?? '') ?></textarea>
-      </div>
+      <h2 class="font-bold text-xl mb-4">About Section</h2>
 
-      <!-- Contact -->
-      <div class="mb-4">
-        <label class="block font-semibold mb-1">Contact</label>
-        <input type="text" name="contact" class="w-full border p-2 rounded" value="<?= htmlspecialchars($siteInfo['contact_info'] ?? '') ?>">
-      </div>
+      <label class="block font-semibold mb-1">About – Title (H1)</label>
+      <input type="text" name="about_title" class="w-full border p-2 rounded mb-4"
+             value="<?= htmlspecialchars($siteInfo['about_title'] ?? '') ?>">
 
-      <!-- Theme color -->
-      <div class="mb-4">
-        <label class="block font-semibold mb-1">Theme color</label>
-        <input type="color" name="theme_color" class="w-full h-10 p-1 rounded border" value="<?= htmlspecialchars($siteInfo['primary_color'] ?? '#579692') ?>">
-      </div>
+      <label class="block font-semibold mb-1">About – Subtitle (H2)</label>
+      <input type="text" name="about_subtitle" class="w-full border p-2 rounded mb-4"
+             value="<?= htmlspecialchars($siteInfo['about_subtitle'] ?? '') ?>">
 
- 
-      <button type="submit" name="update_site" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Save</button>
+      <label class="block font-semibold mb-1">About – Text</label>
+      <textarea name="about_text" class="w-full border p-2 rounded mb-6" rows="4"><?= htmlspecialchars($siteInfo['about_text'] ?? '') ?></textarea>
+
+
+      <h2 class="font-bold text-xl mb-4">Explore Section</h2>
+
+      <label class="block font-semibold mb-1">Explore – Title (H1)</label>
+      <input type="text" name="explore_title" class="w-full border p-2 rounded mb-4"
+             value="<?= htmlspecialchars($siteInfo['explore_title'] ?? '') ?>">
+
+      <label class="block font-semibold mb-1">Explore – Subtitle (H2)</label>
+      <input type="text" name="explore_subtitle" class="w-full border p-2 rounded mb-4"
+             value="<?= htmlspecialchars($siteInfo['explore_subtitle'] ?? '') ?>">
+
+      <label class="block font-semibold mb-1">Explore – Text</label>
+      <textarea name="explore_text" class="w-full border p-2 rounded mb-6" rows="4"><?= htmlspecialchars($siteInfo['explore_text'] ?? '') ?></textarea>
+
+
+      <h2 class="font-bold text-xl mb-4">How It Works Section</h2>
+
+      <label class="block font-semibold mb-1">How – Title (H1)</label>
+      <input type="text" name="how_title" class="w-full border p-2 rounded mb-4"
+             value="<?= htmlspecialchars($siteInfo['how_title'] ?? '') ?>">
+
+      <label class="block font-semibold mb-1">How – Subtitle (H2)</label>
+      <input type="text" name="how_subtitle" class="w-full border p-2 rounded mb-6"
+             value="<?= htmlspecialchars($siteInfo['how_subtitle'] ?? '') ?>">
+
+
+      <h2 class="font-bold text-xl mb-4">Homepage Cards</h2>
+
+      <!-- Card 1 -->
+      <label class="block font-semibold mb-1">Card 1 – Title</label>
+      <input type="text" name="card1_title" class="w-full border p-2 rounded mb-2"
+             value="<?= htmlspecialchars($siteInfo['card1_title'] ?? '') ?>">
+
+      <label class="block font-semibold mb-1">Card 1 – Text</label>
+      <textarea name="card1_text" class="w-full border p-2 rounded mb-6" rows="3"><?= htmlspecialchars($siteInfo['card1_text'] ?? '') ?></textarea>
+
+      <!-- Card 2 -->
+      <label class="block font-semibold mb-1">Card 2 – Title</label>
+      <input type="text" name="card2_title" class="w-full border p-2 rounded mb-2"
+             value="<?= htmlspecialchars($siteInfo['card2_title'] ?? '') ?>">
+
+      <label class="block font-semibold mb-1">Card 2 – Text</label>
+      <textarea name="card2_text" class="w-full border p-2 rounded mb-6" rows="3"><?= htmlspecialchars($siteInfo['card2_text'] ?? '') ?></textarea>
+
+      <!-- Card 3 -->
+      <label class="block font-semibold mb-1">Card 3 – Title</label>
+      <input type="text" name="card3_title" class="w-full border p-2 rounded mb-2"
+             value="<?= htmlspecialchars($siteInfo['card3_title'] ?? '') ?>">
+
+      <label class="block font-semibold mb-1">Card 3 – Text</label>
+      <textarea name="card3_text" class="w-full border p-2 rounded mb-6" rows="3"><?= htmlspecialchars($siteInfo['card3_text'] ?? '') ?></textarea>
+
+
+      <button type="submit" name="update_site" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+        Save
+      </button>
+
     </form>
   </div>
 </div>
