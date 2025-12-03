@@ -58,8 +58,6 @@ $card3_text       = $settings['card3_text'] ?? '';
                 <img src="assets/img/about2.JPEG" alt="Community" class="shadow-lg w-full h-[450px] object-cover">
             </div>
             <div class="md:col-span-4 order-1 md:order-2">
-                <h1 class="mb-3">Explore</h1>
-                <h2 class="mb-6">Filter by location, type, and keep your favorite spots handy</h2>
                 <h1 class="mb-3"><?php echo htmlspecialchars($about_title2); ?></h1>
                 <h2 class="mb-6"><?php echo htmlspecialchars($about_subtitle2); ?></h2>
                 <p class="text-justify">
