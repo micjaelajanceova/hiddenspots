@@ -18,7 +18,7 @@ $siteContact = $settings['contact_info'] ?? '';
 
   <?php if (!empty($siteDescription)): ?>
     <div>
-      <h5 class="font-semibold mb-3 tracking-wide text-xs">About</h5>
+      <h5 class="font-semibold mb-3 tracking-wide text-xs">About HiddenSpots</h5>
       <p class="leading-relaxed"><?= nl2br(htmlspecialchars($siteDescription)) ?></p>
     </div>
   <?php endif; ?>
@@ -26,7 +26,8 @@ $siteContact = $settings['contact_info'] ?? '';
 
   <?php if (!empty($siteRules)): ?>
     <div>
-      <h5 class="font-semibold mb-3 tracking-wide text-xs">Rules</h5>
+      <h5 class="font-semibold mb-3 tracking-wide text-xs">Rules & Regulations
+</h5>
       <p class="leading-relaxed"><?= nl2br(htmlspecialchars($siteRules)) ?></p>
     </div>
   <?php endif; ?>
@@ -34,7 +35,7 @@ $siteContact = $settings['contact_info'] ?? '';
 
   <?php if (!empty($siteContact)): ?>
     <div>
-      <h5 class="font-semibold mb-3 tracking-wide text-xs">Contact</h5>
+      <h5 class="font-semibold mb-3 tracking-wide text-xs">Get in Touch</h5>
       <p class="leading-relaxed"><?= nl2br(htmlspecialchars($siteContact)) ?></p>
     </div>
   <?php endif; ?>
