@@ -447,18 +447,25 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
             <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $c['id'] ?></td>
             <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($c['user_name']) ?></td>
             <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($c['spot_name']) ?></td>
+
+            <!-- Text comment -->
             <td class="p-2 sm:p-3 text-sm sm:text-base">
-              <form method="POST" class="flex flex-col gap-2">
+              <form method="POST">
                 <textarea name="text" class="border border-gray-300 rounded p-2 w-full text-xs sm:text-sm" rows="2"><?= htmlspecialchars($c['text']) ?></textarea>
                 <input type="hidden" name="id" value="<?= $c['id'] ?>">
-                <div class="flex gap-2 flex-wrap">
-                  <button type="submit" name="edit_comment" class="bg-blue-500 text-white px-2 sm:px-3 py-1 rounded hover:bg-blue-600 text-xs sm:text-sm">Save</button>
-                  <button type="submit" name="delete_comment" class="bg-red-500 text-white px-2 sm:px-3 py-1 rounded hover:bg-red-600 text-xs sm:text-sm" onclick="return confirm('Delete this comment?');">Delete</button>
-                </div>
               </form>
             </td>
+
             <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $c['created_at'] ?></td>
-            <td class="p-2 sm:p-3 text-sm sm:text-base"></td>
+
+            <!-- Actions stĺpec -->
+            <td class="p-2 sm:p-3 text-sm sm:text-base">
+              <form method="POST" class="flex gap-2 flex-wrap">
+                <input type="hidden" name="id" value="<?= $c['id'] ?>">
+                <button type="submit" name="edit_comment" class="bg-blue-500 text-white px-2 sm:px-3 py-1 rounded hover:bg-blue-600 text-xs sm:text-sm">Save</button>
+                <button type="submit" name="delete_comment" class="bg-red-500 text-white px-2 sm:px-3 py-1 rounded hover:bg-red-600 text-xs sm:text-sm" onclick="return confirm('Delete this comment?');">Delete</button>
+              </form>
+            </td>
           </tr>
         <?php endforeach; ?>
       </tbody>
@@ -484,28 +491,38 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
 <tr class="border-b hover:bg-gray-100 align-top">
     <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $u['id'] ?></td>
 
-    <!-- Inline edit form for name, email, role -->
-    <td class="p-2 sm:p-3 text-sm sm:text-base" colspan="3">
-      <form method="POST" class="flex flex-wrap gap-2 items-center">
-        <input type="hidden" name="id" value="<?= $u['id'] ?>">
+    <!-- Name -->
+    <td class="p-2 sm:p-3 text-sm sm:text-base">
+        <form method="POST" class="flex items-center gap-2">
+            <input type="hidden" name="id" value="<?= $u['id'] ?>">
+            <input type="text" name="name" value="<?= htmlspecialchars($u['name']) ?>" class="border p-1 rounded w-full text-xs sm:text-sm">
+        </form>
+    </td>
 
-        <input type="text" name="name" value="<?= htmlspecialchars($u['name']) ?>" class="border p-1 rounded w-24 sm:w-32 text-xs sm:text-sm">
-        <input type="email" name="email" value="<?= htmlspecialchars($u['email']) ?>" class="border p-1 rounded w-32 sm:w-40 text-xs sm:text-sm">
-        <select name="role" class="border p-1 rounded text-xs sm:text-sm">
-          <option value="user" <?= $u['role']=='user'?'selected':'' ?>>User</option>
-          <option value="admin" <?= $u['role']=='admin'?'selected':'' ?>>Admin</option>
+    <!-- Email -->
+    <td class="p-2 sm:p-3 text-sm sm:text-base">
+        <input type="email" name="email" value="<?= htmlspecialchars($u['email']) ?>" class="border p-1 rounded w-full text-xs sm:text-sm" form="form-<?= $u['id'] ?>">
+    </td>
+
+    <!-- Role -->
+    <td class="p-2 sm:p-3 text-sm sm:text-base">
+        <select name="role" class="border p-1 rounded w-full text-xs sm:text-sm" form="form-<?= $u['id'] ?>">
+            <option value="user" <?= $u['role']=='user'?'selected':'' ?>>User</option>
+            <option value="admin" <?= $u['role']=='admin'?'selected':'' ?>>Admin</option>
         </select>
+    </td>
 
-        <button type="submit" name="edit_user" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-xs sm:text-sm">Save</button>
-
-        <button type="submit" name="delete_user" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs sm:text-sm" onclick="return confirm('Delete this user?');">Delete</button>
-
-        <!-- Block/Unblock button -->
-        <button type="submit" name="toggle_block" 
-            class="<?= $u['blocked'] ? 'bg-red-500' : 'bg-blue-500' ?> text-white px-2 sm:px-3 py-1 rounded hover:opacity-80 text-xs sm:text-sm">
-          <?= $u['blocked'] ? 'Unblock' : 'Block' ?>
-        </button>
-      </form>
+    <!-- Blocked / Actions -->
+    <td class="p-2 sm:p-3 text-sm sm:text-base">
+        <form method="POST" class="flex gap-2 flex-wrap">
+            <input type="hidden" name="id" value="<?= $u['id'] ?>">
+            <button type="submit" name="edit_user" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-xs sm:text-sm">Save</button>
+            <button type="submit" name="delete_user" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs sm:text-sm" onclick="return confirm('Delete this user?');">Delete</button>
+            <button type="submit" name="toggle_block" 
+                class="<?= $u['blocked'] ? 'bg-red-500' : 'bg-blue-500' ?> text-white px-2 sm:px-3 py-1 rounded hover:opacity-80 text-xs sm:text-sm">
+                <?= $u['blocked'] ? 'Unblock' : 'Block' ?>
+            </button>
+        </form>
     </td>
 </tr>
 <?php endforeach; ?>
