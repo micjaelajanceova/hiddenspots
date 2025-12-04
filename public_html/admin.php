@@ -387,29 +387,44 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">City</th>
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Address</th>
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Photo</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Actions</th>
         </tr>
       </thead>
       <tbody>
-<?php foreach ($spots as $s): ?>
+      <?php foreach ($spots as $s): ?>
 <tr class="border-b hover:bg-gray-100 align-top">
     <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $s['id'] ?></td>
 
-    <!-- Inline edit form for spot (without changing photo) -->
+    <!-- Inline edit form for spot (stacked inputs under labels, photo display only) -->
     <td class="p-2 sm:p-3 text-sm sm:text-base" colspan="6">
-      <form method="POST" class="flex flex-col gap-2">
+      <form method="POST" class="flex flex-col gap-3">
         <input type="hidden" name="id" value="<?= $s['id'] ?>">
 
-        <!-- Top row: inputs -->
-        <div class="flex flex-wrap gap-2 items-center">
+        <!-- Name -->
+        <div class="flex flex-col">
+          <label class="font-semibold text-gray-700 text-xs sm:text-sm mb-1">Name</label>
           <input type="text" name="name" value="<?= htmlspecialchars($s['name']) ?>" class="border p-1 rounded text-xs sm:text-sm">
-          <input type="text" name="city" value="<?= htmlspecialchars($s['city']) ?>" class="border p-1 rounded text-xs sm:text-sm">
-          <input type="text" name="address" value="<?= htmlspecialchars($s['address']) ?>" class="border p-1 rounded text-xs sm:text-sm">
-
-          <!-- Display photo -->
-          <?php if (!empty($s['file_path'])): ?>
-            <img src="<?= htmlspecialchars($s['file_path']) ?>" class="w-12 sm:w-16 h-12 sm:h-16 object-cover rounded border">
-          <?php endif; ?>
         </div>
+
+        <!-- City -->
+        <div class="flex flex-col">
+          <label class="font-semibold text-gray-700 text-xs sm:text-sm mb-1">City</label>
+          <input type="text" name="city" value="<?= htmlspecialchars($s['city']) ?>" class="border p-1 rounded text-xs sm:text-sm">
+        </div>
+
+        <!-- Address -->
+        <div class="flex flex-col">
+          <label class="font-semibold text-gray-700 text-xs sm:text-sm mb-1">Address</label>
+          <input type="text" name="address" value="<?= htmlspecialchars($s['address']) ?>" class="border p-1 rounded text-xs sm:text-sm">
+        </div>
+
+        <!-- Display photo -->
+        <?php if (!empty($s['file_path'])): ?>
+          <div class="flex flex-col">
+            <label class="font-semibold text-gray-700 text-xs sm:text-sm mb-1">Photo</label>
+            <img src="<?= htmlspecialchars($s['file_path']) ?>" class="w-24 sm:w-32 h-24 sm:h-32 object-cover rounded border">
+          </div>
+        <?php endif; ?>
 
         <!-- Action buttons -->
         <div class="flex gap-2 flex-wrap mt-1">
@@ -420,6 +435,7 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
     </td>
 </tr>
 <?php endforeach; ?>
+
 </tbody>
     </table>
   </div>
@@ -436,6 +452,7 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Spot</th>
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Text</th>
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Created</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Actions</th>
         </tr>
       </thead>
       <tbody>
