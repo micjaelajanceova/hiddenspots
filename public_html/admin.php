@@ -247,21 +247,57 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
       <label class="block font-semibold mb-1">Card 3 – Text</label>
       <textarea name="card3_text" class="w-full border p-2 rounded mb-6" rows="3"><?= htmlspecialchars($siteInfo['card3_text'] ?? '') ?></textarea>
 
+      <div class="space-y-6">
 
-         <label>Site Description</label>
-    <textarea name="site_description" rows="4"><?= htmlspecialchars($siteDescription) ?></textarea>
+<!-- Site Description -->
+<div class="flex flex-col">
+  <label class="font-semibold text-gray-700 mb-1">Site Description</label>
+  <textarea 
+    name="site_description" 
+    rows="4" 
+    class="border rounded-lg p-3 focus:ring-2 focus:ring-blue-400 outline-none bg-gray-50"
+  ><?= htmlspecialchars($siteDescription) ?></textarea>
+</div>
 
-    <label>Rules & Regulations</label>
-    <textarea name="rules" rows="4"><?= htmlspecialchars($siteRules) ?></textarea>
+<!-- Rules -->
+<div class="flex flex-col">
+  <label class="font-semibold text-gray-700 mb-1">Rules & Regulations</label>
+  <textarea 
+    name="rules" 
+    rows="4" 
+    class="border rounded-lg p-3 focus:ring-2 focus:ring-blue-400 outline-none bg-gray-50"
+  ><?= htmlspecialchars($siteRules) ?></textarea>
+</div>
 
-    <label>Contact Information</label>
-    <textarea name="contact_info" rows="4"><?= htmlspecialchars($siteContact) ?></textarea>
+<!-- Contact Info -->
+<div class="flex flex-col">
+  <label class="font-semibold text-gray-700 mb-1">Contact Information</label>
+  <textarea 
+    name="contact_info" 
+    rows="4" 
+    class="border rounded-lg p-3 focus:ring-2 focus:ring-blue-400 outline-none bg-gray-50"
+  ><?= htmlspecialchars($siteContact) ?></textarea>
+</div>
 
-    <label>Primary Color</label>
-    <input type="color" name="primary_color" value="<?= htmlspecialchars($siteColor) ?>">
+<!-- Primary Color -->
+<div class="flex flex-col">
+  <label class="font-semibold text-gray-700 mb-1">Primary Color</label>
 
+  <div class="flex items-center gap-3">
+    <input 
+      type="color" 
+      name="primary_color" 
+      value="<?= htmlspecialchars($siteColor) ?>"
+      class="w-12 h-12 p-0 border rounded cursor-pointer"
+    >
 
-      <button type="submit" name="update_site" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+    <span class="text-gray-600">Selected: <?= htmlspecialchars($siteColor) ?></span>
+  </div>
+</div>
+
+</div>
+
+      <button type="submit" name="update_site" class="w-full sm:w-auto py-2 px-4 bg-black text-white rounded-lg flex items-center justify-center gap-2 hover:bg-gray-800 transition">
         Save
       </button>
 
