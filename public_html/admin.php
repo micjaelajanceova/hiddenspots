@@ -393,46 +393,26 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
       <tbody>
       <?php foreach ($spots as $s): ?>
 <tr class="border-b hover:bg-gray-100 align-top">
-    <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $s['id'] ?></td>
+<td class="p-2 sm:p-3 text-sm sm:text-base" colspan="6">
+  <form method="POST" class="grid grid-cols-6 gap-2 items-center">
+    <input type="hidden" name="id" value="<?= $s['id'] ?>">
 
-    <!-- Inline edit form for spot (stacked inputs under labels, photo display only) -->
-    <td class="p-2 sm:p-3 text-sm sm:text-base" colspan="6">
-      <form method="POST" class="flex flex-col gap-3">
-        <input type="hidden" name="id" value="<?= $s['id'] ?>">
+    <!-- Inputs zarovnané podľa stĺpcov -->
+    <input type="text" name="name" value="<?= htmlspecialchars($s['name']) ?>" class="border p-1 rounded text-xs sm:text-sm col-span-1">
+    <input type="text" name="city" value="<?= htmlspecialchars($s['city']) ?>" class="border p-1 rounded text-xs sm:text-sm col-span-1">
+    <input type="text" name="address" value="<?= htmlspecialchars($s['address']) ?>" class="border p-1 rounded text-xs sm:text-sm col-span-1">
+    <?php if (!empty($s['file_path'])): ?>
+      <img src="<?= htmlspecialchars($s['file_path']) ?>" class="w-12 sm:w-16 h-12 sm:h-16 object-cover rounded border col-span-1">
+    <?php endif; ?>
 
-        <!-- Name -->
-        <div class="flex flex-col">
-          <label class="font-semibold text-gray-700 text-xs sm:text-sm mb-1">Name</label>
-          <input type="text" name="name" value="<?= htmlspecialchars($s['name']) ?>" class="border p-1 rounded text-xs sm:text-sm">
-        </div>
+    <!-- Akcie zarovnáme do posledných dvoch stĺpcov -->
+    <div class="flex gap-2 col-span-2">
+      <button type="submit" name="edit_spot" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-xs sm:text-sm">Save</button>
+      <button type="submit" name="delete_spot" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs sm:text-sm" onclick="return confirm('Delete this spot?');">Delete</button>
+    </div>
+  </form>
+</td>
 
-        <!-- City -->
-        <div class="flex flex-col">
-          <label class="font-semibold text-gray-700 text-xs sm:text-sm mb-1">City</label>
-          <input type="text" name="city" value="<?= htmlspecialchars($s['city']) ?>" class="border p-1 rounded text-xs sm:text-sm">
-        </div>
-
-        <!-- Address -->
-        <div class="flex flex-col">
-          <label class="font-semibold text-gray-700 text-xs sm:text-sm mb-1">Address</label>
-          <input type="text" name="address" value="<?= htmlspecialchars($s['address']) ?>" class="border p-1 rounded text-xs sm:text-sm">
-        </div>
-
-        <!-- Display photo -->
-        <?php if (!empty($s['file_path'])): ?>
-          <div class="flex flex-col">
-            <label class="font-semibold text-gray-700 text-xs sm:text-sm mb-1">Photo</label>
-            <img src="<?= htmlspecialchars($s['file_path']) ?>" class="w-24 sm:w-32 h-24 sm:h-32 object-cover rounded border">
-          </div>
-        <?php endif; ?>
-
-        <!-- Action buttons -->
-        <div class="flex gap-2 flex-wrap mt-1">
-          <button type="submit" name="edit_spot" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-xs sm:text-sm">Save</button>
-          <button type="submit" name="delete_spot" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs sm:text-sm" onclick="return confirm('Delete this spot?');">Delete</button>
-        </div>
-      </form>
-    </td>
 </tr>
 <?php endforeach; ?>
 
