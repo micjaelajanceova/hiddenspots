@@ -367,16 +367,18 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
 <div id="spots" class="tab-content">
 
 <!-- Add New Spot Form -->
-<div class="mb-4 p-4 bg-gray-100 rounded">
-    <h3 class="font-bold mb-2">Add New Spot</h3>
-    <form method="POST" enctype="multipart/form-data" class="flex flex-wrap gap-2 items-end">
-      <input type="text" name="name" placeholder="Name" class="border p-1 rounded text-xs sm:text-sm">
-      <input type="text" name="city" placeholder="City" class="border p-1 rounded text-xs sm:text-sm">
-      <input type="text" name="address" placeholder="Address" class="border p-1 rounded text-xs sm:text-sm">
-      <input type="file" name="photo" class="text-xs sm:text-sm">
-      <button type="submit" name="create_spot" class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 text-xs sm:text-sm">Add Spot</button>
-    </form>
+<section class="mt-12 mb-20 lg:mb-5">
+  <div class="bg-black p-10 flex flex-col items-center text-center">
+    <h2 class="text-3xl font-bold text-white">Upload a new picture</h2>
+    <button 
+      id="openUploadModal" 
+      class="mt-6 bg-white text-black px-8 py-3 rounded-full text-lg shadow hover:bg-gray-200 transition"
+    >
+      + Upload
+    </button>
   </div>
+</section>
+
 
   <div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
     <table class="min-w-full border-collapse w-full table-auto">
