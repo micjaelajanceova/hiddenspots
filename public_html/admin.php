@@ -372,7 +372,7 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
     <h2 class="text-3xl font-bold text-black">Upload a new picture</h2>
     <button 
       id="openUploadModal" 
-      class="mt-6 bg-black text-whitw px-8 py-3 rounded-full text-lg shadow hover:bg-gray-200 transition"
+      class="mt-6 bg-black text-white px-8 py-3 rounded-full text-lg shadow hover:bg-gray-200 hover:text-black transition"
     >
       + Upload
     </button>
