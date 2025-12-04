@@ -12,38 +12,22 @@ $siteDescription = $settings['site_description'] ?? '';
 $siteRules = $settings['rules'] ?? '';
 $siteContact = $settings['contact_info'] ?? '';
 ?>
-<footer class="text-center py-6 text-gray-500 text-sm">
-
-    <!-- Description -->
+<footer class="text-center py-6 text-gray-500 text-sm space-y-2">
     <?php if (!empty($siteDescription)): ?>
-        <div>
-          <h3 class="font-semibold text-lg mb-2">About</h3>
-          <p class="text-gray-600 text-sm leading-relaxed"><?= nl2br(htmlspecialchars($siteDescription)) ?></p>
-        </div>
-      <?php endif; ?>
+        <p class="leading-relaxed"><?= nl2br(htmlspecialchars($siteDescription)) ?></p>
+    <?php endif; ?>
 
-      <!-- Rules -->
-      <?php if (!empty($siteRules)): ?>
-        <div>
-          <h3 class="font-semibold text-lg mb-2">Rules</h3>
-          <p class="text-gray-600 text-sm leading-relaxed"><?= nl2br(htmlspecialchars($siteRules)) ?></p>
-        </div>
-      <?php endif; ?>
+    <?php if (!empty($siteRules)): ?>
+        <p class="leading-relaxed"><strong>Rules:</strong> <?= nl2br(htmlspecialchars($siteRules)) ?></p>
+    <?php endif; ?>
 
-      <!-- Contact -->
-      <?php if (!empty($siteContact)): ?>
-        <div>
-          <h3 class="font-semibold text-lg mb-2">Contact</h3>
-          <p class="text-gray-600 text-sm leading-relaxed"><?= nl2br(htmlspecialchars($siteContact)) ?></p>
-        </div>
-      <?php endif; ?>
+    <?php if (!empty($siteContact)): ?>
+        <p class="leading-relaxed"><strong>Contact:</strong> <?= nl2br(htmlspecialchars($siteContact)) ?></p>
+    <?php endif; ?>
 
-    </div>
-
-    <div class="border-t border-gray-300 mt-8 pt-4 text-center text-gray-500 text-xs">
-      © <?= date('Y') ?> Hidden Spots — All rights reserved.
-    </div>
+    <p class="mt-2">© <?= date('Y') ?> Hidden Spots — All rights reserved.</p>
 </footer>
+
 </div>
 
 <!-- Images Loaded script -->
