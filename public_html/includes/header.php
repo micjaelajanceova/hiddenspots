@@ -6,7 +6,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 $stmt = $pdo->query("SELECT primary_color FROM site_settings WHERE id = 1 LIMIT 1");
 $settings = $stmt->fetch(PDO::FETCH_ASSOC);
-$primary_color = $settings['primary_color'] ?? '#579692';
+$primary_color = $settings['primary_color'] ?? '';
 
 
 if (empty($_SESSION['csrf_token'])) {
