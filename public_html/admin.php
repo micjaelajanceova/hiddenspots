@@ -56,10 +56,11 @@ if (isset($_POST['toggle_block'])) {
 
 // ===== UPDATE SITE INFO & STYLING =====
 if (isset($_POST['update_site'])) {
-  $description = trim($_POST['description']);
+  $description = trim($_POST['site_description']);
   $rules = trim($_POST['rules']);
-  $contact = trim($_POST['contact']);
-  $theme_color = trim($_POST['theme_color']);
+  $contact = trim($_POST['contact_info']);
+  $theme_color = trim($_POST['primary_color']);
+  
 
   // Update site info
   $stmt = $pdo->prepare("
@@ -68,18 +69,14 @@ if (isset($_POST['update_site'])) {
       rules=?,
       contact_info=?,
       primary_color=?,
-  
-      about_title=?,
-      about_subtitle=?,
-      about_text=?,
-  
-      explore_title=?,
-      explore_subtitle=?,
-      explore_text=?,
-  
+      about_title1=?,
+      about_subtitle1=?,
+      about_text1=?,
+      about_title2=?,
+      about_subtitle2=?,
+      about_text2=?,
       how_title=?,
       how_subtitle=?,
-  
       card1_title=?,
       card1_text=?,
       card2_title=?,
@@ -94,18 +91,14 @@ if (isset($_POST['update_site'])) {
       $rules,
       $contact,
       $theme_color,
-  
-      $_POST['about_title'],
-      $_POST['about_subtitle'],
-      $_POST['about_text'],
-  
-      $_POST['explore_title'],
-      $_POST['explore_subtitle'],
-      $_POST['explore_text'],
-  
+      $_POST['about_title1'],
+      $_POST['about_subtitle1'],
+      $_POST['about_text1'],
+      $_POST['about_title2'],
+      $_POST['about_subtitle2'],
+      $_POST['about_text2'],
       $_POST['how_title'],
       $_POST['how_subtitle'],
-  
       $_POST['card1_title'],
       $_POST['card1_text'],
       $_POST['card2_title'],
@@ -133,13 +126,35 @@ $comments = $pdo->query("
 $users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
 
 // ===== FETCH SITE INFO =====
-$siteInfoStmt = $pdo->query("SELECT site_description, rules, contact_info, primary_color FROM site_settings WHERE id=1 LIMIT 1");
+$siteInfoStmt = $pdo->query("SELECT * FROM site_settings WHERE id=1 LIMIT 1");
 $siteInfo = $siteInfoStmt->fetch(PDO::FETCH_ASSOC);
 
+// Assign variables for About page
+$about_title1    = $siteInfo['about_title1'] ?? '';
+$about_subtitle1 = $siteInfo['about_subtitle1'] ?? '';
+$about_text1     = $siteInfo['about_text1'] ?? '';
+
+$about_title2    = $siteInfo['about_title2'] ?? '';
+$about_subtitle2 = $siteInfo['about_subtitle2'] ?? '';
+$about_text2     = $siteInfo['about_text2'] ?? '';
+
+$how_title       = $siteInfo['how_title'] ?? '';
+$how_subtitle    = $siteInfo['how_subtitle'] ?? '';
+
+$card1_title     = $siteInfo['card1_title'] ?? '';
+$card1_text      = $siteInfo['card1_text'] ?? '';
+
+$card2_title     = $siteInfo['card2_title'] ?? '';
+$card2_text      = $siteInfo['card2_text'] ?? '';
+
+$card3_title     = $siteInfo['card3_title'] ?? '';
+$card3_text      = $siteInfo['card3_text'] ?? '';
+
 $siteDescription = $siteInfo['site_description'] ?? '';
-$siteRules = $siteInfo['rules'] ?? '';
-$siteContact = $siteInfo['contact_info'] ?? '';
-$siteColor = $siteInfo['primary_color'] ?? '#579692';
+$siteRules       = $siteInfo['rules'] ?? '';
+$siteContact     = $siteInfo['contact_info'] ?? '';
+$site_color       = $siteInfo['primary_color'] ?? '#579692';
+
 ?>
 
 <main class="flex-1 min-h-screen overflow-y-auto">
@@ -170,29 +185,29 @@ $siteColor = $siteInfo['primary_color'] ?? '#579692';
       <h2 class="font-bold text-xl mb-4">About Section</h2>
 
       <label class="block font-semibold mb-1">About – Title (H1)</label>
-      <input type="text" name="about_title" class="w-full border p-2 rounded mb-4"
-             value="<?= htmlspecialchars($siteInfo['about_title'] ?? '') ?>">
+      <input type="text" name="about_title1" class="w-full border p-2 rounded mb-4"
+             value="<?= htmlspecialchars($siteInfo['about_title1'] ?? '') ?>">
 
       <label class="block font-semibold mb-1">About – Subtitle (H2)</label>
-      <input type="text" name="about_subtitle" class="w-full border p-2 rounded mb-4"
-             value="<?= htmlspecialchars($siteInfo['about_subtitle'] ?? '') ?>">
+      <input type="text" name="about_subtitle1" class="w-full border p-2 rounded mb-4"
+             value="<?= htmlspecialchars($siteInfo['about_subtitle1'] ?? '') ?>">
 
       <label class="block font-semibold mb-1">About – Text</label>
-      <textarea name="about_text" class="w-full border p-2 rounded mb-6" rows="4"><?= htmlspecialchars($siteInfo['about_text'] ?? '') ?></textarea>
+      <textarea name="about_text1" class="w-full border p-2 rounded mb-6" rows="4"><?= htmlspecialchars($siteInfo['about_text1'] ?? '') ?></textarea>
 
 
       <h2 class="font-bold text-xl mb-4">Explore Section</h2>
 
       <label class="block font-semibold mb-1">Explore – Title (H1)</label>
-      <input type="text" name="explore_title" class="w-full border p-2 rounded mb-4"
-             value="<?= htmlspecialchars($siteInfo['explore_title'] ?? '') ?>">
+      <input type="text" name="about_title2" class="w-full border p-2 rounded mb-4"
+             value="<?= htmlspecialchars($siteInfo['about_title2'] ?? '') ?>">
 
       <label class="block font-semibold mb-1">Explore – Subtitle (H2)</label>
-      <input type="text" name="explore_subtitle" class="w-full border p-2 rounded mb-4"
-             value="<?= htmlspecialchars($siteInfo['explore_subtitle'] ?? '') ?>">
+      <input type="text" name="about_subtitle2" class="w-full border p-2 rounded mb-4"
+             value="<?= htmlspecialchars($siteInfo['about_subtitle2'] ?? '') ?>">
 
       <label class="block font-semibold mb-1">Explore – Text</label>
-      <textarea name="explore_text" class="w-full border p-2 rounded mb-6" rows="4"><?= htmlspecialchars($siteInfo['explore_text'] ?? '') ?></textarea>
+      <textarea name="about_text2" class="w-full border p-2 rounded mb-6" rows="4"><?= htmlspecialchars($siteInfo['about_text2'] ?? '') ?></textarea>
 
 
       <h2 class="font-bold text-xl mb-4">How It Works Section</h2>
@@ -244,8 +259,6 @@ $siteColor = $siteInfo['primary_color'] ?? '#579692';
 
     <label>Primary Color</label>
     <input type="color" name="primary_color" value="<?= htmlspecialchars($siteColor) ?>">
-
-    <button type="submit" name="save_settings">Save Settings</button>
 
 
       <button type="submit" name="update_site" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">

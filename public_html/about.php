@@ -3,10 +3,9 @@
 <?php
 include 'includes/db.php';
 
-$stmt = $pdo->query("SELECT * FROM site_settings WHERE id = 1");
+$stmt = $pdo->query("SELECT * FROM site_settings WHERE id = 1 LIMIT 1");
 $settings = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Assign variables (titles, subtitles, texts...)
 $about_title1     = $settings['about_title1'] ?? '';
 $about_subtitle1  = $settings['about_subtitle1'] ?? '';
 $about_text1      = $settings['about_text1'] ?? '';
@@ -26,6 +25,7 @@ $card2_text       = $settings['card2_text'] ?? '';
 
 $card3_title      = $settings['card3_title'] ?? '';
 $card3_text       = $settings['card3_text'] ?? '';
+
 ?>
 
 
