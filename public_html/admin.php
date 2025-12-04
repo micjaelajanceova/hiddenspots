@@ -411,7 +411,7 @@ $site_color       = $siteInfo['primary_color'] ?? '#579692';
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    showTab('spots');
+    showTab('site');
 });
 
 </script>
