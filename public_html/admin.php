@@ -297,7 +297,7 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
 
 </div>
 
-      <button type="submit" name="update_site" class="w-full sm:w-auto py-2 px-4 bg-black text-white rounded-lg flex items-center justify-center gap-2 hover:bg-gray-800 transition">
+      <button type="submit" name="update_site" class="w-full sm:w-auto py-2 px-4 bg-black text-white rounded-lg flex items-center justify-center gap-2 hover:bg-gray-800 transition mt-3">
         Save
       </button>
 
