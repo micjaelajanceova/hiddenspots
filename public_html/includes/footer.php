@@ -14,7 +14,7 @@ $siteContact = $settings['contact_info'] ?? '';
 ?>
 <footer class="py-10 text-gray-500 text-sm">
 
-<div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-left">
+<div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-left px-4 sm:px-6 md:px-0">
 
   <?php if (!empty($siteDescription)): ?>
     <div>
@@ -42,9 +42,9 @@ $siteContact = $settings['contact_info'] ?? '';
 
 </div>
 
-<div class="text-center mt-10 border-t pt-4 text-xs">
+<h6 class="text-center mt-10 border-t pt-4 text-xs">
     © <?= date('Y') ?> Hidden Spots — All rights reserved.
-</div>
+  </h6>
 
 </footer>
 
