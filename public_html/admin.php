@@ -368,11 +368,11 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
 
 <!-- Add New Spot Form -->
 <section class="mt-12 mb-20 lg:mb-5">
-  <div class="bg-black p-10 flex flex-col items-center text-center">
-    <h2 class="text-3xl font-bold text-white">Upload a new picture</h2>
+  <div class="bg-gray-50 rounded-lg shadow p-10 flex flex-col items-center text-center">
+    <h2 class="text-3xl font-bold text-black">Upload a new picture</h2>
     <button 
       id="openUploadModal" 
-      class="mt-6 bg-white text-black px-8 py-3 rounded-full text-lg shadow hover:bg-gray-200 transition"
+      class="mt-6 bg-black text-whitw px-8 py-3 rounded-full text-lg shadow hover:bg-gray-200 transition"
     >
       + Upload
     </button>
