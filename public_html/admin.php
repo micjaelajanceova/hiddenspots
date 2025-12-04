@@ -483,48 +483,42 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Name</th>
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Email</th>
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Role</th>
-          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Blocked</th>
+          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Actions</th>
         </tr>
       </thead>
       <tbody>
       <?php foreach ($users as $u): ?>
-<tr class="border-b hover:bg-gray-100 align-top">
+        <tr class="border-b hover:bg-gray-100 align-top">
     <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $u['id'] ?></td>
 
-    <!-- Name -->
-    <td class="p-2 sm:p-3 text-sm sm:text-base">
-        <form method="POST" class="flex items-center gap-2">
-            <input type="hidden" name="id" value="<?= $u['id'] ?>">
+    <form method="POST" class="flex flex-wrap gap-2 w-full">
+        <input type="hidden" name="id" value="<?= $u['id'] ?>">
+
+        <td class="p-2 sm:p-3 text-sm sm:text-base">
             <input type="text" name="name" value="<?= htmlspecialchars($u['name']) ?>" class="border p-1 rounded w-full text-xs sm:text-sm">
-        </form>
-    </td>
+        </td>
 
-    <!-- Email -->
-    <td class="p-2 sm:p-3 text-sm sm:text-base">
-        <input type="email" name="email" value="<?= htmlspecialchars($u['email']) ?>" class="border p-1 rounded w-full text-xs sm:text-sm" form="form-<?= $u['id'] ?>">
-    </td>
+        <td class="p-2 sm:p-3 text-sm sm:text-base">
+            <input type="email" name="email" value="<?= htmlspecialchars($u['email']) ?>" class="border p-1 rounded w-full text-xs sm:text-sm">
+        </td>
 
-    <!-- Role -->
-    <td class="p-2 sm:p-3 text-sm sm:text-base">
-        <select name="role" class="border p-1 rounded w-full text-xs sm:text-sm" form="form-<?= $u['id'] ?>">
-            <option value="user" <?= $u['role']=='user'?'selected':'' ?>>User</option>
-            <option value="admin" <?= $u['role']=='admin'?'selected':'' ?>>Admin</option>
-        </select>
-    </td>
+        <td class="p-2 sm:p-3 text-sm sm:text-base">
+            <select name="role" class="border p-1 rounded w-full text-xs sm:text-sm">
+                <option value="user" <?= $u['role']=='user'?'selected':'' ?>>User</option>
+                <option value="admin" <?= $u['role']=='admin'?'selected':'' ?>>Admin</option>
+            </select>
+        </td>
 
-    <!-- Blocked / Actions -->
-    <td class="p-2 sm:p-3 text-sm sm:text-base">
-        <form method="POST" class="flex gap-2 flex-wrap">
-            <input type="hidden" name="id" value="<?= $u['id'] ?>">
+        <td class="p-2 sm:p-3 text-sm sm:text-base flex gap-2 flex-wrap">
             <button type="submit" name="edit_user" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-xs sm:text-sm">Save</button>
             <button type="submit" name="delete_user" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs sm:text-sm" onclick="return confirm('Delete this user?');">Delete</button>
-            <button type="submit" name="toggle_block" 
-                class="<?= $u['blocked'] ? 'bg-red-500' : 'bg-blue-500' ?> text-white px-2 sm:px-3 py-1 rounded hover:opacity-80 text-xs sm:text-sm">
+            <button type="submit" name="toggle_block" class="<?= $u['blocked'] ? 'bg-red-500' : 'bg-blue-500' ?> text-white px-2 sm:px-3 py-1 rounded hover:opacity-80 text-xs sm:text-sm">
                 <?= $u['blocked'] ? 'Unblock' : 'Block' ?>
             </button>
-        </form>
-    </td>
+        </td>
+    </form>
 </tr>
+
 <?php endforeach; ?>
       </tbody>
     </table>
