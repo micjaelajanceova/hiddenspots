@@ -25,19 +25,14 @@ if (isset($_POST['edit_spot'])) {
   $name = trim($_POST['name']);
   $city = trim($_POST['city']);
   $address = trim($_POST['address']);
-  
- 
-  if($file_path){
-      $stmt = $pdo->prepare("UPDATE hidden_spots SET name=?, city=?, address=?, file_path=? WHERE id=?");
-      $stmt->execute([$name, $city, $address, $file_path, $id]);
-  } else {
-      $stmt = $pdo->prepare("UPDATE hidden_spots SET name=?, city=?, address=? WHERE id=?");
-      $stmt->execute([$name, $city, $address, $id]);
-  }
+
+  $stmt = $pdo->prepare("UPDATE hidden_spots SET name=?, city=?, address=? WHERE id=?");
+  $stmt->execute([$name, $city, $address, $id]);
 
   echo "<script>alert('Spot updated successfully'); window.location='admin.php';</script>";
   exit();
 }
+
 
 // ===== CREATE SPOT =====
 if (isset($_POST['create_spot'])) {
@@ -398,28 +393,34 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
       </thead>
       <tbody>
 <?php foreach ($spots as $s): ?>
-  <tr class="border-b hover:bg-gray-100 align-top">
+<tr class="border-b hover:bg-gray-100 align-top">
     <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $s['id'] ?></td>
 
-    <!-- Inline edit form for spot -->
+    <!-- Inline edit form for spot (without changing photo) -->
     <td class="p-2 sm:p-3 text-sm sm:text-base" colspan="6">
-      <form method="POST" enctype="multipart/form-data" class="flex flex-col gap-2">
+      <form method="POST" class="flex flex-col gap-2">
         <input type="hidden" name="id" value="<?= $s['id'] ?>">
 
-        <div class="flex flex-wrap gap-2">
+        <!-- Top row: inputs -->
+        <div class="flex flex-wrap gap-2 items-center">
           <input type="text" name="name" value="<?= htmlspecialchars($s['name']) ?>" class="border p-1 rounded text-xs sm:text-sm">
           <input type="text" name="city" value="<?= htmlspecialchars($s['city']) ?>" class="border p-1 rounded text-xs sm:text-sm">
           <input type="text" name="address" value="<?= htmlspecialchars($s['address']) ?>" class="border p-1 rounded text-xs sm:text-sm">
-          <input type="file" name="photo" class="text-xs sm:text-sm">
+
+          <!-- Display photo -->
+          <?php if (!empty($s['file_path'])): ?>
+            <img src="<?= htmlspecialchars($s['file_path']) ?>" class="w-12 sm:w-16 h-12 sm:h-16 object-cover rounded border">
+          <?php endif; ?>
         </div>
 
+        <!-- Action buttons -->
         <div class="flex gap-2 flex-wrap mt-1">
           <button type="submit" name="edit_spot" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-xs sm:text-sm">Save</button>
           <button type="submit" name="delete_spot" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs sm:text-sm" onclick="return confirm('Delete this spot?');">Delete</button>
         </div>
       </form>
     </td>
-  </tr>
+</tr>
 <?php endforeach; ?>
 </tbody>
     </table>
