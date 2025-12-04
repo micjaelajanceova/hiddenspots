@@ -18,7 +18,7 @@ $siteContact = $settings['contact_info'] ?? '';
 
   <?php if (!empty($siteDescription)): ?>
     <div>
-      <h4 class="font-semibold text-gray-800 mb-3 tracking-wide uppercase text-xs">About</h4>
+      <h5 class="font-semibold mb-3 tracking-wide text-xs">About</h5>
       <p class="leading-relaxed"><?= nl2br(htmlspecialchars($siteDescription)) ?></p>
     </div>
   <?php endif; ?>
@@ -26,7 +26,7 @@ $siteContact = $settings['contact_info'] ?? '';
 
   <?php if (!empty($siteRules)): ?>
     <div>
-      <h4 class="font-semibold text-gray-800 mb-3 tracking-wide uppercase text-xs">Rules</h4>
+      <h5 class="font-semibold mb-3 tracking-wide text-xs">Rules</h5>
       <p class="leading-relaxed"><?= nl2br(htmlspecialchars($siteRules)) ?></p>
     </div>
   <?php endif; ?>
@@ -34,14 +34,14 @@ $siteContact = $settings['contact_info'] ?? '';
 
   <?php if (!empty($siteContact)): ?>
     <div>
-      <h4 class="font-semibold text-gray-800 mb-3 tracking-wide uppercase text-xs">Contact</h4>
+      <h5 class="font-semibold mb-3 tracking-wide text-xs">Contact</h5>
       <p class="leading-relaxed"><?= nl2br(htmlspecialchars($siteContact)) ?></p>
     </div>
   <?php endif; ?>
 
 </div>
 
-<div class="text-center mt-10 border-t pt-4 text-xs text-gray-400">
+<div class="text-center mt-10 border-t pt-4 text-xs">
     © <?= date('Y') ?> Hidden Spots — All rights reserved.
 </div>
 
