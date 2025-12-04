@@ -153,7 +153,7 @@ $card3_text      = $siteInfo['card3_text'] ?? '';
 $siteDescription = $siteInfo['site_description'] ?? '';
 $siteRules       = $siteInfo['rules'] ?? '';
 $siteContact     = $siteInfo['contact_info'] ?? '';
-$site_color       = $siteInfo['primary_color'] ?? '#579692';
+$site_color       = $siteInfo['primary_color'] ?? '';
 
 ?>
 

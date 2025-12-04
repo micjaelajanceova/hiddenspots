@@ -3,6 +3,12 @@ require_once __DIR__ . '/db.php';
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+
+$stmt = $pdo->query("SELECT primary_color FROM site_settings WHERE id = 1 LIMIT 1");
+$settings = $stmt->fetch(PDO::FETCH_ASSOC);
+$primary_color = $settings['primary_color'] ?? '#579692';
+
+
 if (empty($_SESSION['csrf_token'])) {
   $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
@@ -39,6 +45,13 @@ $user_role = $_SESSION['role'] ?? 'user';
     <link rel="icon" type="image/png" href="/assets/img/logo.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/assets/css/style.css?v=<?php echo time(); ?>">
+    
+    <style>
+        :root {
+            --primary-color: <?= htmlspecialchars($primary_color) ?>;
+        }
+    </style>
+
 </head>
 
 <?php
