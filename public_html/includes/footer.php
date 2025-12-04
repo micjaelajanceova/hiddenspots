@@ -12,37 +12,38 @@ $siteDescription = $settings['site_description'] ?? '';
 $siteRules = $settings['rules'] ?? '';
 $siteContact = $settings['contact_info'] ?? '';
 ?>
-<footer class="text-center py-6 text-gray-500 text-sm space-y-2">
-    
-     
-    <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8 text-left">
+<footer class="py-10 text-gray-500 text-sm">
 
-<?php if (!empty($siteDescription)): ?>
-<div>
-    <h3 class="font-semibold text-gray-700 mb-2 text-sm tracking-wide">About</h3>
-    <p class="leading-relaxed text-gray-500"><?= nl2br(htmlspecialchars($siteDescription)) ?></p>
+<div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-left">
+
+  <?php if (!empty($siteDescription)): ?>
+    <div>
+      <h4 class="font-semibold text-gray-800 mb-3 tracking-wide uppercase text-xs">About</h4>
+      <p class="leading-relaxed"><?= nl2br(htmlspecialchars($siteDescription)) ?></p>
+    </div>
+  <?php endif; ?>
+
+
+  <?php if (!empty($siteRules)): ?>
+    <div>
+      <h4 class="font-semibold text-gray-800 mb-3 tracking-wide uppercase text-xs">Rules</h4>
+      <p class="leading-relaxed"><?= nl2br(htmlspecialchars($siteRules)) ?></p>
+    </div>
+  <?php endif; ?>
+
+
+  <?php if (!empty($siteContact)): ?>
+    <div>
+      <h4 class="font-semibold text-gray-800 mb-3 tracking-wide uppercase text-xs">Contact</h4>
+      <p class="leading-relaxed"><?= nl2br(htmlspecialchars($siteContact)) ?></p>
+    </div>
+  <?php endif; ?>
+
 </div>
-<?php endif; ?>
 
-<?php if (!empty($siteRules)): ?>
-<div>
-    <h3 class="font-semibold text-gray-700 mb-2 text-sm tracking-wide">Rules</h3>
-    <p class="leading-relaxed text-gray-500"><?= nl2br(htmlspecialchars($siteRules)) ?></p>
+<div class="text-center mt-10 border-t pt-4 text-xs text-gray-400">
+    © <?= date('Y') ?> Hidden Spots — All rights reserved.
 </div>
-<?php endif; ?>
-
-<?php if (!empty($siteContact)): ?>
-<div>
-    <h3 class="font-semibold text-gray-700 mb-2 text-sm tracking-wide">Contact</h3>
-    <p class="leading-relaxed text-gray-500"><?= nl2br(htmlspecialchars($siteContact)) ?></p>
-</div>
-<?php endif; ?>
-
-</div>
-
-<p class="border-t pt-4 mt-4 text-xs text-gray-400">
-© <?= date('Y') ?> Hidden Spots — All rights reserved.
-</p>
 
 </footer>
 
