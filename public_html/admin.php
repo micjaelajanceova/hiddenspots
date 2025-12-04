@@ -19,6 +19,42 @@ if (isset($_POST['delete_spot'])) {
   exit();
 }
 
+// ===== EDIT SPOT =====
+if (isset($_POST['edit_spot'])) {
+  $id = intval($_POST['id']);
+  $name = trim($_POST['name']);
+  $city = trim($_POST['city']);
+  $address = trim($_POST['address']);
+  
+ 
+  if($file_path){
+      $stmt = $pdo->prepare("UPDATE hidden_spots SET name=?, city=?, address=?, file_path=? WHERE id=?");
+      $stmt->execute([$name, $city, $address, $file_path, $id]);
+  } else {
+      $stmt = $pdo->prepare("UPDATE hidden_spots SET name=?, city=?, address=? WHERE id=?");
+      $stmt->execute([$name, $city, $address, $id]);
+  }
+
+  echo "<script>alert('Spot updated successfully'); window.location='admin.php';</script>";
+  exit();
+}
+
+// ===== CREATE SPOT =====
+if (isset($_POST['create_spot'])) {
+  $name = trim($_POST['name']);
+  $city = trim($_POST['city']);
+  $address = trim($_POST['address']);
+  
+  $file_path = $_FILES['photo']['tmp_name'] ? 'uploads/'.basename($_FILES['photo']['name']) : null;
+  if($file_path) move_uploaded_file($_FILES['photo']['tmp_name'], $file_path);
+
+  $stmt = $pdo->prepare("INSERT INTO hidden_spots (name, city, address, file_path, created_at) VALUES (?, ?, ?, ?, NOW())");
+  $stmt->execute([$name, $city, $address, $file_path]);
+  echo "<script>alert('Spot created successfully'); window.location='admin.php';</script>";
+  exit();
+}
+
+
 // ===== DELETE COMMENT =====
 if (isset($_POST['delete_comment'])) {
   $id = intval($_POST['id']);
@@ -53,6 +89,29 @@ if (isset($_POST['toggle_block'])) {
       exit();
   }
 }
+
+// ===== EDIT USER =====
+if (isset($_POST['edit_user'])) {
+  $id = intval($_POST['id']);
+  $name = trim($_POST['name']);
+  $email = trim($_POST['email']);
+  $role = trim($_POST['role']);
+
+  $stmt = $pdo->prepare("UPDATE users SET name=?, email=?, role=? WHERE id=?");
+  $stmt->execute([$name, $email, $role, $id]);
+  echo "<script>alert('User updated successfully'); window.location='admin.php';</script>";
+  exit();
+}
+
+// ===== DELETE USER =====
+if (isset($_POST['delete_user'])) {
+  $id = intval($_POST['id']);
+  $stmt = $pdo->prepare("DELETE FROM users WHERE id=?");
+  $stmt->execute([$id]);
+  echo "<script>alert('User deleted successfully'); window.location='admin.php';</script>";
+  exit();
+}
+
 
 // ===== UPDATE SITE INFO & STYLING =====
 if (isset($_POST['update_site'])) {
@@ -311,6 +370,19 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
 
   <!-- SPOTS -->
 <div id="spots" class="tab-content">
+
+<!-- Add New Spot Form -->
+<div class="mb-4 p-4 bg-gray-100 rounded">
+    <h3 class="font-bold mb-2">Add New Spot</h3>
+    <form method="POST" enctype="multipart/form-data" class="flex flex-wrap gap-2 items-end">
+      <input type="text" name="name" placeholder="Name" class="border p-1 rounded text-xs sm:text-sm">
+      <input type="text" name="city" placeholder="City" class="border p-1 rounded text-xs sm:text-sm">
+      <input type="text" name="address" placeholder="Address" class="border p-1 rounded text-xs sm:text-sm">
+      <input type="file" name="photo" class="text-xs sm:text-sm">
+      <button type="submit" name="create_spot" class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 text-xs sm:text-sm">Add Spot</button>
+    </form>
+  </div>
+
   <div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
     <table class="min-w-full border-collapse w-full table-auto">
       <thead>
@@ -325,27 +397,31 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($spots as $s): ?>
-          <tr class="border-b hover:bg-gray-100 align-top">
-            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $s['id'] ?></td>
-            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($s['name']) ?></td>
-            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($s['city']) ?></td>
-            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($s['address']) ?></td>
-            <td class="p-2 sm:p-3 text-sm sm:text-base">
-              <?php if (!empty($s['file_path'])): ?>
-                <img src="<?= htmlspecialchars($s['file_path']) ?>" class="w-12 sm:w-16 h-12 sm:h-16 object-cover rounded">
-              <?php endif; ?>
-            </td>
-            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $s['created_at'] ?></td>
-            <td class="p-2 sm:p-3 text-sm sm:text-base">
-              <form method="POST" onsubmit="return confirm('Delete this spot?');">
-                <input type="hidden" name="id" value="<?= $s['id'] ?>">
-                <button type="submit" name="delete_spot" class="bg-red-500 text-white px-2 sm:px-3 py-1 rounded hover:bg-red-600 text-xs sm:text-sm">Delete</button>
-              </form>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-      </tbody>
+<?php foreach ($spots as $s): ?>
+  <tr class="border-b hover:bg-gray-100 align-top">
+    <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $s['id'] ?></td>
+
+    <!-- Inline edit form for spot -->
+    <td class="p-2 sm:p-3 text-sm sm:text-base" colspan="6">
+      <form method="POST" enctype="multipart/form-data" class="flex flex-col gap-2">
+        <input type="hidden" name="id" value="<?= $s['id'] ?>">
+
+        <div class="flex flex-wrap gap-2">
+          <input type="text" name="name" value="<?= htmlspecialchars($s['name']) ?>" class="border p-1 rounded text-xs sm:text-sm">
+          <input type="text" name="city" value="<?= htmlspecialchars($s['city']) ?>" class="border p-1 rounded text-xs sm:text-sm">
+          <input type="text" name="address" value="<?= htmlspecialchars($s['address']) ?>" class="border p-1 rounded text-xs sm:text-sm">
+          <input type="file" name="photo" class="text-xs sm:text-sm">
+        </div>
+
+        <div class="flex gap-2 flex-wrap mt-1">
+          <button type="submit" name="edit_spot" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-xs sm:text-sm">Save</button>
+          <button type="submit" name="delete_spot" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs sm:text-sm" onclick="return confirm('Delete this spot?');">Delete</button>
+        </div>
+      </form>
+    </td>
+  </tr>
+<?php endforeach; ?>
+</tbody>
     </table>
   </div>
 </div>
@@ -403,23 +479,35 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($users as $u): ?>
-          <tr class="border-b hover:bg-gray-100 align-top">
-            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $u['id'] ?></td>
-            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($u['name']) ?></td>
-            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($u['email']) ?></td>
-            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($u['role']) ?></td>
-            <td class="p-2 sm:p-3 text-sm sm:text-base">
-              <form method="POST" style="display:inline-block;">
-                <input type="hidden" name="id" value="<?= $u['id'] ?>">
-                <button type="submit" name="toggle_block" 
-                    class="<?= $u['blocked'] ? 'bg-red-500' : 'bg-blue-500' ?> text-white px-2 sm:px-3 py-1 rounded hover:opacity-80 text-xs sm:text-sm">
-                  <?= $u['blocked'] ? 'Unblock' : 'Block' ?>
-                </button>
-              </form>
-            </td>
-          </tr>
-        <?php endforeach; ?>
+      <?php foreach ($users as $u): ?>
+<tr class="border-b hover:bg-gray-100 align-top">
+    <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $u['id'] ?></td>
+
+    <!-- Inline edit form for name, email, role -->
+    <td class="p-2 sm:p-3 text-sm sm:text-base" colspan="3">
+      <form method="POST" class="flex flex-wrap gap-2 items-center">
+        <input type="hidden" name="id" value="<?= $u['id'] ?>">
+
+        <input type="text" name="name" value="<?= htmlspecialchars($u['name']) ?>" class="border p-1 rounded w-24 sm:w-32 text-xs sm:text-sm">
+        <input type="email" name="email" value="<?= htmlspecialchars($u['email']) ?>" class="border p-1 rounded w-32 sm:w-40 text-xs sm:text-sm">
+        <select name="role" class="border p-1 rounded text-xs sm:text-sm">
+          <option value="user" <?= $u['role']=='user'?'selected':'' ?>>User</option>
+          <option value="admin" <?= $u['role']=='admin'?'selected':'' ?>>Admin</option>
+        </select>
+
+        <button type="submit" name="edit_user" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-xs sm:text-sm">Save</button>
+
+        <button type="submit" name="delete_user" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs sm:text-sm" onclick="return confirm('Delete this user?');">Delete</button>
+
+        <!-- Block/Unblock button -->
+        <button type="submit" name="toggle_block" 
+            class="<?= $u['blocked'] ? 'bg-red-500' : 'bg-blue-500' ?> text-white px-2 sm:px-3 py-1 rounded hover:opacity-80 text-xs sm:text-sm">
+          <?= $u['blocked'] ? 'Unblock' : 'Block' ?>
+        </button>
+      </form>
+    </td>
+</tr>
+<?php endforeach; ?>
       </tbody>
     </table>
   </div>
