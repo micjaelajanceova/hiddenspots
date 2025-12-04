@@ -387,8 +387,6 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">City</th>
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Address</th>
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Photo</th>
-          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Created</th>
-          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -438,7 +436,6 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Spot</th>
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Text</th>
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Created</th>
-          <th class="p-2 sm:p-3 border-b text-sm sm:text-base">Actions</th>
         </tr>
       </thead>
       <tbody>
