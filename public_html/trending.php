@@ -61,7 +61,7 @@ $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
 
             <!-- BADGE  -->
             <?php if ($index < 3): ?>
-                <div class="absolute top-3 left-3 bg-blue-300 text-white font-bold px-3 py-1 z-10">
+                <div class="trending-badge absolute top-3 left-3 text-white font-bold px-3 py-1 z-10">
                     TOP #<?= $index + 1 ?>
                 </div>
                 <?php endif; ?>
@@ -112,7 +112,7 @@ $trendingAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
 
             <!-- BADGE -->
             <?php if ($index < 3): ?>
-                <div class="absolute top-3 left-3 bg-blue-300 text-white font-bold px-3 py-1 z-10">
+                <div class="trending-badge absolute top-3 left-3 text-white font-bold px-3 py-1 z-10">
                     TOP #<?= $index + 1 ?>
                 </div>
             <?php endif; ?>

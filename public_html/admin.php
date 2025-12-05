@@ -357,9 +357,6 @@ $siteFont = $siteInfo['font_family'] ?? 'Arial';
 </div>
 
 
-
-
-
   <!-- SPOTS -->
 <div id="spots" class="tab-content">
 

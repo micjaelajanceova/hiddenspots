@@ -74,6 +74,10 @@ p {
     100% { transform: scale(1.02); }
   }
 
+  .trending-badge {
+    background-color: var(--primary-color);
+  }
+
    /* Macy.js script for feed layout */
   #masonry {
   display: none;
