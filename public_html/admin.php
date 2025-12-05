@@ -428,7 +428,7 @@ $siteFont = $siteInfo['font_family'] ?? 'Arial';
 
 <!-- COMMENTS -->
 <div id="comments" class="tab-content hidden mt-6">
-  <<div class="overflow-x-auto w-full block bg-gray-50 rounded-lg shadow p-4">
+  <<div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
   <table class="min-w-[800px] border-collapse table-auto mx-auto">
       <thead>
         <tr class="bg-gray-200 text-left">
@@ -474,7 +474,7 @@ $siteFont = $siteInfo['font_family'] ?? 'Arial';
 
 <!-- USERS -->
 <div id="users" class="tab-content hidden mt-6">
-  <div class="overflow-x-auto w-full block bg-gray-50 rounded-lg shadow p-4">
+  <div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
     <table class="min-w-[800px] border-collapse table-auto mx-auto">
       <thead>
         <tr class="bg-gray-200 text-left">
