@@ -15,7 +15,7 @@ if (isset($_POST['delete_spot'])) {
   $id = intval($_POST['id']);
   $stmt = $pdo->prepare("DELETE FROM hidden_spots WHERE id = ?");
   $stmt->execute([$id]);
-  echo "<script>alert('Spot deleted successfully'); window.location='admin.php';</script>";
+  header("Location: admin.php");
   exit();
 }
 
@@ -28,8 +28,7 @@ if (isset($_POST['edit_spot'])) {
 
   $stmt = $pdo->prepare("UPDATE hidden_spots SET name=?, city=?, address=? WHERE id=?");
   $stmt->execute([$name, $city, $address, $id]);
-
-  echo "<script>alert('Spot updated successfully'); window.location='admin.php';</script>";
+  header("Location: admin.php");
   exit();
 }
 
@@ -45,7 +44,7 @@ if (isset($_POST['create_spot'])) {
 
   $stmt = $pdo->prepare("INSERT INTO hidden_spots (name, city, address, file_path, created_at) VALUES (?, ?, ?, ?, NOW())");
   $stmt->execute([$name, $city, $address, $file_path]);
-  echo "<script>alert('Spot created successfully'); window.location='admin.php';</script>";
+  header("Location: admin.php");
   exit();
 }
 
@@ -55,7 +54,7 @@ if (isset($_POST['delete_comment'])) {
   $id = intval($_POST['id']);
   $stmt = $pdo->prepare("DELETE FROM comments WHERE id = ?");
   $stmt->execute([$id]);
-  echo "<script>alert('Comment deleted successfully'); window.location='admin.php';</script>";
+  header("Location: admin.php");
   exit();
 }
 
@@ -65,7 +64,7 @@ if (isset($_POST['edit_comment'])) {
   $text = trim($_POST['text']);
   $stmt = $pdo->prepare("UPDATE comments SET text = ? WHERE id = ?");
   $stmt->execute([$text, $id]);
-  echo "<script>alert('Comment updated successfully'); window.location='admin.php';</script>";
+  header("Location: admin.php");
   exit();
 }
 
@@ -80,7 +79,7 @@ if (isset($_POST['toggle_block'])) {
       $newStatus = $user['blocked'] ? 0 : 1;
       $stmt = $pdo->prepare("UPDATE users SET blocked = ? WHERE id = ?");
       $stmt->execute([$newStatus, $id]);
-      echo "<script>alert('User ".($newStatus ? 'blocked' : 'unblocked')." successfully'); window.location='admin.php';</script>";
+      header("Location: admin.php");
       exit();
   }
 }
@@ -94,7 +93,7 @@ if (isset($_POST['edit_user'])) {
 
   $stmt = $pdo->prepare("UPDATE users SET name=?, email=?, role=? WHERE id=?");
   $stmt->execute([$name, $email, $role, $id]);
-  echo "<script>alert('User updated successfully'); window.location='admin.php';</script>";
+  header("Location: admin.php");
   exit();
 }
 
@@ -103,7 +102,9 @@ if (isset($_POST['delete_user'])) {
   $id = intval($_POST['id']);
   $stmt = $pdo->prepare("DELETE FROM users WHERE id=?");
   $stmt->execute([$id]);
-  echo "<script>alert('User deleted successfully'); window.location='admin.php';</script>";
+  
+  header("Location: admin.php");
+
   exit();
 }
 
@@ -164,8 +165,8 @@ if (isset($_POST['update_site'])) {
       $_POST['card3_text'],
   ]);
   
-
-  echo "<script>alert('Site info updated successfully'); window.location='admin.php';</script>";
+  header("Location: admin.php");
+  
   exit();
 }
 
@@ -185,27 +186,6 @@ $users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY 
 // ===== FETCH SITE INFO =====
 $siteInfoStmt = $pdo->query("SELECT * FROM site_settings WHERE id=1 LIMIT 1");
 $siteInfo = $siteInfoStmt->fetch(PDO::FETCH_ASSOC);
-
-// Assign variables for About page
-$about_title1    = $siteInfo['about_title1'] ?? '';
-$about_subtitle1 = $siteInfo['about_subtitle1'] ?? '';
-$about_text1     = $siteInfo['about_text1'] ?? '';
-
-$about_title2    = $siteInfo['about_title2'] ?? '';
-$about_subtitle2 = $siteInfo['about_subtitle2'] ?? '';
-$about_text2     = $siteInfo['about_text2'] ?? '';
-
-$how_title       = $siteInfo['how_title'] ?? '';
-$how_subtitle    = $siteInfo['how_subtitle'] ?? '';
-
-$card1_title     = $siteInfo['card1_title'] ?? '';
-$card1_text      = $siteInfo['card1_text'] ?? '';
-
-$card2_title     = $siteInfo['card2_title'] ?? '';
-$card2_text      = $siteInfo['card2_text'] ?? '';
-
-$card3_title     = $siteInfo['card3_title'] ?? '';
-$card3_text      = $siteInfo['card3_text'] ?? '';
 
 $siteDescription = $siteInfo['site_description'] ?? '';
 $siteRules       = $siteInfo['rules'] ?? '';
@@ -421,10 +401,10 @@ $siteFont = $siteInfo['font_family'] ?? 'Arial';
         </form>
     </td>
     <td class="p-2 sm:p-3 text-sm sm:text-base">
-        <input type="text" name="city" value="<?= htmlspecialchars($s['city']) ?>" class="border p-1 rounded text-xs sm:text-sm w-full" form="form-<?= $s['id'] ?>">
+        <input type="text" name="city" value="<?= htmlspecialchars($s['city']) ?>" class="border p-1 rounded text-xs sm:text-sm w-full">
     </td>
     <td class="p-2 sm:p-3 text-sm sm:text-base">
-        <input type="text" name="address" value="<?= htmlspecialchars($s['address']) ?>" class="border p-1 rounded text-xs sm:text-sm w-full" form="form-<?= $s['id'] ?>">
+        <input type="text" name="address" value="<?= htmlspecialchars($s['address']) ?>" class="border p-1 rounded text-xs sm:text-sm w-full">
     </td>
     <td class="p-2 sm:p-3 text-sm sm:text-base">
         <?php if (!empty($s['file_path'])): ?>
@@ -566,9 +546,8 @@ $siteFont = $siteInfo['font_family'] ?? 'Arial';
   activeBtn.classList.add('bg-black', 'text-white');
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    showTab('site');
-});
+
+showTab('site');
 
 </script>
 
