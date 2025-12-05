@@ -448,23 +448,20 @@ $siteFont = $siteInfo['font_family'] ?? 'Arial';
             <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($c['user_name']) ?></td>
             <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($c['spot_name']) ?></td>
 
-            <!-- Text comment -->
-            <form method="POST">
-            <td class="p-2 sm:p-3 text-sm sm:text-base">
-                <textarea name="text" class="border border-gray-300 rounded p-2 w-full text-xs sm:text-sm" rows="2"><?= htmlspecialchars($c['text']) ?></textarea>
-                <input type="hidden" name="id" value="<?= $c['id'] ?>">
-              </form>
-            </td>
 
-            <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $c['created_at'] ?></td>
+            <form method="POST" class="contents">
+                <td class="p-2 sm:p-3 text-sm sm:text-base">
+                  <textarea name="text" class="border border-gray-300 rounded p-2 w-full text-xs sm:text-sm" rows="2"><?= htmlspecialchars($c['text']) ?></textarea>
+                  <input type="hidden" name="id" value="<?= $c['id'] ?>">
+                </td>
 
-            <!-- Actions stĺpec -->
-            <td class="p-2 sm:p-3 text-sm sm:text-base">
-              <form method="POST" class="flex gap-2 flex-wrap">
-                <input type="hidden" name="id" value="<?= $c['id'] ?>">
-                <button type="submit" name="edit_comment" class="bg-blue-500 text-white px-2 sm:px-3 py-1 rounded hover:bg-blue-600 text-xs sm:text-sm">Save</button>
-                <button type="submit" name="delete_comment" class="bg-red-500 text-white px-2 sm:px-3 py-1 rounded hover:bg-red-600 text-xs sm:text-sm" onclick="return confirm('Delete this comment?');">Delete</button>
-              </form>
+                <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $c['created_at'] ?></td>
+
+                <td class="p-2 sm:p-3 text-sm sm:text-base">
+                  <button type="submit" name="edit_comment" class="bg-blue-500 text-white px-2 sm:px-3 py-1 rounded hover:bg-blue-600 text-xs sm:text-sm">Save</button>
+                  <button type="submit" name="delete_comment" class="bg-red-500 text-white px-2 sm:px-3 py-1 rounded hover:bg-red-600 text-xs sm:text-sm" onclick="return confirm('Delete this comment?');">Delete</button>
+                </td>
+            </form>
             </td>
           </tr>
         <?php endforeach; ?>
