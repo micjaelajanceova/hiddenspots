@@ -449,8 +449,8 @@ $siteFont = $siteInfo['font_family'] ?? 'Arial';
             <td class="p-2 sm:p-3 text-sm sm:text-base"><?= htmlspecialchars($c['spot_name']) ?></td>
 
             <!-- Text comment -->
+            <form method="POST">
             <td class="p-2 sm:p-3 text-sm sm:text-base">
-              <form method="POST">
                 <textarea name="text" class="border border-gray-300 rounded p-2 w-full text-xs sm:text-sm" rows="2"><?= htmlspecialchars($c['text']) ?></textarea>
                 <input type="hidden" name="id" value="<?= $c['id'] ?>">
               </form>
