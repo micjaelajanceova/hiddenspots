@@ -7,6 +7,7 @@ if (session_status() == PHP_SESSION_NONE) {
 $stmt = $pdo->query("SELECT primary_color, font_family  FROM site_settings WHERE id = 1 LIMIT 1");
 $settings = $stmt->fetch(PDO::FETCH_ASSOC);
 $primary_color = $settings['primary_color'] ?? '';
+$siteFont = $settings['font_family'] ?? 'Arial'; 
 
 
 if (empty($_SESSION['csrf_token'])) {
