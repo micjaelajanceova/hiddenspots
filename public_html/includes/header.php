@@ -51,8 +51,8 @@ $user_role = $_SESSION['role'] ?? 'user';
             --primary-color: <?= htmlspecialchars($primary_color) ?>;
         }
         body {
-        font-family: <?= htmlspecialchars($site['font_family']) ?>, sans-serif;
-    }
+    font-family: <?= htmlspecialchars($siteFont) ?>, sans-serif;
+  }
     </style>
 
 </head>
