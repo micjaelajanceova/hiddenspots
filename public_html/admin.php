@@ -375,7 +375,7 @@ $siteFont = $siteInfo['font_family'] ?? 'Arial';
 
 
 <div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
-    <table class="min-w-full border-collapse w-full table-auto">
+    <table class="min-w-[800px] border-collapse w-full table-auto">
         <thead>
             <tr class="bg-gray-200 text-left">
                 <th class="p-2 sm:p-3 border-b text-sm sm:text-base">ID</th>
@@ -389,29 +389,40 @@ $siteFont = $siteInfo['font_family'] ?? 'Arial';
         <tbody>
             <?php foreach ($spots as $s): ?>
             <tr class="border-b hover:bg-gray-100 align-top">
-                <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $s['id'] ?></td>
-
-                <td class="p-2 sm:p-3 text-sm sm:text-base" colspan="5">
-                    <form method="POST" class="flex flex-wrap items-center gap-2">
+                <form method="POST">
+                    <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $s['id'] ?>
                         <input type="hidden" name="id" value="<?= $s['id'] ?>">
+                    </td>
 
-                        <input type="text" name="name" value="<?= htmlspecialchars($s['name']) ?>" class="border p-1 rounded text-xs sm:text-sm w-full sm:w-1/4" placeholder="Name">
-                        <input type="text" name="city" value="<?= htmlspecialchars($s['city']) ?>" class="border p-1 rounded text-xs sm:text-sm w-full sm:w-1/4" placeholder="City">
-                        <input type="text" name="address" value="<?= htmlspecialchars($s['address']) ?>" class="border p-1 rounded text-xs sm:text-sm w-full sm:w-1/4" placeholder="Address">
+                    <td class="p-2 sm:p-3 text-sm sm:text-base">
+                        <input type="text" name="name" value="<?= htmlspecialchars($s['name']) ?>" class="border p-1 rounded text-xs sm:text-sm w-full">
+                    </td>
 
+                    <td class="p-2 sm:p-3 text-sm sm:text-base">
+                        <input type="text" name="city" value="<?= htmlspecialchars($s['city']) ?>" class="border p-1 rounded text-xs sm:text-sm w-full">
+                    </td>
+
+                    <td class="p-2 sm:p-3 text-sm sm:text-base">
+                        <input type="text" name="address" value="<?= htmlspecialchars($s['address']) ?>" class="border p-1 rounded text-xs sm:text-sm w-full">
+                    </td>
+
+                    <td class="p-2 sm:p-3 text-sm sm:text-base">
                         <?php if (!empty($s['file_path'])): ?>
                             <img src="<?= htmlspecialchars($s['file_path']) ?>" class="w-12 sm:w-16 h-12 sm:h-16 object-cover rounded border">
                         <?php endif; ?>
+                    </td>
 
+                    <td class="p-2 sm:p-3 text-sm sm:text-base flex gap-2 flex-wrap">
                         <button type="submit" name="edit_spot" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-xs sm:text-sm">Save</button>
                         <button type="submit" name="delete_spot" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs sm:text-sm" onclick="return confirm('Delete this spot?');">Delete</button>
-                    </form>
-                </td>
+                    </td>
+                </form>
             </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
 </div>
+
 
 </div>
 
