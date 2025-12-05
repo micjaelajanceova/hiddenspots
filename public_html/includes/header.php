@@ -4,7 +4,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-$stmt = $pdo->query("SELECT primary_color FROM site_settings WHERE id = 1 LIMIT 1");
+$stmt = $pdo->query("SELECT primary_color, font_family  FROM site_settings WHERE id = 1 LIMIT 1");
 $settings = $stmt->fetch(PDO::FETCH_ASSOC);
 $primary_color = $settings['primary_color'] ?? '';
 
@@ -50,6 +50,9 @@ $user_role = $_SESSION['role'] ?? 'user';
         :root {
             --primary-color: <?= htmlspecialchars($primary_color) ?>;
         }
+        body {
+        font-family: <?= htmlspecialchars($site['font_family']) ?>, sans-serif;
+    }
     </style>
 
 </head>

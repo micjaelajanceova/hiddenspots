@@ -114,6 +114,7 @@ if (isset($_POST['update_site'])) {
   $rules = trim($_POST['rules']);
   $contact = trim($_POST['contact_info']);
   $theme_color = trim($_POST['primary_color']);
+  $font_family = trim($_POST['font_family']);
   
 
   // Update site info
@@ -123,6 +124,7 @@ if (isset($_POST['update_site'])) {
       rules=?,
       contact_info=?,
       primary_color=?,
+      font_family=?,
       about_title1=?,
       about_subtitle1=?,
       about_text1=?,
@@ -145,6 +147,7 @@ if (isset($_POST['update_site'])) {
       $rules,
       $contact,
       $theme_color,
+      $font_family,
       $_POST['about_title1'],
       $_POST['about_subtitle1'],
       $_POST['about_text1'],
@@ -208,6 +211,7 @@ $siteDescription = $siteInfo['site_description'] ?? '';
 $siteRules       = $siteInfo['rules'] ?? '';
 $siteContact     = $siteInfo['contact_info'] ?? '';
 $siteColor       = $siteInfo['primary_color'] ?? '';
+$siteFont = $siteInfo['font_family'] ?? 'Arial'; 
 
 ?>
 
@@ -348,6 +352,20 @@ $siteColor       = $siteInfo['primary_color'] ?? '';
     <span class="text-gray-600">Selected: <?= htmlspecialchars($siteColor) ?></span>
   </div>
 </div>
+
+
+<!-- Font Family -->
+<div class="flex flex-col mt-4">
+  <label class="font-semibold text-gray-700 mb-1">Font Family</label>
+  <select name="font_family" class="border p-2 rounded w-full text-sm">
+    <option value="Arial" <?= $siteFont=='Arial'?'selected':'' ?>>Arial</option>
+    <option value="Verdana" <?= $siteFont=='Verdana'?'selected':'' ?>>Verdana</option>
+    <option value="Helvetica" <?= $siteFont=='Helvetica'?'selected':'' ?>>Helvetica</option>
+    <option value="Georgia" <?= $siteFont=='Georgia'?'selected':'' ?>>Georgia</option>
+    <option value="Times New Roman" <?= $siteFont=='Times New Roman'?'selected':'' ?>>Times New Roman</option>
+  </select>
+</div>
+
 
 </div>
 
