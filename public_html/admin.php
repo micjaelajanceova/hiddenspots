@@ -356,7 +356,7 @@ $siteFont = $siteInfo['font_family'] ?? 'Arial';
 
 <!-- Font Family -->
 <div class="flex flex-col mt-4">
-  <label class="font-semibold text-gray-700 mb-1">Font Family</label>
+  <label class="font-semibold text-gray-700 mb-1">Font</label>
   <select name="font_family" class="border p-2 rounded w-full text-sm">
     <option value="Arial" <?= $siteFont=='Arial'?'selected':'' ?>>Arial</option>
     <option value="Verdana" <?= $siteFont=='Verdana'?'selected':'' ?>>Verdana</option>

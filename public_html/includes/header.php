@@ -50,7 +50,7 @@ $user_role = $_SESSION['role'] ?? 'user';
         :root {
             --primary-color: <?= htmlspecialchars($primary_color) ?>;
         }
-        body {
+        main, main * {
     font-family: <?= htmlspecialchars($siteFont) ?>, sans-serif;
   }
     </style>
