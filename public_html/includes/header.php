@@ -51,9 +51,10 @@ $user_role = $_SESSION['role'] ?? 'user';
         :root {
             --primary-color: <?= htmlspecialchars($primary_color) ?>;
         }
-        h1, h2, h3, h4, h5, h6  {
+        body, input, textarea, select, button {
     font-family: <?= htmlspecialchars($siteFont) ?>, sans-serif !important;
-  }
+}
+
     </style>
 
 </head>
