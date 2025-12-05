@@ -15,7 +15,7 @@ if (isset($_POST['delete_spot'])) {
   $id = intval($_POST['id']);
   $stmt = $pdo->prepare("DELETE FROM hidden_spots WHERE id = ?");
   $stmt->execute([$id]);
-  header("Location: admin.php");
+  echo "<script>alert('Spot deleted successfully'); window.location='admin.php';</script>";
   exit();
 }
 
@@ -28,7 +28,8 @@ if (isset($_POST['edit_spot'])) {
 
   $stmt = $pdo->prepare("UPDATE hidden_spots SET name=?, city=?, address=? WHERE id=?");
   $stmt->execute([$name, $city, $address, $id]);
-  header("Location: admin.php");
+
+  echo "<script>alert('Spot updated successfully'); window.location='admin.php';</script>";
   exit();
 }
 
@@ -44,7 +45,7 @@ if (isset($_POST['create_spot'])) {
 
   $stmt = $pdo->prepare("INSERT INTO hidden_spots (name, city, address, file_path, created_at) VALUES (?, ?, ?, ?, NOW())");
   $stmt->execute([$name, $city, $address, $file_path]);
-  header("Location: admin.php");
+  echo "<script>alert('Spot created successfully'); window.location='admin.php';</script>";
   exit();
 }
 
@@ -54,7 +55,7 @@ if (isset($_POST['delete_comment'])) {
   $id = intval($_POST['id']);
   $stmt = $pdo->prepare("DELETE FROM comments WHERE id = ?");
   $stmt->execute([$id]);
-  header("Location: admin.php");
+  echo "<script>alert('Comment deleted successfully'); window.location='admin.php';</script>";
   exit();
 }
 
@@ -64,7 +65,7 @@ if (isset($_POST['edit_comment'])) {
   $text = trim($_POST['text']);
   $stmt = $pdo->prepare("UPDATE comments SET text = ? WHERE id = ?");
   $stmt->execute([$text, $id]);
-  header("Location: admin.php");
+  echo "<script>alert('Comment updated successfully'); window.location='admin.php';</script>";
   exit();
 }
 
@@ -79,7 +80,7 @@ if (isset($_POST['toggle_block'])) {
       $newStatus = $user['blocked'] ? 0 : 1;
       $stmt = $pdo->prepare("UPDATE users SET blocked = ? WHERE id = ?");
       $stmt->execute([$newStatus, $id]);
-      header("Location: admin.php");
+      echo "<script>alert('User ".($newStatus ? 'blocked' : 'unblocked')." successfully'); window.location='admin.php';</script>";
       exit();
   }
 }
@@ -93,7 +94,7 @@ if (isset($_POST['edit_user'])) {
 
   $stmt = $pdo->prepare("UPDATE users SET name=?, email=?, role=? WHERE id=?");
   $stmt->execute([$name, $email, $role, $id]);
-  header("Location: admin.php");
+  echo "<script>alert('User updated successfully'); window.location='admin.php';</script>";
   exit();
 }
 
@@ -102,9 +103,7 @@ if (isset($_POST['delete_user'])) {
   $id = intval($_POST['id']);
   $stmt = $pdo->prepare("DELETE FROM users WHERE id=?");
   $stmt->execute([$id]);
-  
-  header("Location: admin.php");
-
+  echo "<script>alert('User deleted successfully'); window.location='admin.php';</script>";
   exit();
 }
 
@@ -165,8 +164,8 @@ if (isset($_POST['update_site'])) {
       $_POST['card3_text'],
   ]);
   
-  header("Location: admin.php");
-  
+
+  echo "<script>alert('Site info updated successfully'); window.location='admin.php';</script>";
   exit();
 }
 
@@ -547,7 +546,7 @@ $siteFont = $siteInfo['font_family'] ?? 'Arial';
 }
 
 
-showTab('site');
+    showTab('site');
 
 </script>
 
