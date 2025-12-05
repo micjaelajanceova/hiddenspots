@@ -47,7 +47,7 @@ try {
 <section class="mt-6 sm:mt-12 pb-20">
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-4xl font-bold mb-3">Trending</h1>
+      <h1 class="text-4xl font-bold mb-3">Trending spots</h1>
       <h2 class="mt-1">Explore what most people miss.</h2>
     </div>
     <a href="trending.php" class="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full text-sm sm:px-4 sm:py-2 sm:text-base">See more →</a>
@@ -102,7 +102,7 @@ try {
     </div>
 
     <div class="relative p-8 flex flex-col items-start max-w-xl">
-      <h4 class="text-4xl font-bold text-white">About HiddenSpot</h4>
+      <h4 class="text-4xl font-bold text-white">About HiddenSpots</h4>
       <p3 class="mt-2 text-white">
         A photo-sharing app for secret city places. Discover, save and share hidden gems in your town.
       </p3>
