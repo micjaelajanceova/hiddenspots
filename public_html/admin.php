@@ -358,24 +358,22 @@ $siteFont = $siteInfo['font_family'] ?? 'Arial';
 
 
   <!-- SPOTS -->
-<div id="spots" class="tab-content">
-
-<!-- Add New Spot Form -->
-<section class="mt-12 mb-20 lg:mb-5">
-  <div class="bg-gray-50 rounded-lg shadow p-10 flex flex-col items-center text-center">
-    <h2 class="text-3xl font-bold text-black">Upload a new picture</h2>
-    <button 
-      id="openUploadModal" 
-      class="mt-6 bg-black text-white px-8 py-3 rounded-full text-lg shadow hover:bg-gray-200 hover:text-black transition"
-    >
-      + Upload
-    </button>
-  </div>
-</section>
-
+  <div id="spots" class="tab-content">
+  <!-- Add New Spot Form -->
+  <section class="mt-12 mb-20 lg:mb-5">
+    <div class="bg-gray-50 rounded-lg shadow p-10 flex flex-col items-center text-center">
+      <h2 class="text-3xl font-bold text-black">Upload a new picture</h2>
+      <button 
+        id="openUploadModal" 
+        class="mt-6 bg-black text-white px-8 py-3 rounded-full text-lg shadow hover:bg-gray-200 hover:text-black transition"
+      >
+        + Upload
+      </button>
+    </div>
+  </section>
 
   <div class="overflow-x-auto bg-gray-50 rounded-lg shadow p-4">
-    <table class="min-w-full border-collapse w-full table-auto">
+    <table class="min-w-[700px] w-full table-auto border-collapse">
       <thead>
         <tr class="bg-gray-200 text-left">
           <th class="p-2 sm:p-3 border-b text-sm sm:text-base">ID</th>
@@ -391,37 +389,36 @@ $siteFont = $siteInfo['font_family'] ?? 'Arial';
 <tr class="border-b hover:bg-gray-100 align-top">
     <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $s['id'] ?></td>
     <td class="p-2 sm:p-3 text-sm sm:text-base">
-        <form method="POST" class="flex items-center gap-2">
+        <form method="POST" class="flex flex-col gap-2">
             <input type="hidden" name="id" value="<?= $s['id'] ?>">
-            <input type="text" name="name" value="<?= htmlspecialchars($s['name']) ?>" class="border p-1 rounded text-xs sm:text-sm w-full">
+            <input type="text" name="name" value="<?= htmlspecialchars($s['name']) ?>" class="border p-2 sm:p-3 rounded w-full text-sm sm:text-base">
         </form>
     </td>
     <td class="p-2 sm:p-3 text-sm sm:text-base">
-        <input type="text" name="city" value="<?= htmlspecialchars($s['city']) ?>" class="border p-1 rounded text-xs sm:text-sm w-full">
+        <input type="text" name="city" value="<?= htmlspecialchars($s['city']) ?>" class="border p-2 sm:p-3 rounded w-full text-sm sm:text-base">
     </td>
     <td class="p-2 sm:p-3 text-sm sm:text-base">
-        <input type="text" name="address" value="<?= htmlspecialchars($s['address']) ?>" class="border p-1 rounded text-xs sm:text-sm w-full">
+        <input type="text" name="address" value="<?= htmlspecialchars($s['address']) ?>" class="border p-2 sm:p-3 rounded w-full text-sm sm:text-base">
     </td>
     <td class="p-2 sm:p-3 text-sm sm:text-base">
         <?php if (!empty($s['file_path'])): ?>
-            <img src="<?= htmlspecialchars($s['file_path']) ?>" class="w-12 sm:w-16 h-12 sm:h-16 object-cover rounded border">
+            <img src="<?= htmlspecialchars($s['file_path']) ?>" class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded border">
         <?php endif; ?>
     </td>
-    <td class="p-2 sm:p-3 text-sm sm:text-base">
-        <form method="POST">
+    <td class="p-2 sm:p-3 text-sm sm:text-base flex gap-2 flex-wrap">
+        <form method="POST" class="flex gap-2 flex-wrap w-full">
             <input type="hidden" name="id" value="<?= $s['id'] ?>">
-            <button type="submit" name="edit_spot" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-xs sm:text-sm">Save</button>
-            <button type="submit" name="delete_spot" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs sm:text-sm" onclick="return confirm('Delete this spot?');">Delete</button>
+            <button type="submit" name="edit_spot" class="bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-600 text-sm sm:text-base">Save</button>
+            <button type="submit" name="delete_spot" class="bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 text-sm sm:text-base" onclick="return confirm('Delete this spot?');">Delete</button>
         </form>
     </td>
 </tr>
 <?php endforeach; ?>
-
-
-</tbody>
+      </tbody>
     </table>
   </div>
 </div>
+
 
 <!-- COMMENTS -->
 <div id="comments" class="tab-content hidden mt-6">
