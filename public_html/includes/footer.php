@@ -1,22 +1,23 @@
 <?php
 require_once __DIR__ . '/db.php';
 
+// Start session to check logged-in status
 require_once __DIR__ . '/session.php';
 $session = new SessionHandle();
 
-// Load ALL footer settings (description, rules, contact, color)
-$stmt = $pdo->query("SELECT site_description, rules, contact_info, primary_color 
-                     FROM site_settings 
-                     WHERE id = 1 LIMIT 1");
+// Load SiteSettings class
+require_once __DIR__ . '/../classes/sitesettings.php';
+$siteSettingsObj = new SiteSettings($pdo);
+$siteSettings = $siteSettingsObj->getAll();
 
-$settings = $stmt->fetch(PDO::FETCH_ASSOC);
-
-$siteDescription = $settings['site_description'] ?? '';
-$siteRules = $settings['rules'] ?? '';
-$siteContact = $settings['contact_info'] ?? '';
+$siteDescription = $siteSettings['site_description'] ?? '';
+$siteRules       = $siteSettings['rules'] ?? '';
+$siteContact     = $siteSettings['contact_info'] ?? '';
+$siteColor       = $siteSettings['primary_color'] ?? '';
+$siteFont        = $siteSettings['font_family'] ?? 'Arial';
 ?>
 
-
+<!----------------------- Footer HTML section ------------------------------>
 <footer class="py-10 text-gray-500 text-sm">
 
 <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-left px-4 sm:px-6 md:px-0">
@@ -52,9 +53,10 @@ $siteContact = $settings['contact_info'] ?? '';
   </h6>
 
 </footer>
-
 </div>
 
+
+<!----------------------- Scripts ------------------------------>
 <!-- Images Loaded script -->
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
 
@@ -64,7 +66,7 @@ $siteContact = $settings['contact_info'] ?? '';
 <!-- Global script -->
 <script src="/assets/js/main.js"></script>
 
-<!-- Map and Upload scripts -->
+<!-- Logged-in status -->
 <script>const isLoggedIn = <?= $session->logged_in() ? 'true' : 'false'; ?>;</script>
 
 <!-- Map and Upload scripts -->
@@ -74,7 +76,6 @@ import { initUploadMap, setupGeocode } from '/assets/js/map.js';
 initUploadMap('uploadMap', 'latitude', 'longitude');
 setupGeocode('city', 'address');
 </script>
-
 
 </body>
 </html>
