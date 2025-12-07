@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/db.php';
 
+require_once __DIR__ . '/session.php';
+$session = new SessionHandle();
+
 // Load ALL footer settings (description, rules, contact, color)
 $stmt = $pdo->query("SELECT site_description, rules, contact_info, primary_color 
                      FROM site_settings 
@@ -12,6 +15,8 @@ $siteDescription = $settings['site_description'] ?? '';
 $siteRules = $settings['rules'] ?? '';
 $siteContact = $settings['contact_info'] ?? '';
 ?>
+
+
 <footer class="py-10 text-gray-500 text-sm">
 
 <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-left px-4 sm:px-6 md:px-0">
@@ -59,13 +64,10 @@ $siteContact = $settings['contact_info'] ?? '';
 <!-- Global script -->
 <script src="/assets/js/main.js"></script>
 
-<script src="/assets/js/profile-photo.js" defer></script>
-
+<!-- Map and Upload scripts -->
+<script>const isLoggedIn = <?= $session->logged_in() ? 'true' : 'false'; ?>;</script>
 
 <!-- Map and Upload scripts -->
-<script>
-  const isLoggedIn = <?= isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
-</script>
 <script type="module" src="/assets/js/map.js"></script>
 <script type="module">
 import { initUploadMap, setupGeocode } from '/assets/js/map.js';

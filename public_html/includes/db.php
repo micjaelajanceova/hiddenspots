@@ -1,12 +1,14 @@
 <?php
 require __DIR__ . '/constants.php';
 
+// Database connection using PDO
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 $options = [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 ];
 
+// Create a new PDO instance
 try {
      $pdo = new PDO($dsn, $user, $pass, $options);
 
@@ -14,7 +16,8 @@ try {
     $pdo->exec("SET character_set_client = utf8mb4");
     $pdo->exec("SET character_set_connection = utf8mb4");
     $pdo->exec("SET character_set_results = utf8mb4");
-    
+ 
+    // If the connection fails, an exception is thrown 
 } catch (\PDOException $e) {
      throw new \PDOException($e->getMessage(), (int)$e->getCode());
 }
