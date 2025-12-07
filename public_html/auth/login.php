@@ -1,12 +1,12 @@
 <?php
-// Start session 
-require_once __DIR__ . '/../includes/sessionHandle.php';
-$session = new SessionHandle();
-
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/password-validate.php';
 require_once __DIR__ . '/../classes/User.php';
 require_once __DIR__ . '/../classes/spot.php';
+
+// Start session 
+require_once __DIR__ . '/../classes/SessionHandle.php';
+$session = new SessionHandle();
 
 $userObj = new User($pdo);
 // Initialize message and success flag
