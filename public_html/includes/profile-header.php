@@ -50,5 +50,6 @@ if ($user_id) {
 <?php endif; ?>
 
 
-<script type="module" src="/assets/js/map.js"></script>
-<script type="module" src="/assets/js/main.js"></script>
+<script src="/assets/js/map.js" defer></script>
+<script src="/assets/js/main.js" defer></script>
+
