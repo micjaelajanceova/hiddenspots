@@ -17,11 +17,7 @@ if ($user_id) {
 }
 ?>
 
-<?php
-// Hide navbar
-$show_navbar = false;
-include __DIR__ . '/../includes/header.php';
-?>
+
 <?php if ($session->logged_in()): ?>
   <!-- STICKY PROFILE (only when logged in) -->
   <div class="fixed top-3 right-2 z-50 flex items-center justify-end md:w-auto profile-header">
@@ -54,7 +50,10 @@ include __DIR__ . '/../includes/header.php';
   </div>
 <?php endif; ?>
 
+<script>
 
-<script src="/assets/js/map.js" defer></script>
+</script>
 <script src="/assets/js/main.js" defer></script>
+<script src="/assets/js/map.js" defer></script>
+
 
