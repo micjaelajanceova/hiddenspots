@@ -274,7 +274,7 @@ $show_navbar = $show_navbar ?? true;
 <script src="https://unpkg.com/phosphor-icons"></script>
 
 <!-- Global script -->
-<script type="module" src="/assets/js/main.js"></script>
+<script type="module" src="public_html/assets/js/main.js"></script>
 
 <!-- Logged-in status -->
 <script>const isLoggedIn = <?= $session->logged_in() ? 'true' : 'false'; ?>;</script>
