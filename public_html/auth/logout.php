@@ -1,8 +1,10 @@
 <?php
-session_start();
+// start session
+require_once __DIR__ . '/../classes/SessionHandle.php';
+$session = new SessionHandle();
 
 // Clear all session variables
-$_SESSION = [];
+$session->logout();
 
 // Delete session cookie if it exists
 if (ini_get("session.use_cookies")) {
@@ -17,9 +19,6 @@ if (ini_get("session.use_cookies")) {
 if (isset($_COOKIE['remember_token'])) {
     setcookie('remember_token', '', time() - 3600, '/');
 }
-
-// Destroy the session completely
-session_destroy();
 
 // Redirect user to login page
 header("Location: login.php");

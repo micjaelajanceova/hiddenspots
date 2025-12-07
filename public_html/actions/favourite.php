@@ -1,6 +1,7 @@
 <?php
-// Needed to identify the logged-in user
-session_start();
+// Session handler
+require_once __DIR__ . '/../includes/sessionHandle.php';
+$session = new SessionHandle();
 
 // Database connection
 require_once '../includes/db.php';
@@ -13,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['spot_id'])) {
 }
 
 // User must be logged in to like a spot
-if (!isset($_SESSION['user_id'])) {
+if (!$session->logged_in()) {
     http_response_code(403);
     echo 'not_logged_in';
     exit();
@@ -21,7 +22,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // Get spot ID and user ID
 $spot_id = intval($_POST['spot_id']);
-$user_id = $_SESSION['user_id'];
+$user_id = $session->get('user_id');
 
 // Check if already favorited
 $stmt = $pdo->prepare("SELECT 1 FROM favorites WHERE user_id=? AND spot_id=?");
@@ -30,10 +31,10 @@ $stmt->execute([$user_id, $spot_id]);
 if ($stmt->fetch()) {
     // Remove favorite if it exists
     $pdo->prepare("DELETE FROM favorites WHERE user_id=? AND spot_id=?")->execute([$user_id, $spot_id]);
-    echo 'removed';
+    echo json_encode(['status' => 'ok', 'action' => 'removed']);
 } else {
     // Add favorite if it doesn't exist
     $pdo->prepare("INSERT INTO favorites (user_id, spot_id) VALUES (?, ?)")->execute([$user_id, $spot_id]);
-    echo 'added';
+    echo json_encode(['status' => 'ok', 'action' => 'added']);
 }
 ?>

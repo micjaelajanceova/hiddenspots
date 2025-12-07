@@ -1,9 +1,12 @@
 <?php
+// Start session 
+require_once __DIR__ . '/../includes/sessionHandle.php';
+$session = new SessionHandle();
+
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/password-validate.php';
 require_once __DIR__ . '/../classes/User.php';
 require_once __DIR__ . '/../classes/spot.php';
-session_start();
 
 $userObj = new User($pdo);
 // Initialize message and success flag
@@ -26,12 +29,11 @@ if (isset($_POST['action'])) {
             if ($user['blocked']) {
                 $msg = "Your account has been blocked. Please contact the administrator.";
             } else {
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['user_name'] = $user['name'];
-                $_SESSION['user_email'] = $user['email'];
-                $_SESSION['role'] = $user['role'];
-                $_SESSION['profile_photo'] = $user['profile_photo'] ?? null;
-
+                $session->set('user_id', $user['id']);
+                $session->set('user_name', $user['name']);
+                $session->set('user_email', $user['email']);
+                $session->set('role', $user['role']);
+                $session->set('profile_photo', $user['profile_photo'] ?? null);
                 header($user['role'] === 'admin' ? "Location: ../admin.php" : "Location: ../index.php");
                 exit();
             }

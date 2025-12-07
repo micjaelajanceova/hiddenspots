@@ -2,22 +2,24 @@
 // Database connection
 require_once '../includes/db.php';
 
-// Needed to identify the logged-in user
-session_start();
+// Session handler
+require_once __DIR__ . '/../includes/sessionHandle.php';
+$session = new SessionHandle();
 
-// Get user ID from session
-$user_id = $_SESSION['user_id'] ?? null;
 
 // Handle like/unlike action
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $spot_id = intval($_POST['spot_id'] ?? 0);
 
     // User must be logged in to like a spot
-    if (!$user_id) {
+    if (!$session->logged_in()) {
         http_response_code(403);
-        echo 'not_logged_in';
+        echo json_encode(['status' => 'error', 'message' => 'not_logged_in']);
         exit();
     }
+
+// Get user ID from session
+$user_id = $session->get('user_id');
 
     // Check if already liked
     $stmt = $pdo->prepare("SELECT id FROM likes WHERE user_id=? AND spot_id=?");

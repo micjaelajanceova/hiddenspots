@@ -1,17 +1,20 @@
 <?php
-session_start();
+// Session handler
+require_once __DIR__ . '/../classes/SessionHandle.php';
+$session = new SessionHandle();
+
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../classes/User.php';
 
 // Check if the user is logged in, otherwise block access
-if (!isset($_SESSION['user_id'])) {
+if (!$session->logged_in()) {
     http_response_code(403);
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit();
 }
 
 // Store the logged-in user's ID for later use
-$user_id = $_SESSION['user_id'];
+$user_id = $session->get('user_id');
 $userObj = new User($pdo);
 
 

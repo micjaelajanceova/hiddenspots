@@ -1,12 +1,15 @@
 <?php
-session_start();
+// start session
+require_once __DIR__ . '/../classes/SessionHandle.php';
+$session = new SessionHandle();
+
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/password-validate.php';
 require_once __DIR__ . '/../classes/User.php';
 
 
 // Redirect to login page if user is not logged in
-if (!isset($_SESSION['user_id'])) {
+if (!$session->logged_in()) {
     header("Location: login.php");
     exit();
 }
@@ -15,7 +18,7 @@ if (!isset($_SESSION['user_id'])) {
 $userObj = new User($pdo);
 
 // Store the logged-in user's ID for queries
-$user_id = $_SESSION['user_id'];
+$user_id = $session->get('user_id');
 
 // Variables for messages shown to user
 $msg = '';
@@ -63,6 +66,7 @@ $user_name = $user['name'] ?? '';
 $user_email = $user['email'] ?? '';
 $user_photo = $userObj->getProfilePhoto($user_id);
 $photo_src = $user_photo ? '../' . $user_photo : null;
+$session->set('profile_photo', $user_photo);
 
 include __DIR__ . '/../includes/header.php';
 ?>
