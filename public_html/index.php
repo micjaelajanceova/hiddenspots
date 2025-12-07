@@ -6,7 +6,7 @@ include 'classes/spot.php';
 
 
 require_once 'includes/db.php';
-require_once 'classes/SessionHandle.php';
+require_once 'classes/session.php';
 
 $session = new SessionHandle();
 
