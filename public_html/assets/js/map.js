@@ -155,6 +155,8 @@ if (profileBtn && profileMenu) {
     }
   });
 }
+
+
 // Handle mutual exclusivity of profile menu and city map
 (function () {
 
