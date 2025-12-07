@@ -1,44 +1,41 @@
 <?php
 require_once __DIR__ . '/db.php'; 
-
+require_once __DIR__ . '/../classes/User.php';
 require_once __DIR__ . '/../classes/session.php';
+require_once __DIR__ . '/../classes/sitesettings.php';
+
 $session = new SessionHandle();
+$userObj = new User($pdo);
+$siteSettingsObj = new SiteSettings($pdo);
+$siteSettings = $siteSettingsObj->getAll();
 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+// Theme & font
+$primary_color = $siteSettings['primary_color'] ?? '';
+$siteFont = $siteSettings['font_family'] ?? 'Arial';
 
-$stmt = $pdo->query("SELECT primary_color, font_family  FROM site_settings WHERE id = 1 LIMIT 1");
-$settings = $stmt->fetch(PDO::FETCH_ASSOC);
-$primary_color = $settings['primary_color'] ?? '';
-$siteFont = $settings['font_family'] ?? 'Arial'; 
-
-
+// CSRF token generation for forms 
 if (empty($_SESSION['csrf_token'])) {
   $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
+// User info
+$user_id = $session->getUserId();
+$user_role = $session->get('role') ?? 'user';
+$isLoggedIn = $session->logged_in();
 
-
-
-if (isset($_SESSION['user_id'])) {
-  $stmt = $pdo->prepare("SELECT blocked FROM users WHERE id = ?");
-  $stmt->execute([$_SESSION['user_id']]);
-  $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-  if ($user && $user['blocked']) {
-      session_unset();
-      session_destroy();
-      header("Location: auth/login.php?error=blocked");
-      exit();
-  }
+// Blocked user check
+if ($user_id) {
+    $userData = $userObj->getById($user_id);
+    if ($userData && $userData['blocked']) {
+        $session->logout();
+        header("Location: auth/login.php?error=blocked");
+        exit();
+    }
 }
 
-$user_id = $_SESSION['user_id'] ?? null;
-$user_role = $_SESSION['role'] ?? 'user';
+// Control navbar display
+$show_navbar = $show_navbar ?? true; 
 ?>
-
-<?php $isLoggedIn = isset($_SESSION['user_id']); ?>
 
 
 <!----------------------- HEAD ------------------------------>
@@ -51,22 +48,15 @@ $user_role = $_SESSION['role'] ?? 'user';
     <link rel="icon" type="image/png" href="/assets/img/logo.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/assets/css/style.css?v=<?php echo time(); ?>">
-    
     <style>
-        :root {
-            --primary-color: <?= htmlspecialchars($primary_color) ?>;
-        }
-        body, input, textarea, select, button {
-    font-family: <?= htmlspecialchars($siteFont) ?>, sans-serif !important;
-}
-
+      :root {
+        --primary-color: <?= htmlspecialchars($primary_color) ?>;
+      }
+      body, input, textarea, select, button {
+        font-family: <?= htmlspecialchars($siteFont) ?>, sans-serif !important;
+      }
     </style>
-
 </head>
-
-<?php
-$show_navbar = $show_navbar ?? true; 
-?>
 
 <!----------------------- Desktop navbar------------------------------>
 <?php if ($show_navbar): ?>
@@ -117,7 +107,7 @@ $show_navbar = $show_navbar ?? true;
         </a>
 
 
-        <?php if (isset($_SESSION['user_id']) && $user_role === 'admin'): ?>
+      <?php if ($session->logged_in() && $user_role === 'admin'): ?>
       <a href="/admin.php" class="flex items-center gap-4 font-semibold hover:text-red-500">
         <i class="ph-shield-star text-lg"></i>
         <span class="sidebar-text">Admin Panel</span>
@@ -139,7 +129,7 @@ $show_navbar = $show_navbar ?? true;
     </div>
   </aside>
 
-  
+
 <!----------------------- Upload Modal ------------------------------>
 <div id="uploadModal" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden" style="z-index:9999;">
   <div id="uploadContainer" 
