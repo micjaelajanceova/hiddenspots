@@ -8,6 +8,8 @@ const previewImage = document.getElementById('previewImage');
 const finalImage = document.getElementById('finalImage');
 const photoDataInput = document.getElementById('photoData');
 
+
+// Wait until DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
 
 const uploadModal = document.getElementById('uploadModal');
@@ -15,7 +17,6 @@ const uploadModal = document.getElementById('uploadModal');
     if (typeof isLoggedIn !== "undefined") {
         console.log("Login status:", isLoggedIn ? "YES" : "NO");
     }
-
 
     // Main index button
     const mainBtn = document.getElementById('openUploadModal');

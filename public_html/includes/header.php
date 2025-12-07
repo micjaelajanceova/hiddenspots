@@ -68,7 +68,7 @@ $user_role = $_SESSION['role'] ?? 'user';
 $show_navbar = $show_navbar ?? true; 
 ?>
 
-<!----------------------- BODY ------------------------------>
+<!----------------------- Desktop navbar------------------------------>
 <?php if ($show_navbar): ?>
 <body class="flex flex-col min-h-screen">
 
@@ -79,13 +79,13 @@ $show_navbar = $show_navbar ?? true;
 
         <div id="sidebarHeader" class="flex items-center justify-between mb-10 transition-all">
   
-          <!-- Logo (vľavo) -->
+          <!-- Logo (left) -->
           <a href="/index.php" class="logo text-black hover:text-blue-500">
             <span class="sidebar-logo-full text-2xl font-bold">HiddenSpots</span>
             <img src="/assets/img/logo.svg" alt="HS" class="sidebar-logo-collapsed hidden h-16">
           </a>
 
-          <!-- Toggle Button (vpravo) -->
+          <!-- Toggle Button (right) -->
             <button id="sidebarToggle" 
                   class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 transition">
             <i class="ph-caret-left text-xl"></i> 
@@ -94,54 +94,53 @@ $show_navbar = $show_navbar ?? true;
         </div>
 
 
-    <!-- Menu links -->
-    <nav class="flex flex-col pt-5 gap-8 text-black">
-      <a href="/feed.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
-      <i class="ph-rows text-lg"></i>
-      <span class="sidebar-text">Feed</span>
+      <!-- Menu links -->
+      <nav class="flex flex-col pt-5 gap-8 text-black">
+        <a href="/feed.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+        <i class="ph-rows text-lg"></i>
+        <span class="sidebar-text">Feed</span>
+        </a>
+
+        <a href="/favourites.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+          <i class="ph-bookmark-simple text-lg"></i>
+          <span class="sidebar-text">Favourites</span>
+        </a>
+
+        <a href="/trending.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+          <i class="ph-trend-up text-lg"></i>
+          <span class="sidebar-text">Trending</span>
+        </a>
+
+        <a href="/about.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
+          <i class="ph-question text-lg"></i>
+          <span class="sidebar-text">About HS</span>
+        </a>
+
+
+        <?php if (isset($_SESSION['user_id']) && $user_role === 'admin'): ?>
+      <a href="/admin.php" class="flex items-center gap-4 font-semibold hover:text-red-500">
+        <i class="ph-shield-star text-lg"></i>
+        <span class="sidebar-text">Admin Panel</span>
+      </a>
+      <?php endif; ?>
+
+      </nav>
+    </div>
+
+    <!-- Upload Button -->
+    <div class="mt-auto">
+
+      <a href="#" id="desktopUploadBtn"
+        class="w-full sm:w-auto py-2 px-4 bg-black text-white rounded-lg flex items-center justify-center gap-2 hover:bg-gray-800 transition">
+          <span class="sidebar-upload-text">+ Upload</span>
+          <span class="sidebar-upload-collapsed hidden">+</span>
       </a>
 
-      <a href="/favourites.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
-        <i class="ph-bookmark-simple text-lg"></i>
-        <span class="sidebar-text">Favourites</span>
-      </a>
-
-      <a href="/trending.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
-        <i class="ph-trend-up text-lg"></i>
-        <span class="sidebar-text">Trending</span>
-      </a>
-
-      <a href="/about.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
-        <i class="ph-question text-lg"></i>
-        <span class="sidebar-text">About HS</span>
-      </a>
-
-
-      <?php if (isset($_SESSION['user_id']) && $user_role === 'admin'): ?>
-    <a href="/admin.php" class="flex items-center gap-4 font-semibold hover:text-red-500">
-      <i class="ph-shield-star text-lg"></i>
-      <span class="sidebar-text">Admin Panel</span>
-    </a>
-    <?php endif; ?>
-
-    </nav>
-  </div>
-
-
-
-  <!-- Upload Button -->
-  <div class="mt-auto">
-
-    <a href="#" id="desktopUploadBtn"
-      class="w-full sm:w-auto py-2 px-4 bg-black text-white rounded-lg flex items-center justify-center gap-2 hover:bg-gray-800 transition">
-        <span class="sidebar-upload-text">+ Upload</span>
-        <span class="sidebar-upload-collapsed hidden">+</span>
-    </a>
-  </div>
+    </div>
   </aside>
 
-
-<!-- Upload Modal -->
+  
+<!----------------------- Upload Modal ------------------------------>
 <div id="uploadModal" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden" style="z-index:9999;">
   <div id="uploadContainer" 
        class="bg-white rounded-2xl shadow-lg w-full h-full md:max-w-3xl md:h-[80vh] flex flex-col overflow-hidden relative animate-[fadeIn_0.3s_ease]">
@@ -219,45 +218,44 @@ $show_navbar = $show_navbar ?? true;
   </div>
 </div>
 
-  <!-- Mobile top logo -->
+
+  <!----------------------- Mobile navbar------------------------------>
   <div class="md:hidden sticky top-0 border-b p-3 flex justify-center bg-gray-100 z-50">
     <a href="/index.php" class="flex items-center justify-center">
-  <img src="/assets/img/logo.svg" alt="HS" class="h-10">
-  </a>
+      <img src="/assets/img/logo.svg" alt="HS" class="h-10">
+    </a>
   </div>
 
+    <!-- Mobile bottom menu -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white flex justify-around items-center p-2 md:hidden border-t shadow-md z-50">
 
+    <!-- Home -->
+    <a href="/feed.php" class="text-gray-600 hover:text-blue-500 flex items-center justify-center">
+      <i class="ph-rows text-2xl"></i>
+    </a>
 
-<!-- Mobile bottom menu -->
-<nav class="fixed bottom-0 left-0 right-0 bg-white flex justify-around items-center p-2 md:hidden border-t shadow-md z-50">
+    <!-- Favourites -->
+    <a href="/favourites.php" class="text-gray-600 hover:text-blue-500 flex items-center justify-center">
+      <i class="ph-bookmark-simple text-2xl"></i>
+    </a>
 
-  <!-- Home -->
-  <a href="/feed.php" class="text-gray-600 hover:text-blue-500 flex items-center justify-center">
-    <i class="ph-rows text-2xl"></i>
-  </a>
+    <!-- Upload button (center, mobil) -->
+    <button id="mobileUploadBtn"
+          class="md:hidden bg-black text-white p-3 rounded-full shadow-md flex items-center justify-center">
+      <i class="ph-plus text-2xl"></i>
+    </button>
 
-  <!-- Favourites -->
-  <a href="/favourites.php" class="text-gray-600 hover:text-blue-500 flex items-center justify-center">
-    <i class="ph-bookmark-simple text-2xl"></i>
-  </a>
+    <!-- Trending -->
+    <a href="/trending.php" class="text-gray-600 hover:text-blue-500 flex items-center justify-center">
+      <i class="ph-trend-up text-2xl"></i>
+    </a>
 
-<!-- Upload button (center, mobil) -->
-<button id="mobileUploadBtn"
-        class="md:hidden bg-black text-white p-3 rounded-full shadow-md flex items-center justify-center">
-  <i class="ph-plus text-2xl"></i>
-</button>
+    <!-- About -->
+    <a href="/about.php" class="text-gray-600 hover:text-blue-500 flex items-center justify-center">
+      <i class="ph-question text-2xl"></i>
+    </a>
 
-
-  <!-- Trending -->
-  <a href="/trending.php" class="text-gray-600 hover:text-blue-500 flex items-center justify-center">
-    <i class="ph-trend-up text-2xl"></i>
-  </a>
-
-  <!-- About -->
-  <a href="/about.php" class="text-gray-600 hover:text-blue-500 flex items-center justify-center">
-    <i class="ph-question text-2xl"></i>
-  </a>
-</nav>
+  </nav>
 
  <div class="flex-1 flex flex-col min-h-screen pb-16 md:pb-0">
 <?php endif; ?>
