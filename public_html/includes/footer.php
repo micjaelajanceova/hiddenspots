@@ -54,8 +54,7 @@ $siteFont        = $siteSettings['font_family'] ?? 'Arial';
 
 </footer>
 </div>
-
-
+</body>
 <!----------------------- Scripts ------------------------------>
 <!-- Images Loaded script -->
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
@@ -76,6 +75,4 @@ import { initUploadMap, setupGeocode } from '/assets/js/map.js';
 initUploadMap('uploadMap', 'latitude', 'longitude');
 setupGeocode('city', 'address');
 </script>
-
-</body>
 </html>
