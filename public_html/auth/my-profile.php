@@ -1,11 +1,11 @@
 <?php
 require_once __DIR__ . '/../includes/db.php';
-require_once __DIR__ . '/../classes/session.php';
-$session = new SessionHandle();
-
 require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../classes/User.php';
 require_once __DIR__ . '/../classes/spot.php';
+
+require_once __DIR__ . '/../classes/session.php';
+$session = new SessionHandle();
 
 // Check if user is logged in
 if (!$session->logged_in()) {
