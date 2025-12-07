@@ -68,40 +68,30 @@ $user_role = $_SESSION['role'] ?? 'user';
 $show_navbar = $show_navbar ?? true; 
 ?>
 
-
-
 <!----------------------- BODY ------------------------------>
 <?php if ($show_navbar): ?>
 <body class="flex flex-col min-h-screen">
 
   <div class="flex flex-1 flex-col md:flex-row">
-<aside id="sidebar" class="hidden md:flex flex-col bg-gray-100 border-r sticky top-0 h-screen p-4 shadow-lg shadow-gray-300 z-10 transition-all duration-300 w-64">
+    <aside id="sidebar" class="hidden md:flex flex-col bg-gray-100 border-r sticky top-0 h-screen p-4 shadow-lg shadow-gray-300 z-10 transition-all duration-300 w-64">
 
+      <div class="flex flex-col">
 
-
-
-  <div class="flex flex-col">
-
-    <div id="sidebarHeader" class="flex items-center justify-between mb-10 transition-all">
+        <div id="sidebarHeader" class="flex items-center justify-between mb-10 transition-all">
   
-  <!-- Logo (vľavo) -->
-  <a href="/index.php" class="logo text-black hover:text-blue-500">
-    <span class="sidebar-logo-full text-2xl font-bold">HiddenSpots</span>
-    <img src="/assets/img/logo.svg" alt="HS" class="sidebar-logo-collapsed hidden h-16">
-  </a>
+          <!-- Logo (vľavo) -->
+          <a href="/index.php" class="logo text-black hover:text-blue-500">
+            <span class="sidebar-logo-full text-2xl font-bold">HiddenSpots</span>
+            <img src="/assets/img/logo.svg" alt="HS" class="sidebar-logo-collapsed hidden h-16">
+          </a>
 
-  <!-- Toggle Button (vpravo) -->
-    <button id="sidebarToggle" 
-          class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 transition">
-    <i class="ph-caret-left text-xl"></i> 
-  </button>
+          <!-- Toggle Button (vpravo) -->
+            <button id="sidebarToggle" 
+                  class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 transition">
+            <i class="ph-caret-left text-xl"></i> 
+          </button>
 
-
-</div>
-
-
-
-
+        </div>
 
 
     <!-- Menu links -->
@@ -110,18 +100,22 @@ $show_navbar = $show_navbar ?? true;
       <i class="ph-rows text-lg"></i>
       <span class="sidebar-text">Feed</span>
       </a>
+
       <a href="/favourites.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
         <i class="ph-bookmark-simple text-lg"></i>
         <span class="sidebar-text">Favourites</span>
       </a>
+
       <a href="/trending.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
         <i class="ph-trend-up text-lg"></i>
         <span class="sidebar-text">Trending</span>
       </a>
+
       <a href="/about.php" class="flex items-center gap-4 font-semibold hover:text-blue-500">
         <i class="ph-question text-lg"></i>
         <span class="sidebar-text">About HS</span>
       </a>
+
 
       <?php if (isset($_SESSION['user_id']) && $user_role === 'admin'): ?>
     <a href="/admin.php" class="flex items-center gap-4 font-semibold hover:text-red-500">
@@ -268,9 +262,17 @@ $show_navbar = $show_navbar ?? true;
  <div class="flex-1 flex flex-col min-h-screen pb-16 md:pb-0">
 <?php endif; ?>
 
+
+<!----------------------- CSS AND JS LINKS ------------------------------>
+<!-- Leaflet CSS and JS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
+<!-- Phosphor Icons -->
 <script src="https://unpkg.com/phosphor-icons"></script>
+
+<!-- Toggle JS -->
 <script src="/assets/js/toggle.js" defer></script>
+
+<!-- Upload JS -->
 <script src="/assets/js/upload.js" defer></script>

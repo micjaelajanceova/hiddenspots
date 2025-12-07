@@ -218,12 +218,6 @@ try {
   </div>
 </section>
 
-
-
-
-
-
-
 <!-- UPLOAD CTA -->
 <section class="mt-12 mb-20 lg:mb-5">
   <div class="bg-black p-10 flex flex-col items-center text-center">
@@ -241,57 +235,6 @@ try {
 
   </div>
 </main>
-
-
-<script>
-// PROFILE MENU TOGGLE
-const profileBtn = document.getElementById('profileBtn');
-const profileMenu = document.getElementById('profileMenu');
-
-if (profileBtn && profileMenu) {
-
-    profileBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        profileMenu.classList.toggle('hidden');
-    });
-
-
-    document.addEventListener('click', (e) => {
-        if (!profileMenu.contains(e.target) && !profileBtn.contains(e.target)) {
-            profileMenu.classList.add('hidden');
-        }
-    });
-}
-
-const isLoggedIn = <?= isset($_SESSION['user_id']) ? 'true' : 'false' ?>;
-
-const uploadModal = document.getElementById('uploadModal');
-
-// Desktop / main page upload button
-document.getElementById('openUploadModal').addEventListener('click', e => {
-    e.preventDefault();
-    if (!isLoggedIn) {
-        window.location.href = '/auth/login.php';
-        return;
-    }
-    uploadModal.classList.remove('hidden');
-});
-
-// Sidebar desktop button
-const desktopBtn = document.getElementById('desktopUploadBtn');
-desktopBtn?.addEventListener('click', e => {
-    e.preventDefault();
-    if (!isLoggedIn) {
-        window.location.href = '/auth/login.php';
-        return;
-    }
-    uploadModal.classList.remove('hidden');
-});
-
-
-
-</script>
-
 
 
 <?php include 'includes/footer.php'; ?>
