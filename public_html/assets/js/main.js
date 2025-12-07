@@ -90,40 +90,30 @@ toggleBtn.addEventListener('click', () => {
 });
 
 
-document.addEventListener('DOMContentLoaded', () => {
-
-const uploadModal = document.getElementById('uploadModal');
-    // isLoggedIn comes from footer.php (global variable)
-    if (typeof isLoggedIn !== "undefined") {
-        console.log("Login status:", isLoggedIn ? "YES" : "NO");
+window.addEventListener('DOMContentLoaded', () => {
+    // Globálna premenná isLoggedIn z footer.php
+    if (typeof isLoggedIn !== 'undefined') {
+        console.log('Login status:', isLoggedIn ? 'YES' : 'NO');
     }
 
+    const desktopUploadBtn = document.getElementById('desktopUploadBtn');
+    const mobileUploadBtn = document.getElementById('mobileUploadBtn');
+    const uploadModal = document.getElementById('uploadModal');
 
-    // Main index button
-    const mainBtn = document.getElementById('openUploadModal');
-    mainBtn?.addEventListener('click', e => {
+    desktopUploadBtn?.addEventListener('click', e => {
+        e.preventDefault(); // zabráni posunu na #
+        if (!isLoggedIn) return window.location.href = '/auth/login.php';
+        uploadModal.classList.remove('hidden');
+    });
+
+    mobileUploadBtn?.addEventListener('click', e => {
         e.preventDefault();
         if (!isLoggedIn) return window.location.href = '/auth/login.php';
         uploadModal.classList.remove('hidden');
     });
 
-    // Desktop upload button
-    document.getElementById('desktopUploadBtn').addEventListener('click', e => {
-    e.preventDefault();
-    if (!isLoggedIn) {
-        window.location.href = '/auth/login.php';
-        return;
-    }
-    document.getElementById('uploadModal').classList.remove('hidden');
+    // Close button
+    document.getElementById('closeUploadModal')?.addEventListener('click', () => {
+        uploadModal.classList.add('hidden');
     });
-
-    // Mobile upload button
-    document.getElementById('mobileUploadBtn')?.addEventListener('click', e => {
-    e.preventDefault();
-    if (!isLoggedIn) {
-        window.location.href = '/auth/login.php';
-        return;
-    }
-    document.getElementById('uploadModal').classList.remove('hidden');
-});
 });
