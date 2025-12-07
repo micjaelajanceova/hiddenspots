@@ -273,8 +273,4 @@ $show_navbar = $show_navbar ?? true;
 
 <script src="https://unpkg.com/phosphor-icons"></script>
 <script src="/assets/js/toggle.js" defer></script>
-<script>
- 
-</script>
-
-
+<script src="/assets/js/upload.js" defer></script>
