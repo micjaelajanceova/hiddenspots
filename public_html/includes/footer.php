@@ -2,7 +2,7 @@
 require_once __DIR__ . '/db.php';
 
 // Start session to check logged-in status
-require_once __DIR__ . '/session.php';
+require_once __DIR__ . '/../classes/session.php';
 $session = new SessionHandle();
 
 // Load SiteSettings class
