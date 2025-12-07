@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/classes/session.php';
+require_once __DIR__ . '/../classes/session.php';
 $session = new SessionHandle();
 
 // Get search query from URL
