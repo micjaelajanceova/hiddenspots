@@ -20,7 +20,6 @@ function getCoordinates($address) {
     }
 
     // Decode the JSON response
-
     $data = json_decode($response, true);
     // Check if data exists and contains lat/lon
     if (!empty($data) && isset($data[0]['lat']) && isset($data[0]['lon'])) {

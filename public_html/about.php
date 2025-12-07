@@ -3,9 +3,11 @@
 <?php
 include 'includes/db.php';
 
-$stmt = $pdo->query("SELECT * FROM site_settings WHERE id = 1 LIMIT 1");
-$settings = $stmt->fetch(PDO::FETCH_ASSOC);
+// Load site settings  
+$siteSettings = new SiteSettings($pdo);
+$settings = $siteSettings->getAll();
 
+// Use null coalescing to provide defaults
 $about_title1     = $settings['about_title1'] ?? '';
 $about_subtitle1  = $settings['about_subtitle1'] ?? '';
 $about_text1      = $settings['about_text1'] ?? '';
@@ -25,18 +27,16 @@ $card2_text       = $settings['card2_text'] ?? '';
 
 $card3_title      = $settings['card3_title'] ?? '';
 $card3_text       = $settings['card3_text'] ?? '';
-
 ?>
 
 
+<main class="flex-1 bg-white min-h-screen overflow-y-auto">
+<!-- LOGIN / SIGNUP -->
+<?php include 'includes/profile-header.php'; ?>
 
-    
-    <main class="flex-1 bg-white min-h-screen overflow-y-auto">
-    <!-- LOGIN / SIGNUP -->
-    <?php include 'includes/profile-header.php'; ?>
-
-    <div class="py-2 md:py-10 lg:py-20">
+<div class="py-2 md:py-10 lg:py-20">
       <div class="w-full px-4 sm:px-6 lg:px-8">
+
         <!-- Section 1 -->
         <div class="grid md:grid-cols-12 gap-12 items-center mb-10 md:mb-24">
             <div class="md:col-span-4">
@@ -65,6 +65,7 @@ $card3_text       = $settings['card3_text'] ?? '';
                 </p>
             </div>
         </div>
+
         <!-- Section 3  -->
         <div class="pt-12">
         <h1 class="mb-4"><?php echo htmlspecialchars($how_title); ?></h1>
@@ -72,6 +73,7 @@ $card3_text       = $settings['card3_text'] ?? '';
             <?php echo htmlspecialchars($how_subtitle); ?>
         </h2>
             <div class="grid md:grid-cols-3 gap-8">
+
     <!-- Card 1 -->
     <a href="feed.php" class="group relative block overflow-hidden hover:shadow-2xl">
         <img src="assets/img/about3.JPEG" alt="Upload" class="h-80 w-full object-cover transform transition-transform duration-300 group-hover:scale-105">
@@ -113,6 +115,6 @@ $card3_text       = $settings['card3_text'] ?? '';
 
     </a>
 </div>
-    </main>
+</main>
 
 <?php include 'includes/footer.php'; ?>
