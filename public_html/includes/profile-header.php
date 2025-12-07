@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../classes/session.php';
-require_once __DIR__ . '/../classes/user.php';
+require_once __DIR__ . '/../classes/User.php';
 
 $session = new SessionHandle();
 $user_id = $session->getUserId();
