@@ -1,6 +1,6 @@
 <?php
 // Session handler
-require_once __DIR__ . '/../classes/SessionHandle.php';
+require_once __DIR__ . '/../classes/session.php';
 $session = new SessionHandle();
 
 require_once __DIR__ . '/../includes/db.php';

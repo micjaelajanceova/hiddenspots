@@ -5,7 +5,7 @@ require_once __DIR__ . '/../classes/User.php';
 require_once __DIR__ . '/../classes/spot.php';
 
 // Start session 
-require_once __DIR__ . '/../classes/SessionHandle.php';
+require_once __DIR__ . '/../classes/session.php';
 $session = new SessionHandle();
 
 $userObj = new User($pdo);
