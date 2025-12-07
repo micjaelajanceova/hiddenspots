@@ -5,6 +5,7 @@ class Spot {
         $this->pdo = $pdo;
     }
 
+    // Get the newest spots with optional limit (default 10)
     public function getNewest($limit=10){
         $stmt = $this->pdo->query("
             SELECT 
@@ -23,7 +24,7 @@ class Spot {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
+    // Get a spot by its ID, including the number of likes
     public function getById($id){
         $stmt = $this->pdo->prepare("
             SELECT h.*, 
@@ -35,6 +36,7 @@ class Spot {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    // Get comments for a specific spot
     public function getComments($spot_id){
     $stmt = $this->pdo->prepare("
         SELECT 
@@ -52,7 +54,7 @@ class Spot {
     $stmt->execute([$spot_id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
+    // Get all spots uploaded by a specific user
         public function getByUser($user_id){
         $stmt = $this->pdo->prepare("
             SELECT h.*, u.name AS user_name
@@ -65,11 +67,14 @@ class Spot {
         $stmt->execute([$user_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    // Update the description of a specific spot
     public function updateDescription($spot_id, $new_description) {
     $stmt = $this->pdo->prepare("UPDATE hidden_spots SET description = ? WHERE id = ?");
     return $stmt->execute([$new_description, $spot_id]);
 }
-public function deleteSpot($spot_id) {
+    // Delete a spot and its associated comments and likes
+    public function deleteSpot($spot_id) {
 
     $stmt = $this->pdo->prepare("DELETE FROM comments WHERE spot_id = ?");
     $stmt->execute([$spot_id]);
@@ -80,8 +85,8 @@ public function deleteSpot($spot_id) {
     $stmt = $this->pdo->prepare("DELETE FROM hidden_spots WHERE id = ?");
     return $stmt->execute([$spot_id]);
 }
-
-public function getRecentFiles($limit = 10) {
+    // Get recent file paths for background images
+    public function getRecentFiles($limit = 10) {
     try {
         $stmt = $this->pdo->query("SELECT file_path FROM hidden_spots ORDER BY created_at DESC LIMIT $limit");
         return $stmt->fetchAll(PDO::FETCH_COLUMN);

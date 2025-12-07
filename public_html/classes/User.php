@@ -70,6 +70,7 @@ class User {
         return $stmt->execute([$path, $user_id]);
     }
 
+    // Remove profile photo
     public function removeProfilePhoto($user_id) {
         $old = $this->getProfilePhoto($user_id);
         if ($old && file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $old)) {
