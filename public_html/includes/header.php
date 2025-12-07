@@ -1,12 +1,16 @@
 <?php
+// Database connection and class imports
 require_once __DIR__ . '/db.php'; 
 require_once __DIR__ . '/../classes/User.php';
 require_once __DIR__ . '/../classes/session.php';
 require_once __DIR__ . '/../classes/sitesettings.php';
 
+// Initialize session and class objects
 $session = new SessionHandle();
 $userObj = new User($pdo);
 $siteSettingsObj = new SiteSettings($pdo);
+
+// Load site settings
 $siteSettings = $siteSettingsObj->getAll();
 
 // Theme & font

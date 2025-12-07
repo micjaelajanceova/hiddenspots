@@ -1,31 +1,23 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) session_start();
-$photo = null;
-$name = 'User';
-$user_id = $_SESSION['user_id'] ?? null;
+require_once __DIR__ . '/../classes/session.php';
+require_once __DIR__ . '/../classes/user.php';
+
+$session = new SessionHandle();
+$user_id = $session->getUserId();
+$user_name = 'User';
+$photo_url = null;
 
 if ($user_id) {
-    $stmt = $pdo->prepare("SELECT name, profile_photo FROM users WHERE id=?");
-    $stmt->execute([$user_id]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($row) {
-        $name = $row['name'] ?? $name;
-        $photo = $row['profile_photo'] ?? null;
+    $userObj = new User($pdo);
+    $user = $userObj->getById($user_id);
+    if ($user) {
+        $user_name = $user['name'] ?? $user_name;
+        $photo_url = $user['profile_photo'] ?? null;
     }
 }
-
-
-$photo_url = null;
-if (!empty($photo)) {
-    $photo_url = $photo;
-}
-
-
-echo "<!-- DEBUG: full path = " . __DIR__ . '/../' . $photo_url . " -->";
-
 ?>
 
-<?php if(isset($_SESSION['user_id'])): ?>
+<?php if ($session->logged_in()): ?>
   <!-- STICKY PROFILE (only when logged in) -->
   <div class="fixed top-3 right-2 z-50 flex items-center justify-end md:w-auto profile-header">
     <div class="relative">
@@ -56,71 +48,3 @@ echo "<!-- DEBUG: full path = " . __DIR__ . '/../' . $photo_url . " -->";
     <a href="auth/login.php?action=register" class="bg-gray-200 text-black px-4 py-2 rounded-full">Register</a>
   </div>
 <?php endif; ?>
-
-
-<script>
-// PROFILE MENU TOGGLE
-const profileBtn = document.getElementById('profileBtn');
-const profileMenu = document.getElementById('profileMenu');
-
-if (profileBtn && profileMenu) {
-  profileBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    profileMenu.classList.toggle('hidden');
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!profileMenu.contains(e.target) && !profileBtn.contains(e.target)) {
-      profileMenu.classList.add('hidden');
-    }
-  });
-}
-
-
-
-
-
-(function () {
-
-  function isVisible(el) {
-    return !!el && window.getComputedStyle(el).display !== 'none' && el.offsetParent !== null;
-  }
-
-
-  document.addEventListener('click', function (e) {
-    const profileBtn = document.getElementById('profileBtn');
-    const profileMenu = document.getElementById('profileMenu');
-    const cityMap = document.getElementById('cityMap');
-    const showCityMapBtn = document.getElementById('showCityMapBtn');
-
-    const clickedProfileBtn = profileBtn && profileBtn.contains(e.target);
-    const clickedProfileMenu = profileMenu && profileMenu.contains(e.target);
-
-    const clickedMap = cityMap && cityMap.contains(e.target);
-    const clickedMapBtn = showCityMapBtn && showCityMapBtn.contains(e.target);
-
-    // --- BEHAVIOUR:
-    // 1) If user clicked profileBtn or profileMenu -> close the map (if open)
-    if (clickedProfileBtn || clickedProfileMenu) {
-      if (cityMap && isVisible(cityMap)) {
-        cityMap.style.display = 'none';
-      }
-      // Let existing profile toggle logic run (do not stop propagation)
-      return;
-    }
-
-    // 2) If user clicked map or mapBtn -> close profile menu (if open)
-    if (clickedMap || clickedMapBtn) {
-      if (profileMenu && !profileMenu.classList.contains('hidden')) {
-        profileMenu.classList.add('hidden');
-      }
-      // If click was on mapBtn itself, also toggle the map (existing map button handler may do that)
-      // We don't stopPropagation so existing handlers work.
-      return;
-    }
-
-  }, true); // use capture phase to react early
-})();
-
-
-</script>
