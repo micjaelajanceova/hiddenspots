@@ -8,12 +8,12 @@ require_once __DIR__ . '/../classes/User.php';
 require_once __DIR__ . '/../classes/spot.php';
 
 // Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
+if (!$session->logged_in()) {
     header("Location: login.php?action=login");
     exit();
 }
 
-$user_id = $_SESSION['user_id'];
+$user_id = $session->getUserId();
 
 // Use User class to fetch current user info
 $userObj = new User($pdo);
