@@ -45,3 +45,4 @@ const uploadModal = document.getElementById('uploadModal');
     document.getElementById('uploadModal').classList.remove('hidden');
 });
 });
+
