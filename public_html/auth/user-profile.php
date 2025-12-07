@@ -1,11 +1,14 @@
 <?php
+require_once __DIR__ . '/../classes/session.php';
+$session = new SessionHandle();
+
 include __DIR__ . '/../includes/db.php';
 include __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../classes/User.php';
 include __DIR__ . '/../classes/spot.php';
 
 // Get user ID – either from the URL or from the logged-in user's session
-$user_id = $_GET['user_id'] ?? $_SESSION['user_id'];
+$user_id = $_GET['user_id'] ?? $session->getUserId();
 if (!$user_id) die("No user ID provided.");
 
 // Use User class to fetch user info
@@ -28,7 +31,7 @@ $spots = $spotObj->getByUser($user_id);
   <!-- PROFILE HEADER -->
   <div class="flex items-center justify-center mb-6 flex-col gap-3">
     <div class="w-16 h-16 bg-black text-white flex items-center justify-center rounded-full text-2xl font-semibold overflow-hidden">
-      <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $user['profile_photo'])): ?>
+      <?php if($photo_url): ?>
         <img src="<?= htmlspecialchars($photo_url) ?>" alt="Profile" class="w-full h-full object-cover rounded-full">
       <?php else: ?>
         <?= strtoupper(substr($user['name'], 0, 1)) ?>
