@@ -224,7 +224,7 @@ $show_navbar = $show_navbar ?? true;
   </a>
   </div>
 
-<script src="https://unpkg.com/phosphor-icons"></script>
+
 
 <!-- Mobile bottom menu -->
 <nav class="fixed bottom-0 left-0 right-0 bg-white flex justify-around items-center p-2 md:hidden border-t shadow-md z-50">
@@ -384,6 +384,6 @@ document.getElementById('mobileUploadBtn')?.addEventListener('click', e => {
 
 
 </script>
-</body>
-</html>
+<script src="https://unpkg.com/phosphor-icons"></script>
+
 
