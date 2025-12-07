@@ -1,8 +1,9 @@
 <?php
 require_once __DIR__ . '/db.php';
-if (session_status() === PHP_SESSION_NONE) session_start();
+require_once __DIR__ . '/classes/session.php';
+$session = new SessionHandle();
 
-if (!isset($_SESSION['user_id'])) {
+if (!$session->getUserId()) {
     header("Location: /auth/login.php");
     exit();
 }
