@@ -51,9 +51,24 @@ if ($user_id) {
 <?php endif; ?>
 
 <script>
+// PROFILE MENU TOGGLE
+const profileBtn = document.getElementById('profileBtn');
+const profileMenu = document.getElementById('profileMenu');
 
+if (profileBtn && profileMenu) {
+  profileBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    profileMenu.classList.toggle('hidden');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!profileMenu.contains(e.target) && !profileBtn.contains(e.target)) {
+      profileMenu.classList.add('hidden');
+    }
+  });
+}
 </script>
-<script src="/assets/js/main.js" defer></script>
+
 <script src="/assets/js/map.js" defer></script>
 
 
