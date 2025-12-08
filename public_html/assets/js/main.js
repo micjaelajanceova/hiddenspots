@@ -36,7 +36,10 @@ window.addEventListener('load', () => {
   activeBtn.classList.add('bg-black', 'text-white');
 }
 
-if (document.getElementById('site')) {
+if (
+  document.getElementById('site') && 
+  document.getElementById('tab-site')
+) {
   showTab('site');
 }
 
