@@ -1,5 +1,8 @@
 // Initialize Macy.js for Masonry layout
 function initMasonry() {
+  const masonryEl = document.getElementById('masonry');
+  if (!masonryEl) return;
+
   window.masonry = Macy({
     container: '#masonry',
     columns: 4,
