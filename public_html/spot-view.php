@@ -370,6 +370,7 @@ $photo_url = $spot['profile_photo'];
 
 <!-- js for spot view -->
 <script src="/assets/js/spot.js" defer></script>
+<script src="/assets/js/map.js" defer></script>
 
 <!-- Pass php variables to JavaScript -->
 <script>
