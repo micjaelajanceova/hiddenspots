@@ -127,7 +127,7 @@ class Spot {
     $stmt = $this->pdo->prepare("DELETE FROM hidden_spots WHERE id = ?");
     return $stmt->execute([$spot_id]);
 }
-    // Get recent file paths for background images
+    // Get recent file paths for background images of spots
     public function getRecentFiles($limit = 10) {
     try {
         $stmt = $this->pdo->query("SELECT file_path FROM hidden_spots ORDER BY created_at DESC LIMIT $limit");
@@ -161,5 +161,27 @@ class Spot {
         $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    // Get trending spots based on likes and comments
+    public function getTrending($limit=20){
+    try {
+        $stmt = $this->pdo->query("SELECT * FROM view_hot_pictures LIMIT $limit");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return [];
+    }
+    }
+
+    // Get latest comments across all spots
+    public function getLatestComments($limit=3){
+    $stmt = $this->pdo->prepare("
+        SELECT c.*, c.user_id, c.spot_id, c.text, c.created_at
+        FROM comments c
+        ORDER BY c.created_at DESC
+        LIMIT ?
+    ");
+    $stmt->execute([$limit]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }
 ?>

@@ -1,47 +1,31 @@
 <?php
-include 'includes/db.php';
+require_once 'includes/db.php';
 include 'includes/header.php';
 include 'classes/spot.php';
-
-
-
-require_once 'includes/db.php';
 require_once 'classes/session.php';
 
+// Initialize session and Spot objects
 $session = new SessionHandle();
-
 $spotObj = new Spot($pdo);
 
 // HOT NEW PICTURES
 $newest = $spotObj->getNewest(20);
 
 // TRENDING (Sticky)
-try {
-    $stmt = $pdo->query("SELECT * FROM view_hot_pictures");
-    $sticky = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    $sticky = [];
-}
+$sticky = $spotObj->getTrending(20);
 
 // LATEST COMMENTS
-try {
-  $stmt = $pdo->query("SELECT * FROM view_latest_comments ORDER BY created_at DESC LIMIT 3");
-  $latestComments = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-  $latestComments = [];
-}
-
+$latestComments = $spotObj->getLatestComments(3);
 ?>
 
+
+<!----------------------- HTML ------------------------------>
 <main class="flex-1 bg-white min-h-screen overflow-y-auto pt-10">   
   <div class="w-full px-4 sm:px-6 lg:px-8">
 
 <!-- LOGIN / SIGNUP -->
 <?php include 'includes/profile-header.php'; ?>
-
 <?php $isLoggedIn = isset($_SESSION['user_id']); ?>
-
-
 
    <!-- TRENDING (Sticky) -->
 <section class="mt-6 sm:mt-12 pb-20">
@@ -112,14 +96,9 @@ try {
    Learn more →
 </a>
 
-
-
     </div>
   </div>
 </section>
-
-
-
 
    <!-- HOT NEW PICTURES -->
 <section class="mt-12 pb-20">
@@ -170,27 +149,15 @@ try {
 </section>
 
 
-
-
 <!-- LATEST COMMENTS -->
 <section class="mt-12 pb-20">
   <h1 class="text-4xl font-bold mb-3">Latest comments</h1>
   <h2 class="mt-1">See who else loves these hidden places.</h2>
 
   <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
-    <?php
-    $stmt = $pdo->query("
-        SELECT c.*, u.name AS user_name, u.profile_photo
-        FROM comments c
-        JOIN users u ON c.user_id = u.id
-        ORDER BY c.created_at DESC
-        LIMIT 3
-    ");
-    $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    foreach ($comments as $c):
+    <?php foreach ($latestComments as $c):
         $photo_url = !empty($c['profile_photo']) ? htmlspecialchars($c['profile_photo']) : null;
-    ?>
+      ?>
       <div class="bg-white shadow p-4 flex flex-col justify-between" style="box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 -5px 10px rgba(0,0,0,0.05);">
         <div class="flex items-center gap-3">
           <?php if($photo_url): ?>
