@@ -3,7 +3,6 @@ require_once __DIR__ . '/classes/session.php';
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/classes/spot.php';
 require_once __DIR__ . '/classes/User.php';
-require_once __DIR__ . '/includes/header.php';
 
 $session = new SessionHandle();
 $user_id = $session->getUserId();
@@ -90,6 +89,8 @@ $likeCount = $spotObj->countLikes($spot_id);
 // Fetch spot owner's info
 $user_name = $spot['user_name'];
 $photo_url = $spot['profile_photo'];
+
+require_once __DIR__ . '/includes/header.php';
 ?>
 
 
