@@ -1,3 +1,5 @@
+if (document.getElementById('uploadModal')) {
+
 // ---------- Upload Modal & Map Logic ----------
 const uploadModal = document.getElementById('uploadModal');
 const closeBtn = document.getElementById('closeUploadModal');
@@ -137,7 +139,7 @@ if (addressInput) {
     } catch (e) { console.error(e); }
   }, 500));
 }
-
+}
 // ---------- Feed Map Toggle ----------
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('filterBtn');
@@ -291,4 +293,3 @@ document.addEventListener('DOMContentLoaded', () => {
       .openPopup();
   }
 });
-
