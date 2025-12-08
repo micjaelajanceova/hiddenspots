@@ -31,10 +31,10 @@ $stmt->execute([$user_id, $spot_id]);
 if ($stmt->fetch()) {
     // Remove favorite if it exists
     $pdo->prepare("DELETE FROM favorites WHERE user_id=? AND spot_id=?")->execute([$user_id, $spot_id]);
-    echo json_encode(['status' => 'ok', 'action' => 'removed']);
+    echo 'removed';
 } else {
     // Add favorite if it doesn't exist
     $pdo->prepare("INSERT INTO favorites (user_id, spot_id) VALUES (?, ?)")->execute([$user_id, $spot_id]);
-    echo json_encode(['status' => 'ok', 'action' => 'added']);
+    echo 'added';
 }
 ?>
