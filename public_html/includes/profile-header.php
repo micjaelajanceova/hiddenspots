@@ -93,10 +93,13 @@ document.addEventListener('click', function (e) {
   const clickedFeedMap = feedMap && feedMap.contains(e.target);
   const clickedFeedMapBtn = showMapBtn && showMapBtn.contains(e.target);
 
-  // 1) Klik na profil (avatar alebo menu) -> zavri cityMap aj feedMap
+ // Click on profile button or menu -> close maps
   if (clickedProfileBtn || clickedProfileMenu) {
     if (cityMap && isVisible(cityMap)) {
       cityMap.style.display = 'none';
+      if (feedMapArrow) {
+        feedMapArrow.style.transform = 'rotate(0deg)';
+      }
     }
 
     if (feedMap && isVisible(feedMap)) {
@@ -109,7 +112,7 @@ document.addEventListener('click', function (e) {
     return;
   }
 
-  // 2) Klik na mapy alebo ich buttony -> zavri profile menu
+  // Click on city map or button -> close profile menu and feed map
   if (clickedCityMap || clickedCityMapBtn || clickedFeedMap || clickedFeedMapBtn) {
     if (profileMenu && !profileMenu.classList.contains('hidden')) {
       profileMenu.classList.add('hidden');
@@ -117,7 +120,7 @@ document.addEventListener('click', function (e) {
     return;
   }
 
-}, true); // capture phase
+}, true);
 })();
 </script>
 
