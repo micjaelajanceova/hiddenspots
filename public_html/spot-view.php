@@ -1,7 +1,7 @@
 <?php
+require_once __DIR__ . '/classes/session.php';
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/classes/spot.php';
-require_once __DIR__ . '/classes/session.php';
 require_once __DIR__ . '/classes/User.php';
 
 $session = new SessionHandle();
@@ -159,7 +159,7 @@ require_once __DIR__ . '/includes/header.php';
 </div>
 <?php endif; ?>
 
-
+ 
     <!-- Author Info -->
 <div class="flex items-center gap-2 mt-2">
     <?php 

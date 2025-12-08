@@ -21,21 +21,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Get user ID from session
 $user_id = $session->get('user_id');
 
-    // Check if already liked
-    $stmt = $pdo->prepare("SELECT id FROM likes WHERE user_id=? AND spot_id=?");
-    $stmt->execute([$user_id, $spot_id]);
-    $liked = $stmt->fetch();
+    // Check if user liked/favorited
+    $user_id = $_SESSION['user_id'] ?? 0;
+    $liked = false;
+    $favorited = false;
 
-    if ($liked) {
-        // Unlike
-        $pdo->prepare("DELETE FROM likes WHERE user_id=? AND spot_id=?")->execute([$user_id, $spot_id]);
-        echo 'unliked';
-    } else {
+    if ($user_id) {
         // Like
-        $pdo->prepare("INSERT INTO likes (user_id, spot_id) VALUES (?,?)")->execute([$user_id, $spot_id]);
-        echo 'liked';
+        $stmt = $pdo->prepare("SELECT 1 FROM likes WHERE user_id=? AND spot_id=?");
+        $stmt->execute([$user_id, $spot_id]);
+        $liked = $stmt->fetch() ? true : false;
+
+        // Favorite
+        $stmt = $pdo->prepare("SELECT 1 FROM favorites WHERE user_id=? AND spot_id=?");
+        $stmt->execute([$user_id, $spot_id]);
+        $favorited = $stmt->fetch() ? true : false;
     }
-    exit();
 }
 
 // Return updated like count (for AJAX)
