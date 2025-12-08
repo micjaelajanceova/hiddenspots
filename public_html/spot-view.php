@@ -383,7 +383,7 @@ function initCityMap() {
 .openPopup();
 }
 </script>
-<?php var_dump($spot_id); ?>
+
 <script>const spotId = <?= $spot_id ?>;</script>
 <script src="/assets/js/spot.js" defer></script>
 
