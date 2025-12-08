@@ -20,21 +20,36 @@ window.addEventListener('load', () => {
 
 
 // Tab navigation for admin panel
-  function showTab(tabId){
+function showTab(tabId) {
 
-  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+  // hide all tabs
+  document.querySelectorAll('.tab-content').forEach(tab => {
+    tab.classList.add('hidden');
+  });
 
-  document.getElementById(tabId).classList.remove('hidden');
+  // show selected tab
+  const tabElement = document.getElementById(tabId);
+  if (!tabElement) return;
+  tabElement.classList.remove('hidden');
 
+  // reset styles
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.classList.remove('bg-black', 'text-white');
     btn.classList.add('bg-gray-200', 'text-gray-800');
   });
 
+  // activate correct button
   const activeBtn = document.getElementById('tab-' + tabId);
+  if (!activeBtn) return; 
   activeBtn.classList.remove('bg-gray-200', 'text-gray-800');
   activeBtn.classList.add('bg-black', 'text-white');
 }
 
-    showTab('site');
+if (
+  document.getElementById('site') && 
+  document.getElementById('tab-site')
+) {
+  showTab('site');
+}
+
 

@@ -12,7 +12,7 @@ const photoDataInput = document.getElementById('photoData');
 // Wait until DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
 
-const uploadModal = document.getElementById('uploadModal');
+
     // isLoggedIn comes from footer.php (global variable)
     if (typeof isLoggedIn !== "undefined") {
         console.log("Login status:", isLoggedIn ? "YES" : "NO");

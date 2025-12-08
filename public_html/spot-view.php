@@ -332,59 +332,17 @@ require_once __DIR__ . '/includes/header.php';
   </div>
 </main>
 
-<!-- js for spot view -->
+<script>const spotId = <?= $spot_id ?>;</script>
+
 <script>
-// MAP for city for specific post
-const cityMapBtn = document.getElementById('showCityMapBtn');
-const cityMapDiv = document.getElementById('cityMap');
-let cityMap; 
-
-cityMapBtn.addEventListener('click', () => {
-    const mapArrow = document.getElementById('mapArrow');
-    const isHidden = cityMapDiv.style.display === 'none';
-    
-    cityMapDiv.style.display = isHidden ? 'block' : 'none';
-    
-    if (isHidden) {
-        mapArrow.style.transform = 'rotate(180deg)'; 
-        setTimeout(() => {
-            if (!cityMap) initCityMap();
-            else cityMap.invalidateSize();
-        }, 100);
-    } else {
-        mapArrow.style.transform = 'rotate(0deg)'; 
-    }
-});
-
-function initCityMap() {
-    const lat = <?= $spot['latitude'] ?? '0' ?>;
-    const lng = <?= $spot['longitude'] ?? '0' ?>;
-
-    if(lat === 0 && lng === 0) {
-        alert('Coordinates not available for this spot.');
-        return;
-    }
-
-    cityMap = L.map('cityMap').setView([lat, lng], 15);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(cityMap);
-
-    L.marker([lat, lng]).addTo(cityMap)
-    .bindPopup(`
-    <b><?= addslashes($spot['name']) ?></b><br>
-    <?php if (!empty($spot['address'])): ?>
-        <?= addslashes($spot['address']) ?>
-    <?php else: ?>
-        <?= $spot['latitude'] . ', ' . $spot['longitude'] ?>
-    <?php endif; ?>
-`)
-.openPopup();
-}
+  window.spotData = {
+    lat: <?= $spot['latitude'] ?>,
+    lng: <?= $spot['longitude'] ?>,
+    name: "<?= addslashes($spot['name']) ?>",
+    address: "<?= addslashes($spot['address'] ?? '') ?>"
+  };
 </script>
 
-<script>const spotId = <?= $spot_id ?>;</script>
 <script src="/assets/js/spot.js" defer></script>
 
 
