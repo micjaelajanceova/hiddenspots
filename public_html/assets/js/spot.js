@@ -81,11 +81,7 @@ likeBtn.addEventListener('click', () => {
   })
   .then(res => res.json())
   .then(data => {
-    if (data.status === 'error' && data.message === 'not_logged_in') {
-      return alert('You must be logged in to like!');
-    }
-
-    // Update icon
+    if (data.status === 'not_logged_in') return alert('You must be logged in to like!');
     if (data.status === 'liked') {
       likeIcon.classList.remove('text-gray-400');
       likeIcon.classList.add('text-red-600');
@@ -93,13 +89,8 @@ likeBtn.addEventListener('click', () => {
       likeIcon.classList.remove('text-red-600');
       likeIcon.classList.add('text-gray-400');
     }
-
-    // Update like count
-    if (typeof data.likes !== 'undefined') {
-      likeCount.textContent = data.likes;
-    }
-  })
-  .catch(err => console.error('Like error:', err));
+    likeCount.textContent = data.likes;
+  });
 });
 
 
