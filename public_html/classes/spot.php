@@ -229,5 +229,52 @@ class Spot {
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    // Check if a spot is liked by a specific user
+    public function isLikedByUser($spot_id, $user_id){
+    $stmt = $this->pdo->prepare("SELECT 1 FROM likes WHERE user_id=? AND spot_id=?");
+    $stmt->execute([$user_id, $spot_id]);
+    return $stmt->fetch() ? true : false;
+    }
+
+    // Check if a spot is favorited by a specific user
+    public function isFavoritedByUser($spot_id, $user_id){
+        $stmt = $this->pdo->prepare("SELECT 1 FROM favorites WHERE user_id=? AND spot_id=?");
+        $stmt->execute([$user_id, $spot_id]);
+        return $stmt->fetch() ? true : false;
+    }
+
+    // Count likes for a specific spot
+    public function countLikes($spot_id){
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM likes WHERE spot_id=?");
+        $stmt->execute([$spot_id]);
+        return (int)$stmt->fetchColumn();
+    }
+    // Add a new comment
+    public function addComment($spot_id, $user_id, $text){
+        $stmt = $this->pdo->prepare("INSERT INTO comments (user_id, spot_id, text) VALUES (?, ?, ?)");
+        return $stmt->execute([$user_id, $spot_id, $text]);
+    }
+
+    // Edit a comment (admin can edit any, user can edit own)
+    public function editComment($comment_id, $user_id, $text, $isAdmin=false){
+        if($isAdmin){
+            $stmt = $this->pdo->prepare("UPDATE comments SET text=? WHERE id=?");
+            return $stmt->execute([$text, $comment_id]);
+        } else {
+            $stmt = $this->pdo->prepare("UPDATE comments SET text=? WHERE id=? AND user_id=?");
+            return $stmt->execute([$text, $comment_id, $user_id]);
+        }
+    }
+
+    // Delete a comment (admin can delete any, user can delete own)
+    public function deleteCommentByUser($comment_id, $user_id, $isAdmin=false){
+        if($isAdmin){
+            $stmt = $this->pdo->prepare("DELETE FROM comments WHERE id=?");
+            return $stmt->execute([$comment_id]);
+        } else {
+            $stmt = $this->pdo->prepare("DELETE FROM comments WHERE id=? AND user_id=?");
+            return $stmt->execute([$comment_id, $user_id]);
+        }
+    }
 }
 ?>

@@ -2,10 +2,10 @@
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/classes/spot.php';
 require_once __DIR__ . '/classes/session.php';
+require_once __DIR__ . '/classes/user.php';
 
-// session start
 $session = new SessionHandle();
-
+$user_id = $session->getUserId();
 
 $spot_id = $_GET['id'] ?? null;
 if (!$spot_id) die("No ID provided.");
@@ -35,97 +35,65 @@ $comments = $spotObj->getComments($spot_id);
 $isAdmin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin'; 
 $edit_id = $_POST['edit_id'] ?? null;
 
-// Handle POST for comments
+// Handle POST for comments and spot edits/deletions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Add new comment
-    if (isset($_POST['comment']) && isset($_SESSION['user_id'])) {
-        $stmt = $pdo->prepare("INSERT INTO comments (user_id, spot_id, text) VALUES (:user_id, :spot_id, :text)");
-        $stmt->execute([
-            'user_id' => $_SESSION['user_id'],
-            'spot_id' => $spot_id,
-            'text' => $_POST['text']
-        ]);
+    // Add comment
+    if (isset($_POST['comment']) && $user_id) {
+        $spotObj->addComment($spot_id, $user_id, $_POST['text']);
         header("Location: spot-view.php?id=$spot_id#comments");
         exit();
     }
 
     // Edit comment
-    if(isset($_POST['edit_comment_id'], $_POST['edit_text'])) {
-        $stmt = $pdo->prepare($isAdmin
-            ? "UPDATE comments SET text=:text WHERE id=:id"
-            : "UPDATE comments SET text=:text WHERE id=:id AND user_id=:user_id");
-        $stmt->execute($isAdmin ? [
-            'text' => $_POST['edit_text'],
-            'id' => $_POST['edit_comment_id']
-        ] : [
-            'text' => $_POST['edit_text'],
-            'id' => $_POST['edit_comment_id'],
-            'user_id' => $_SESSION['user_id']
-        ]);
+    if (isset($_POST['edit_comment_id'], $_POST['edit_text'])) {
+        $spotObj->editComment($_POST['edit_comment_id'], $user_id, $_POST['edit_text'], $isAdmin);
         header("Location: spot-view.php?id=$spot_id#comment-" . $_POST['edit_comment_id']);
         exit();
     }
 
     // Delete comment
-    if(isset($_POST['delete_comment_id'])) {
-        $stmt = $pdo->prepare($isAdmin
-            ? "DELETE FROM comments WHERE id=:id"
-            : "DELETE FROM comments WHERE id=:id AND user_id=:user_id");
-        $stmt->execute($isAdmin ? ['id'=>$_POST['delete_comment_id']] : [
-            'id'=>$_POST['delete_comment_id'],
-            'user_id'=>$_SESSION['user_id']
-        ]);
+    if (isset($_POST['delete_comment_id'])) {
+        $spotObj->deleteCommentByUser($_POST['delete_comment_id'], $user_id, $isAdmin);
         header("Location: spot-view.php?id=$spot_id#comments");
         exit();
     }
-}
 
-// Edit spot description
-if (isset($_POST['edit_spot_id'], $_POST['edit_description'])) {
-    if ($isAdmin || $_SESSION['user_id'] == $spot['user_id']) {
-        $spotObj->updateDescription($_POST['edit_spot_id'], $_POST['edit_description']);
-        header("Location: spot-view.php?id=" . $_POST['edit_spot_id']);
-        exit();
+    // Edit spot description
+    if (isset($_POST['edit_spot_id'], $_POST['edit_description'])) {
+        if ($isAdmin || $_SESSION['user_id'] == $spot['user_id']) {
+            $spotObj->updateDescription($_POST['edit_spot_id'], $_POST['edit_description']);
+            header("Location: spot-view.php?id=" . $_POST['edit_spot_id']);
+            exit();
+        }
+    }
+
+    // Delete spot
+    if (isset($_POST['delete_spot_id'])) {
+        if ($isAdmin || $_SESSION['user_id'] == $spot['user_id']) {
+            $spotObj->deleteSpot($_POST['delete_spot_id']);
+            header("Location: feed.php");
+            exit();
+        }
     }
 }
 
-// Delete spot
-if (isset($_POST['delete_spot_id'])) {
-    if ($isAdmin || $_SESSION['user_id'] == $spot['user_id']) {
-        $spotObj->deleteSpot($_POST['delete_spot_id']);
-        header("Location: feed.php");
-        exit();
-    }
-}
-
-
-require_once __DIR__ . '/includes/header.php';
-
+// Fetch comments
+$comments = $spotObj->getComments($spot_id);
 
 // Check if user liked/favorited
-$user_id = $_SESSION['user_id'] ?? 0;
-$liked = false;
-$favorited = false;
-
-if ($user_id) {
-    // Like
-    $stmt = $pdo->prepare("SELECT 1 FROM likes WHERE user_id=? AND spot_id=?");
-    $stmt->execute([$user_id, $spot_id]);
-    $liked = $stmt->fetch() ? true : false;
-
-    // Favorite
-    $stmt = $pdo->prepare("SELECT 1 FROM favorites WHERE user_id=? AND spot_id=?");
-    $stmt->execute([$user_id, $spot_id]);
-    $favorited = $stmt->fetch() ? true : false;
-}
+$liked = $user_id ? $spotObj->isLikedByUser($spot_id, $user_id) : false;
+$favorited = $user_id ? $spotObj->isFavoritedByUser($spot_id, $user_id) : false;
+$likeCount = $spotObj->countLikes($spot_id);
 
 // Fetch spot owner's info
 $user_name = $spot['user_name'];
 $photo_url = $spot['profile_photo'];
-
 ?>
 
+<?php
+require_once __DIR__ . '/includes/header.php';
+?>
 
 <!----------------------- HTML ------------------------------>
 <main class="flex-1 bg-white min-h-screen pt-2 md:pt-8  md:pb-12 px-4 md:px-8 flex flex-col">
@@ -256,11 +224,7 @@ $photo_url = $spot['profile_photo'];
                c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
     </svg>
     <span id="likeCount" class="text-sm text-gray-600">
-      <?php
-        $stmt = $pdo->prepare("SELECT COUNT(*) FROM likes WHERE spot_id=?");
-        $stmt->execute([$spot_id]);
-        echo $stmt->fetchColumn();
-      ?>
+     <?= $spotObj->countLikes($spot_id) ?>
     </span>
   </button>
 
