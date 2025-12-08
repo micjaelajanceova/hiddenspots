@@ -29,6 +29,7 @@ function getPhotoUrl($photo) {
 // User info
 $user = $userObj->getById($user_id);
 $photo_url = $userObj->getProfilePhoto($user_id);
+$authorPhoto = getPhotoUrl($spot['profile_photo']);
 ?>
 
 <!----------------------- HTML ------------------------------>
@@ -38,10 +39,8 @@ $photo_url = $userObj->getProfilePhoto($user_id);
       
       <!-- Profile photo + Title -->
       <div class="flex items-center gap-4">
-        <?php
-        $authorPhoto = getPhotoUrl($spot['profile_photo']);
-        ?>
-        <img src="<?= htmlspecialchars($authorPhoto) ?>"" alt="Profile" class="w-16 h-16 rounded-full object-cover border-2 border-black">
+        <?php if ($authorPhoto): ?>
+          <img src="<?= htmlspecialchars($authorPhoto) ?>" alt="Profile" class="w-16 h-16 rounded-full object-cover border-2 border-black">
         <?php else: ?>
           <div class="w-16 h-16 rounded-full bg-black flex items-center justify-center text-xl font-bold text-white">
             <?= strtoupper(substr($session->get('user_name') ?? 'U', 0, 1)) ?>
