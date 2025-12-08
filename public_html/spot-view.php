@@ -121,14 +121,8 @@ if ($user_id) {
 }
 
 // Fetch spot owner's info
-$user_id = $spot['user_id'];
-$stmt = $pdo->prepare("SELECT name, profile_photo FROM users WHERE id = :id LIMIT 1");
-$stmt->execute(['id' => $user_id]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-$user_name = $user['name'] ?? 'Unknown';
-$photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
-
+$user_name = $spot['user_name'];
+$photo_url = $spot['profile_photo'];
 ?>
 
 
