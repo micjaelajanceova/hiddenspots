@@ -112,6 +112,6 @@ if (profileBtn && profileMenu) {
 })();
 </script>
 
-<script src="/assets/js/map.js" defer></script>
+
 
 

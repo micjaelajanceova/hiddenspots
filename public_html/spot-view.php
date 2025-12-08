@@ -1,7 +1,10 @@
 <?php
-session_start();
+require_once 'classes/session.php';
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/classes/spot.php';
+
+// session start
+$session = new SessionHandle();
 
 
 $spot_id = $_GET['id'] ?? null;
@@ -11,7 +14,6 @@ if (!$spot_id) die("No ID provided.");
 $spotObj = new Spot($pdo);
 $spot = $spotObj->getById($spot_id);
 if (!$spot) die("Spot not found.");
-
 
 
 // Time ago function
@@ -132,7 +134,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 ?>
 
 
-
+<!----------------------- HTML ------------------------------>
 <main class="flex-1 bg-white min-h-screen pt-2 md:pt-8  md:pb-12 px-4 md:px-8 flex flex-col">
 
 <!-- LOGIN / SIGNUP -->
@@ -144,9 +146,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
     <?= htmlspecialchars($spot['city']) ?>
 </span>
 
-
   <h1 class="text-3xl font-bold"><?=htmlspecialchars($spot['name'])?></h1>
-
 
   <button id="showCityMapBtn" 
         class="inline-flex items-center gap-1 w-fit px-3 py-1 bg-black text-white rounded text-sm my-4">
@@ -175,17 +175,14 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
     </div>
   </div>
 
-
-
   <?php
 $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 ?>
 
-
 <div class="w-full lg:w-1/2 flex flex-col px-4 gap-4 max-h-[600px] overflow-y-auto relative">
 
     <!-- Three dots menu for spot -->
-<?php if(isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $spot['user_id'] || $isAdmin)): ?>
+<?php if($session->getUserId() && ($session->getUserId() == $spot['user_id'] || $isAdmin)): ?>
 <div class="absolute top-2 right-2">
   <button id="spotMenuBtn" class="text-gray-500 hover:text-gray-700 text-xl font-bold">⋯</button>
   <div id="spotMenu" class="hidden absolute right-0 mt-1 w-36 bg-white border border-gray-300 rounded shadow-md z-50">
@@ -250,19 +247,10 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
   </div>
 
   <!-- Hidden save button -->
-  <button id="saveDescBtn" class="hidden mt-2 
-      bg-blue-600 hover:bg-blue-700 
-      text-white px-4 py-2 
-      rounded-lg shadow-sm 
-      text-sm font-semibold 
-      transition-all duration-200">
+  <button id="saveDescBtn" class="hidden mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm text-sm font-semibold transition-all duration-200">
     Save Description
   </button>
 </div>
-
-
-
-
 
   <div class="flex items-center gap-2 text-gray-600">
 
@@ -301,16 +289,12 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
     </svg>
   </button>
 
-
 </div>
-
-
-
 
     <!-- Comments Section -->
     <section id="comments" class="flex flex-col gap-4">
      
-<?php if(isset($_SESSION['user_id'])): ?>
+<?php if($session->getUserId()): ?>
 <div class="relative">
     <form method="post">
         <textarea name="text" placeholder="Write your comment"
@@ -324,25 +308,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
         </button>
     </form>
 </div>
-
-<script>
-const textarea = document.getElementById('commentText');
-const postButton = document.getElementById('postText');
-
-textarea.addEventListener('input', () => {
-    if(textarea.value.trim().length > 0){
-        postButton.disabled = false;
-        postButton.classList.remove('text-gray-400', 'cursor-not-allowed');
-        postButton.classList.add('text-black', 'cursor-pointer');
-    } else {
-        postButton.disabled = true;
-        postButton.classList.add('text-gray-400', 'cursor-not-allowed');
-        postButton.classList.remove('text-black', 'cursor-pointer');
-    }
-});
-</script>
 <?php endif; ?>
-
 
      <!-- Existing Comments -->
 <div class="flex flex-col gap-3">
@@ -387,7 +353,7 @@ textarea.addEventListener('input', () => {
 
             <div class="flex justify-between mt-2 text-xs text-gray-500">
                 <span>Posted <?= timeAgo($c['created_at']) ?></span>
-                <?php if(isset($_SESSION['user_id']) && ($_SESSION['user_id']==$c['user_id'] || $isAdmin)): ?>
+                <?php if($session->getUserId() && ($session->getUserId()==$c['user_id'] || $isAdmin)): ?> 
                     <div class="flex gap-2">
                         <form method="post" style="display:inline;">
                             <input type="hidden" name="edit_id" value="<?=$c['id']?>">
@@ -404,285 +370,21 @@ textarea.addEventListener('input', () => {
     </div>
 <?php endforeach; ?>
 </div>
-
     </section>
 
   </div>
 </main>
 
+<!-- js for spot view -->
+<script src="/assets/js/spot.js" defer></script>
+
+<!-- Pass php variables to JavaScript -->
 <script>
-const favBtn = document.getElementById('favBtn');
-const favIcon = document.getElementById('favIcon');
-const favToast = document.getElementById('favToast');
-
-const likeBtn = document.getElementById('likeBtn');
-const likeIcon = document.getElementById('likeIcon');
-const likeCount = document.getElementById('likeCount');
-
-const descDiv = document.getElementById("spotDescription");
-const saveBtn = document.getElementById("saveDescBtn");
-const editMenuBtn = document.getElementById("editDescMenuBtn");
-const charCountDiv = document.getElementById("descCharCount");
-
-const MAX_CHARS = 1000;
-
-const spotAddress = "<?= $spot['address'] ?? '' ?>";
+const spotId = <?= $spot_id ?>;
 const spotLat = <?= $spot['latitude'] ?>;
 const spotLng = <?= $spot['longitude'] ?>;
-
-
-// FAVOURITE BUTTON
-favBtn.addEventListener('click', () => {
-  const spotId = <?= $spot_id ?>;
-  fetch('actions/favourite.php', {
-    method: 'POST',
-    headers: {'Content-Type':'application/x-www-form-urlencoded'},
-    body: 'spot_id=' + spotId
-  })
-  .then(r => r.text())
-  .then(res => {
-    if (res === 'not_logged_in') return alert('You must be logged in to favorite!');
-    if (res === 'added') {
-      favIcon.classList.remove('text-gray-400');
-      favIcon.classList.add('text-yellow-500');
-      showFavToast("Saved to favourites");
-    }
-    if (res === 'removed') {
-      favIcon.classList.remove('text-yellow-500');
-      favIcon.classList.add('text-gray-400');
-      showFavToast("Removed from favourites");
-    }
-  });
-});
-
-function showFavToast(message) {
-  favToast.querySelector('span').textContent = message;
-  favToast.classList.remove('opacity-0');
-  favToast.classList.add('opacity-100');
-  favToast.classList.add('bg-opacity-20');
-  setTimeout(() => {
-    favToast.classList.remove('bg-opacity-20');
-    favToast.classList.add('bg-opacity-0');
-  }, 500);
-  setTimeout(() => {
-    favToast.classList.remove('opacity-100');
-    favToast.classList.add('opacity-0');
-  }, 3000);
-}
-
-
-// LIKE BUTTON
-likeBtn.addEventListener('click', () => {
-  const spotId = <?= $spot_id ?>;
-  fetch('actions/like.php', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: 'spot_id=' + spotId
-  })
-  .then(res => res.text())
-  .then(data => {
-    if (data === 'not_logged_in') return alert('You must be logged in to like!');
-    if (data === 'liked') {
-      likeIcon.classList.remove('text-gray-400');
-      likeIcon.classList.add('text-red-600');
-    } else if (data === 'unliked') {
-      likeIcon.classList.remove('text-red-600');
-      likeIcon.classList.add('text-gray-400');
-    }
-
-    fetch('actions/like.php?count=' + spotId)
-      .then(r => r.text())
-      .then(count => { likeCount.textContent = count; });
-  });
-});
-
-
-
-// SPOT DESCRIPTION EDITING
-document.addEventListener("DOMContentLoaded", () => {
-    if (!editMenuBtn || !descDiv || !saveBtn) return;
-
-    const menu = document.getElementById("spotMenu");
-
-    // Toggle menu
-    const menuBtn = document.getElementById("spotMenuBtn");
-    if (menuBtn && menu) {
-        menuBtn.addEventListener("click", e => {
-            e.stopPropagation();
-            menu.classList.toggle("hidden");
-        });
-        document.addEventListener("click", () => menu.classList.add("hidden"));
-    }
-
-    // Place caret at the end
-    function placeCaretAtEnd(el) {
-        el.focus();
-        if (typeof window.getSelection !== "undefined" && typeof document.createRange !== "undefined") {
-            const range = document.createRange();
-            range.selectNodeContents(el);
-            range.collapse(false);
-            const sel = window.getSelection();
-            sel.removeAllRanges();
-            sel.addRange(range);
-        }
-    }
-
-    // Count characters + special Enter = 100
-    function getEffectiveCharCount(el) {
-        let count = 0;
-        el.childNodes.forEach(node => {
-            if (node.nodeType === Node.TEXT_NODE) {
-                count += node.textContent.length;
-            } else if (node.nodeType === Node.ELEMENT_NODE) {
-                const tag = node.tagName.toLowerCase();
-                if (tag === 'div' || tag === 'br') count += 99;
-                count += node.innerText.length;
-            }
-        });
-        return count;
-    }
-
-    // Update character count display
-    function updateCharCount() {
-        charCountDiv.textContent = `${getEffectiveCharCount(descDiv)} / ${MAX_CHARS} characters`;
-    }
-
-    // Activate edit mode
-    editMenuBtn.addEventListener("click", () => {
-        menu.classList.add("hidden");
-        descDiv.contentEditable = "true";
-        descDiv.classList.add("bg-gray-100");
-        saveBtn.classList.remove("hidden");
-        charCountDiv.classList.remove("hidden");
-        updateCharCount();
-        placeCaretAtEnd(descDiv);
-    });
-
-    // Limit input characters
-descDiv.addEventListener("beforeinput", (e) => {
-    if (e.inputType === "deleteContentBackward" || e.inputType === "deleteContentForward") return;
-
-    let currentCount = getEffectiveCharCount(descDiv);
-    let addition = 0;
-
-    if (e.inputType === "insertLineBreak") {
-        addition = 100; 
-    } else if (e.data) {
-        addition = e.data.length;
-    }
-    
-
-    // BLOCK input if it would meet or exceed MAX_CHARS
-    if (currentCount + addition > MAX_CHARS || currentCount + addition === MAX_CHARS) {
-        e.preventDefault();
-    }
-});
-
-
-descDiv.addEventListener("paste", (e) => {
-    e.preventDefault(); // prevent the default paste
-
-    const pasteData = (e.clipboardData || window.clipboardData).getData('text');
-    const currentCount = getEffectiveCharCount(descDiv);
-
-    // How many characters can still be added
-    const allowed = Math.max(0, MAX_CHARS - currentCount);
-
-    // If no characters are allowed, do nothing
-    if (allowed <= 0) return;
-
-    // Insert only the allowed portion
-    const textToInsert = pasteData.substring(0, allowed);
-    document.execCommand('insertText', false, textToInsert);
-});
-
-
-
-    // Update char count on every input
-    descDiv.addEventListener("input", updateCharCount);
-
-    // Save description
-    saveBtn.addEventListener("click", () => {
-        const newDesc = descDiv.innerText.trim();
-        const spotId = descDiv.dataset.spotId;
-
-        fetch("", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `edit_spot_id=${encodeURIComponent(spotId)}&edit_description=${encodeURIComponent(newDesc)}`
-        })
-        .then(() => {
-            descDiv.contentEditable = "false";
-            descDiv.classList.remove("bg-gray-100");
-            saveBtn.classList.add("hidden");
-            charCountDiv.classList.add("hidden");
-
-            const toast = document.createElement("div");
-            toast.textContent = "Description updated successfully ✅";
-            toast.className = "fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow";
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 2500);
-        });
-    });
-});
-
-
-// MAP
-const cityMapBtn = document.getElementById('showCityMapBtn');
-const cityMapDiv = document.getElementById('cityMap');
-let cityMap; 
-
-cityMapBtn.addEventListener('click', () => {
-    const mapArrow = document.getElementById('mapArrow');
-    const isHidden = cityMapDiv.style.display === 'none';
-    
-    cityMapDiv.style.display = isHidden ? 'block' : 'none';
-    
-    if (isHidden) {
-        mapArrow.style.transform = 'rotate(180deg)'; // šípka hore
-        setTimeout(() => {
-            if (!cityMap) initCityMap();
-            else cityMap.invalidateSize();
-        }, 100);
-    } else {
-        mapArrow.style.transform = 'rotate(0deg)'; // šípka dole
-    }
-});
-
-function initCityMap() {
-    const lat = <?= $spot['latitude'] ?? '0' ?>;
-    const lng = <?= $spot['longitude'] ?? '0' ?>;
-
-    if(lat === 0 && lng === 0) {
-        alert('Coordinates not available for this spot.');
-        return;
-    }
-
-    cityMap = L.map('cityMap').setView([lat, lng], 15);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(cityMap);
-
-    L.marker([lat, lng]).addTo(cityMap)
-    .bindPopup(`
-    <b><?= addslashes($spot['name']) ?></b><br>
-    <?php if (!empty($spot['address'])): ?>
-        <?= addslashes($spot['address']) ?>
-    <?php else: ?>
-        <?= $spot['latitude'] . ', ' . $spot['longitude'] ?>
-    <?php endif; ?>
-`)
-.openPopup();
-}
-
-
-
-
-
-
-
-
+const lat = <?= $spot['latitude'] ?? '0' ?>;
+const lng = <?= $spot['longitude'] ?? '0' ?>;
 </script>
 
 
