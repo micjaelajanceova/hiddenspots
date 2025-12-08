@@ -215,7 +215,7 @@ $photo_url = $spot['profile_photo'];
 
     <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>" 
        class="font-semibold text-blue-600 hover:underline">
-        @<?=htmlspecialchars($user_name) ?>
+        @<?= htmlspecialchars($spot['user_name']) ?>
     </a>
 </div>
 
