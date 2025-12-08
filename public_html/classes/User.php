@@ -117,5 +117,19 @@ class User {
     }
     return false;
     }
+    
+    // Fetch user's favorites
+    public function getFavorites($user_id) {
+    $stmt = $this->pdo->prepare("
+        SELECT hs.*, u.name AS user_name, u.profile_photo
+        FROM favorites f
+        JOIN hidden_spots hs ON f.spot_id = hs.id
+        JOIN users u ON hs.user_id = u.id
+        WHERE f.user_id = :user_id
+        ORDER BY f.created_at DESC
+    ");
+    $stmt->execute(['user_id' => $user_id]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }
 ?>

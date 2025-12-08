@@ -1,7 +1,8 @@
 <?php
-session_start();
+require_once __DIR__ . '/classes/session.php';
+$session = new SessionHandle();
 
-if (!isset($_SESSION['user_id'])) {
+if (!$session->logged_in()) {
     header("Location: auth/login.php");
     exit();
 }
@@ -11,25 +12,18 @@ include 'includes/header.php';
 include 'includes/profile-header.php';
 
 
-$user_id = $_SESSION['user_id'];
+$userObj = new User($pdo);
+$user_id = $session->get('user_id');
 
 // Fetch user's favorites
-$stmt = $pdo->prepare("
-    SELECT hs.*, u.name AS user_name, u.profile_photo
-    FROM favorites f
-    JOIN hidden_spots hs ON f.spot_id = hs.id
-    JOIN users u ON hs.user_id = u.id
-    WHERE f.user_id = :user_id
-    ORDER BY f.created_at DESC
-");
-$stmt->execute(['user_id'=>$user_id]);
-$favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$favorites = $userObj->getFavorites($user_id);
 
 // User info
-$user_photo = $_SESSION['profile_photo'] ?? null;
+$user_photo = $session->get('profile_photo');
 $photo_url = $user_photo ? '/' . $user_photo : null;
 ?>
 
+<!----------------------- HTML ------------------------------>
 <main class="flex-1 bg-white min-h-screen overflow-y-auto">   
   <div class="w-full px-4 sm:px-6 lg:px-8 py-8">
     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-4">
@@ -40,7 +34,7 @@ $photo_url = $user_photo ? '/' . $user_photo : null;
           <img src="<?= htmlspecialchars($photo_url) ?>" alt="Profile" class="w-16 h-16 rounded-full object-cover border-2 border-black">
         <?php else: ?>
           <div class="w-16 h-16 rounded-full bg-black flex items-center justify-center text-xl font-bold text-white">
-            <?= strtoupper(substr($_SESSION['user_name'] ?? 'U', 0, 1)) ?>
+            <?= strtoupper(substr($session->get('user_name') ?? 'U', 0, 1)) ?>
           </div>
         <?php endif; ?>
 
@@ -57,11 +51,7 @@ $photo_url = $user_photo ? '/' . $user_photo : null;
 
     </div>
 
-
-
     <div class="border-t border-gray-300 mb-0 md:mb-6"></div>
-
-
 
     <!-- Favorites grid -->
     <?php if (!empty($favorites)): ?>
