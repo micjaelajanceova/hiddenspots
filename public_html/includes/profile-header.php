@@ -77,8 +77,6 @@ if (profileBtn && profileMenu) {
 
 
   document.addEventListener('click', function (e) {
-    const profileBtn = document.getElementById('profileBtn');
-    const profileMenu = document.getElementById('profileMenu');
     const cityMap = document.getElementById('cityMap');
     const showCityMapBtn = document.getElementById('showCityMapBtn');
 
