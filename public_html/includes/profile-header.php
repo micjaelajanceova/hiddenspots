@@ -28,7 +28,7 @@ if ($user_id) {
         <?php if(!empty($photo_url)): ?>
           <img src="<?= htmlspecialchars('/' . ltrim($photo_url,'/')) ?>" alt="Profile" class="w-full h-full object-cover rounded-full">
         <?php else: ?>
-          <?= strtoupper(substr($name, 0, 1)) ?>
+          <?= strtoupper(substr($user_name, 0, 1)) ?>
         <?php endif; ?>
       </button>
       
