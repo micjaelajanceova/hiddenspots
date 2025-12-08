@@ -50,7 +50,7 @@ $show_navbar = $show_navbar ?? true;
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>HiddenSpots — discover your city's secret places</title>
     <link rel="icon" type="image/png" href="/assets/img/logo.svg">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css?v=<?php echo time(); ?>">
     <style>
       :root {
