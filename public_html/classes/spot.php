@@ -173,14 +173,14 @@ class Spot {
     }
 
     // Get latest comments across all spots
-    public function getLatestComments($limit=3){
-    $stmt = $this->pdo->prepare("
+    public function getLatestComments($limit = 3){
+    $limit = (int)$limit; 
+    $stmt = $this->pdo->query("
         SELECT c.*, c.user_id, c.spot_id, c.text, c.created_at
         FROM comments c
         ORDER BY c.created_at DESC
-        LIMIT ?
+        LIMIT $limit
     ");
-    $stmt->execute([$limit]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 }
