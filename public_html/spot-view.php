@@ -78,14 +78,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-var_dump($user_id);
+
 // Fetch comments
 $comments = $spotObj->getComments($spot_id);
 
 // Check if user liked/favorited
-$liked = $user_id ? $spotObj->isLikedByUser($spot_id, $user_id) : false;
-$favorited = $user_id ? $spotObj->isFavoritedByUser($spot_id, $user_id) : false;
-$likeCount = $spotObj->countLikes($spot_id);
+$user_id = $_SESSION['user_id'] ?? 0;
+$liked = false;
+$favorited = false;
+
+if ($user_id) {
+    // Like
+    $stmt = $pdo->prepare("SELECT 1 FROM likes WHERE user_id=? AND spot_id=?");
+    $stmt->execute([$user_id, $spot_id]);
+    $liked = $stmt->fetch() ? true : false;
+
+    // Favorite
+    $stmt = $pdo->prepare("SELECT 1 FROM favorites WHERE user_id=? AND spot_id=?");
+    $stmt->execute([$user_id, $spot_id]);
+    $favorited = $stmt->fetch() ? true : false;
+}
 
 // Fetch spot owner's info
 $user_name = $spot['user_name'];
