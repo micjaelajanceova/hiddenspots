@@ -21,7 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Get user ID from session
 $user_id = $session->get('user_id');
 
-    // Check if user liked/favorited
+    
+}
+
+// Check if user liked/favorited
     $user_id = $_SESSION['user_id'] ?? 0;
     $liked = false;
     $favorited = false;
@@ -37,8 +40,7 @@ $user_id = $session->get('user_id');
         $stmt->execute([$user_id, $spot_id]);
         $favorited = $stmt->fetch() ? true : false;
     }
-}
-
+    
 // Return updated like count (for AJAX)
 if (isset($_GET['count'])) {
     $spot_id = intval($_GET['count']);
