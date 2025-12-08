@@ -333,6 +333,16 @@ require_once __DIR__ . '/includes/header.php';
 </main>
 
 <script>const spotId = <?= $spot_id ?>;</script>
+
+<script>
+  window.spotData = {
+    lat: <?= $spot['latitude'] ?>,
+    lng: <?= $spot['longitude'] ?>,
+    name: "<?= addslashes($spot['name']) ?>",
+    address: "<?= addslashes($spot['address'] ?? '') ?>"
+  };
+</script>
+
 <script src="/assets/js/spot.js" defer></script>
 
 
