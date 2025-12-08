@@ -194,10 +194,14 @@ $photo_url = $spot['profile_photo'];
 
     <!-- Author Info -->
 <div class="flex items-center gap-2 mt-2">
-    <?php if($photo_url): ?>
+    <?php 
+    $spot_user_name = $spot['user_name'];
+    $spot_user_photo = !empty($spot['profile_photo']) ? $spot['profile_photo'] : null;
+    ?>
+    <?php if($spot_user_photo): ?>
     <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
-        <img src="<?= htmlspecialchars($photo_url) ?>" 
-             alt="<?= htmlspecialchars($user_name) ?>" 
+        <img src="<?= htmlspecialchars($spot_user_photo) ?>" 
+             alt="<?= htmlspecialchars($spot_user_name) ?>" 
              class="w-10 h-10 rounded-full object-cover">
     </a>
 <?php else: ?>
