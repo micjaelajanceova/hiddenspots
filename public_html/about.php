@@ -36,7 +36,6 @@ $card3_text       = $settings['card3_text'] ?? '';
 <?php include 'includes/profile-header.php'; ?>
 
 <div class="py-2 md:py-10 lg:py-20">
-      <div class="w-full px-4 sm:px-6 lg:px-8">
 
         <!-- Section 1 -->
         <div class="grid md:grid-cols-12 gap-12 items-center mb-10 md:mb-24">
