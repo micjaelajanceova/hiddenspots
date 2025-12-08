@@ -51,7 +51,6 @@ $show_navbar = $show_navbar ?? true;
     <title>HiddenSpots — discover your city's secret places</title>
     <link rel="icon" type="image/png" href="/assets/img/logo.svg">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css?v=<?php echo time(); ?>">
     <style>
       :root {
