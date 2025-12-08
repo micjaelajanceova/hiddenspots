@@ -188,25 +188,7 @@ mapBtn.addEventListener('click', () => {
 });
 }
 
-// Close map when clicking profile
-const profileBtn = document.getElementById('profileBtn');
-const profileMenu = document.getElementById('profileMenu');
 
-if (profileBtn && mapDiv) {
-  profileBtn.addEventListener('click', () => {
-    if (mapDiv.style.display === 'block') {
-      mapDiv.style.display = 'none';
-    }
-  });
-}
-
-if (profileMenu && mapDiv) {
-  profileMenu.addEventListener('click', () => {
-    if (mapDiv.style.display === 'block') {
-      mapDiv.style.display = 'none';
-    }
-  });
-}
 
 function initFeedMap() {
   let mapCenter = [55.6761, 12.5683];
