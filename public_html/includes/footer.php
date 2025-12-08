@@ -18,7 +18,7 @@ $siteFont        = $siteSettings['font_family'] ?? 'Arial';
 ?>
 
 <!----------------------- Footer HTML section ------------------------------>
-<footer class="py-10 text-gray-500 text-sm">
+<footer class="py-10 text-gray-500 text-sm border-t">
 
 <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-left px-4 sm:px-6 md:px-0">
 
@@ -68,11 +68,6 @@ $siteFont        = $siteSettings['font_family'] ?? 'Arial';
 <!-- Global script -->
 <script src="/assets/js/main.js"></script>
 
-<!-- Map and Upload scripts -->
-<script type="module" src="/assets/js/map.js" defer></script>
-<script type="module">
-import { initUploadMap, setupGeocode } from '/assets/js/map.js';
-initUploadMap('uploadMap', 'latitude', 'longitude');
-setupGeocode('city', 'address');
-</script>
+<script src="/assets/js/map.js" defer></script>
+
 </html>
