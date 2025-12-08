@@ -20,8 +20,8 @@ $favorites = $userObj->getFavorites($user_id);
 
 // Function to get photo URL
 function getPhotoUrl($photo) {
-    if ($photo && file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $photo)) {
-        return '/' . $photo;
+    if ($photo) {
+        return '/' . ltrim($photo, '/');
     }
     return null;
 }
@@ -29,7 +29,7 @@ function getPhotoUrl($photo) {
 // User info
 $user = $userObj->getById($user_id);
 $photo_url = $userObj->getProfilePhoto($user_id);
-$authorPhoto = getPhotoUrl($spot['profile_photo']);
+$authorPhoto = getPhotoUrl($photo_url);
 ?>
 
 <!----------------------- HTML ------------------------------>
