@@ -174,10 +174,11 @@ class Spot {
 
     // Get latest comments across all spots
     public function getLatestComments($limit = 3){
-    $limit = (int)$limit; 
+    $limit = (int)$limit;
     $stmt = $this->pdo->query("
-        SELECT c.*, c.user_id, c.spot_id, c.text, c.created_at
+        SELECT c.*, u.name AS user_name, u.profile_photo
         FROM comments c
+        LEFT JOIN users u ON c.user_id = u.id
         ORDER BY c.created_at DESC
         LIMIT $limit
     ");
