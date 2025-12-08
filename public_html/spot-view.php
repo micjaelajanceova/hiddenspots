@@ -371,13 +371,55 @@ $photo_url = $spot['profile_photo'];
 <!-- js for spot view -->
 
 <script>
-  const spotData = {
-    id: <?= json_encode($spot_id) ?>,
-    lat: <?= json_encode($spot['latitude']) ?>,
-    lng: <?= json_encode($spot['longitude']) ?>,
-    name: <?= json_encode($spot['name']) ?>,
-    address: <?= json_encode($spot['address']) ?>
-  };
+// MAP
+const cityMapBtn = document.getElementById('showCityMapBtn');
+const cityMapDiv = document.getElementById('cityMap');
+let cityMap; 
+
+cityMapBtn.addEventListener('click', () => {
+    const mapArrow = document.getElementById('mapArrow');
+    const isHidden = cityMapDiv.style.display === 'none';
+    
+    cityMapDiv.style.display = isHidden ? 'block' : 'none';
+    
+    if (isHidden) {
+        mapArrow.style.transform = 'rotate(180deg)'; // šípka hore
+        setTimeout(() => {
+            if (!cityMap) initCityMap();
+            else cityMap.invalidateSize();
+        }, 100);
+    } else {
+        mapArrow.style.transform = 'rotate(0deg)'; // šípka dole
+    }
+});
+
+function initCityMap() {
+    const lat = <?= $spot['latitude'] ?? '0' ?>;
+    const lng = <?= $spot['longitude'] ?? '0' ?>;
+
+    if(lat === 0 && lng === 0) {
+        alert('Coordinates not available for this spot.');
+        return;
+    }
+
+    cityMap = L.map('cityMap').setView([lat, lng], 15);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(cityMap);
+
+    L.marker([lat, lng]).addTo(cityMap)
+    .bindPopup(`
+    <b><?= addslashes($spot['name']) ?></b><br>
+    <?php if (!empty($spot['address'])): ?>
+        <?= addslashes($spot['address']) ?>
+    <?php else: ?>
+        <?= $spot['latitude'] . ', ' . $spot['longitude'] ?>
+    <?php endif; ?>
+`)
+.openPopup();
+}
+
 </script>
 
 <script src="/assets/js/spot.js" defer></script>
