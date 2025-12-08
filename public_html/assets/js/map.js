@@ -155,7 +155,6 @@ function hideFeedMap() {
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('filterBtn');
   const dropdown = document.getElementById('filterDropdown');
-  const mapBtn = document.getElementById('showMap');
   const mapDiv = document.getElementById('feedMap');
 
   if (btn && dropdown && mapDiv) {
