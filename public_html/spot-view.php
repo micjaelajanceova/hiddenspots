@@ -1,12 +1,12 @@
 <?php
-
-session_start();
+require_once __DIR__ . '/classes/session.php';
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/classes/spot.php';
+require_once __DIR__ . '/classes/User.php';
+require_once __DIR__ . '/includes/header.php';
 
-
-
-
+$session = new SessionHandle();
+$user_id = $session->getUserId();
 
 $spot_id = $_GET['id'] ?? null;
 if (!$spot_id) die("No ID provided.");
@@ -15,7 +15,6 @@ if (!$spot_id) die("No ID provided.");
 $spotObj = new Spot($pdo);
 $spot = $spotObj->getById($spot_id);
 if (!$spot) die("Spot not found.");
-
 
 
 // Time ago function
@@ -34,109 +33,72 @@ function timeAgo($datetime) {
 $comments = $spotObj->getComments($spot_id);
 
 // Admin check
-$isAdmin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+$isAdmin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin'; 
 $edit_id = $_POST['edit_id'] ?? null;
 
-// Handle POST for comments
+// Handle POST for comments and spot edits/deletions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Add new comment
-    if (isset($_POST['comment']) && isset($_SESSION['user_id'])) {
-        $stmt = $pdo->prepare("INSERT INTO comments (user_id, spot_id, text) VALUES (:user_id, :spot_id, :text)");
-        $stmt->execute([
-            'user_id' => $_SESSION['user_id'],
-            'spot_id' => $spot_id,
-            'text' => $_POST['text']
-        ]);
+    // Add comment
+    if (isset($_POST['comment']) && $user_id) {
+        $spotObj->addComment($spot_id, $user_id, $_POST['text']);
         header("Location: spot-view.php?id=$spot_id#comments");
         exit();
     }
 
     // Edit comment
-    if(isset($_POST['edit_comment_id'], $_POST['edit_text'])) {
-        $stmt = $pdo->prepare($isAdmin
-            ? "UPDATE comments SET text=:text WHERE id=:id"
-            : "UPDATE comments SET text=:text WHERE id=:id AND user_id=:user_id");
-        $stmt->execute($isAdmin ? [
-            'text' => $_POST['edit_text'],
-            'id' => $_POST['edit_comment_id']
-        ] : [
-            'text' => $_POST['edit_text'],
-            'id' => $_POST['edit_comment_id'],
-            'user_id' => $_SESSION['user_id']
-        ]);
+    if (isset($_POST['edit_comment_id'], $_POST['edit_text'])) {
+        $spotObj->editComment($_POST['edit_comment_id'], $user_id, $_POST['edit_text'], $isAdmin);
         header("Location: spot-view.php?id=$spot_id#comment-" . $_POST['edit_comment_id']);
         exit();
     }
 
     // Delete comment
-    if(isset($_POST['delete_comment_id'])) {
-        $stmt = $pdo->prepare($isAdmin
-            ? "DELETE FROM comments WHERE id=:id"
-            : "DELETE FROM comments WHERE id=:id AND user_id=:user_id");
-        $stmt->execute($isAdmin ? ['id'=>$_POST['delete_comment_id']] : [
-            'id'=>$_POST['delete_comment_id'],
-            'user_id'=>$_SESSION['user_id']
-        ]);
+    if (isset($_POST['delete_comment_id'])) {
+        $spotObj->deleteCommentByUser($_POST['delete_comment_id'], $user_id, $isAdmin);
         header("Location: spot-view.php?id=$spot_id#comments");
         exit();
     }
-}
 
-// Edit spot description
-if (isset($_POST['edit_spot_id'], $_POST['edit_description'])) {
-    if ($isAdmin || $_SESSION['user_id'] == $spot['user_id']) {
-        $spotObj->updateDescription($_POST['edit_spot_id'], $_POST['edit_description']);
-        header("Location: spot-view.php?id=" . $_POST['edit_spot_id']);
-        exit();
+    // Edit spot description
+    if (isset($_POST['edit_spot_id'], $_POST['edit_description'])) {
+        if ($isAdmin || $_SESSION['user_id'] == $spot['user_id']) {
+            $spotObj->updateDescription($_POST['edit_spot_id'], $_POST['edit_description']);
+            header("Location: spot-view.php?id=" . $_POST['edit_spot_id']);
+            exit();
+        }
+    }
+
+    // Delete spot
+    if (isset($_POST['delete_spot_id'])) {
+        if ($isAdmin || $_SESSION['user_id'] == $spot['user_id']) {
+            $spotObj->deleteSpot($_POST['delete_spot_id']);
+            header("Location: feed.php");
+            exit();
+        }
     }
 }
 
-// Delete spot
-if (isset($_POST['delete_spot_id'])) {
-    if ($isAdmin || $_SESSION['user_id'] == $spot['user_id']) {
-        $spotObj->deleteSpot($_POST['delete_spot_id']);
-        header("Location: feed.php");
-        exit();
-    }
-}
-
-
-require_once __DIR__ . '/includes/header.php';
-
-// Refresh comments
+// Fetch comments
 $comments = $spotObj->getComments($spot_id);
 
 // Check if user liked/favorited
-$user_id = $_SESSION['user_id'] ?? 0;
+$user_id_session = $_SESSION['user_id'] ?? 0;
 $liked = false;
 $favorited = false;
 
-if ($user_id) {
-    // Like
-    $stmt = $pdo->prepare("SELECT 1 FROM likes WHERE user_id=? AND spot_id=?");
-    $stmt->execute([$user_id, $spot_id]);
-    $liked = $stmt->fetch() ? true : false;
-
-    // Favorite
-    $stmt = $pdo->prepare("SELECT 1 FROM favorites WHERE user_id=? AND spot_id=?");
-    $stmt->execute([$user_id, $spot_id]);
-    $favorited = $stmt->fetch() ? true : false;
+if ($user_id_session) {
+    $liked = $spotObj->isLikedByUser($spot_id, $user_id_session);
+    $favorited = $spotObj->isFavoritedByUser($spot_id, $user_id_session);
 }
 
 // Fetch spot owner's info
-$user_id = $spot['user_id'];
-$stmt = $pdo->prepare("SELECT name, profile_photo FROM users WHERE id = :id LIMIT 1");
-$stmt->execute(['id' => $user_id]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-$user_name = $user['name'] ?? 'Unknown';
-$photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
-
+$user_name = $spot['user_name'];
+$photo_url = $spot['profile_photo'];
 ?>
 
 
-
+<!----------------------- HTML ------------------------------>
 <main class="flex-1 bg-white min-h-screen pt-2 md:pt-8  md:pb-12 px-4 md:px-8 flex flex-col">
 
 <!-- LOGIN / SIGNUP -->
@@ -148,9 +110,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
     <?= htmlspecialchars($spot['city']) ?>
 </span>
 
-
   <h1 class="text-3xl font-bold"><?=htmlspecialchars($spot['name'])?></h1>
-
 
   <button id="showCityMapBtn" 
         class="inline-flex items-center gap-1 w-fit px-3 py-1 bg-black text-white rounded text-sm my-4">
@@ -179,17 +139,10 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
     </div>
   </div>
 
-
-
-  <?php
-$photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
-?>
-
-
 <div class="w-full lg:w-1/2 flex flex-col px-4 gap-4 max-h-[600px] overflow-y-auto relative">
 
     <!-- Three dots menu for spot -->
-<?php if(isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $spot['user_id'] || $isAdmin)): ?>
+<?php if($session->getUserId() && ($session->getUserId() == $spot['user_id'] || $isAdmin)): ?>
 <div class="absolute top-2 right-2">
   <button id="spotMenuBtn" class="text-gray-500 hover:text-gray-700 text-xl font-bold">⋯</button>
   <div id="spotMenu" class="hidden absolute right-0 mt-1 w-36 bg-white border border-gray-300 rounded shadow-md z-50">
@@ -209,13 +162,17 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 </div>
 <?php endif; ?>
 
-
+ 
     <!-- Author Info -->
 <div class="flex items-center gap-2 mt-2">
-    <?php if($photo_url): ?>
+    <?php 
+    $spot_user_name = $spot['user_name'];
+    $spot_user_photo = !empty($spot['profile_photo']) ? $spot['profile_photo'] : null;
+    ?>
+    <?php if($spot_user_photo): ?>
     <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
-        <img src="<?= htmlspecialchars($photo_url) ?>" 
-             alt="<?= htmlspecialchars($user_name) ?>" 
+        <img src="<?= htmlspecialchars($spot_user_photo) ?>" 
+             alt="<?= htmlspecialchars($spot_user_name) ?>" 
              class="w-10 h-10 rounded-full object-cover">
     </a>
 <?php else: ?>
@@ -229,7 +186,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
 
     <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>" 
        class="font-semibold text-blue-600 hover:underline">
-        @<?=htmlspecialchars($user_name) ?>
+        @<?= htmlspecialchars($spot['user_name']) ?>
     </a>
 </div>
 
@@ -254,19 +211,10 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
   </div>
 
   <!-- Hidden save button -->
-  <button id="saveDescBtn" class="hidden mt-2 
-      bg-blue-600 hover:bg-blue-700 
-      text-white px-4 py-2 
-      rounded-lg shadow-sm 
-      text-sm font-semibold 
-      transition-all duration-200">
+  <button id="saveDescBtn" class="hidden mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm text-sm font-semibold transition-all duration-200">
     Save Description
   </button>
 </div>
-
-
-
-
 
   <div class="flex items-center gap-2 text-gray-600">
 
@@ -279,11 +227,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
                c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
     </svg>
     <span id="likeCount" class="text-sm text-gray-600">
-      <?php
-        $stmt = $pdo->prepare("SELECT COUNT(*) FROM likes WHERE spot_id=?");
-        $stmt->execute([$spot_id]);
-        echo $stmt->fetchColumn();
-      ?>
+     <?= $spotObj->countLikes($spot_id) ?>
     </span>
   </button>
 
@@ -305,16 +249,12 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
     </svg>
   </button>
 
-
 </div>
-
-
-
 
     <!-- Comments Section -->
     <section id="comments" class="flex flex-col gap-4">
-
-<?php if(isset($_SESSION['user_id'])): ?>
+     
+<?php if($session->getUserId()): ?>
 <div class="relative">
     <form method="post">
         <textarea name="text" placeholder="Write your comment"
@@ -328,25 +268,7 @@ $photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
         </button>
     </form>
 </div>
-
-<script>
-const textarea = document.getElementById('commentText');
-const postButton = document.getElementById('postText');
-
-textarea.addEventListener('input', () => {
-    if(textarea.value.trim().length > 0){
-        postButton.disabled = false;
-        postButton.classList.remove('text-gray-400', 'cursor-not-allowed');
-        postButton.classList.add('text-black', 'cursor-pointer');
-    } else {
-        postButton.disabled = true;
-        postButton.classList.add('text-gray-400', 'cursor-not-allowed');
-        postButton.classList.remove('text-black', 'cursor-pointer');
-    }
-});
-</script>
 <?php endif; ?>
-
 
      <!-- Existing Comments -->
 <div class="flex flex-col gap-3">
@@ -391,7 +313,7 @@ textarea.addEventListener('input', () => {
 
             <div class="flex justify-between mt-2 text-xs text-gray-500">
                 <span>Posted <?= timeAgo($c['created_at']) ?></span>
-                <?php if(isset($_SESSION['user_id']) && ($_SESSION['user_id']==$c['user_id'] || $isAdmin)): ?>
+                <?php if($session->getUserId() && ($session->getUserId()==$c['user_id'] || $isAdmin)): ?> 
                     <div class="flex gap-2">
                         <form method="post" style="display:inline;">
                             <input type="hidden" name="edit_id" value="<?=$c['id']?>">
@@ -408,7 +330,6 @@ textarea.addEventListener('input', () => {
     </div>
 <?php endforeach; ?>
 </div>
-
     </section>
 
   </div>
@@ -417,6 +338,236 @@ textarea.addEventListener('input', () => {
 <!-- js for spot view -->
 
 <script>
+    
+// Enable/Disable post button based on textarea input
+const textarea = document.getElementById('commentText');
+const postButton = document.getElementById('postText');
+
+textarea.addEventListener('input', () => {
+    if(textarea.value.trim().length > 0){
+        postButton.disabled = false;
+        postButton.classList.remove('text-gray-400', 'cursor-not-allowed');
+        postButton.classList.add('text-black', 'cursor-pointer');
+    } else {
+        postButton.disabled = true;
+        postButton.classList.add('text-gray-400', 'cursor-not-allowed');
+        postButton.classList.remove('text-black', 'cursor-pointer');
+    }
+});
+
+
+// SPOT VIEW INTERACTIONS
+const favBtn = document.getElementById('favBtn');
+const favIcon = document.getElementById('favIcon');
+const favToast = document.getElementById('favToast');
+
+const likeBtn = document.getElementById('likeBtn');
+const likeIcon = document.getElementById('likeIcon');
+const likeCount = document.getElementById('likeCount');
+
+const descDiv = document.getElementById("spotDescription");
+const saveBtn = document.getElementById("saveDescBtn");
+const editMenuBtn = document.getElementById("editDescMenuBtn");
+const charCountDiv = document.getElementById("descCharCount");
+
+const MAX_CHARS = 1000;
+
+
+// FAVOURITE BUTTON
+favBtn.addEventListener('click', () => {
+  fetch('actions/favourite.php', {
+    method: 'POST',
+    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+    body: 'spot_id=' + spotId
+  })
+  .then(r => r.text())
+  .then(res => {
+    if (res === 'not_logged_in') return alert('You must be logged in to favorite!');
+    if (res === 'added') {
+      favIcon.classList.remove('text-gray-400');
+      favIcon.classList.add('text-yellow-500');
+      showFavToast("Saved to favourites");
+    }
+    if (res === 'removed') {
+      favIcon.classList.remove('text-yellow-500');
+      favIcon.classList.add('text-gray-400');
+      showFavToast("Removed from favourites");
+    }
+  });
+});
+
+function showFavToast(message) {
+  favToast.querySelector('span').textContent = message;
+  favToast.classList.remove('opacity-0');
+  favToast.classList.add('opacity-100');
+  favToast.classList.add('bg-opacity-20');
+  setTimeout(() => {
+    favToast.classList.remove('bg-opacity-20');
+    favToast.classList.add('bg-opacity-0');
+  }, 500);
+  setTimeout(() => {
+    favToast.classList.remove('opacity-100');
+    favToast.classList.add('opacity-0');
+  }, 3000);
+}
+
+
+// LIKE BUTTON
+likeBtn.addEventListener('click', () => {
+  fetch('actions/like.php', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: 'spot_id=' + spotId
+  })
+  .then(res => res.text())
+  .then(data => {
+    if (data === 'not_logged_in') return alert('You must be logged in to like!');
+    if (data === 'liked') {
+      likeIcon.classList.remove('text-gray-400');
+      likeIcon.classList.add('text-red-600');
+    } else if (data === 'unliked') {
+      likeIcon.classList.remove('text-red-600');
+      likeIcon.classList.add('text-gray-400');
+    }
+
+    fetch('actions/like.php?count=' + spotId)
+      .then(r => r.text())
+      .then(count => { likeCount.textContent = count; });
+  });
+});
+
+
+
+// SPOT DESCRIPTION EDITING
+document.addEventListener("DOMContentLoaded", () => {
+    if (!editMenuBtn || !descDiv || !saveBtn) return;
+
+    const menu = document.getElementById("spotMenu");
+
+    // Toggle menu
+    const menuBtn = document.getElementById("spotMenuBtn");
+    if (menuBtn && menu) {
+        menuBtn.addEventListener("click", e => {
+            e.stopPropagation();
+            menu.classList.toggle("hidden");
+        });
+        document.addEventListener("click", () => menu.classList.add("hidden"));
+    }
+
+    // Place caret at the end
+    function placeCaretAtEnd(el) {
+        el.focus();
+        if (typeof window.getSelection !== "undefined" && typeof document.createRange !== "undefined") {
+            const range = document.createRange();
+            range.selectNodeContents(el);
+            range.collapse(false);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+    }
+
+    // Count characters + special Enter = 100
+    function getEffectiveCharCount(el) {
+        let count = 0;
+        el.childNodes.forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE) {
+                count += node.textContent.length;
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+                const tag = node.tagName.toLowerCase();
+                if (tag === 'div' || tag === 'br') count += 99;
+                count += node.innerText.length;
+            }
+        });
+        return count;
+    }
+
+    // Update character count display
+    function updateCharCount() {
+        charCountDiv.textContent = `${getEffectiveCharCount(descDiv)} / ${MAX_CHARS} characters`;
+    }
+
+    // Activate edit mode
+    editMenuBtn.addEventListener("click", () => {
+        menu.classList.add("hidden");
+        descDiv.contentEditable = "true";
+        descDiv.classList.add("bg-gray-100");
+        saveBtn.classList.remove("hidden");
+        charCountDiv.classList.remove("hidden");
+        updateCharCount();
+        placeCaretAtEnd(descDiv);
+    });
+
+    // Limit input characters
+descDiv.addEventListener("beforeinput", (e) => {
+    if (e.inputType === "deleteContentBackward" || e.inputType === "deleteContentForward") return;
+
+    let currentCount = getEffectiveCharCount(descDiv);
+    let addition = 0;
+
+    if (e.inputType === "insertLineBreak") {
+        addition = 100; 
+    } else if (e.data) {
+        addition = e.data.length;
+    }
+    
+
+    // BLOCK input if it would meet or exceed MAX_CHARS
+    if (currentCount + addition > MAX_CHARS || currentCount + addition === MAX_CHARS) {
+        e.preventDefault();
+    }
+});
+
+
+descDiv.addEventListener("paste", (e) => {
+    e.preventDefault(); // prevent the default paste
+
+    const pasteData = (e.clipboardData || window.clipboardData).getData('text');
+    const currentCount = getEffectiveCharCount(descDiv);
+
+    // How many characters can still be added
+    const allowed = Math.max(0, MAX_CHARS - currentCount);
+
+    // If no characters are allowed, do nothing
+    if (allowed <= 0) return;
+
+    // Insert only the allowed portion
+    const textToInsert = pasteData.substring(0, allowed);
+    document.execCommand('insertText', false, textToInsert);
+});
+
+
+
+    // Update char count on every input
+    descDiv.addEventListener("input", updateCharCount);
+
+    // Save description
+    saveBtn.addEventListener("click", () => {
+        const newDesc = descDiv.innerText.trim();
+        const spotId = descDiv.dataset.spotId;
+
+        fetch("", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `edit_spot_id=${encodeURIComponent(spotId)}&edit_description=${encodeURIComponent(newDesc)}`
+        })
+        .then(() => {
+            descDiv.contentEditable = "false";
+            descDiv.classList.remove("bg-gray-100");
+            saveBtn.classList.add("hidden");
+            charCountDiv.classList.add("hidden");
+
+            const toast = document.createElement("div");
+            toast.textContent = "Description updated successfully ✅";
+            toast.className = "fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow";
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
+        });
+    });
+});
+
+
+
 // MAP 
 const cityMapBtn = document.getElementById('showCityMapBtn');
 const cityMapDiv = document.getElementById('cityMap');
