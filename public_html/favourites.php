@@ -1,4 +1,6 @@
 <?php
+include 'includes/db.php';
+
 require_once __DIR__ . '/classes/session.php';
 $session = new SessionHandle();
 
@@ -8,7 +10,7 @@ if (!$session->logged_in()) {
     exit();
 }
 
-include 'includes/db.php';
+
 include 'includes/header.php';
 include 'includes/profile-header.php';
 
