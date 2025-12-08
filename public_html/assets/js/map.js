@@ -140,6 +140,7 @@ if (addressInput) {
   }, 500));
 }
 }
+
 function hideFeedMap() {
     const feedMap = document.getElementById('feedMap');
     if (feedMap) feedMap.style.display = 'none';
@@ -199,25 +200,7 @@ mapBtn.addEventListener('click', () => {
 }
 
 
-// Close feed map when clicking profile header
-const profileBtn2 = document.getElementById('profileBtn');
-const profileMenu2 = document.getElementById('profileMenu');
 
-if (profileBtn2 && mapDiv) {
-  profileBtn2.addEventListener('click', () => {
-    if (mapDiv.style.display === 'block') {
-      mapDiv.style.display = 'none';
-    }
-  });
-}
-
-if (profileMenu2 && mapDiv) {
-  profileMenu2.addEventListener('click', () => {
-    if (mapDiv.style.display === 'block') {
-      mapDiv.style.display = 'none';
-    }
-  });
-}
 
 
 function initFeedMap() {
