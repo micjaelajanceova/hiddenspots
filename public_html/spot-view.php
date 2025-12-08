@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/db.php';
-require_once __DIR__ . '/classes/session.php';
 require_once __DIR__ . '/classes/spot.php';
+require_once __DIR__ . '/classes/session.php';
 
 // session start
 $session = new SessionHandle();
@@ -123,6 +123,7 @@ if ($user_id) {
 // Fetch spot owner's info
 $user_name = $spot['user_name'];
 $photo_url = $spot['profile_photo'];
+
 ?>
 
 

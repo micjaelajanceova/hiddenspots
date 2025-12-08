@@ -27,15 +27,15 @@ class Spot {
     // Get a spot by its ID, including the number of likes
     public function getById($id){
     $stmt = $this->pdo->prepare("
-        SELECT 
-            h.*, 
-            u.name AS user_name,
-            u.profile_photo,
-            (SELECT COUNT(*) FROM likes l WHERE l.spot_id = h.id) AS likes
-        FROM hidden_spots h
-        LEFT JOIN users u ON h.user_id = u.id
-        WHERE h.id = ?
-        LIMIT 1
+    SELECT 
+        h.*, 
+        u.name AS user_name,
+        u.profile_photo,
+        (SELECT COUNT(*) FROM likes l WHERE l.spot_id = h.id) AS likes
+    FROM hidden_spots h
+    LEFT JOIN users u ON h.user_id = u.id
+    WHERE h.id = ?
+    LIMIT 1
     ");
     $stmt->execute([$id]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
