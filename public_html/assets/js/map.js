@@ -140,6 +140,18 @@ if (addressInput) {
   }, 500));
 }
 }
+
+
+function hideFeedMap() {
+    const feedMap = document.getElementById('feedMap');
+    if (feedMap) feedMap.style.display = 'none';
+  }
+  
+  function showFeedMap() {
+    const feedMap = document.getElementById('feedMap');
+    if (feedMap) feedMap.style.display = 'block';
+  }
+  
 // ---------- Feed Map Toggle ----------
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('filterBtn');
@@ -187,7 +199,6 @@ mapBtn.addEventListener('click', () => {
   }
 });
 }
-
 
 
 function initFeedMap() {
