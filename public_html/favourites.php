@@ -2,6 +2,7 @@
 require_once __DIR__ . '/classes/session.php';
 $session = new SessionHandle();
 
+// Redirect to login if not logged in
 if (!$session->logged_in()) {
     header("Location: auth/login.php");
     exit();
@@ -10,7 +11,6 @@ if (!$session->logged_in()) {
 include 'includes/db.php';
 include 'includes/header.php';
 include 'includes/profile-header.php';
-
 
 $userObj = new User($pdo);
 $user_id = $session->get('user_id');

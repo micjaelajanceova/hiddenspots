@@ -6,41 +6,22 @@ require_once __DIR__ . '/classes/spot.php';
 
 require_once __DIR__ . '/includes/search.php';
 require_once __DIR__ . '/includes/map.php';
+
+$spotObj = new Spot($pdo);
+
 $city = $_GET['query'] ?? '';
 $filter_type = $_GET['type'] ?? '';
 
 
-$types_stmt = $pdo->query("SELECT DISTINCT type FROM hidden_spots WHERE type IS NOT NULL AND type != ''");
-$types = $types_stmt->fetchAll(PDO::FETCH_COLUMN);
+// Fetch all types for filter dropdown
+$types = $spotObj->getAllTypes();
 
-
-$sql = "SELECT hs.*, u.name AS user_name 
-        FROM hidden_spots hs 
-        JOIN users u ON hs.user_id = u.id 
-        WHERE 1=1";
-
-$params = [];
-
-if(!empty($city)){
-    $sql .= " AND hs.city LIKE ?";
-    $params[] = "%$city%";
-}
-
-if(!empty($filter_type)){
-    $sql .= " AND hs.type = ?";
-    $params[] = $filter_type;
-}
-
-$sql .= " ORDER BY hs.created_at DESC";
-
-$stmt = $pdo->prepare($sql);
-$stmt->execute($params);
-$spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Fetch spots
+$spots = $spotObj->search($city, $filter_type);
 ?>
 
-
+<!----------------------- HTML ------------------------------>
 <main class="flex-1 bg-white min-h-screen overflow-y-auto pt-2 md:pt-6 px-4 sm:px-6 lg:px-8"> 
-
 
   <?php include 'includes/profile-header.php'; ?>
 
@@ -80,11 +61,12 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <?php endforeach; ?>
     </div>
   </div>
-        <!-- SHOW MAP BUTTON -->
-      <button id="showMap" class=" px-3 py-1 bg-black text-white rounded text-sm">
-         Show on Map
-          <span id="feedMapArrow" class="inline-block transition-transform duration-300">▼</span>
-      </button>
+
+    <!-- SHOW MAP BUTTON -->
+    <button id="showMap" class=" px-3 py-1 bg-black text-white rounded text-sm">
+      Show on Map
+      <span id="feedMapArrow" class="inline-block transition-transform duration-300">▼</span>
+    </button>
 
 </div>
 
@@ -112,125 +94,7 @@ $spots = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </main>
 
 
-
-<script>
-// FILTER DROPDOWN TOGGLE
-document.addEventListener('DOMContentLoaded', () => {
-  const btn = document.getElementById('filterBtn');
-  const dropdown = document.getElementById('filterDropdown');
-  const mapBtn = document.getElementById('showMap');
-  const mapDiv = document.getElementById('feedMap');
-
-  if (btn && dropdown && mapDiv) {
-    btn.addEventListener('click', e => {
-      e.preventDefault();
-      e.stopPropagation();
-      dropdown.classList.toggle('hidden');
-
-
-      if (!dropdown.classList.contains('hidden') && mapDiv.style.display === 'block') {
-        mapDiv.style.display = 'none';
-      }
-    });
-
-
-    document.addEventListener('click', () => {
-      dropdown.classList.add('hidden');
-    });
-  }
-});
-
-
-// MAP TOGGLE
-const mapBtn = document.getElementById('showMap');
-const mapDiv = document.getElementById('feedMap');
-let feedMap; 
-
-mapBtn.addEventListener('click', () => {
-   
-    // toggle map
-    const isHidden = mapDiv.style.display === 'none';
-    mapDiv.style.display = isHidden ? 'block' : 'none';
-
-    // rotate arrow ▼
-    const arrow = document.getElementById('feedMapArrow');
-    if (arrow) {
-        arrow.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
-    }
-
-    if (mapDiv.style.display === 'block') {
-        setTimeout(() => {
-            if (!feedMap) initFeedMap(); 
-            else feedMap.invalidateSize();
-        }, 100);
-    }
-});
-
-
-
-
-    // --- CLOSE MAP WHEN CLICKING PROFILE HEADER OR MENU ---
-    if(profileBtn && mapDiv){
-        profileBtn.addEventListener('click', () => {
-            if(mapDiv.style.display === 'block'){
-                mapDiv.style.display = 'none';
-            }
-        });
-    }
-    if(profileMenu && mapDiv){
-        profileMenu.addEventListener('click', () => {
-            if(mapDiv.style.display === 'block'){
-                mapDiv.style.display = 'none';
-            }
-        });
-    }
-
-
-
-
-
-function initFeedMap() {
-    const spots = <?= json_encode($spots) ?>;
-
-
-    let mapCenter = [55.6761, 12.5683]; // default Copenhagen
-    const firstSpot = spots.find(s => s.latitude && s.longitude);
-    if(firstSpot) mapCenter = [parseFloat(firstSpot.latitude), parseFloat(firstSpot.longitude)];
-
-    feedMap = L.map('feedMap').setView(mapCenter, 12);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(feedMap);
-
- 
-    spots.forEach(spot => {
-    const lat = parseFloat(spot.latitude);
-    const lng = parseFloat(spot.longitude);
-    if(!isNaN(lat) && !isNaN(lng)) {
-        const marker = L.marker([lat, lng]).addTo(feedMap);
-        const displayAddress = spot.address ? spot.address : `${lat.toFixed(5)},  ${lng.toFixed(5)}`;
-
-        const popupContent = `
-            <div style="text-align:center; max-width:200px;">
-                <img src="${spot.file_path}" 
-                    alt="${spot.name}" 
-                    style="width:100%; height:120px; object-fit:cover; border-radius:6px; margin-bottom:5px;" />
-                <b><a href="spot-view.php?id=${spot.id}"
-                      style="color:#1d4ed8; text-decoration:none;">
-                    ${spot.name}
-                </a></b><br>
-                ${displayAddress}<br>
-                <small>@${spot.user_name}</small>
-            </div>`;
-
-        marker.bindPopup(popupContent);
-        }
-    });
-}
-
-
-</script>
+<script>const spots = <?= json_encode($spots) ?>;</script>
 
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

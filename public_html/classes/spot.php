@@ -136,5 +136,30 @@ class Spot {
         return ['/assets/img/default-bg.jpg']; // fallback
     }
 }
+    // Get all unique types of hidden spots
+    public function getAllTypes() {
+        $stmt = $this->pdo->query("SELECT DISTINCT type FROM hidden_spots WHERE type IS NOT NULL AND type != ''");
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+    // Search spots by city and/or type
+    public function search($city = '', $type = '') {
+        $sql = "SELECT hs.*, u.name AS user_name 
+                FROM hidden_spots hs 
+                JOIN users u ON hs.user_id = u.id 
+                WHERE 1=1";
+        $params = [];
+        if(!empty($city)) {
+            $sql .= " AND hs.city LIKE ?";
+            $params[] = "%$city%";
+        }
+        if(!empty($type)) {
+            $sql .= " AND hs.type = ?";
+            $params[] = $type;
+        }
+        $sql .= " ORDER BY hs.created_at DESC";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>
