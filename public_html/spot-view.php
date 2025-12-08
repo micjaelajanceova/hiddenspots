@@ -174,7 +174,7 @@ require_once __DIR__ . '/includes/header.php';
 <?php else: ?>
     <a href="auth/user-profile.php?user_id=<?= $spot['user_id'] ?>">
         <div class="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-semibold">
-            <?= strtoupper(substr($user_name,0,1)) ?>
+            <?= strtoupper(substr($spot_user_name ?? 'U', 0, 1)) ?>
         </div>
     </a>
 <?php endif; ?>
