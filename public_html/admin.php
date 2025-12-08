@@ -4,7 +4,7 @@ require_once __DIR__ . '/classes/session.php';
 include 'includes/header.php';
 include __DIR__ . '/classes/spot.php';
 require_once __DIR__ . '/classes/User.php';
-include 'classes/sitesettings.php';
+require_once __DIR__ . '/classes/sitesettings.php';
 include 'includes/profile-header.php';
 
 $session = new SessionHandle();
