@@ -15,20 +15,14 @@ function initMasonry() {
 
 // Run the masonry layout when page loads
 window.addEventListener('load', () => {
-  if (document.getElementById('masonry')) {
-      initMasonry();
-  }
+  initMasonry();
 });
-
 
 
 // Tab navigation for admin panel
   function showTab(tabId){
 
-    document.querySelectorAll('.tab-content').forEach(tab =>
-      tab.classList.add('hidden')
-    );
-  
+  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
 
   document.getElementById(tabId).classList.remove('hidden');
 
@@ -42,8 +36,5 @@ window.addEventListener('load', () => {
   activeBtn.classList.add('bg-black', 'text-white');
 }
 
-if (document.getElementById('tab-site')) {
-  showTab('site');
-}
-
+    showTab('site');
 

@@ -62,14 +62,17 @@ $siteFont        = $siteSettings['font_family'] ?? 'Arial';
 <!-- Mansonry script -->
 <script src="https://cdn.jsdelivr.net/npm/macy@2"></script>
 
-<!-- Global script -->
-<script src="/assets/js/main.js"></script>
-<script src="/assets/js/upload.js" defer></script>
-<script src="/assets/js/map.js" defer></script>
-
 <!-- Logged-in status -->
 <script>const isLoggedIn = <?= $session->logged_in() ? 'true' : 'false'; ?>;</script>
 
+<!-- Global script -->
+<script src="/assets/js/main.js"></script>
 
-
+<!-- Map and Upload scripts -->
+<script type="module" src="/assets/js/map.js" defer></script>
+<script type="module">
+import { initUploadMap, setupGeocode } from '/assets/js/map.js';
+initUploadMap('uploadMap', 'latitude', 'longitude');
+setupGeocode('city', 'address');
+</script>
 </html>
