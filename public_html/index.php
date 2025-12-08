@@ -20,7 +20,7 @@ $latestComments = $spotObj->getLatestComments(3);
 
 
 <!----------------------- HTML ------------------------------>
-<main class="flex-1 bg-white min-h-screen overflow-y-auto pt-10">   
+<main class="flex-1 bg-white min-h-screen overflow-y-auto pt-4">   
   <div class="w-full px-4 sm:px-6 lg:px-8">
 
 <!-- LOGIN / SIGNUP -->
@@ -28,7 +28,7 @@ $latestComments = $spotObj->getLatestComments(3);
 <?php $isLoggedIn = isset($_SESSION['user_id']); ?>
 
    <!-- TRENDING (Sticky) -->
-<section class="mt-6 sm:mt-12 pb-20">
+<section class="mt-2 sm:mt-12 pb-12">
   <div class="flex items-center justify-between">
     <div>
       <h1 class="text-4xl font-bold mb-3">Trending spots</h1>
@@ -75,7 +75,7 @@ $latestComments = $spotObj->getLatestComments(3);
 </section>
 
 <!-- ABOUT -->
-<section class="mt-12 pb-20">
+<section class="mt-12 pb-12">
   <div class="relative overflow-hidden shadow-md h-96">
 
     <div class="absolute inset-0">
@@ -101,7 +101,7 @@ $latestComments = $spotObj->getLatestComments(3);
 </section>
 
    <!-- HOT NEW PICTURES -->
-<section class="mt-12 pb-20">
+<section class="mt-12 pb-12">
   <div class="flex items-center justify-between">
     <div>
       <h1 class="text-4xl font-bold mb-3">Hot new pictures</h1>
@@ -150,7 +150,7 @@ $latestComments = $spotObj->getLatestComments(3);
 
 
 <!-- LATEST COMMENTS -->
-<section class="mt-12 pb-20">
+<section class="mt-12 pb-12">
   <h1 class="text-4xl font-bold mb-3">Latest comments</h1>
   <h2 class="mt-1">See who else loves these hidden places.</h2>
 
@@ -186,7 +186,7 @@ $latestComments = $spotObj->getLatestComments(3);
 </section>
 
 <!-- UPLOAD CTA -->
-<section class="mt-12 mb-20 lg:mb-5">
+<section class="mt-12 mb-12 lg:mb-5">
   <div class="bg-black p-10 flex flex-col items-center text-center">
     <h2 class="text-3xl font-bold text-white">Upload a new picture</h2>
     <h4 class="text-sm text-gray-300 mt-2">Share a secret spot with us.</h4>
