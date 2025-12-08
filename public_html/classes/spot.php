@@ -184,5 +184,45 @@ class Spot {
     ");
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+     // Get top trending spots this week (last 7 days)
+    public function getTrendingWeek($limit = 6) {
+        $stmt = $this->pdo->query("
+            SELECT 
+                hs.*,
+                u.name AS user_name,
+                COUNT(DISTINCT l.id) AS total_likes,
+                COUNT(DISTINCT c.id) AS total_comments,
+                (COUNT(DISTINCT l.id) + COUNT(DISTINCT c.id)) AS trending_score
+            FROM hidden_spots hs
+            LEFT JOIN likes l ON hs.id = l.spot_id
+            LEFT JOIN comments c ON hs.id = c.spot_id
+            LEFT JOIN users u ON hs.user_id = u.id
+            WHERE hs.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+            GROUP BY hs.id
+            HAVING trending_score > 0
+            ORDER BY trending_score DESC
+            LIMIT $limit
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+     // Get top trending spots all-time
+    public function getTrendingAll($limit = 6) {
+        $stmt = $this->pdo->query("
+            SELECT 
+                hs.*,
+                u.name AS user_name,
+                COUNT(DISTINCT l.id) AS total_likes,
+                COUNT(DISTINCT c.id) AS total_comments,
+                (COUNT(DISTINCT l.id) + COUNT(DISTINCT c.id)) AS trending_score
+            FROM hidden_spots hs
+            LEFT JOIN likes l ON hs.id = l.spot_id
+            LEFT JOIN comments c ON hs.id = c.spot_id
+            LEFT JOIN users u ON hs.user_id = u.id
+            GROUP BY hs.id
+            ORDER BY trending_score DESC
+            LIMIT $limit
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>
