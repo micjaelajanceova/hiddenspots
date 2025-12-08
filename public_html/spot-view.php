@@ -383,8 +383,9 @@ function initCityMap() {
 }
 </script>
 
-<script>const spotId = <?= $spot_id ?>;</script>
 <script src="/assets/js/spot.js" defer></script>
+<script>const spotId = <?= $spot_id ?>;</script>
+
 
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
