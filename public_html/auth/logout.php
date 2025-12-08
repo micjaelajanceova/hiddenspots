@@ -21,6 +21,6 @@ if (isset($_COOKIE['remember_token'])) {
 }
 
 // Redirect user to login page
-header("Location: index.php");
+header("Location: ../index.php");
 exit;
 ?>
