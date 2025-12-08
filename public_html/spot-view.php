@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/db.php';
-require_once 'classes/session.php';
+require_once __DIR__ . '/classes/session.php';
 require_once __DIR__ . '/classes/spot.php';
 
 // session start
