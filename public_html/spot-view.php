@@ -102,8 +102,6 @@ if (isset($_POST['delete_spot_id'])) {
 
 require_once __DIR__ . '/includes/header.php';
 
-// Refresh comments
-$comments = $spotObj->getComments($spot_id);
 
 // Check if user liked/favorited
 $user_id = $_SESSION['user_id'] ?? 0;
