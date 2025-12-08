@@ -79,17 +79,20 @@ likeBtn.addEventListener('click', () => {
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     body: 'spot_id=' + spotId
   })
-  .then(res => res.json())
+  .then(res => res.text())
   .then(data => {
-    if (data.status === 'not_logged_in') return alert('You must be logged in to like!');
-    if (data.status === 'liked') {
+    if (data === 'not_logged_in') return alert('You must be logged in to like!');
+    if (data === 'liked') {
       likeIcon.classList.remove('text-gray-400');
       likeIcon.classList.add('text-red-600');
-    } else if (data.status === 'unliked') {
+    } else if (data === 'unliked') {
       likeIcon.classList.remove('text-red-600');
       likeIcon.classList.add('text-gray-400');
     }
-    likeCount.textContent = data.likes;
+
+    fetch('actions/like.php?count=' + spotId)
+      .then(r => r.text())
+      .then(count => { likeCount.textContent = count; });
   });
 });
 

@@ -1,37 +1,52 @@
 <?php
-require_once __DIR__ . '/../classes/session.php';
+// Database connection
 require_once '../includes/db.php';
-require_once __DIR__ . '/../classes/spot.php';
 
+// Session handler
+require_once __DIR__ . '/../classes/session.php';
 $session = new SessionHandle();
-$spotObj = new Spot($pdo);
 
-// Validate request
-if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['spot_id'])) {
-    http_response_code(400);
-    echo json_encode(['status' => 'error', 'message' => 'invalid_request']);
-    exit();
-}
 
-// User must be logged in
-if (!$session->logged_in()) {
-    http_response_code(403);
-    echo json_encode(['status' => 'error', 'message' => 'not_logged_in']);
-    exit();
-}
+// Handle like/unlike action
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $spot_id = intval($_POST['spot_id'] ?? 0);
 
-$spot_id = intval($_POST['spot_id']);
+    // User must be logged in to like a spot
+    if (!$session->logged_in()) {
+        http_response_code(403);
+        echo json_encode(['status' => 'error', 'message' => 'not_logged_in']);
+        exit();
+    }
+
+// Get user ID from session
 $user_id = $session->get('user_id');
 
-// Toggle like
-if ($spotObj->isLikedByUser($spot_id, $user_id)) {
-    $spotObj->unlike($spot_id, $user_id);
-    $status = 'unliked';
-} else {
-    $spotObj->like($spot_id, $user_id);
-    $status = 'liked';
+    
 }
 
-// Return updated like count
-$likeCount = $spotObj->countLikes($spot_id);
-echo json_encode(['status' => $status, 'likes' => $likeCount]);
+// Check if user liked/favorited
+    $user_id = $_SESSION['user_id'] ?? 0;
+    $liked = false;
+    $favorited = false;
+
+    if ($user_id) {
+        // Like
+        $stmt = $pdo->prepare("SELECT 1 FROM likes WHERE user_id=? AND spot_id=?");
+        $stmt->execute([$user_id, $spot_id]);
+        $liked = $stmt->fetch() ? true : false;
+
+        // Favorite
+        $stmt = $pdo->prepare("SELECT 1 FROM favorites WHERE user_id=? AND spot_id=?");
+        $stmt->execute([$user_id, $spot_id]);
+        $favorited = $stmt->fetch() ? true : false;
+    }
+    
+// Return updated like count (for AJAX)
+if (isset($_GET['count'])) {
+    $spot_id = intval($_GET['count']);
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM likes WHERE spot_id=?");
+    $stmt->execute([$spot_id]);
+    echo $stmt->fetchColumn();
+    exit();
+}
+?>
