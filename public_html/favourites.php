@@ -18,6 +18,14 @@ $user_id = $session->get('user_id');
 // Fetch user's favorites
 $favorites = $userObj->getFavorites($user_id);
 
+// Function to get photo URL
+function getPhotoUrl($photo) {
+    if ($photo && file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $photo)) {
+        return '/' . $photo;
+    }
+    return null;
+}
+
 // User info
 $user = $userObj->getById($user_id);
 $photo_url = $userObj->getProfilePhoto($user_id);
@@ -30,8 +38,10 @@ $photo_url = $userObj->getProfilePhoto($user_id);
       
       <!-- Profile photo + Title -->
       <div class="flex items-center gap-4">
-        <?php if($photo_url && file_exists($_SERVER['DOCUMENT_ROOT'] . $photo_url)): ?>
-          <img src="<?= htmlspecialchars($photo_url) ?>" alt="Profile" class="w-16 h-16 rounded-full object-cover border-2 border-black">
+        <?php
+        $authorPhoto = getPhotoUrl($spot['profile_photo']);
+        ?>
+        <img src="<?= htmlspecialchars($authorPhoto) ?>"" alt="Profile" class="w-16 h-16 rounded-full object-cover border-2 border-black">
         <?php else: ?>
           <div class="w-16 h-16 rounded-full bg-black flex items-center justify-center text-xl font-bold text-white">
             <?= strtoupper(substr($session->get('user_name') ?? 'U', 0, 1)) ?>
