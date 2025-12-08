@@ -25,7 +25,10 @@ window.addEventListener('load', () => {
 // Tab navigation for admin panel
   function showTab(tabId){
 
-  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+    document.querySelectorAll('.tab-content').forEach(tab =>
+      tab.classList.add('hidden')
+    );
+  
 
   document.getElementById(tabId).classList.remove('hidden');
 
