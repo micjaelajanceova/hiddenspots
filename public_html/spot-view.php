@@ -3,6 +3,7 @@ require_once __DIR__ . '/classes/session.php';
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/classes/spot.php';
 require_once __DIR__ . '/classes/User.php';
+require_once __DIR__ . '/includes/header.php';
 
 $session = new SessionHandle();
 $user_id = $session->getUserId();
@@ -91,9 +92,6 @@ $user_name = $spot['user_name'];
 $photo_url = $spot['profile_photo'];
 ?>
 
-<?php
-require_once __DIR__ . '/includes/header.php';
-?>
 
 <!----------------------- HTML ------------------------------>
 <main class="flex-1 bg-white min-h-screen pt-2 md:pt-8  md:pb-12 px-4 md:px-8 flex flex-col">
