@@ -369,17 +369,18 @@ $photo_url = $spot['profile_photo'];
 </main>
 
 <!-- js for spot view -->
-<script src="/assets/js/spot.js" defer></script>
 
-<!-- Pass php variables to JavaScript -->
 <script>
-const spotId = <?= $spot_id ?>;
-const spotLat = <?= $spot['latitude'] ?>;
-const spotLng = <?= $spot['longitude'] ?>;
-const lat = <?= $spot['latitude'] ?? '0' ?>;
-const lng = <?= $spot['longitude'] ?? '0' ?>;
+  const spotData = {
+    id: <?= json_encode($spot_id) ?>,
+    lat: <?= json_encode($spot['latitude']) ?>,
+    lng: <?= json_encode($spot['longitude']) ?>,
+    name: <?= json_encode($spot['name']) ?>,
+    address: <?= json_encode($spot['address']) ?>
+  };
 </script>
 
-
+<script src="/assets/js/spot.js" defer></script>
+<script src="/assets/js/map.js" defer></script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
