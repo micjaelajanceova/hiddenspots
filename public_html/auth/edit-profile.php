@@ -43,6 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_name'])) {
     } elseif ($userObj->isNameTaken($new_name, $user_id)) {
         $msg = 'This name is already taken. Please choose another.';
         $msg_type = 'error';
+    } elseif ($new_name === $user_name) {
+        $msg = 'This is already your current name.';
+        $msg_type = 'error';
     } else {
         if ($userObj->updateName($user_id, $new_name)) {
             $msg = 'Name updated successfully.';
@@ -136,48 +139,63 @@ include __DIR__ . '/../includes/header.php';
         <input id="photoInput" type="file" name="profile_photo" accept="image/*" class="absolute w-0 h-0 opacity-0">
       </div>
 
-      
-      <div class="flex-1">
-        <form method="post" class="mb-6">
-          <label class="block text-sm font-medium text-gray-700">Name</label>
-          <input type="text" name="name" value="<?= htmlspecialchars($user_name) ?>" class="mt-1 block w-full rounded-md border-gray-300 bg-white p-2" required>
+       <!-- Name & Password -->
+      <div class="flex-1 space-y-6">
+
+        <!-- Update Name -->
+        <form method="post" class="space-y-3">
           <input type="hidden" name="update_name" value="1">
-          <div class="mt-2">
-            <button type="submit" class="bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800 transition w-full">Update Name</button>
-          </div>
+          <label class="block text-sm font-medium text-gray-700">Name</label>
+          <input type="text" name="name" value="<?= htmlspecialchars($user_name) ?>" 
+                 class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2" required>
+          <?php if ($msg && isset($_POST['update_name'])): ?>
+            <div class="text-sm <?= $msg_type === 'success' ? 'text-green-600' : 'text-red-600' ?> mt-1">
+              <?= htmlspecialchars($msg) ?>
+            </div>
+          <?php endif; ?>
+          <button type="submit" class="bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800 transition w-full">
+            Update Name
+          </button>
         </form>
 
-        <div class="mb-6">
+        <!-- Email (disabled) -->
+        <div>
           <label class="block text-sm font-medium text-gray-700">Email</label>
-          <input type="email" disabled value="<?= htmlspecialchars($user_email) ?>" class="mt-1 block w-full rounded-md border-gray-300 bg-white p-2">
+          <input type="email" disabled value="<?= htmlspecialchars($user_email) ?>" 
+                 class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2">
         </div>
 
         <hr class="my-4">
 
+        <!-- Update Password -->
         <h2 class="text-lg font-semibold mb-3">Change Password</h2>
         <form method="post" class="space-y-3">
           <input type="hidden" name="update_password" value="1">
           <div>
             <label class="block text-sm text-gray-600">Current password</label>
-            <input type="password" name="current_password" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2" required>
+            <input type="password" name="current_password" 
+                   class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2" required>
           </div>
           <div>
             <label class="block text-sm text-gray-600">New password</label>
-            <input type="password" name="new_password" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2" required>
+            <input type="password" name="new_password" 
+                   class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2" required>
           </div>
           <div>
             <label class="block text-sm text-gray-600">Confirm new password</label>
-            <input type="password" name="confirm_password" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2" required>
+            <input type="password" name="confirm_password" 
+                   class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2" required>
           </div>
-          <?php if ($msg): ?>
-            <div class="mb-4 text-sm <?= $msg_type === 'success' ? 'text-green-600' : 'text-red-600' ?>">
+          <?php if ($msg && isset($_POST['update_password'])): ?>
+            <div class="text-sm <?= $msg_type === 'success' ? 'text-green-600' : 'text-red-600' ?> mt-1">
               <?= htmlspecialchars($msg) ?>
             </div>
           <?php endif; ?>
-          <div class="mt-4">
-            <button type="submit" class="bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800 transition w-full">Update Password</button>
-          </div>
+          <button type="submit" class="bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800 transition w-full">
+            Update Password
+          </button>
         </form>
+
       </div>
 
     </div>
