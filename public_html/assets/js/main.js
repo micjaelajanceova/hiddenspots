@@ -15,8 +15,11 @@ function initMasonry() {
 
 // Run the masonry layout when page loads
 window.addEventListener('load', () => {
-  initMasonry();
+  if (document.getElementById('masonry')) {
+      initMasonry();
+  }
 });
+
 
 
 // Tab navigation for admin panel
@@ -36,5 +39,8 @@ window.addEventListener('load', () => {
   activeBtn.classList.add('bg-black', 'text-white');
 }
 
-    showTab('site');
+if (document.getElementById('tab-site')) {
+  showTab('site');
+}
+
 

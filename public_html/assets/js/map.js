@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ---------- Modal Open/Close ----------
+if (openBtns && openBtns.length > 0 && uploadModal) {
 openBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -66,13 +67,18 @@ openBtns.forEach(btn => {
         setTimeout(() => { if (uploadMap) uploadMap.invalidateSize(); }, 200);
     });
 });
+}
 
-closeBtn.addEventListener('click', () => {
-    uploadModal.classList.add('hidden');
-    showFeedMap();
-});
+if (closeBtn && uploadModal) {
+    closeBtn.addEventListener('click', () => {
+        uploadModal.classList.add('hidden');
+        showFeedMap();
+    });
+}
+
 
 // ---------- Photo Preview ----------
+if (photoInput) {
 photoInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -88,19 +94,23 @@ photoInput.addEventListener('change', (e) => {
     };
     reader.readAsDataURL(file);
 });
-
+}
 // ---------- Next/Back Navigation ----------
+const nextBtn = document.getElementById('nextBtn');
+const backBtn = document.getElementById('backBtn');
+if (nextBtn) {
 document.getElementById('nextBtn').addEventListener('click', () => {
     document.getElementById('stepPreview').classList.add('hidden');
     document.getElementById('stepForm').classList.remove('hidden');
     setTimeout(() => { if (uploadMap) uploadMap.invalidateSize(); }, 100);
 });
-
+}
+if (backBtn) {
 document.getElementById('backBtn').addEventListener('click', () => {
     document.getElementById('stepForm').classList.add('hidden');
     document.getElementById('stepPreview').classList.remove('hidden');
 });
-
+}
 // ---------- Geocode City Input ----------
 if (cityInput) {
     cityInput.addEventListener('input', debounce(async () => {
@@ -170,6 +180,7 @@ const mapBtn = document.getElementById('showMap');
 const mapDiv = document.getElementById('feedMap');
 let feedMap; 
 
+if (mapBtn && mapDiv) {
 mapBtn.addEventListener('click', () => {
    
     // toggle map
@@ -189,9 +200,12 @@ mapBtn.addEventListener('click', () => {
         }, 100);
     }
 });
-
+}
 
     // --- CLOSE MAP WHEN CLICKING PROFILE HEADER OR MENU ---
+    const profileBtn = document.getElementById('profileBtn');
+    const profileMenu = document.getElementById('profileMenu');
+
     if(profileBtn && mapDiv){
         profileBtn.addEventListener('click', () => {
             if(mapDiv.style.display === 'block'){
