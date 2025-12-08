@@ -154,7 +154,7 @@ include __DIR__ . '/../includes/header.php';
           <div>
             <label class="block text-sm font-medium text-gray-700">Email</label>
             <input type="email" disabled value="<?= htmlspecialchars($user_email) ?>" 
-                   class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2">
+                   class="mt-1 block w-full rounded-md border-gray-300 bg-white p-2">
           </div>
 
           <hr class="my-4">
