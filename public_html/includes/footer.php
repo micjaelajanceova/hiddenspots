@@ -64,6 +64,13 @@ $siteFont        = $siteSettings['font_family'] ?? 'Arial';
 
 <!-- Logged-in status -->
 <script>const isLoggedIn = <?= $session->logged_in() ? 'true' : 'false'; ?>;</script>
+<script>
+const spotId = <?= $spot_id ?>;
+const spotLat = <?= $spot['latitude'] ?>;
+const spotLng = <?= $spot['longitude'] ?>;
+const lat = <?= $spot['latitude'] ?? '0' ?>;
+const lng = <?= $spot['longitude'] ?? '0' ?>;
+</script>
 
 <!-- Global script -->
 <script src="/assets/js/main.js"></script>
