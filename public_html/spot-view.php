@@ -222,7 +222,11 @@ $photo_url = $spot['profile_photo'];
                c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
     </svg>
     <span id="likeCount" class="text-sm text-gray-600">
-     <?= $spotObj->countLikes($spot_id) ?>
+     <?php
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM likes WHERE spot_id=?");
+        $stmt->execute([$spot_id]);
+        echo $stmt->fetchColumn();
+      ?>
     </span>
   </button>
 
@@ -382,9 +386,9 @@ function initCityMap() {
 .openPopup();
 }
 </script>
-
-<script src="/assets/js/spot.js" defer></script>
 <script>const spotId = <?= $spot_id ?>;</script>
+<script src="/assets/js/spot.js" defer></script>
+
 
 
 
