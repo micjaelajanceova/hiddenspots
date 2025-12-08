@@ -10,6 +10,12 @@ if (!$session->getUserId()) {
 
 $error = null;
 
+
+
+//Fetch geographic coordinates (lat/lng) from an address using Nominatim API.
+// Returns null if coordinates cannot be found.
+
+
 function getCoordinates($address) {
     $url = "https://nominatim.openstreetmap.org/search?format=json&q=" . urlencode($address);
 
@@ -24,6 +30,7 @@ function getCoordinates($address) {
 
     $data = json_decode($response, true);
 
+    // If coordinates exist in the API response, return them
     if (!empty($data) && isset($data[0]['lat']) && isset($data[0]['lon'])) {
         return [
             'lat' => $data[0]['lat'],
@@ -43,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 
-//  RATE LIMIT – max 5 uploads in 1 minute
+    //  RATE LIMIT – max 5 uploads in 1 minute
     $stmt = $pdo->prepare("
     SELECT COUNT(*) 
     FROM hidden_spots 
@@ -57,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("Too many uploads – slow down.");
     }
 
-
+    // Collect form data safely
     $user_id = (int) $_SESSION['user_id'];
     $name = trim($_POST['name'] ?? '');
     $city = trim($_POST['city'] ?? '');
@@ -68,9 +75,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $latitude = $_POST['latitude'] ?? null;
     $longitude = $_POST['longitude'] ?? null;
 
+    // Required fields validation
+
     if (!$name || !$city || !$category || !$photoData) {
         $error = "Please fill all required fields and select a photo.";
     } else {
+        // If user typed an address but no coordinates were provided → geocode it
         if ($address && (!$latitude || !$longitude)) {
             $coords = getCoordinates($address);
             if ($coords) {
@@ -78,10 +88,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $longitude = $coords['lng'];
             }
         }
-
+        // Ensure location exists (either from map click or address geocoding)
         if (!$latitude || !$longitude) {
             $error = "Please provide a location either by address or by clicking on the map.";
         } else {
+
+            // Validate Base64 image format
             if (preg_match('/^data:image\/(\w+);base64,/', $photoData, $type)) {
                 $data = substr($photoData, strpos($photoData, ',') + 1);
                 $data = base64_decode($data);
@@ -91,6 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!in_array($ext, $allowed)) {
                     $error = "Invalid image type.";
                 } else {
+                    // Create unique filename
                     $fileName = time() . '_' . bin2hex(random_bytes(6)) . '.' . $ext;
                     $filePath = __DIR__ . '/../uploads/'  . $fileName;
 
@@ -98,6 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $error = "Failed to save image.";
                     } else {
                         try {
+                            // Insert the spot into the database
                             $sql = "INSERT INTO hidden_spots 
                                     (user_id, name, description, city, address, type, file_path, latitude, longitude, created_at) 
                                     VALUES (:user_id, :name, :description, :city, :address, :type, :file_path, :latitude, :longitude, NOW())";
@@ -117,6 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             header("Location: ../index.php?upload=success");
                             exit();
                         } catch (PDOException $e) {
+                            // If database insert fails, delete uploaded file
                             if (file_exists($filePath)) unlink($filePath);
                             $error = "Database error: " . $e->getMessage();
                         }
@@ -128,7 +143,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // --- ZOBRAZENIE CHYBY MIMO VŠETKYCH BLOCOK ---
     if ($error) {
         echo "<p style='color:red;'>$error</p>";
     }
@@ -137,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 <script>
-// ---------- FORM SUBMIT ----------
+// Ensures user selected a location via address or map click
 uploadForm.addEventListener('submit', e => {
     const lat = latitudeInput.value.trim();
     const lng = longitudeInput.value.trim();
