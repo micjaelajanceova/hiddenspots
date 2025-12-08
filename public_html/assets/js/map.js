@@ -273,25 +273,21 @@ cityMapBtn.addEventListener('click', () => {
 
 function initCityMap() {
 
-    if(lat === 0 && lng === 0) {
+    if (spotLat === 0 && spotLng === 0) {
         alert('Coordinates not available for this spot.');
         return;
     }
 
-    cityMap = L.map('cityMap').setView([lat, lng], 15);
+    cityMap = L.map('cityMap').setView([spotLat, spotLng], 15);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(cityMap);
 
-    L.marker([lat, lng]).addTo(cityMap)
+    L.marker([spotLat, spotLng]).addTo(cityMap)
     .bindPopup(`
-    <b><?= addslashes($spot['name']) ?></b><br>
-    <?php if (!empty($spot['address'])): ?>
-        <?= addslashes($spot['address']) ?>
-    <?php else: ?>
-        <?= $spot['latitude'] . ', ' . $spot['longitude'] ?>
-    <?php endif; ?>
-`)
-.openPopup();
+        <b>${spotName}</b><br>
+        ${spotAddress || (spotLat + ', ' + spotLng)}
+    `).openPopup();
 }
+
