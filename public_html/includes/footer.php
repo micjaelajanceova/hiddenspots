@@ -68,6 +68,11 @@ $siteFont        = $siteSettings['font_family'] ?? 'Arial';
 <!-- Global script -->
 <script src="/assets/js/main.js"></script>
 
-<script src="/assets/js/map.js" defer></script>
-
+<!-- Map and Upload scripts -->
+<script type="module" src="/assets/js/map.js" defer></script>
+<script type="module">
+import { initUploadMap, setupGeocode } from '/assets/js/map.js';
+initUploadMap('uploadMap', 'latitude', 'longitude');
+setupGeocode('city', 'address');
+</script>
 </html>
