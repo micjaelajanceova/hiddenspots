@@ -167,6 +167,7 @@ const mapBtn = document.getElementById('showMap');
 const mapDiv = document.getElementById('feedMap');
 let feedMap;
 
+if (mapBtn && mapDiv) {
 mapBtn.addEventListener('click', () => {
   const isHidden = mapDiv.style.display === 'none';
   mapDiv.style.display = isHidden ? 'block' : 'none';
@@ -183,8 +184,12 @@ mapBtn.addEventListener('click', () => {
     }, 100);
   }
 });
+}
 
 // Close map when clicking profile
+const profileBtn = document.getElementById('profileBtn');
+const profileMenu = document.getElementById('profileMenu');
+
 if (profileBtn && mapDiv) {
   profileBtn.addEventListener('click', () => {
     if (mapDiv.style.display === 'block') {
