@@ -20,10 +20,40 @@ $userObj = new User($pdo);
 // Store the logged-in user's ID for queries
 $user_id = $session->get('user_id');
 
-// Variables for messages shown to user
+// Initialize variables
 $msg = '';
 $msg_type = '';
+$user = $userObj->getById($user_id);
+$user_name = $user['name'] ?? '';
+$user_email = $user['email'] ?? '';
+$user_photo = $userObj->getProfilePhoto($user_id);
+$photo_src = $user_photo ? '../' . $user_photo : null;
+$session->set('profile_photo', $user_photo);
 
+// --- Update Name ---
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_name'])) {
+    $new_name = trim($_POST['name'] ?? '');
+
+    if (empty($new_name)) {
+        $msg = 'Name cannot be empty.';
+        $msg_type = 'error';
+    } elseif (!preg_match('/^[a-z0-9](?!.*[._]{2})[a-z0-9._]{1,18}[a-z0-9]$/', $new_name)) {
+        $msg = "Username must be 3–20 characters, lowercase letters, numbers, dots, or underscores.";
+        $msg_type = 'error';
+    } elseif ($userObj->isNameTaken($new_name, $user_id)) {
+        $msg = 'This name is already taken. Please choose another.';
+        $msg_type = 'error';
+    } else {
+        if ($userObj->updateName($user_id, $new_name)) {
+            $msg = 'Name updated successfully.';
+            $msg_type = 'success';
+            $user_name = $new_name;
+        } else {
+            $msg = 'Failed to update name.';
+            $msg_type = 'error';
+        }
+    }
+}
 
 // --- Password update ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_password'])) {
@@ -60,13 +90,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_password'])) {
     }
 }
 
-// --- Load user data ---
-$user = $userObj->getById($user_id);
-$user_name = $user['name'] ?? '';
-$user_email = $user['email'] ?? '';
-$user_photo = $userObj->getProfilePhoto($user_id);
-$photo_src = $user_photo ? '../' . $user_photo : null;
-$session->set('profile_photo', $user_photo);
+
+
 
 include __DIR__ . '/../includes/header.php';
 ?>
@@ -113,10 +138,14 @@ include __DIR__ . '/../includes/header.php';
 
       
       <div class="flex-1">
-        <div class="mb-4">
+        <form method="post" class="mb-6">
           <label class="block text-sm font-medium text-gray-700">Name</label>
-          <input type="text" disabled value="<?= htmlspecialchars($user_name) ?>" class="mt-1 block w-full rounded-md border-gray-300 bg-white p-2">
-        </div>
+          <input type="text" name="name" value="<?= htmlspecialchars($user_name) ?>" class="mt-1 block w-full rounded-md border-gray-300 bg-white p-2" required>
+          <input type="hidden" name="update_name" value="1">
+          <div class="mt-2">
+            <button type="submit" class="bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800 transition w-full">Update Name</button>
+          </div>
+        </form>
 
         <div class="mb-6">
           <label class="block text-sm font-medium text-gray-700">Email</label>

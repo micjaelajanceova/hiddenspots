@@ -131,5 +131,16 @@ class User {
     $stmt->execute(['user_id' => $user_id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+    // Check if username is taken by another user
+    public function isNameTaken($name, $exclude_user_id = null) {
+        if ($exclude_user_id) {
+            $stmt = $this->pdo->prepare("SELECT id FROM users WHERE name = ? AND id != ?");
+            $stmt->execute([$name, $exclude_user_id]);
+        } else {
+            $stmt = $this->pdo->prepare("SELECT id FROM users WHERE name = ?");
+            $stmt->execute([$name]);
+        }
+        return $stmt->fetchColumn() !== false;
+    }
 }
 ?>
