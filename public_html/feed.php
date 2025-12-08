@@ -7,11 +7,12 @@ require_once __DIR__ . '/classes/spot.php';
 require_once __DIR__ . '/includes/search.php';
 require_once __DIR__ . '/includes/map.php';
 
+// Initialize Spot object
 $spotObj = new Spot($pdo);
 
+// Get search and filter parameters
 $city = $_GET['query'] ?? '';
 $filter_type = $_GET['type'] ?? '';
-
 
 // Fetch all types for filter dropdown
 $types = $spotObj->getAllTypes();
@@ -93,7 +94,7 @@ $spots = $spotObj->search($city, $filter_type);
 
 </main>
 
-
+<!-- script for spots data (used in map.js) -->
 <script>const spots = <?= json_encode($spots) ?>;</script>
 
 
