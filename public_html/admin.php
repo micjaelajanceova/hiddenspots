@@ -1,16 +1,13 @@
 <?php
 include 'includes/db.php';
-
 require_once __DIR__ . '/classes/session.php';
-$session = new SessionHandle();
-
 include 'includes/header.php';
 include __DIR__ . '/classes/spot.php';
-include __DIR__ . '/classes/User.php';
+require_once __DIR__ . '/classes/User.php';
 include 'classes/sitesettings.php';
 include 'includes/profile-header.php';
 
-
+$session = new SessionHandle();
 $spotObj = new Spot($pdo);
 $userObj = new User($pdo);
 $siteSettings = new SiteSettings($pdo);
