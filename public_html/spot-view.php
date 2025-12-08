@@ -83,20 +83,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $comments = $spotObj->getComments($spot_id);
 
 // Check if user liked/favorited
-$user_id = $_SESSION['user_id'] ?? 0;
+$user_id_session = $_SESSION['user_id'] ?? 0;
 $liked = false;
 $favorited = false;
 
-if ($user_id) {
-    // Like
-    $stmt = $pdo->prepare("SELECT 1 FROM likes WHERE user_id=? AND spot_id=?");
-    $stmt->execute([$user_id, $spot_id]);
-    $liked = $stmt->fetch() ? true : false;
-
-    // Favorite
-    $stmt = $pdo->prepare("SELECT 1 FROM favorites WHERE user_id=? AND spot_id=?");
-    $stmt->execute([$user_id, $spot_id]);
-    $favorited = $stmt->fetch() ? true : false;
+if ($user_id_session) {
+    $liked = $spotObj->isLikedByUser($spot_id, $user_id_session);
+    $favorited = $spotObj->isFavoritedByUser($spot_id, $user_id_session);
 }
 
 // Fetch spot owner's info
