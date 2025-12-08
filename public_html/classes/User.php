@@ -130,7 +130,8 @@ class User {
     ");
     $stmt->execute(['user_id' => $user_id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+    }
+    
     // Check if username is taken by another user
     public function isNameTaken($name, $exclude_user_id = null) {
         if ($exclude_user_id) {

@@ -39,7 +39,7 @@ class Spot {
     ");
     $stmt->execute([$id]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
-}
+    }
 
     // Get comments for a specific spot
     public function getComments($spot_id){
@@ -87,7 +87,7 @@ class Spot {
     public function updateSpot($spot_id, $name, $city, $address) {
     $stmt = $this->pdo->prepare("UPDATE hidden_spots SET name=?, city=?, address=? WHERE id=?");
     return $stmt->execute([$name, $city, $address, $spot_id]);
-}
+    }
 
     // Create new spot
     public function createSpot($user_id, $name, $city, $address, $file_path, $description='', $latitude=null, $longitude=null, $type=null) {
@@ -119,7 +119,8 @@ class Spot {
     public function updateDescription($spot_id, $new_description) {
     $stmt = $this->pdo->prepare("UPDATE hidden_spots SET description = ? WHERE id = ?");
     return $stmt->execute([$new_description, $spot_id]);
-}
+    }
+
     // Delete a spot and its associated comments and likes
     public function deleteSpot($spot_id) {
 
@@ -131,7 +132,8 @@ class Spot {
 
     $stmt = $this->pdo->prepare("DELETE FROM hidden_spots WHERE id = ?");
     return $stmt->execute([$spot_id]);
-}
+    }
+
     // Get recent file paths for background images of spots
     public function getRecentFiles($limit = 10) {
     try {
@@ -140,12 +142,14 @@ class Spot {
     } catch (PDOException $e) {
         return ['/assets/img/default-bg.jpg']; // fallback
     }
-}
+    }
+
     // Get all unique types of hidden spots
     public function getAllTypes() {
         $stmt = $this->pdo->query("SELECT DISTINCT type FROM hidden_spots WHERE type IS NOT NULL AND type != ''");
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
+
     // Search spots by city and/or type
     public function search($city = '', $type = '') {
         $sql = "SELECT hs.*, u.name AS user_name 
@@ -188,7 +192,8 @@ class Spot {
         LIMIT $limit
     ");
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+    }
+
      // Get top trending spots this week (last 7 days)
     public function getTrendingWeek($limit = 6) {
         $stmt = $this->pdo->query("
@@ -210,6 +215,7 @@ class Spot {
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
      // Get top trending spots all-time
     public function getTrendingAll($limit = 6) {
         $stmt = $this->pdo->query("
@@ -229,6 +235,7 @@ class Spot {
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
     // Check if a spot is liked by a specific user
     public function isLikedByUser($spot_id, $user_id){
     $stmt = $this->pdo->prepare("SELECT 1 FROM likes WHERE user_id=? AND spot_id=?");

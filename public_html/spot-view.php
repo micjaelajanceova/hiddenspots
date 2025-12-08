@@ -7,6 +7,7 @@ require_once __DIR__ . '/classes/User.php';
 $session = new SessionHandle();
 $user_id = $session->getUserId();
 
+// Get spot ID
 $spot_id = $_GET['id'] ?? null;
 if (!$spot_id) die("No ID provided.");
 
@@ -332,9 +333,8 @@ require_once __DIR__ . '/includes/header.php';
 </main>
 
 <!-- js for spot view -->
-
 <script>
-// MAP 
+// MAP for city for specific post
 const cityMapBtn = document.getElementById('showCityMapBtn');
 const cityMapDiv = document.getElementById('cityMap');
 let cityMap; 
@@ -346,13 +346,13 @@ cityMapBtn.addEventListener('click', () => {
     cityMapDiv.style.display = isHidden ? 'block' : 'none';
     
     if (isHidden) {
-        mapArrow.style.transform = 'rotate(180deg)'; // šípka hore
+        mapArrow.style.transform = 'rotate(180deg)'; 
         setTimeout(() => {
             if (!cityMap) initCityMap();
             else cityMap.invalidateSize();
         }, 100);
     } else {
-        mapArrow.style.transform = 'rotate(0deg)'; // šípka dole
+        mapArrow.style.transform = 'rotate(0deg)'; 
     }
 });
 
@@ -386,8 +386,6 @@ function initCityMap() {
 
 <script>const spotId = <?= $spot_id ?>;</script>
 <script src="/assets/js/spot.js" defer></script>
-
-
 
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
