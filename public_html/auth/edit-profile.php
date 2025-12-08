@@ -143,6 +143,14 @@ include __DIR__ . '/../includes/header.php';
       <div class="flex-1">
         <form method="post" class="space-y-4">
 
+
+        <!-- Email (disabled) -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" disabled value="<?= htmlspecialchars($user_email) ?>" 
+                   class="mt-1 block w-full rounded-md border-gray-300 bg-white p-2">
+          </div>
+
           <!-- Name -->
           <div>
             <label class="block text-sm font-medium text-gray-700">Name</label>
@@ -150,12 +158,7 @@ include __DIR__ . '/../includes/header.php';
                    class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2" required>
           </div>
 
-          <!-- Email (disabled) -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Email</label>
-            <input type="email" disabled value="<?= htmlspecialchars($user_email) ?>" 
-                   class="mt-1 block w-full rounded-md border-gray-300 bg-white p-2">
-          </div>
+        
 
           <hr class="my-4">
 
