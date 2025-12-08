@@ -1,12 +1,14 @@
 <?php
-include 'includes/db.php';
+require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/classes/session.php';
-include 'includes/header.php';
-include __DIR__ . '/classes/spot.php';
+require_once __DIR__ . '/classes/spot.php';
 require_once __DIR__ . '/classes/User.php';
 require_once __DIR__ . '/classes/sitesettings.php';
-include 'includes/profile-header.php';
 
+include __DIR__ . '/includes/header.php';
+include __DIR__ . '/includes/profile-header.php';
+
+// Initialize objects
 $session = new SessionHandle();
 $spotObj = new Spot($pdo);
 $userObj = new User($pdo);
@@ -55,21 +57,19 @@ if (isset($_POST['create_spot'])) {
 
 // ===== DELETE COMMENT =====
 if (isset($_POST['delete_comment'])) {
-  $id = intval($_POST['id']);
-  $stmt = $pdo->prepare("DELETE FROM comments WHERE id = ?");
-  $stmt->execute([$id]);
-  echo "<script>alert('Comment deleted successfully'); window.location='admin.php';</script>";
+  $spotObj->deleteComment($_POST['comment_id']);
+  echo "<script>alert('Comment deleted'); window.location='admin.php';</script>";
   exit();
 }
 
 // ===== EDIT COMMENT =====
 if (isset($_POST['edit_comment'])) {
-  $id = intval($_POST['id']);
-  $text = trim($_POST['text']);
-  $stmt = $pdo->prepare("UPDATE comments SET text = ? WHERE id = ?");
-  $stmt->execute([$text, $id]);
-  echo "<script>alert('Comment updated successfully'); window.location='admin.php';</script>";
-  exit();
+   $spotObj->updateComment(
+        $_POST['comment_id'],
+        trim($_POST['text'])
+    );
+    echo "<script>alert('Comment edited'); window.location='admin.php';</script>";
+    exit();
 }
 
 // ===== TOGGLE BLOCK USER =====
@@ -83,7 +83,6 @@ if (isset($_POST['toggle_block'])) {
 // ===== EDIT USER =====
 if (isset($_POST['edit_user'])) {
     $id = intval($_POST['id']);
-    $userObj = new User($pdo);
     $userObj->updateUser($id, $_POST['name'], $_POST['email'], $_POST['role']); 
     echo "<script>alert('User updated successfully'); window.location='admin.php';</script>";
     exit();
@@ -107,28 +106,21 @@ if (isset($_POST['update_site'])) {
 
 
 // Fetch data
-$spots = $pdo->query("SELECT * FROM hidden_spots ORDER BY created_at DESC")->fetchAll(PDO::FETCH_ASSOC);
-$comments = $pdo->query("
-    SELECT c.id, c.text, c.created_at, u.name AS user_name, hs.name AS spot_name 
-    FROM comments c 
-    JOIN users u ON c.user_id = u.id 
-    JOIN hidden_spots hs ON c.spot_id = hs.id 
-    ORDER BY c.created_at DESC
-")->fetchAll(PDO::FETCH_ASSOC);
-$users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+$spots = $spotObj->getNewest(999999);
+$comments = $spotObj->getAllComments();
+$users = $userObj->getAll();
 
 // ===== FETCH SITE INFO =====
 $siteInfo = $siteSettings->getAll();
-
 
 $siteDescription = $siteInfo['site_description'] ?? '';
 $siteRules       = $siteInfo['rules'] ?? '';
 $siteContact     = $siteInfo['contact_info'] ?? '';
 $siteColor       = $siteInfo['primary_color'] ?? '';
 $siteFont = $siteInfo['font_family'] ?? 'Arial'; 
-
 ?>
 
+<!----------------------- HTML ------------------------------>
 <main class="flex-1 min-h-screen overflow-y-auto">
 <div class="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-8">
 
@@ -387,7 +379,7 @@ $siteFont = $siteInfo['font_family'] ?? 'Arial';
             <form method="POST" class="contents">
                 <td class="p-2 sm:p-3 text-sm sm:text-base">
                   <textarea name="text" class="border border-gray-300 rounded p-2 w-full text-xs sm:text-sm" rows="2"><?= htmlspecialchars($c['text']) ?></textarea>
-                  <input type="hidden" name="id" value="<?= $c['id'] ?>">
+                  <input type="hidden" name="comment_id" value="<?= $c['id'] ?>">
                 </td>
 
                 <td class="p-2 sm:p-3 text-sm sm:text-base"><?= $c['created_at'] ?></td>

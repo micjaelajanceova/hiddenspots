@@ -54,6 +54,17 @@ class Spot {
     $stmt->execute([$spot_id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    // get all comments for admin view
+    public function getAllComments() {
+    $stmt = $this->pdo->query("
+        SELECT c.*, u.name AS user_name, h.name AS spot_name
+        FROM comments c
+        JOIN users u ON c.user_id = u.id
+        JOIN hidden_spots h ON c.spot_id = h.id
+        ORDER BY c.created_at DESC
+    ");
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
     // Get all spots uploaded by a specific user
         public function getByUser($user_id){
         $stmt = $this->pdo->prepare("
@@ -83,7 +94,22 @@ class Spot {
     return $stmt->execute([$user_id, $name, $city, $address, $file_path, $description, $latitude, $longitude, $type]);
     }
 
-    
+    // ADMIN: Update comment text
+    public function updateComment($comment_id, $text){
+        $stmt = $this->pdo->prepare("
+            UPDATE comments 
+            SET text = ? 
+            WHERE id = ?
+        ");
+        return $stmt->execute([$text, $comment_id]);
+    }
+
+    // ADMIN: Delete comment
+    public function deleteComment($comment_id){
+        $stmt = $this->pdo->prepare("DELETE FROM comments WHERE id = ?");
+        return $stmt->execute([$comment_id]);
+    }
+
     // Update the description of a specific spot
     public function updateDescription($spot_id, $new_description) {
     $stmt = $this->pdo->prepare("UPDATE hidden_spots SET description = ? WHERE id = ?");
@@ -110,6 +136,5 @@ class Spot {
         return ['/assets/img/default-bg.jpg']; // fallback
     }
 }
-
 }
 ?>

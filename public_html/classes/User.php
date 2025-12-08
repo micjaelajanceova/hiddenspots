@@ -6,6 +6,11 @@ class User {
         $this->pdo = $pdo;
     }
 
+    // Get all users
+    public function getAll() {
+    return $this->pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     // Fetch user by ID
     public function getById($user_id) {
         $stmt = $this->pdo->prepare("SELECT * FROM users WHERE id = ?");
