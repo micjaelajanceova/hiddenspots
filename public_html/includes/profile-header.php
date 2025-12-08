@@ -68,45 +68,56 @@ if (profileBtn && profileMenu) {
   });
 }
 
-// Handle mutual exclusivity of profile menu and city map
+
+// Handle mutual exclusivity of profile menu, city map and feed map
 (function () {
 
-  function isVisible(el) {
-    return !!el && window.getComputedStyle(el).display !== 'none' && el.offsetParent !== null;
+function isVisible(el) {
+  return !!el && window.getComputedStyle(el).display !== 'none' && el.offsetParent !== null;
+}
+
+document.addEventListener('click', function (e) {
+  const cityMap = document.getElementById('cityMap');
+  const showCityMapBtn = document.getElementById('showCityMapBtn');
+
+  const feedMap = document.getElementById('feedMap');
+  const showMapBtn = document.getElementById('showMap');
+  const feedMapArrow = document.getElementById('feedMapArrow');
+
+  const clickedProfileBtn = profileBtn && profileBtn.contains(e.target);
+  const clickedProfileMenu = profileMenu && profileMenu.contains(e.target);
+
+  const clickedCityMap = cityMap && cityMap.contains(e.target);
+  const clickedCityMapBtn = showCityMapBtn && showCityMapBtn.contains(e.target);
+
+  const clickedFeedMap = feedMap && feedMap.contains(e.target);
+  const clickedFeedMapBtn = showMapBtn && showMapBtn.contains(e.target);
+
+  // 1) Klik na profil (avatar alebo menu) -> zavri cityMap aj feedMap
+  if (clickedProfileBtn || clickedProfileMenu) {
+    if (cityMap && isVisible(cityMap)) {
+      cityMap.style.display = 'none';
+    }
+
+    if (feedMap && isVisible(feedMap)) {
+      feedMap.style.display = 'none';
+      if (feedMapArrow) {
+        feedMapArrow.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    return;
   }
 
-
-  document.addEventListener('click', function (e) {
-    const cityMap = document.getElementById('cityMap');
-    const showCityMapBtn = document.getElementById('showCityMapBtn');
-
-    const clickedProfileBtn = profileBtn && profileBtn.contains(e.target);
-    const clickedProfileMenu = profileMenu && profileMenu.contains(e.target);
-
-    const clickedMap = cityMap && cityMap.contains(e.target);
-    const clickedMapBtn = showCityMapBtn && showCityMapBtn.contains(e.target);
-
-    // --- BEHAVIOUR:
-    // 1) If user clicked profileBtn or profileMenu -> close the map (if open)
-    if (clickedProfileBtn || clickedProfileMenu) {
-      if (cityMap && isVisible(cityMap)) {
-        cityMap.style.display = 'none';
-      }
-      // Let existing profile toggle logic run (do not stop propagation)
-      return;
+  // 2) Klik na mapy alebo ich buttony -> zavri profile menu
+  if (clickedCityMap || clickedCityMapBtn || clickedFeedMap || clickedFeedMapBtn) {
+    if (profileMenu && !profileMenu.classList.contains('hidden')) {
+      profileMenu.classList.add('hidden');
     }
+    return;
+  }
 
-    // 2) If user clicked map or mapBtn -> close profile menu (if open)
-    if (clickedMap || clickedMapBtn) {
-      if (profileMenu && !profileMenu.classList.contains('hidden')) {
-        profileMenu.classList.add('hidden');
-      }
-      // If click was on mapBtn itself, also toggle the map (existing map button handler may do that)
-      // We don't stopPropagation so existing handlers work.
-      return;
-    }
-
-  }, true); // use capture phase to react early
+}, true); // capture phase
 })();
 </script>
 
