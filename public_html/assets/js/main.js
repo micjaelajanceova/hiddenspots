@@ -19,4 +19,22 @@ window.addEventListener('load', () => {
 });
 
 
+// Tab navigation for admin panel
+  function showTab(tabId){
+
+  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+
+  document.getElementById(tabId).classList.remove('hidden');
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('bg-black', 'text-white');
+    btn.classList.add('bg-gray-200', 'text-gray-800');
+  });
+
+  const activeBtn = document.getElementById('tab-' + tabId);
+  activeBtn.classList.remove('bg-gray-200', 'text-gray-800');
+  activeBtn.classList.add('bg-black', 'text-white');
+}
+
+    showTab('site');
 

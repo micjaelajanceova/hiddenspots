@@ -67,6 +67,22 @@ class Spot {
         $stmt->execute([$user_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    // Update basic info
+    public function updateSpot($spot_id, $name, $city, $address) {
+    $stmt = $this->pdo->prepare("UPDATE hidden_spots SET name=?, city=?, address=? WHERE id=?");
+    return $stmt->execute([$name, $city, $address, $spot_id]);
+}
+
+    // Create new spot
+    public function createSpot($user_id, $name, $city, $address, $file_path, $description='', $latitude=null, $longitude=null, $type=null) {
+    $stmt = $this->pdo->prepare("
+        INSERT INTO hidden_spots
+        (user_id, name, city, address, file_path, description, latitude, longitude, type, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+    ");
+    return $stmt->execute([$user_id, $name, $city, $address, $file_path, $description, $latitude, $longitude, $type]);
+    }
+
     
     // Update the description of a specific spot
     public function updateDescription($spot_id, $new_description) {

@@ -2,51 +2,56 @@
 include 'includes/db.php';
 include 'includes/header.php';
 include 'classes/spot.php';
+include 'classes/User.php';
+include 'classes/sitesettings.php';
 include 'includes/profile-header.php';
+require_once __DIR__ . '/../classes/session.php';
+
+
+$session = new SessionHandle();
+
+$spotObj = new Spot($pdo);
+$userObj = new User($pdo);
+$siteSettings = new SiteSettings($pdo);
 
 // Only admin can access
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-  header("Location: index.php");
-  exit();
+if (!$session->logged_in() || $session->get('role') !== 'admin') {
+    header("Location: index.php");
+    exit();
 }
 
 // ===== DELETE SPOT =====
-if (isset($_POST['delete_spot'])) {
-  $id = intval($_POST['id']);
-  $stmt = $pdo->prepare("DELETE FROM hidden_spots WHERE id = ?");
-  $stmt->execute([$id]);
-  echo "<script>alert('Spot deleted successfully'); window.location='admin.php';</script>";
-  exit();
+if(isset($_POST['delete_spot'])){
+    $spotObj->deleteSpot(intval($_POST['id']));
+    echo "<script>alert('Spot deleted successfully'); window.location='admin.php';</script>";
+    exit();
 }
 
 // ===== EDIT SPOT =====
-if (isset($_POST['edit_spot'])) {
-  $id = intval($_POST['id']);
-  $name = trim($_POST['name']);
-  $city = trim($_POST['city']);
-  $address = trim($_POST['address']);
-
-  $stmt = $pdo->prepare("UPDATE hidden_spots SET name=?, city=?, address=? WHERE id=?");
-  $stmt->execute([$name, $city, $address, $id]);
-
-  echo "<script>alert('Spot updated successfully'); window.location='admin.php';</script>";
-  exit();
+if(isset($_POST['edit_spot'])){
+    $spotObj->updateSpot(intval($_POST['id']), trim($_POST['name']), trim($_POST['city']), trim($_POST['address']));
+    echo "<script>alert('Spot updated successfully'); window.location='admin.php';</script>";
+    exit();
 }
-
 
 // ===== CREATE SPOT =====
 if (isset($_POST['create_spot'])) {
-  $name = trim($_POST['name']);
-  $city = trim($_POST['city']);
-  $address = trim($_POST['address']);
-  
-  $file_path = $_FILES['photo']['tmp_name'] ? 'uploads/'.basename($_FILES['photo']['name']) : null;
-  if($file_path) move_uploaded_file($_FILES['photo']['tmp_name'], $file_path);
+    $name = trim($_POST['name']);
+    $city = trim($_POST['city']);
+    $address = trim($_POST['address']);
 
-  $stmt = $pdo->prepare("INSERT INTO hidden_spots (name, city, address, file_path, created_at) VALUES (?, ?, ?, ?, NOW())");
-  $stmt->execute([$name, $city, $address, $file_path]);
-  echo "<script>alert('Spot created successfully'); window.location='admin.php';</script>";
-  exit();
+    $file_path = null;
+    if (!empty($_FILES['photo']['tmp_name'])) {
+        $file_path = 'uploads/' . basename($_FILES['photo']['name']);
+        move_uploaded_file($_FILES['photo']['tmp_name'], $file_path);
+    }
+
+    if ($spotObj->createSpot($name, $city, $address, $file_path)) {
+        echo "<script>alert('Spot created successfully'); window.location='admin.php';</script>";
+    } else {
+        echo "<script>alert('Error creating spot'); window.location='admin.php';</script>";
+    }
+    exit();
 }
 
 
@@ -71,104 +76,36 @@ if (isset($_POST['edit_comment'])) {
 
 // ===== TOGGLE BLOCK USER =====
 if (isset($_POST['toggle_block'])) {
-  $id = intval($_POST['id']);
-
-  $stmt = $pdo->prepare("SELECT blocked FROM users WHERE id = ?");
-  $stmt->execute([$id]);
-  $user = $stmt->fetch(PDO::FETCH_ASSOC);
-  if ($user) {
-      $newStatus = $user['blocked'] ? 0 : 1;
-      $stmt = $pdo->prepare("UPDATE users SET blocked = ? WHERE id = ?");
-      $stmt->execute([$newStatus, $id]);
-      echo "<script>alert('User ".($newStatus ? 'blocked' : 'unblocked')." successfully'); window.location='admin.php';</script>";
-      exit();
-  }
+    $id = intval($_POST['id']);
+    $userObj->toggleBlock($id); 
+    echo "<script>alert('User status updated successfully'); window.location='admin.php';</script>";
+    exit();
 }
 
 // ===== EDIT USER =====
 if (isset($_POST['edit_user'])) {
-  $id = intval($_POST['id']);
-  $name = trim($_POST['name']);
-  $email = trim($_POST['email']);
-  $role = trim($_POST['role']);
-
-  $stmt = $pdo->prepare("UPDATE users SET name=?, email=?, role=? WHERE id=?");
-  $stmt->execute([$name, $email, $role, $id]);
-  echo "<script>alert('User updated successfully'); window.location='admin.php';</script>";
-  exit();
+    $id = intval($_POST['id']);
+    $userObj = new User($pdo);
+    $userObj->updateUser($id, $_POST['name'], $_POST['email'], $_POST['role']); 
+    echo "<script>alert('User updated successfully'); window.location='admin.php';</script>";
+    exit();
 }
 
 // ===== DELETE USER =====
 if (isset($_POST['delete_user'])) {
-  $id = intval($_POST['id']);
-  $stmt = $pdo->prepare("DELETE FROM users WHERE id=?");
-  $stmt->execute([$id]);
-  echo "<script>alert('User deleted successfully'); window.location='admin.php';</script>";
-  exit();
+    $id = intval($_POST['id']);
+    $userObj->deleteUser($id); 
+    echo "<script>alert('User deleted successfully'); window.location='admin.php';</script>";
+    exit();
 }
 
 
 // ===== UPDATE SITE INFO & STYLING =====
 if (isset($_POST['update_site'])) {
-  $description = trim($_POST['site_description']);
-  $rules = trim($_POST['rules']);
-  $contact = trim($_POST['contact_info']);
-  $theme_color = trim($_POST['primary_color']);
-  $font_family = trim($_POST['font_family']);
-  
-
-  // Update site info
-  $stmt = $pdo->prepare("
-  UPDATE site_settings SET
-      site_description=?,
-      rules=?,
-      contact_info=?,
-      primary_color=?,
-      font_family=?,
-      about_title1=?,
-      about_subtitle1=?,
-      about_text1=?,
-      about_title2=?,
-      about_subtitle2=?,
-      about_text2=?,
-      how_title=?,
-      how_subtitle=?,
-      card1_title=?,
-      card1_text=?,
-      card2_title=?,
-      card2_text=?,
-      card3_title=?,
-      card3_text=?
-  WHERE id=1
-  ");
-  
-  $stmt->execute([
-      $description,
-      $rules,
-      $contact,
-      $theme_color,
-      $font_family,
-      $_POST['about_title1'],
-      $_POST['about_subtitle1'],
-      $_POST['about_text1'],
-      $_POST['about_title2'],
-      $_POST['about_subtitle2'],
-      $_POST['about_text2'],
-      $_POST['how_title'],
-      $_POST['how_subtitle'],
-      $_POST['card1_title'],
-      $_POST['card1_text'],
-      $_POST['card2_title'],
-      $_POST['card2_text'],
-      $_POST['card3_title'],
-      $_POST['card3_text'],
-  ]);
-  
-
-  echo "<script>alert('Site info updated successfully'); window.location='admin.php';</script>";
-  exit();
+    $siteSettings->update($_POST);
+    echo "<script>alert('Site info updated successfully'); window.location='admin.php';</script>";
+    exit();
 }
-
 
 
 // Fetch data
@@ -183,8 +120,8 @@ $comments = $pdo->query("
 $users = $pdo->query("SELECT id, name, email, role, blocked FROM users ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
 
 // ===== FETCH SITE INFO =====
-$siteInfoStmt = $pdo->query("SELECT * FROM site_settings WHERE id=1 LIMIT 1");
-$siteInfo = $siteInfoStmt->fetch(PDO::FETCH_ASSOC);
+$siteInfo = $siteSettings->getAll();
+
 
 $siteDescription = $siteInfo['site_description'] ?? '';
 $siteRules       = $siteInfo['rules'] ?? '';
@@ -527,26 +464,5 @@ $siteFont = $siteInfo['font_family'] ?? 'Arial';
   </div>
 </main>
 
-<script>
-  function showTab(tabId){
-
-  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-
-  document.getElementById(tabId).classList.remove('hidden');
-
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.classList.remove('bg-black', 'text-white');
-    btn.classList.add('bg-gray-200', 'text-gray-800');
-  });
-
-  const activeBtn = document.getElementById('tab-' + tabId);
-  activeBtn.classList.remove('bg-gray-200', 'text-gray-800');
-  activeBtn.classList.add('bg-black', 'text-white');
-}
-
-
-    showTab('site');
-
-</script>
 
 <?php include 'includes/footer.php'; ?>

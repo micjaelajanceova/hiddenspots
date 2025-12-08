@@ -87,5 +87,30 @@ class User {
         $stmt = $this->pdo->prepare("UPDATE users SET password = ? WHERE id = ?");
         return $stmt->execute([$hash, $user_id]);
     }
+
+    // Update user info
+    public function updateUser($id, $name, $email, $role) {
+    $stmt = $this->pdo->prepare("UPDATE users SET name=?, email=?, role=? WHERE id=?");
+    return $stmt->execute([$name, $email, $role, $id]);
+    }
+
+    // Delete user
+    public function deleteUser($id) {
+        $stmt = $this->pdo->prepare("DELETE FROM users WHERE id=?");
+        return $stmt->execute([$id]);
+    }
+
+    // Toggle block/unblock user
+    public function toggleBlock($id) {
+    $stmt = $this->pdo->prepare("SELECT blocked FROM users WHERE id=?");
+    $stmt->execute([$id]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($user) {
+        $newStatus = $user['blocked'] ? 0 : 1;
+        $stmt = $this->pdo->prepare("UPDATE users SET blocked=? WHERE id=?");
+        return $stmt->execute([$newStatus, $id]);
+    }
+    return false;
+    }
 }
 ?>
