@@ -28,6 +28,7 @@ function getPhotoUrl($photo) {
 
 // User info
 $user = $userObj->getById($user_id);
+$photo_url = $userObj->getProfilePhoto($user_id);
 $authorPhoto = getPhotoUrl($spot['profile_photo']);
 ?>
 
