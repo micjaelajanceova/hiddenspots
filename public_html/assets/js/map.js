@@ -245,6 +245,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const cityMapDiv = document.getElementById('cityMap');
   let cityMap;
 
+  if (!cityMapBtn || !cityMapDiv) return;
+
   cityMapBtn.addEventListener('click', () => {
     const mapArrow = document.getElementById('mapArrow');
     const isHidden = cityMapDiv.style.display === 'none';
@@ -252,7 +254,9 @@ document.addEventListener('DOMContentLoaded', () => {
     cityMapDiv.style.display = isHidden ? 'block' : 'none';
 
     if (isHidden) {
+    if (mapArrow) {
       mapArrow.style.transform = 'rotate(180deg)';
+     }
       setTimeout(() => {
         if (!cityMap) initCityMap();
         else cityMap.invalidateSize();
@@ -282,3 +286,4 @@ document.addEventListener('DOMContentLoaded', () => {
       .openPopup();
   }
 });
+
