@@ -7,7 +7,6 @@ require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/password-validate.php';
 require_once __DIR__ . '/../classes/User.php';
 
-
 // Redirect to login page if user is not logged in
 if (!$session->logged_in()) {
     header("Location: login.php");
@@ -30,69 +29,67 @@ $user_photo = $userObj->getProfilePhoto($user_id);
 $photo_src = $user_photo ? '../' . $user_photo : null;
 $session->set('profile_photo', $user_photo);
 
-// --- Update Name ---
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_name'])) {
+// --- Unified profile update ---
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     $new_name = trim($_POST['name'] ?? '');
+    $current = $_POST['current_password'] ?? '';
+    $new_pass = $_POST['new_password'] ?? '';
+    $confirm_pass = $_POST['confirm_password'] ?? '';
+    $msg_type = 'success';
 
-    if (empty($new_name)) {
-        $msg = 'Name cannot be empty.';
-        $msg_type = 'error';
-    } elseif (!preg_match('/^[a-z0-9](?!.*[._]{2})[a-z0-9._]{1,18}[a-z0-9]$/', $new_name)) {
-        $msg = "Username must be 3–20 characters, lowercase letters, numbers, dots, or underscores.";
-        $msg_type = 'error';
-    } elseif ($userObj->isNameTaken($new_name, $user_id)) {
-        $msg = 'This name is already taken. Please choose another.';
-        $msg_type = 'error';
-    } elseif ($new_name === $user_name) {
-        $msg = 'This is already your current name.';
-        $msg_type = 'error';
-    } else {
-        if ($userObj->updateName($user_id, $new_name)) {
-            $msg = 'Name updated successfully.';
-            $msg_type = 'success';
-            $user_name = $new_name;
-        } else {
-            $msg = 'Failed to update name.';
+    // --- Name update ---
+    if (!empty($new_name) && $new_name !== $user_name) {
+        if (!preg_match('/^[a-z0-9](?!.*[._]{2})[a-z0-9._]{1,18}[a-z0-9]$/', $new_name)) {
+            $msg = "Username must be 3–20 characters, lowercase letters, numbers, dots, or underscores.";
             $msg_type = 'error';
+        } elseif ($userObj->existsByUsername($new_name)) {
+            $msg = 'This name is already taken. Please choose another.';
+            $msg_type = 'error';
+        } else {
+            if ($userObj->updateUser($user_id, $new_name, $user_email, $user['role'])) {
+                $msg = 'Name updated successfully.';
+                $user_name = $new_name;
+            } else {
+                $msg = 'Failed to update name.';
+                $msg_type = 'error';
+            }
         }
     }
-}
 
-// --- Password update ---
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_password'])) {
-    $current = $_POST['current_password'] ?? '';
-    $new = $_POST['new_password'] ?? '';
-    $confirm = $_POST['confirm_password'] ?? '';
-
-    if (empty($new)) {
-        $msg = 'New password cannot be empty.';
-        $msg_type = 'error';
-    } elseif ($new !== $confirm) {
-        $msg = 'Passwords do not match.';
-        $msg_type = 'error';
-    } else {
-        $user = $userObj->getById($user_id);
-        if (!$user || !password_verify($current, $user['password'])) {
-            $msg = 'Incorrect current password.';
+    // --- Password update ---
+    if (!empty($new_pass)) {
+        if ($new_pass !== $confirm_pass) {
+            $msg = 'Passwords do not match.';
             $msg_type = 'error';
         } else {
-            $valid = validatePassword($new);
-            if ($valid !== true) {
-                $msg = $valid;
+            $user_data = $userObj->getById($user_id);
+            if (!$user_data || !password_verify($current, $user_data['password'])) {
+                $msg = 'Incorrect current password.';
                 $msg_type = 'error';
             } else {
-                if ($userObj->updatePassword($user_id, $new)) {
-                    $msg = 'Password updated successfully.';
-                    $msg_type = 'success';
-                } else {
-                    $msg = 'Failed to update password.';
+                $valid = validatePassword($new_pass);
+                if ($valid !== true) {
+                    $msg = $valid;
                     $msg_type = 'error';
+                } else {
+                    if ($userObj->updatePassword($user_id, $new_pass)) {
+                        $msg = ($msg_type === 'success' ? 'Profile updated successfully.' : $msg);
+                        $msg_type = 'success';
+                    } else {
+                        $msg = 'Failed to update password.';
+                        $msg_type = 'error';
+                    }
                 }
             }
         }
     }
-}
 
+    // --- Nothing changed ---
+    if (empty($new_name) && empty($new_pass)) {
+        $msg = 'No changes detected.';
+        $msg_type = 'error';
+    }
+}
 
 
 
@@ -144,21 +141,12 @@ include __DIR__ . '/../includes/header.php';
         <form method="post" class="space-y-4">
 
 
-        <!-- Email (disabled) -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Email</label>
-            <input type="email" disabled value="<?= htmlspecialchars($user_email) ?>" 
-                   class="mt-1 block w-full rounded-md border-gray-300 bg-white p-2">
-          </div>
-
-          <!-- Name -->
+        <!-- Name -->
           <div>
             <label class="block text-sm font-medium text-gray-700">Name</label>
             <input type="text" name="name" value="<?= htmlspecialchars($user_name) ?>" 
                    class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2" required>
           </div>
-
-        
 
           <hr class="my-4">
 
@@ -180,7 +168,6 @@ include __DIR__ . '/../includes/header.php';
                    class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 p-2">
           </div>
 
-          <!-- Hidden field for unified update -->
           <input type="hidden" name="update_profile" value="1">
 
           <!-- Messages -->
