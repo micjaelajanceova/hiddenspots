@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-
+var_dump($user_id);
 // Fetch comments
 $comments = $spotObj->getComments($spot_id);
 
