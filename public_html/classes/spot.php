@@ -276,5 +276,16 @@ class Spot {
             return $stmt->execute([$comment_id, $user_id]);
         }
     }
+    // Add like
+    public function like($spot_id, $user_id){
+        $stmt = $this->pdo->prepare("INSERT INTO likes (user_id, spot_id) VALUES (?, ?)");
+        return $stmt->execute([$user_id, $spot_id]);
+    }
+
+    // Remove like
+    public function unlike($spot_id, $user_id){
+        $stmt = $this->pdo->prepare("DELETE FROM likes WHERE user_id=? AND spot_id=?");
+        return $stmt->execute([$user_id, $spot_id]);
+    }
 }
 ?>

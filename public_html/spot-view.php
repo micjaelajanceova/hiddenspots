@@ -222,11 +222,7 @@ $photo_url = $spot['profile_photo'];
                c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
     </svg>
     <span id="likeCount" class="text-sm text-gray-600">
-     <?php
-        $stmt = $pdo->prepare("SELECT COUNT(*) FROM likes WHERE spot_id=?");
-        $stmt->execute([$spot_id]);
-        echo $stmt->fetchColumn();
-      ?>
+     <?= $spotObj->countLikes($spot_id) ?>
     </span>
   </button>
 
