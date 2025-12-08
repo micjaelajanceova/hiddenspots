@@ -19,8 +19,8 @@ $user_id = $session->get('user_id');
 $favorites = $userObj->getFavorites($user_id);
 
 // User info
-$user_photo = $session->get('profile_photo');
-$photo_url = $user_photo ? '/' . $user_photo : null;
+$user = $userObj->getById($user_id);
+$photo_url = $userObj->getProfilePhoto($user_id);
 ?>
 
 <!----------------------- HTML ------------------------------>
