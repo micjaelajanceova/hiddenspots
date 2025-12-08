@@ -5,7 +5,6 @@ require_once __DIR__ . '/classes/spot.php';
 
 
 require_once __DIR__ . '/includes/search.php';
-require_once __DIR__ . '/includes/map.php';
 
 // Initialize Spot object
 $spotObj = new Spot($pdo);
