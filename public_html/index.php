@@ -86,7 +86,7 @@ $latestComments = $spotObj->getLatestComments(3);
     </div>
 
     <div class="relative p-8 flex flex-col items-start max-w-xl">
-      <h4 class="text-4xl font-bold text-white">About HiddenSpots</h4>
+      <h3 class="text-4xl font-bold text-white">About HiddenSpots</h3>
       <p3 class="mt-2 text-white">
         A photo-sharing app for secret city places. Discover, save and share hidden gems in your town.
       </p3>
