@@ -32,7 +32,7 @@ function timeAgo($datetime) {
 $comments = $spotObj->getComments($spot_id);
 
 // Admin check
-$isAdmin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+$isAdmin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin'; 
 $edit_id = $_POST['edit_id'] ?? null;
 
 // Handle POST for comments
@@ -166,10 +166,6 @@ $photo_url = $spot['profile_photo'];
       <span class="bg-black bg-opacity-50 px-4 py-2 rounded-full">Saved to favourites</span>
     </div>
   </div>
-
-  <?php
-$photo_url = !empty($user['profile_photo']) ? $user['profile_photo'] : null;
-?>
 
 <div class="w-full lg:w-1/2 flex flex-col px-4 gap-4 max-h-[600px] overflow-y-auto relative">
 
