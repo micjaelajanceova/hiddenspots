@@ -83,6 +83,7 @@ document.addEventListener('click', function (e) {
   const feedMap = document.getElementById('feedMap');
   const showMapBtn = document.getElementById('showMap');
   const feedMapArrow = document.getElementById('feedMapArrow');
+  const mapArrow = document.getElementById('mapArrow');
 
   const clickedProfileBtn = profileBtn && profileBtn.contains(e.target);
   const clickedProfileMenu = profileMenu && profileMenu.contains(e.target);
@@ -97,8 +98,8 @@ document.addEventListener('click', function (e) {
   if (clickedProfileBtn || clickedProfileMenu) {
     if (cityMap && isVisible(cityMap)) {
       cityMap.style.display = 'none';
-      if (feedMapArrow) {
-        feedMapArrow.style.transform = 'rotate(0deg)';
+      if (mapArrow) {
+        mapArrow.style.transform = 'rotate(0deg)';
       }
     }
 
