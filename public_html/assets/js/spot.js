@@ -42,21 +42,23 @@ favBtn?.addEventListener('click', () => {
   })
   .then(r => r.text())
   .then(res => {
-    if (data.status === 'error' && data.message === 'not_logged_in') {
+    if (res === 'not_logged_in') {
       return alert('You must be logged in to like!');
     }
     if (res === 'added') {
       favIcon.classList.remove('text-gray-400');
       favIcon.classList.add('text-yellow-500');
       showFavToast("Saved to favourites");
-    }
-    if (res === 'removed') {
+    } else if (res === 'removed') {
       favIcon.classList.remove('text-yellow-500');
       favIcon.classList.add('text-gray-400');
       showFavToast("Removed from favourites");
     }
-  });
+  })
+  .catch(err => console.error('Error favouriting spot:', err));
 });
+
+
 
 function showFavToast(message) {
   favToast.querySelector('span').textContent = message;
