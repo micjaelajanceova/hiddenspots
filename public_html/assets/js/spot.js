@@ -3,7 +3,7 @@
 const textarea = document.getElementById('commentText');
 const postButton = document.getElementById('postText');
 
-textarea.addEventListener('input', () => {
+textarea?.addEventListener('input', () => {
     if(textarea.value.trim().length > 0){
         postButton.disabled = false;
         postButton.classList.remove('text-gray-400', 'cursor-not-allowed');
@@ -34,7 +34,7 @@ const MAX_CHARS = 1000;
 
 
 // FAVOURITE BUTTON
-favBtn.addEventListener('click', () => {
+favBtn?.addEventListener('click', () => {
   fetch('actions/favourite.php', {
     method: 'POST',
     headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -75,7 +75,7 @@ function showFavToast(message) {
 
 
 // LIKE BUTTON
-likeBtn.addEventListener('click', () => {
+likeBtn?.addEventListener('click', () => {
   fetch('actions/like.php', {
     method: 'POST',
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
