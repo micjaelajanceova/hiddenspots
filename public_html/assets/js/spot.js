@@ -32,6 +32,21 @@ const charCountDiv = document.getElementById("descCharCount");
 
 const MAX_CHARS = 1000;
 
+// message toast for actions
+function showFavToast(message) {
+  favToast.querySelector('span').textContent = message;
+  favToast.classList.remove('opacity-0');
+  favToast.classList.add('opacity-100');
+  favToast.classList.add('bg-opacity-20');
+  setTimeout(() => {
+    favToast.classList.remove('bg-opacity-20');
+    favToast.classList.add('bg-opacity-0');
+  }, 500);
+  setTimeout(() => {
+    favToast.classList.remove('opacity-100');
+    favToast.classList.add('opacity-0');
+  }, 3000);
+}
 
 // FAVOURITE BUTTON
 favBtn?.addEventListener('click', () => {
@@ -48,30 +63,14 @@ favBtn?.addEventListener('click', () => {
     if (res === 'added') {
       favIcon.classList.remove('text-gray-400');
       favIcon.classList.add('text-yellow-500');
-      showFavToast("Saved to favourites");
     }
     if (res === 'removed') {
       favIcon.classList.remove('text-yellow-500');
       favIcon.classList.add('text-gray-400');
-      showFavToast("Removed from favourites");
     }
   });
 });
 
-function showFavToast(message) {
-  favToast.querySelector('span').textContent = message;
-  favToast.classList.remove('opacity-0');
-  favToast.classList.add('opacity-100');
-  favToast.classList.add('bg-opacity-20');
-  setTimeout(() => {
-    favToast.classList.remove('bg-opacity-20');
-    favToast.classList.add('bg-opacity-0');
-  }, 500);
-  setTimeout(() => {
-    favToast.classList.remove('opacity-100');
-    favToast.classList.add('opacity-0');
-  }, 3000);
-}
 
 
 // LIKE BUTTON
@@ -83,10 +82,9 @@ likeBtn?.addEventListener('click', () => {
   })
   .then(res => res.json()) // <-- parse JSON here
   .then(data => {
-        if (data.status === 'error' && data.message === 'not_logged_in') {
-      return alert('You must be logged in to like!');
+    if (data.status === 'error' && data.message === 'not_logged_in') {
+    return alert('You must be logged in to like!');
     }
-
     if (data.status === 'liked') {
       likeIcon.classList.remove('text-gray-400');
       likeIcon.classList.add('text-red-600');
