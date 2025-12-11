@@ -32,13 +32,11 @@ const charCountDiv = document.getElementById("descCharCount");
 
 const MAX_CHARS = 1000;
 
-function showErrorTop(message) {
+function showToast(message, bg = "bg-red-600") {
     const box = document.createElement("div");
     box.textContent = message;
-    box.className =
-        "fixed top-4 left-1/2 -translate-x-1/2 bg-red-600 text-white px-4 py-2 rounded shadow-lg z-50";
+    box.className = `fixed top-4 left-1/2 -translate-x-1/2 ${bg} text-white px-4 py-2 rounded shadow-lg z-50`;
     document.body.appendChild(box);
-
     setTimeout(() => box.remove(), 2500);
 }
 
@@ -51,10 +49,10 @@ favBtn.addEventListener('click', () => {
   })
   .then(r => r.text())
   .then(res => {
-    if (res.includes('You must be logged in')) {
-    showErrorTop(res);
-    return;
-  }
+    if (data.status === 'not_logged_in') {
+        showToast("You must be logged in to favorite!");
+        return;
+    }
     if (res === 'added') {
       favIcon.classList.remove('text-gray-400');
       favIcon.classList.add('text-yellow-500');
