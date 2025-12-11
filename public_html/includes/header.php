@@ -252,7 +252,7 @@ $show_navbar = $show_navbar ?? true;
   </nav>
 
  <div class="flex-1 flex flex-col min-h-screen pb-16 md:pb-0">
-<?php endif; ?>
+
 
 
 <!----------------------- CSS AND JS LINKS ------------------------------>
@@ -268,3 +268,4 @@ $show_navbar = $show_navbar ?? true;
 
 <!-- Upload JS -->
 <script src="/assets/js/upload.js" defer></script>
+<?php endif; ?>
