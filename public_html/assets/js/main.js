@@ -1,5 +1,11 @@
 // Initialize Macy.js for Masonry layout
 function initMasonry() {
+  const masonryEl = document.getElementById('masonry');
+  if (!masonryEl) return;
+
+  // Prevent Macy crash on empty containers
+  if (masonryEl.children.length === 0) return;
+
   window.masonry = Macy({
     container: '#masonry',
     columns: 4,

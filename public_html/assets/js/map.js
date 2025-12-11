@@ -140,11 +140,21 @@ if (addressInput) {
   }, 500));
 }
 }
+
+function hideFeedMap() {
+    const feedMap = document.getElementById('feedMap');
+    if (feedMap) feedMap.style.display = 'none';
+  }
+  
+  function showFeedMap() {
+    const feedMap = document.getElementById('feedMap');
+    if (feedMap) feedMap.style.display = 'block';
+  }
+  
 // ---------- Feed Map Toggle ----------
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('filterBtn');
   const dropdown = document.getElementById('filterDropdown');
-  const mapBtn = document.getElementById('showMap');
   const mapDiv = document.getElementById('feedMap');
 
   if (btn && dropdown && mapDiv) {
@@ -187,6 +197,8 @@ mapBtn.addEventListener('click', () => {
   }
 });
 }
+
+
 
 
 
