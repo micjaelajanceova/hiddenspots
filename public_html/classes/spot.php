@@ -5,8 +5,8 @@ class Spot {
         $this->pdo = $pdo;
     }
 
-    // Get the newest spots with optional limit (default 10)
-    public function getNewest($limit=10){
+    // Get the newest spots
+    public function getNewest($limit=3){
         $stmt = $this->pdo->query("
             SELECT 
             h.*, 
