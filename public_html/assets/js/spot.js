@@ -42,7 +42,9 @@ favBtn.addEventListener('click', () => {
   })
   .then(r => r.text())
   .then(res => {
-    if (res === 'not_logged_in') return alert('You must be logged in to favorite!');
+    if (data.status === 'error' && data.message === 'not_logged_in') {
+    return alert('You must be logged in to like!');
+  }
     if (res === 'added') {
       favIcon.classList.remove('text-gray-400');
       favIcon.classList.add('text-yellow-500');
