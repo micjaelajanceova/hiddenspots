@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mainBtn?.addEventListener('click', e => {
         e.preventDefault();
         if (!isLoggedIn) return window.location.href = '/auth/login.php';
-        uploadModal.classList.remove('hidden');
+        uploadModal?.classList.remove('hidden');
     });
 
     // Desktop upload button
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '/auth/login.php';
         return;
     }
-    document.getElementById('uploadModal').classList.remove('hidden');
+    uploadModal?.classList.remove('hidden');
     });
 
     // Mobile upload button
@@ -43,7 +43,31 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '/auth/login.php';
         return;
     }
-    document.getElementById('uploadModal').classList.remove('hidden');
+    uploadModal?.classList.remove('hidden');
+    });
+
+
+    // Close modal
+    closeBtn?.addEventListener('click', () => {
+        uploadModal?.classList.add('hidden');
+    });
+
+    // Handle photo selection
+    photoInput?.addEventListener('change', (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            previewImage?.setAttribute("src", event.target.result);
+            finalImage?.setAttribute("src", event.target.result);
+            photoDataInput.value = event.target.result;
+
+            document.getElementById('stepSelect')?.classList.add('hidden');
+            document.getElementById('stepPreview')?.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+    });
 });
-});
+
 
