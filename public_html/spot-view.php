@@ -343,7 +343,7 @@ require_once __DIR__ . '/includes/header.php';
   };
 </script>
 
-<script src="/assets/js/spot.js" defer></script>
+<script src="/assets/js/spot.js?v=<?php echo time(); ?>" defer></script>
 
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
