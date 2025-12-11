@@ -32,7 +32,32 @@ const charCountDiv = document.getElementById("descCharCount");
 
 const MAX_CHARS = 1000;
 
-// message toast for actions
+
+// FAVOURITE BUTTON
+favBtn?.addEventListener('click', () => {
+  fetch('actions/favourite.php', {
+    method: 'POST',
+    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+    body: 'spot_id=' + spotId
+  })
+  .then(r => r.text())
+  .then(res => {
+    if (data.status === 'error' && data.message === 'not_logged_in') {
+      return alert('You must be logged in to like!');
+    }
+    if (res === 'added') {
+      favIcon.classList.remove('text-gray-400');
+      favIcon.classList.add('text-yellow-500');
+      showFavToast("Saved to favourites");
+    }
+    if (res === 'removed') {
+      favIcon.classList.remove('text-yellow-500');
+      favIcon.classList.add('text-gray-400');
+      showFavToast("Removed from favourites");
+    }
+  });
+});
+
 function showFavToast(message) {
   favToast.querySelector('span').textContent = message;
   favToast.classList.remove('opacity-0');
@@ -48,30 +73,6 @@ function showFavToast(message) {
   }, 3000);
 }
 
-// FAVOURITE BUTTON
-favBtn?.addEventListener('click', () => {
-  fetch('actions/favourite.php', {
-    method: 'POST',
-    headers: {'Content-Type':'application/x-www-form-urlencoded'},
-    body: 'spot_id=' + spotId
-  })
-  .then(res => res.json())
-  .then(res => {
-    if (data.status === 'error' && data.message === 'not_logged_in') {
-      return alert('You must be logged in to like!');
-    }
-    if (res === 'added') {
-      favIcon.classList.remove('text-gray-400');
-      favIcon.classList.add('text-yellow-500');
-    }
-    if (res === 'removed') {
-      favIcon.classList.remove('text-yellow-500');
-      favIcon.classList.add('text-gray-400');
-    }
-  });
-});
-
-
 
 // LIKE BUTTON
 likeBtn?.addEventListener('click', () => {
@@ -82,9 +83,10 @@ likeBtn?.addEventListener('click', () => {
   })
   .then(res => res.json()) // <-- parse JSON here
   .then(data => {
-    if (data.status === 'error' && data.message === 'not_logged_in') {
-    return alert('You must be logged in to like!');
+        if (data.status === 'error' && data.message === 'not_logged_in') {
+      return alert('You must be logged in to like!');
     }
+
     if (data.status === 'liked') {
       likeIcon.classList.remove('text-gray-400');
       likeIcon.classList.add('text-red-600');
