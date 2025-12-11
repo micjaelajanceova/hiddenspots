@@ -32,6 +32,12 @@ const charCountDiv = document.getElementById("descCharCount");
 
 const MAX_CHARS = 1000;
 
+likeBtn.addEventListener('click', () => {
+  if (!isLoggedIn) {
+    alert('You must be logged in to like!');
+    return;
+  }
+});
 
 // FAVOURITE BUTTON
 favBtn.addEventListener('click', () => {
