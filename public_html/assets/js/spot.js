@@ -49,10 +49,10 @@ favBtn.addEventListener('click', () => {
   })
   .then(r => r.text())
   .then(res => {
-    if (data.status === 'not_logged_in') {
-        showToast("You must be logged in to favorite!");
-        return;
-    }
+    if (res.includes('logged in')) {   
+            showErrorTop(res);
+            return;
+        }
     if (res === 'added') {
       favIcon.classList.remove('text-gray-400');
       favIcon.classList.add('text-yellow-500');
