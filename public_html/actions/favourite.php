@@ -15,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['spot_id'])) {
 
 // User must be logged in to like a spot
 if (!$session->logged_in()) {
-    http_response_code(403);
     echo json_encode(['status' => 'error', 'message' => 'not_logged_in']);
     exit();
 }
