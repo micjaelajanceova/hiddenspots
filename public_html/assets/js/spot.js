@@ -40,7 +40,7 @@ favBtn?.addEventListener('click', () => {
     headers: {'Content-Type':'application/x-www-form-urlencoded'},
     body: 'spot_id=' + spotId
   })
-  .then(r => r.text())
+  .then(res => res.json())
   .then(res => {
     if (data.status === 'error' && data.message === 'not_logged_in') {
       return alert('You must be logged in to like!');
