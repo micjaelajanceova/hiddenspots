@@ -32,6 +32,15 @@ const charCountDiv = document.getElementById("descCharCount");
 
 const MAX_CHARS = 1000;
 
+function showErrorTop(message) {
+    const box = document.createElement("div");
+    box.textContent = message;
+    box.className =
+        "fixed top-4 left-1/2 -translate-x-1/2 bg-red-600 text-white px-4 py-2 rounded shadow-lg z-50";
+    document.body.appendChild(box);
+
+    setTimeout(() => box.remove(), 2500);
+}
 
 // FAVOURITE BUTTON
 favBtn.addEventListener('click', () => {
@@ -42,7 +51,10 @@ favBtn.addEventListener('click', () => {
   })
   .then(r => r.text())
   .then(res => {
-    if (res === 'not_logged_in') return alert('You must be logged in to favorite!');
+    if (res.includes('You must be logged in')) {
+    showErrorTop(res);
+    return;
+  }
     if (res === 'added') {
       favIcon.classList.remove('text-gray-400');
       favIcon.classList.add('text-yellow-500');

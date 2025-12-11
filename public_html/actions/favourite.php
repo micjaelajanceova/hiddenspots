@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['spot_id'])) {
 // User must be logged in to like a spot
 if (!$session->logged_in()) {
     http_response_code(403);
-    echo 'not_logged_in';
+    echo 'You must be logged in to add favourites.';
     exit();
 }
 
