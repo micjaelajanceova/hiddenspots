@@ -333,6 +333,7 @@ require_once __DIR__ . '/includes/header.php';
 </main>
 
 <script>const spotId = <?= $spot_id ?>;</script>
+<script>const isLoggedIn = <?= $session->logged_in() ? 'true' : 'false'; ?>;</script>
 
 <script>
   window.spotData = {
