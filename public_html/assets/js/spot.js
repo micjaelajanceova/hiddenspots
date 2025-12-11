@@ -86,7 +86,7 @@ likeBtn?.addEventListener('click', () => {
   .then(res => res.json()) // <-- parse JSON here
   .then(data => {
         if (data.status === 'error' && data.message === 'not_logged_in') {
-      return alert('You must be logged!');
+      return alert('You must be logged in to like!');
     }
 
     if (data.status === 'liked') {
