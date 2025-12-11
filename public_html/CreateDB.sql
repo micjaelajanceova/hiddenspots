@@ -46,7 +46,7 @@ CREATE TABLE hidden_spots (
 
 INSERT INTO hidden_spots (user_id, name, description, city, type, file_path, latitude, longitude)
 VALUES
-(1, 'Quiet Café', 'A cozy café in the city center.', 'Esbjerg', 'Cafés', 'uploads/test1.jpg', 55.4666, 8.4500),
+(1, 'Quiet Café', 'A cozy café in the city center.', 'Esbjerg', 'Café & Restaurant', 'uploads/test1.jpg', 55.4666, 8.4500),
 (2, 'Hidden Beach', 'Small quiet beach.', 'Aarhus', 'Nature', 'uploads/test2.jpg', 56.1500, 10.2100);
 
 -- ======================================
