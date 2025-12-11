@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Desktop upload button
-    document.getElementById('desktopUploadBtn').addEventListener('click', e => {
+    document.getElementById('desktopUploadBtn')?.addEventListener('click', e => {
     e.preventDefault();
     if (!isLoggedIn) {
         window.location.href = '/auth/login.php';
