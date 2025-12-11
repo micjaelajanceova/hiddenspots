@@ -9,7 +9,7 @@ require_once '../includes/db.php';
 // Validate request
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['spot_id'])) {
     http_response_code(400);
-    echo 'invalid_request';
+    echo json_encode(['status' => 'error', 'message' => 'invalid_request']);
     exit();
 }
 
