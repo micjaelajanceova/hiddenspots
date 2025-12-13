@@ -63,9 +63,9 @@ $show_navbar = $show_navbar ?? true;
 </head>
 
 <!----------------------- Desktop navbar------------------------------>
-
-<body class="flex flex-col min-h-screen">
 <?php if ($show_navbar): ?>
+<body class="flex flex-col min-h-screen">
+
   <div class="flex flex-1 flex-col md:flex-row">
     <aside id="sidebar" class="hidden md:flex flex-col bg-gray-100 border-r sticky top-0 h-screen p-4 shadow-lg shadow-gray-300 z-10 transition-all duration-300 w-64">
 
@@ -250,9 +250,9 @@ $show_navbar = $show_navbar ?? true;
     </a>
 
   </nav>
-  <?php endif; ?>
- <div class="flex-1 flex flex-col min-h-screen pb-16 md:pb-0">
 
+  <div class="flex-1 flex flex-col min-h-screen pb-16 md:pb-0">
+  <?php endif; ?>
 
 
 <!----------------------- CSS AND JS LINKS ------------------------------>
@@ -268,4 +268,3 @@ $show_navbar = $show_navbar ?? true;
 
 <!-- Upload JS -->
 <script src="/assets/js/upload.js" defer></script>
-</body>
