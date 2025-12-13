@@ -251,7 +251,7 @@ $show_navbar = $show_navbar ?? true;
 
   </nav>
   <?php endif; ?>
-
+ <div class="flex-1 flex flex-col min-h-screen pb-16 md:pb-0">
 
 
 
