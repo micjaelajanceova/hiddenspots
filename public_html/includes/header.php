@@ -254,7 +254,7 @@ $show_navbar = $show_navbar ?? true;
  <div class="flex-1 flex flex-col min-h-screen pb-16 md:pb-0">
 
 
-
+ <?php endif; ?>
 <!----------------------- CSS AND JS LINKS ------------------------------>
 <!-- Leaflet CSS and JS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -268,4 +268,3 @@ $show_navbar = $show_navbar ?? true;
 
 <!-- Upload JS -->
 <script src="/assets/js/upload.js" defer></script>
-<?php endif; ?>
