@@ -1,20 +1,23 @@
 // Sidebar Toggle Functionality
+console.log('TOGGLE JS RUNNING');
 const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('sidebarToggle');
-if (!sidebar || !toggleBtn) return; 
+if (!sidebar || !toggleBtn); 
 toggleBtn.addEventListener('click', () => {
     // Toggle collapsed class
   const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
 
     // Adjust header layout
     const header = document.getElementById('sidebarHeader');
+    if (header) {
     if (isCollapsed) {
       header.classList.add('flex-col', 'items-center', 'gap-3');
       header.classList.remove('flex-row', 'justify-between');
     } else {
       header.classList.remove('flex-col', 'items-center', 'gap-3');
       header.classList.add('flex-row', 'justify-between');
-    }
+    } 
+  }
   
     // Change toggle icon
     const icon = toggleBtn.querySelector('i');
@@ -46,10 +49,10 @@ toggleBtn.addEventListener('click', () => {
   }
 
   // Toggle logos and upload text
-  document.querySelector('.sidebar-logo-full').classList.toggle('hidden');
-  document.querySelector('.sidebar-logo-collapsed').classList.toggle('hidden');
-  document.querySelector('.sidebar-upload-text').classList.toggle('hidden');
-  document.querySelector('.sidebar-upload-collapsed').classList.toggle('hidden');
+  document.querySelector('.sidebar-logo-full')?.classList.toggle('hidden');
+  document.querySelector('.sidebar-logo-collapsed')?.classList.toggle('hidden');
+  document.querySelector('.sidebar-upload-text')?.classList.toggle('hidden');
+  document.querySelector('.sidebar-upload-collapsed')?.classList.toggle('hidden');
 
   // Recalculate Masonry layout after transition
  sidebar.addEventListener('transitionend', (e) => {
