@@ -1,9 +1,7 @@
 // Sidebar Toggle Functionality
-document.addEventListener('DOMContentLoaded', () => {
 const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('sidebarToggle');
 if (!sidebar || !toggleBtn) return; 
-});
 toggleBtn.addEventListener('click', () => {
     // Toggle collapsed class
   const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
