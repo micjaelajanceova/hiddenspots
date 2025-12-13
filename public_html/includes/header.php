@@ -263,6 +263,9 @@ $show_navbar = $show_navbar ?? true;
 <!-- Phosphor Icons -->
 <script src="https://unpkg.com/phosphor-icons"></script>
 
+<!-- Logged-in status -->
+<script>const isLoggedIn = <?= $session->logged_in() ? 'true' : 'false'; ?>;</script>
+
 <!-- Toggle JS -->
 <script src="/assets/js/toggle.js" defer></script>
 
