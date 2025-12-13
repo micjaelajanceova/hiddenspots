@@ -8,10 +8,10 @@ const previewImage = document.getElementById('previewImage');
 const finalImage = document.getElementById('finalImage');
 const photoDataInput = document.getElementById('photoData');
 
-if (!uploadModal) return;
+
 // Wait until DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
- 
+    if (!uploadModal) return;
 
     // isLoggedIn comes from footer.php (global variable)
     if (typeof isLoggedIn !== "undefined") {
