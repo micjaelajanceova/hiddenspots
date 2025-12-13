@@ -65,8 +65,6 @@ $siteFont        = $siteSettings['font_family'] ?? 'Arial';
 <!-- Logged-in status -->
 <script>const isLoggedIn = <?= $session->logged_in() ? 'true' : 'false'; ?>;</script>
 
-<script src="/assets/js/toggle.js"></script>
-<script src="/assets/js/upload.js"></script>
 <!-- Global script -->
 <script src="/assets/js/main.js"></script>
 
