@@ -55,6 +55,8 @@ $siteFont        = $siteSettings['font_family'] ?? 'Arial';
 </footer>
 </div>
 </body>
+</html>
+
 <!----------------------- Scripts ------------------------------>
 <!-- Images Loaded script -->
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
@@ -68,7 +70,7 @@ $siteFont        = $siteSettings['font_family'] ?? 'Arial';
 <!-- Global script -->
 <script src="/assets/js/main.js"></script>
 
+<script src="/assets/js/upload.js" defer></script>
 
 <!-- Map script -->
 <script src="/assets/js/map.js" defer></script>
-</html>
