@@ -1,4 +1,6 @@
- // Upload Modal Functionality
+// Wait until DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+// Upload Modal Functionality
 const uploadModal = document.getElementById('uploadModal');
 const closeBtn = document.getElementById('closeUploadModal');
 const mobileUploadBtn = document.getElementById('mobileUploadBtn');
@@ -9,8 +11,7 @@ const finalImage = document.getElementById('finalImage');
 const photoDataInput = document.getElementById('photoData');
 
 
-// Wait until DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
+
     if (!uploadModal) return;
 
     // isLoggedIn comes from footer.php (global variable)
