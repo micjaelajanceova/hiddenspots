@@ -1,3 +1,4 @@
+document.addEventListener('DOMContentLoaded', () => {
 // Sidebar Toggle Functionality
 console.log('TOGGLE JS RUNNING');
 const sidebar = document.getElementById('sidebar');
@@ -6,6 +7,7 @@ if (!sidebar || !toggleBtn) {
   console.warn('Sidebar or toggle button not found');
   return;
 }
+
 toggleBtn.addEventListener('click', () => {
     // Toggle collapsed class
   const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
@@ -66,5 +68,6 @@ toggleBtn.addEventListener('click', () => {
       window.masonry.recalculate(true);
     }
   }
+});
 });
 });
