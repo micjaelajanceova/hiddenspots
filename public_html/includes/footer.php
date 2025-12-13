@@ -55,7 +55,7 @@ $siteFont        = $siteSettings['font_family'] ?? 'Arial';
 </footer>
 </div>
 </body>
-</html>
+
 
 <!----------------------- Scripts ------------------------------>
 <!-- Images Loaded script -->
@@ -74,3 +74,4 @@ $siteFont        = $siteSettings['font_family'] ?? 'Arial';
 
 <!-- Map script -->
 <script src="/assets/js/map.js" defer></script>
+</html>
