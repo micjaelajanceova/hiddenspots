@@ -18,8 +18,6 @@ $siteFont        = $siteSettings['font_family'] ?? 'Arial';
 ?>
 
 <!----------------------- Footer HTML section ------------------------------>
-</div>
-</div>
 <footer class="py-10 text-gray-500 text-sm border-t">
 
 <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-left px-4 sm:px-6 md:px-0">
@@ -55,6 +53,7 @@ $siteFont        = $siteSettings['font_family'] ?? 'Arial';
   </h6>
 
 </footer>
+</div>
 </body>
 <!----------------------- Scripts ------------------------------>
 <!-- Images Loaded script -->
