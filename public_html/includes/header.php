@@ -250,11 +250,11 @@ $show_navbar = $show_navbar ?? true;
     </a>
 
   </nav>
-
+  <?php endif; ?>
  <div class="flex-1 flex flex-col min-h-screen pb-16 md:pb-0">
 
 
- <?php endif; ?>
+
 <!----------------------- CSS AND JS LINKS ------------------------------>
 <!-- Leaflet CSS and JS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
