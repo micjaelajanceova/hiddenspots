@@ -62,7 +62,8 @@ $siteFont        = $siteSettings['font_family'] ?? 'Arial';
 <!-- Mansonry script -->
 <script src="https://cdn.jsdelivr.net/npm/macy@2"></script>
 
-
+<!-- Logged-in status -->
+<script>const isLoggedIn = <?= $session->logged_in() ? 'true' : 'false'; ?>;</script>
 
 <!-- Global script -->
 <script src="/assets/js/main.js"></script>
